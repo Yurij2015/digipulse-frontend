@@ -13,7 +13,7 @@
         <p class="text-neutral-500 font-medium">{{ $t('auth.subtitle') }}</p>
       </div>
 
-      <UCard class="glass-card border-neutral-200/50 dark:border-white/5 ring-0 overflow-visible rounded-[2.5rem] shadow-2xl">
+      <UCard class="glass-card border-neutral-200/50 dark:border-white/5 ring-0 overflow-visible rounded-2xl shadow-2xl">
         <UForm :state="state" :schema="schema" @submit="onSubmit" class="flex flex-col gap-6">
           <UFormGroup :label="$t('auth.email')" name="email" class="premium-label">
             <UInput 
@@ -78,7 +78,7 @@
             block 
             size="xl" 
             :loading="loading"
-            class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-black py-5 rounded-2xl shadow-xl hover:scale-[1.02] transition-transform mt-10 border-0"
+            class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-black py-5 rounded-xl shadow-xl hover:scale-[1.02] transition-transform mt-10 border-0"
           >
             {{ isLogin ? $t('auth.sign_in') : $t('auth.create_account') }}
           </UButton>

@@ -2,7 +2,7 @@
   <div class="relative z-50">
     <button
       @click="open = !open"
-      class="flex items-center gap-2 group hover:bg-neutral-100 dark:hover:bg-white/5 transition-all px-3 py-1.5 rounded-xl select-none"
+      class="flex items-center gap-2 group hover:bg-neutral-100 dark:hover:bg-white/5 transition-all px-3 py-1.5 rounded-lg select-none"
     >
       <UIcon name="i-heroicons-globe-alt" class="text-lg text-neutral-500 group-hover:text-primary-500 transition-colors" />
       <span class="font-black uppercase tracking-[0.2em] text-[10px]">{{ locale }}</span>
@@ -22,7 +22,7 @@
     <transition name="fade">
       <div 
         v-show="open"
-        class="absolute right-0 min-w-[140px] bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl shadow-lg z-20 overflow-hidden"
+        class="absolute right-0 min-w-[140px] bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg shadow-lg z-20 overflow-hidden"
         :class="side === 'top' ? 'top-full mt-2' : 'bottom-full mb-2'"
       >
         <button

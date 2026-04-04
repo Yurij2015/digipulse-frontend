@@ -28,7 +28,7 @@
           :to="link.to"
           :variant="route.path === link.to ? 'soft' : 'ghost'"
           :color="route.path === link.to ? 'primary' : 'neutral'"
-          class="w-full justify-start gap-3 font-bold py-2.5 px-4 rounded-xl transition-all"
+          class="w-full justify-start gap-3 font-bold py-2.5 px-4 rounded-lg transition-all"
         >
           <UIcon :name="link.icon" class="text-lg" />
           {{ link.label }}
@@ -36,7 +36,7 @@
       </nav>
 
       <div class="mt-auto pt-8 border-t border-neutral-100 dark:border-white/5">
-        <div class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-neutral-50 dark:bg-white/5">
+        <div class="flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-neutral-50 dark:bg-white/5">
           <LanguageSwitcher />
           <ThemeSwitcher />
         </div>
@@ -58,14 +58,14 @@
           <h1 class="text-4xl font-black text-neutral-900 dark:text-white mb-3">{{ $t('dashboard.title') }}</h1>
           <p class="text-neutral-500 font-medium">{{ $t('dashboard.subtitle') }}</p>
         </div>
-        <UButton size="xl" icon="i-heroicons-plus-circle" class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold px-8 rounded-2xl hover:scale-105 transition-transform" :to="localePath('/add-website')">
+        <UButton size="xl" icon="i-heroicons-plus-circle" class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold px-8 rounded-xl hover:scale-105 transition-transform" :to="localePath('/add-website')">
           {{ $t('dashboard.monitor_node') }}
         </UButton>
       </header>
 
       <!-- Stats Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-16">
-        <div v-for="stat in summaryStats" :key="stat.label" class="glass-card p-8 rounded-3xl border-neutral-200/50 dark:border-white/5">
+        <div v-for="stat in summaryStats" :key="stat.label" class="glass-card p-8 rounded-2xl border-neutral-200/50 dark:border-white/5">
           <div class="text-neutral-500 dark:text-neutral-400 text-[10px] font-black uppercase tracking-wider mb-4">{{ stat.label }}</div>
           <div class="text-5xl font-black text-neutral-900 dark:text-white leading-none">{{ stat.value }}</div>
         </div>
@@ -97,7 +97,7 @@
 
       <!-- Websites Cards -->
       <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-        <div v-for="website in filteredWebsites" :key="website.id" class="glass-card rounded-[2.5rem] p-8 hover:translate-y-[-4px] group">
+        <div v-for="website in filteredWebsites" :key="website.id" class="glass-card rounded-2xl p-8 hover:translate-y-[-4px] group">
           <div class="flex justify-between items-start mb-10">
             <div class="flex flex-col gap-1.5 max-w-[70%]">
               <h3 class="text-2xl font-black text-neutral-900 dark:text-white truncate">{{ website.name }}</h3>

@@ -22,7 +22,7 @@ const isDark = computed({
       size="md"
       aria-label="Theme"
       @click="isDark = !isDark"
-      class="rounded-xl hover:bg-neutral-100 dark:hover:bg-white/5 text-neutral-500 hover:text-primary-500 transition-all duration-300 select-none px-3"
+      class="rounded-lg hover:bg-neutral-100 dark:hover:bg-white/5 text-neutral-500 hover:text-primary-500 transition-all duration-300 select-none px-3"
     />
   </ClientOnly>
 </template>

@@ -24,7 +24,7 @@
   }
   
   .premium-input {
-    @apply transition-all duration-500 rounded-[1.5rem] bg-neutral-100/30 dark:bg-neutral-800/20 border border-neutral-200 dark:border-white/10 shadow-sm h-auto w-full backdrop-blur-sm;
+    @apply transition-all duration-500 rounded-xl bg-neutral-100/30 dark:bg-neutral-800/20 border border-neutral-200 dark:border-white/10 shadow-sm h-auto w-full backdrop-blur-sm;
   }
   
   .premium-input:hover {
