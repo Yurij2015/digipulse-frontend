@@ -1,52 +1,56 @@
 <template>
-  <div class="relative min-h-screen bg-neutral-950 flex flex-col items-center justify-center p-4 overflow-hidden">
+  <div class="relative min-h-screen bg-neutral-50 dark:bg-neutral-950 flex flex-col items-center justify-center p-4 overflow-hidden transition-colors duration-500">
     <!-- Background Gradient Pulse -->
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary-500/10 blur-[150px] rounded-full pointer-events-none"></div>
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary-500/10 dark:bg-primary-500/10 blur-[150px] rounded-full pointer-events-none"></div>
 
     <div class="w-full max-w-xl relative z-10">
       <div class="mb-10 text-center">
-        <UButton to="/dashboard" variant="ghost" color="neutral" icon="i-heroicons-arrow-left" label="Назад до дашборду" class="mb-6 hover:bg-white/5" />
-        <h1 class="text-4xl font-black text-white tracking-tight mb-2">Новий моніторинг</h1>
+        <UButton to="/dashboard" variant="ghost" color="neutral" icon="i-heroicons-arrow-left" label="Назад до дашборду" class="mb-6 hover:bg-neutral-200 dark:hover:bg-white/5" />
+        <h1 class="text-4xl font-black text-neutral-900 dark:text-white tracking-tight mb-2">Новий моніторинг</h1>
         <p class="text-neutral-500 font-medium">Додайте ресурс для миттєвого відстеження стану</p>
       </div>
 
-      <UCard class="glass-card rounded-[2.5rem] border-white/5 ring-0 p-4">
-        <UForm :state="state" :schema="schema" @submit="onSubmit" class="space-y-8">
-          <div class="space-y-6">
-            <UFormGroup label="Назва сайту" name="name" help="Наприклад: Мій Блог або API Gateway">
+      <UCard class="glass-card rounded-[2.5rem] border-white/5 ring-0 p-8">
+        <UForm :state="state" :schema="schema" @submit="onSubmit" class="space-y-10">
+          <div class="space-y-8">
+            <UFormGroup label="Назва сайту" name="name" class="premium-label" help="Наприклад: Мій Блог або API Gateway">
               <UInput 
                 v-model="state.name" 
                 placeholder="Введіть зрозумілу назву" 
                 size="xl"
-                class="bg-white/5 border-white/10 rounded-2xl"
+                class="neon-input"
+                :ui="{ base: 'rounded-2xl border-0 ring-0 bg-transparent text-white' }"
               />
             </UFormGroup>
 
-            <UFormGroup label="URL Адреса" name="url" help="Має починатися з http:// або https://">
+            <UFormGroup label="URL Адреса" name="url" class="premium-label" help="Має починатися з http:// або https://">
               <UInput 
                 v-model="state.url" 
                 placeholder="https://example.com" 
                 size="xl"
                 icon="i-heroicons-globe-alt"
-                class="bg-white/5 border-white/10 rounded-2xl"
+                class="neon-input"
+                :ui="{ base: 'rounded-2xl border-x-0 border-y-0 ring-0 bg-transparent text-white pl-12!' }"
               />
             </UFormGroup>
 
-            <div class="grid grid-cols-2 gap-4">
-              <UFormGroup label="Частота перевірки" name="interval">
+            <div class="grid grid-cols-2 gap-6">
+              <UFormGroup label="Частота" name="interval" class="premium-label">
                 <USelect 
                   v-model="state.interval" 
                   :options="intervalOptions" 
                   size="xl"
-                  class="bg-white/5 border-white/10 rounded-2xl"
+                  class="neon-input overflow-hidden"
+                  :ui="{ base: 'rounded-2xl border-0 ring-0 bg-transparent text-white' }"
                 />
               </UFormGroup>
-              <UFormGroup label="Тип запиту" name="method">
+               <UFormGroup label="Метод" name="method" class="premium-label">
                 <USelect 
                   v-model="state.method" 
                   :options="['GET', 'POST', 'HEAD']" 
                   size="xl"
-                  class="bg-white/5 border-white/10 rounded-2xl"
+                  class="neon-input overflow-hidden"
+                  :ui="{ base: 'rounded-2xl border-0 ring-0 bg-transparent text-white' }"
                 />
               </UFormGroup>
             </div>
@@ -57,7 +61,7 @@
             block 
             size="xl" 
             :loading="loading"
-            class="bg-pulse-gradient font-black py-4 rounded-2xl shadow-xl shadow-primary-500/20 hover:scale-[1.02] transition-transform"
+            class="bg-pulse-gradient font-black py-5 rounded-2xl shadow-xl shadow-primary-500/20 hover:scale-[1.02] transition-transform"
           >
             Запустити моніторинг
           </UButton>
@@ -76,6 +80,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { object, string } from 'yup';
+import { navigateTo } from '#imports';
 
 const loading = ref(false);
 

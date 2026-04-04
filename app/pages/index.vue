@@ -2,47 +2,44 @@
   <div class="relative min-h-screen bg-neutral-950 overflow-hidden flex flex-col justify-center items-center px-4">
     <!-- Background Animated Blobs -->
     <div class="absolute inset-0 pointer-events-none">
-      <div class="absolute -top-[20%] -left-[10%] w-[60%] h-[60%] bg-primary-500/20 rounded-full mix-blend-screen filter blur-[120px] animate-pulse-fast opacity-50"></div>
-      <div class="absolute -bottom-[20%] -right-[10%] w-[60%] h-[60%] bg-pink-500/20 rounded-full mix-blend-screen filter blur-[120px] animate-float opacity-30"></div>
+      <div class="absolute top-[10%] -left-[10%] w-[50%] h-[50%] bg-primary-500/10 rounded-full mix-blend-screen filter blur-[120px] animate-pulse-fast opacity-50"></div>
+      <div class="absolute bottom-[10%] -right-[10%] w-[50%] h-[50%] bg-pink-500/10 rounded-full mix-blend-screen filter blur-[120px] animate-float opacity-30"></div>
     </div>
 
     <div class="relative z-10 w-full max-w-5xl text-center flex flex-col items-center">
       <!-- Badge / New feature -->
-      <div class="inline-flex items-center gap-2 px-3 py-1 mb-8 rounded-full bg-white/5 border border-white/10 text-pink-400 text-sm font-medium animate-bounce shadow-lg shadow-pink-500/10">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 mb-10 rounded-full bg-white/5 border border-white/10 text-pink-400 text-sm font-bold animate-bounce shadow-lg shadow-pink-500/10">
         <UIcon name="i-heroicons-bolt" />
         <span>Нове покоління моніторингу</span>
       </div>
 
-      <h1 class="text-6xl md:text-8xl font-black tracking-tight mb-6 leading-[1.1]">
+      <h1 class="text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9] lg:leading-[1.1]">
         <span class="bg-pulse-gradient bg-clip-text text-transparent text-glow">DigiPulse:</span>
         <br />
         Швидкість твого успіху
       </h1>
       
-      <p class="text-xl md:text-2xl text-neutral-400 max-w-2xl mb-12 font-light">
+      <p class="text-xl md:text-2xl text-neutral-400 max-w-2xl mb-14 font-medium px-4">
         Надійний моніторинг сайтів у реальному часі. Отримуй сповіщення швидше, ніж твої користувачі помітять збій.
       </p>
 
-      <div class="flex flex-col sm:flex-row gap-6 w-full sm:w-auto">
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 w-full px-6">
         <UButton
           to="/auth"
           size="xl"
-          class="bg-pulse-gradient hover:scale-105 transition-transform duration-300 shadow-[0_0_30px_rgba(255,0,85,0.4)] px-8 font-bold"
+          class="bg-pulse-gradient hover:scale-105 transition-transform duration-300 shadow-[0_0_40px_rgba(255,0,85,0.3)] px-10 py-4 font-black w-full sm:w-auto"
         >
-          Розпочати безкоштовно
-          <template #trailing>
-            <UIcon name="i-heroicons-arrow-right-20-solid" />
-          </template>
+          Розпочати зараз
         </UButton>
         
         <UButton
           to="/auth"
           size="xl"
-          variant="outline"
+          variant="ghost"
           color="neutral"
-          class="px-8 border-white/20 hover:bg-white/5 backdrop-blur-md transition-all font-semibold"
+          class="px-10 py-4 border border-white/10 hover:bg-white/5 backdrop-blur-md transition-all font-bold w-full sm:w-auto mt-2 sm:mt-0"
         >
-          Увійти в кабінет
+          Вхід до кабінету
         </UButton>
       </div>
 

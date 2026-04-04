@@ -1,17 +1,17 @@
 <template>
-  <div class="flex flex-col lg:flex-row min-h-screen bg-neutral-950 text-white">
+  <div class="flex flex-col lg:flex-row min-h-screen bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-white transition-colors duration-500">
     <!-- Mobile Header -->
-    <header class="lg:hidden flex items-center justify-between p-4 border-b border-white/10 bg-neutral-900/50 backdrop-blur-md sticky top-0 z-50">
+    <header class="lg:hidden flex items-center justify-between p-4 border-b border-neutral-200 dark:border-white/10 bg-white/50 dark:bg-neutral-900/50 backdrop-blur-md sticky top-0 z-50">
       <div class="text-xl font-black bg-pulse-gradient bg-clip-text text-transparent">DigiPulse</div>
       <UButton icon="i-heroicons-bars-3" variant="ghost" color="neutral" @click="isSidebarOpen = !isSidebarOpen" />
     </header>
 
     <!-- Sidebar Overlay for Mobile -->
-    <div v-if="isSidebarOpen" class="fixed inset-0 bg-neutral-950/80 backdrop-blur-sm z-[51] lg:hidden" @click="isSidebarOpen = false"></div>
+    <div v-if="isSidebarOpen" class="fixed inset-0 bg-neutral-950/80 backdrop-blur-sm z-51 lg:hidden" @click="isSidebarOpen = false"></div>
 
     <!-- Sidebar -->
     <aside :class="[
-      'fixed inset-y-0 left-0 z-[52] w-72 bg-neutral-900 border-r border-white/10 p-6 transition-transform lg:relative lg:translate-x-0',
+      'fixed inset-y-0 left-0 z-52 w-72 bg-white dark:bg-neutral-900 border-r border-neutral-200 dark:border-white/10 p-6 transition-transform lg:relative lg:translate-x-0',
       isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
     ]">
       <div class="flex items-center justify-between mb-10">
@@ -33,16 +33,23 @@
         </UButton>
       </nav>
 
-      <div class="mt-auto pt-6 border-t border-white/5">
-        <UButton icon="i-heroicons-arrow-left-on-rectangle" color="neutral" variant="ghost" label="Вийти" block class="text-neutral-500 hover:text-red-500 transition-colors" />
+      <div class="mt-auto pt-6 border-t border-white/5 px-2">
+        <UButton 
+          icon="i-heroicons-arrow-left-on-rectangle" 
+          color="neutral" 
+          variant="ghost" 
+          label="Вийти з системи" 
+          block 
+          class="justify-start gap-4 text-neutral-500 hover:text-red-500 transition-colors font-semibold py-3" 
+        />
       </div>
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 p-4 lg:p-10">
+    <main class="flex-1 p-4 lg:p-10 transition-all duration-500">
       <header class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
         <div>
-          <h1 class="text-4xl font-black text-white mb-2 leading-none">Оперативний стан</h1>
+          <h1 class="text-4xl font-black text-neutral-900 dark:text-white mb-2 leading-none">Оперативний стан</h1>
           <p class="text-neutral-500 font-medium">Контроль ресурсів у реальному часі</p>
         </div>
         <UButton size="xl" icon="i-heroicons-plus-circle" class="bg-pulse-gradient shadow-xl shadow-primary-500/20 font-bold px-8 hover:scale-105 transition-transform" to="/add-website">
@@ -52,17 +59,29 @@
 
       <!-- Stats Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
-        <div v-for="stat in summaryStats" :key="stat.label" class="glass-card p-6 rounded-[2rem] relative overflow-hidden group hover:bg-white/10 transition-colors">
+        <div v-for="stat in summaryStats" :key="stat.label" class="glass-card p-6 rounded-4xl relative overflow-hidden group hover:scale-[1.02] transition-all">
           <div :class="`absolute top-0 right-0 w-32 h-32 blur-[80px] opacity-10 group-hover:opacity-20 transition-opacity bg-primary-500`"></div>
-          <div class="text-neutral-500 text-[10px] font-black uppercase tracking-[0.2em] mb-2">{{ stat.label }}</div>
-          <div class="text-5xl font-black text-white pr-4">{{ stat.value }}</div>
+          <div class="text-neutral-500 dark:text-neutral-500 text-[10px] font-black uppercase tracking-[0.2em] mb-2">{{ stat.label }}</div>
+          <div class="text-5xl font-black text-neutral-900 dark:text-white pr-4">{{ stat.value }}</div>
         </div>
       </div>
 
-      <!-- Filters & Search -->
-      <div class="flex flex-col md:flex-row gap-4 mb-10">
-        <UInput v-model="searchQuery" placeholder="Пошук..." icon="i-heroicons-magnifying-glass" size="xl" class="flex-1 glass-card rounded-2xl border-0 ring-0" />
-        <USelect v-model="filterStatus" :options="statusOptions" size="xl" class="w-full md:w-64 glass-card rounded-2xl border-0 ring-0" />
+      <div class="flex flex-col md:flex-row gap-4 mb-10 items-stretch">
+        <UInput 
+          v-model="searchQuery" 
+          placeholder="Пошук ваших сайтів..." 
+          icon="i-heroicons-magnifying-glass" 
+          size="xl" 
+          class="flex-1 neon-input" 
+          :ui="{ base: 'rounded-2xl border-0 ring-0 bg-transparent' }" 
+        />
+        <USelect 
+          v-model="filterStatus" 
+          :options="statusOptions" 
+          size="xl" 
+          class="w-full md:w-64 neon-input" 
+          :ui="{ base: 'rounded-2xl border-0 ring-0 bg-transparent' }" 
+        />
       </div>
 
       <!-- Websites Cards -->
@@ -70,7 +89,7 @@
         <div v-for="website in filteredWebsites" :key="website.id" class="glass-card rounded-[2.5rem] p-8 hover:translate-y-[-8px] transition-all duration-500 group border-white/5">
           <div class="flex justify-between items-start mb-8">
             <div class="flex flex-col gap-1 max-w-[70%]">
-              <h3 class="text-2xl font-black text-white group-hover:text-pink-500 transition-colors truncate">{{ website.name }}</h3>
+              <h3 class="text-2xl font-black text-neutral-900 dark:text-white group-hover:text-pink-500 transition-colors truncate">{{ website.name }}</h3>
               <a :href="website.url" target="_blank" class="text-neutral-500 text-xs hover:text-white transition-colors flex items-center gap-1">
                 {{ website.url }} <UIcon name="i-heroicons-arrow-top-right-on-square" size="xs" />
               </a>
@@ -103,7 +122,7 @@
             <div class="flex gap-2">
               <UButton icon="i-heroicons-chart-bar" variant="ghost" color="neutral" class="hover:bg-white/10" square />
               <UButton icon="i-heroicons-pencil" variant="ghost" color="neutral" class="hover:bg-white/10" square />
-              <UButton icon="i-heroicons-trash" variant="ghost" color="red" class="hover:bg-red-500/10" square />
+              <UButton icon="i-heroicons-trash" variant="ghost" color="error" class="hover:bg-red-500/10" square />
             </div>
           </div>
         </div>
@@ -114,6 +133,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useRoute, navigateTo } from '#imports';
 const route = useRoute();
 const isSidebarOpen = ref(false);
 
