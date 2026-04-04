@@ -1,16 +1,22 @@
 <template>
   <div class="relative min-h-screen bg-white dark:bg-neutral-950 mesh-bg flex flex-col justify-center items-center px-4 overflow-hidden">
+    <!-- Sophisticated Mesh Background Layer -->
+    <div class="absolute inset-0 z-0 pointer-events-none opacity-40 dark:opacity-60">
+      <div class="absolute top-[10%] left-[10%] w-[40%] h-[40%] bg-primary-500 animate-pulse-slow blur-[120px] rounded-full"></div>
+      <div class="absolute bottom-[10%] right-[10%] w-[40%] h-[40%] bg-accent-500 animate-pulse-slow blur-[120px] rounded-full delay-1000"></div>
+    </div>
+
     <div class="relative z-10 w-full max-w-5xl text-center flex flex-col items-center">
       <!-- Sophisticated Badge -->
-      <div class="inline-flex items-center gap-2 px-3 py-1 mb-12 rounded-full bg-primary-500/5 border border-primary-500/10 text-primary-500 dark:text-primary-400 text-xs font-bold tracking-wide transition-all hover:bg-primary-500/10">
+      <div class="inline-flex items-center gap-2 px-3 py-1 mb-12 rounded-full bg-primary-500/10 border border-primary-500/20 text-primary-500 dark:text-primary-400 text-[10px] font-black tracking-[0.2em] transition-all hover:bg-primary-500/20">
         <div class="w-1.5 h-1.5 rounded-full bg-primary-500 animate-pulse"></div>
         <span>PREMIUM MONITORING SYSTEM</span>
       </div>
 
-      <h1 class="text-6xl md:text-8xl font-black tracking-tight mb-8 leading-[0.9] text-neutral-900 dark:text-white">
-        <span class="bg-pulse-gradient bg-clip-text text-transparent">DigiPulse.</span>
+      <h1 class="text-6xl md:text-9xl font-black tracking-tight mb-8 leading-[1.1] text-neutral-900 dark:text-white">
+        <span class="bg-linear-to-br from-primary-500 to-indigo-500 bg-clip-text text-transparent inline-block py-2">DigiPulse</span>
         <br />
-        <span class="opacity-90">Precision in Status.</span>
+        <span class="opacity-90">Precision in Status</span>
       </h1>
       
       <p class="text-xl text-neutral-500 dark:text-neutral-400 max-w-2xl mb-16 font-medium leading-relaxed">

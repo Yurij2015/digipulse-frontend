@@ -7,7 +7,7 @@
           SECURE ACCESS
         </div>
         <h2 class="text-5xl font-black text-neutral-900 dark:text-white tracking-tighter mb-4">
-          {{ isLogin ? 'Welcome Back.' : 'Join Pulse.' }}
+          {{ isLogin ? 'Welcome Back' : 'Join Pulse' }}
         </h2>
         <p class="text-neutral-500 font-medium">Control your digital infrastructure in real-time.</p>
       </div>

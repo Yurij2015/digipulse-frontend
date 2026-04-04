@@ -2,7 +2,7 @@
   <div class="flex flex-col lg:flex-row min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white transition-colors duration-500 mesh-bg">
     <!-- Mobile Header -->
     <header class="lg:hidden flex items-center justify-between p-5 border-b border-neutral-200 dark:border-white/5 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md sticky top-0 z-50">
-      <div class="text-xl font-black tracking-tight">DigiPulse.</div>
+      <div class="text-xl font-black tracking-tight">DigiPulse</div>
       <div class="flex items-center gap-2">
         <ThemeSwitcher />
         <UButton icon="i-heroicons-bars-3" variant="ghost" color="neutral" @click="isSidebarOpen = !isSidebarOpen" />
@@ -18,7 +18,7 @@
       isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
     ]">
       <div class="flex items-center justify-between mb-12">
-        <div class="text-2xl font-black tracking-tight">DigiPulse.</div>
+        <div class="text-2xl font-black tracking-tight">DigiPulse</div>
         <UButton class="lg:hidden" icon="i-heroicons-x-mark" variant="ghost" color="neutral" @click="isSidebarOpen = false" />
       </div>
 
@@ -35,7 +35,11 @@
         </UButton>
       </nav>
 
-      <div class="mt-auto pt-8 border-t border-neutral-100 dark:border-white/5">
+      <div class="mt-auto pt-8 border-t border-neutral-100 dark:border-white/5 space-y-4">
+        <div class="flex items-center justify-between px-4 py-2 rounded-xl bg-neutral-50 dark:bg-white/5 text-xs font-bold text-neutral-500">
+          <span>Appearance</span>
+          <ThemeSwitcher />
+        </div>
         <UButton 
           icon="i-heroicons-arrow-left-on-rectangle" 
           color="neutral" 
@@ -99,7 +103,7 @@
               'px-4 py-1.5 rounded-full text-[10px] font-black uppercase flex items-center gap-2 border transition-colors',
               getStatusClasses(website.status)
             ]">
-              <div v-if="website.status === 'Онлайн'" class="w-1.5 h-1.5 rounded-full bg-current"></div>
+              <div v-if="website.status === 'Online'" class="w-1.5 h-1.5 rounded-full bg-current"></div>
               {{ website.status }}
             </div>
           </div>
@@ -144,11 +148,11 @@ const links = [
 ];
 
 const websites = ref([
-  { id: 1, name: 'Google Cloud', url: 'https://google.com', status: 'Онлайн', lastCheck: '2m ago', responseTime: 82, uptime: 99.99 },
-  { id: 2, name: 'Facebook App', url: 'https://facebook.com', status: 'Онлайн', lastCheck: '5m ago', responseTime: 145, uptime: 99.95 },
-  { id: 3, name: 'Main API', url: 'https://api.example.com', status: 'Офлайн', lastCheck: '1m ago', responseTime: 0, uptime: 98.50 },
-  { id: 4, name: 'Slow DB Store', url: 'https://db.example.com', status: 'Попередження', lastCheck: '10m ago', responseTime: 820, uptime: 99.10 },
-  { id: 5, name: 'Corporate Blog', url: 'https://blog.com', status: 'Онлайн', lastCheck: '3m ago', responseTime: 112, uptime: 99.98 },
+  { id: 1, name: 'Google Cloud', url: 'https://google.com', status: 'Online', lastCheck: '2m ago', responseTime: 82, uptime: 99.99 },
+  { id: 2, name: 'Facebook App', url: 'https://facebook.com', status: 'Online', lastCheck: '5m ago', responseTime: 145, uptime: 99.95 },
+  { id: 3, name: 'Main API', url: 'https://api.example.com', status: 'Offline', lastCheck: '1m ago', responseTime: 0, uptime: 98.50 },
+  { id: 4, name: 'Slow DB Store', url: 'https://db.example.com', status: 'Warning', lastCheck: '10m ago', responseTime: 820, uptime: 99.10 },
+  { id: 5, name: 'Corporate Blog', url: 'https://blog.com', status: 'Online', lastCheck: '3m ago', responseTime: 112, uptime: 99.98 },
 ]);
 
 const searchQuery = ref('');
@@ -156,15 +160,15 @@ const filterStatus = ref('');
 
 const statusOptions = [
   { label: 'All Statuses', value: '' },
-  { label: 'Online Only', value: 'Онлайн' },
-  { label: 'Offline Only', value: 'Офлайн' },
-  { label: 'Warning Only', value: 'Попередження' },
+  { label: 'Online Only', value: 'Online' },
+  { label: 'Offline Only', value: 'Offline' },
+  { label: 'Warning Only', value: 'Warning' },
 ];
 
 const summaryStats = computed(() => [
   { label: 'Total Nodes', value: websites.value.length },
-  { label: 'Active Nodes', value: websites.value.filter(s => s.status === 'Онлайн').length },
-  { label: 'Issues Detected', value: websites.value.filter(s => s.status !== 'Онлайн').length },
+  { label: 'Active Nodes', value: websites.value.filter(s => s.status === 'Online').length },
+  { label: 'Issues Detected', value: websites.value.filter(s => s.status !== 'Online').length },
 ]);
 
 const filteredWebsites = computed(() => {
@@ -177,9 +181,9 @@ const filteredWebsites = computed(() => {
 
 function getStatusClasses(status: string) {
   switch (status) {
-    case 'Онлайн': return 'bg-green-500/5 text-green-600 dark:text-green-400 border-green-500/10';
-    case 'Офлайн': return 'bg-red-500/5 text-red-600 dark:text-red-500 border-red-500/10';
-    case 'Попередження': return 'bg-yellow-500/5 text-yellow-600 dark:text-yellow-500 border-yellow-500/10';
+    case 'Online': return 'bg-green-500/5 text-green-600 dark:text-green-400 border-green-500/10';
+    case 'Offline': return 'bg-red-500/5 text-red-600 dark:text-red-500 border-red-500/10';
+    case 'Warning': return 'bg-yellow-500/5 text-yellow-600 dark:text-yellow-500 border-yellow-500/10';
     default: return 'bg-neutral-500/5 text-neutral-500 border-neutral-500/10';
   }
 }
