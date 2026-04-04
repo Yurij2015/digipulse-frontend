@@ -24,15 +24,15 @@
   }
   
   .premium-input {
-    @apply transition-all duration-300 rounded-2xl bg-neutral-100/50 dark:bg-neutral-800/10 border border-neutral-200 dark:border-white/10 ring-0 h-auto w-full;
+    @apply transition-all duration-500 rounded-[1.5rem] bg-neutral-100/30 dark:bg-neutral-800/20 border border-neutral-200 dark:border-white/10 shadow-sm h-auto w-full backdrop-blur-sm;
   }
   
   .premium-input:hover {
-    @apply border-neutral-300 dark:border-white/20 bg-white/80 dark:bg-neutral-800/20;
+    @apply border-neutral-300 dark:border-white/20 bg-white/60 dark:bg-neutral-800/30 shadow-md;
   }
 
   .premium-input:focus-within {
-    @apply border-primary-500/50 dark:border-primary-500/50 bg-white dark:bg-neutral-800/30 ring-4 ring-primary-500/10;
+    @apply border-primary-500/50 dark:border-primary-500/50 bg-white dark:bg-neutral-900/40 ring-8 ring-primary-500/5 shadow-xl;
   }
 
   .premium-input input, 

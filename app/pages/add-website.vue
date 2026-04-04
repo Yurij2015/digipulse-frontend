@@ -8,8 +8,8 @@
       </div>
 
       <UCard class="glass-card rounded-[3rem] border-neutral-200/50 dark:border-white/5 ring-0 p-8 shadow-2xl">
-        <UForm :state="state" :schema="schema" @submit="onSubmit" class="space-y-12">
-          <div class="space-y-10">
+        <UForm :state="state" :schema="schema" @submit="onSubmit" class="space-y-16">
+          <div class="space-y-12">
             <UFormGroup label="Node Name" name="name" class="premium-label" help="e.g.: Google Cloud or API Gateway">
               <UInput 
                 v-model="state.name" 
@@ -18,7 +18,7 @@
                 class="w-full"
                 :ui="{ 
                   root: 'premium-input w-full',
-                  base: 'py-5 px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
+                  base: 'py-6 px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
                 }"
               />
             </UFormGroup>
@@ -32,7 +32,7 @@
                 class="w-full"
                 :ui="{ 
                   root: 'premium-input w-full',
-                  base: 'py-5 ps-12! px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
+                  base: 'py-6 ps-12! px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
                 }"
               />
             </UFormGroup>
@@ -46,7 +46,7 @@
                   class="w-full"
                   :ui="{ 
                     root: 'premium-input w-full',
-                    base: 'py-5 px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 appearance-none'
+                    base: 'py-6 px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 appearance-none'
                   }"
                 />
               </UFormGroup>
@@ -58,7 +58,7 @@
                   class="w-full"
                   :ui="{ 
                     root: 'premium-input w-full',
-                    base: 'py-5 px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 appearance-none'
+                    base: 'py-6 px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 appearance-none'
                   }"
                 />
               </UFormGroup>

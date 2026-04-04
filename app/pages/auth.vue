@@ -13,7 +13,7 @@
       </div>
 
       <UCard class="glass-card border-neutral-200/50 dark:border-white/5 ring-0 overflow-visible rounded-[2.5rem] shadow-2xl">
-        <UForm :state="state" :schema="schema" @submit="onSubmit" class="space-y-12">
+        <UForm :state="state" :schema="schema" @submit="onSubmit" class="space-y-16">
           <UFormGroup label="Email" name="email" class="premium-label">
             <UInput 
               v-model="state.email" 
@@ -24,7 +24,7 @@
               class="w-full"
               :ui="{ 
                 root: 'premium-input w-full',
-                base: 'py-5 ps-12! px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
+                base: 'py-6 ps-12! px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
               }"
             />
           </UFormGroup>
@@ -39,7 +39,7 @@
               class="w-full"
               :ui="{ 
                 root: 'premium-input w-full relative',
-                base: 'py-5 ps-12! pe-14! px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
+                base: 'py-6 ps-12! pe-14! px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
               }"
             >
               <template #trailing>
@@ -67,7 +67,7 @@
               class="w-full"
               :ui="{ 
                 root: 'premium-input w-full',
-                base: 'py-5 ps-12! px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
+                base: 'py-6 ps-12! px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
               }"
             />
           </UFormGroup>
