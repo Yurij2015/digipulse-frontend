@@ -1,21 +1,20 @@
 <template>
   <div class="flex flex-col lg:flex-row min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white transition-colors duration-500 mesh-bg">
     <!-- Mobile Header -->
-    <header class="lg:hidden flex items-center justify-between p-5 border-b border-neutral-200 dark:border-white/5 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md sticky top-0 z-50">
-      <div class="text-xl font-black tracking-tight">DigiPulse</div>
-      <div class="flex items-center gap-2">
-        <LanguageSwitcher />
-        <ThemeSwitcher />
-        <UButton icon="i-heroicons-bars-3" variant="ghost" color="neutral" @click="isSidebarOpen = !isSidebarOpen" />
-      </div>
-    </header>
+      <header class="lg:hidden flex items-center justify-between p-5 border-b border-neutral-200 dark:border-white/5 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="text-xl font-black tracking-tight">DigiPulse</div>
+        <div class="flex items-center gap-2">
+          <ThemeSwitcher />
+          <UButton icon="i-heroicons-bars-3" variant="ghost" color="neutral" @click="isSidebarOpen = !isSidebarOpen" />
+        </div>
+      </header>
 
     <!-- Sidebar Overlay for Mobile -->
     <div v-if="isSidebarOpen" class="fixed inset-0 bg-neutral-950/40 backdrop-blur-sm z-51 lg:hidden" @click="isSidebarOpen = false"></div>
 
     <!-- Sidebar -->
     <aside :class="[
-      'fixed inset-y-0 left-0 z-52 w-72 bg-white dark:bg-neutral-900 border-r border-neutral-200 dark:border-white/5 p-8 transition-transform lg:relative lg:translate-x-0',
+      'fixed inset-y-0 left-0 z-52 w-72 h-screen bg-white dark:bg-neutral-900 border-r border-neutral-200 dark:border-white/5 p-8 transition-transform lg:fixed lg:translate-x-0 flex flex-col',
       isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
     ]">
       <div class="flex items-center justify-between mb-12">
@@ -36,7 +35,7 @@
         </UButton>
       </nav>
 
-      <div class="mt-auto pt-8 border-t border-neutral-100 dark:border-white/5 space-y-4">
+      <div class="mt-auto pt-8 border-t border-neutral-100 dark:border-white/5">
         <div class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-neutral-50 dark:bg-white/5">
           <LanguageSwitcher />
           <ThemeSwitcher />
@@ -53,7 +52,7 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 p-6 lg:p-12 overflow-y-auto">
+    <main class="flex-1 p-6 lg:p-12 overflow-y-auto lg:ml-72 h-screen">
       <header class="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-16">
         <div>
           <h1 class="text-4xl font-black text-neutral-900 dark:text-white mb-3">{{ $t('dashboard.title') }}</h1>
