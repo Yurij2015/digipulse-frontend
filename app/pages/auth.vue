@@ -1,70 +1,67 @@
 <template>
-  <div class="relative min-h-screen bg-neutral-50 dark:bg-neutral-950 flex flex-col items-center justify-center p-6 overflow-hidden transition-colors duration-500">
-    <!-- Top-right Theme Switcher -->
-    <div class="fixed top-6 right-6 z-1001">
-      <ThemeSwitcher />
-    </div>
-    <!-- Background Accents -->
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[600px] aspect-square bg-primary-500/10 dark:bg-primary-500/5 blur-[120px] rounded-full pointer-events-none"></div>
-
-    <div class="w-full max-w-md relative z-10">
-      <div class="text-center mb-10">
-        <div class="inline-flex p-4 rounded-3xl bg-pulse-gradient mb-6 shadow-2xl shadow-primary-500/20">
-          <UIcon name="i-heroicons-shield-check" class="text-4xl text-white" />
+  <div class="relative min-h-screen bg-white dark:bg-neutral-950 mesh-bg flex flex-col items-center justify-center p-6 overflow-hidden transition-colors duration-500">
+    <div class="w-full max-w-md relative z-10 transition-all duration-700 delay-100">
+      <div class="text-center mb-12">
+        <div class="inline-flex items-center gap-2 px-3 py-1 mb-8 rounded-full bg-primary-500/5 border border-primary-500/10 text-primary-500 dark:text-primary-400 text-xs font-bold tracking-tight">
+          <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+          SECURE ACCESS
         </div>
-        <h2 class="text-4xl font-black text-neutral-900 dark:text-white tracking-tighter mb-2">
-          {{ isLogin ? 'Вітаємо знову' : 'Створити акаунт' }}
+        <h2 class="text-5xl font-black text-neutral-900 dark:text-white tracking-tighter mb-4">
+          {{ isLogin ? 'Welcome Back.' : 'Join Pulse.' }}
         </h2>
-        <p class="text-neutral-500 font-medium">Керуйте вашою цифровою швидкістю</p>
+        <p class="text-neutral-500 font-medium">Control your digital infrastructure in real-time.</p>
       </div>
 
-      <UCard class="glass-card border-white/5 ring-0 overflow-visible rounded-[2.5rem]">
+      <UCard class="glass-card border-neutral-200/50 dark:border-white/5 ring-0 overflow-visible rounded-[2.5rem] shadow-2xl">
         <UForm :state="state" :schema="schema" @submit="onSubmit" class="space-y-6">
-          <UFormGroup label="Ваш Email" name="email" class="premium-label">
-            <UInput 
-              v-model="state.email" 
-              type="email" 
-              icon="i-heroicons-envelope" 
-              placeholder="name@company.com"
-              size="xl"
-              class="neon-input"
-              :ui="{ base: 'rounded-2xl border-x-0 border-y-0 ring-0 bg-transparent text-white pl-12!' }"
-            />
+          <UFormGroup label="Email" name="email" class="premium-label">
+            <div class="neon-input">
+              <UInput 
+                v-model="state.email" 
+                type="email" 
+                icon="i-heroicons-envelope" 
+                placeholder="name@company.com"
+                size="xl"
+                :ui="{ base: 'rounded-2xl border-0 ring-0 bg-transparent' }"
+              />
+            </div>
           </UFormGroup>
 
-          <UFormGroup label="Пароль" name="password" class="premium-label">
-            <UInput 
-              v-model="state.password" 
-              :type="showPassword ? 'text' : 'password'" 
-              icon="i-heroicons-lock-closed" 
-              placeholder="••••••••"
-              size="xl"
-              class="neon-input"
-              :ui="{ base: 'rounded-2xl border-x-0 border-y-0 ring-0 bg-transparent text-white pl-12!' }"
-            >
-              <template #trailing>
-                <UButton
-                  variant="ghost"
-                  color="neutral"
-                  :icon="showPassword ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
-                  @click="showPassword = !showPassword"
-                  square
-                  class="mr-2"
-                />
-              </template>
-            </UInput>
+          <UFormGroup label="Password" name="password" class="premium-label">
+            <div class="neon-input">
+              <UInput 
+                v-model="state.password" 
+                :type="showPassword ? 'text' : 'password'" 
+                icon="i-heroicons-lock-closed" 
+                placeholder="••••••••"
+                size="xl"
+                :ui="{ base: 'rounded-2xl border-0 ring-0 bg-transparent' }"
+              >
+                <template #trailing>
+                  <UButton
+                    variant="ghost"
+                    color="neutral"
+                    :icon="showPassword ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
+                    @click="showPassword = !showPassword"
+                    square
+                    class="mr-2"
+                  />
+                </template>
+              </UInput>
+            </div>
           </UFormGroup>
 
-          <UFormGroup v-if="!isLogin" label="Підтвердження" name="confirmPassword" class="premium-label">
-            <UInput 
-              v-model="state.confirmPassword" 
-              :type="showPassword ? 'text' : 'password'" 
-              icon="i-heroicons-lock-closed-solid" 
-              placeholder="••••••••"
-              size="xl"
-              class="neon-input"
-              :ui="{ base: 'rounded-2xl border-x-0 border-y-0 ring-0 bg-transparent text-white pl-12!' }"
-            />
+          <UFormGroup v-if="!isLogin" label="Confirm Password" name="confirmPassword" class="premium-label">
+            <div class="neon-input">
+              <UInput 
+                v-model="state.confirmPassword" 
+                :type="showPassword ? 'text' : 'password'" 
+                icon="i-heroicons-lock-closed-solid" 
+                placeholder="••••••••"
+                size="xl"
+                :ui="{ base: 'rounded-2xl border-0 ring-0 bg-transparent' }"
+              />
+            </div>
           </UFormGroup>
 
           <UButton 
@@ -72,23 +69,23 @@
             block 
             size="xl" 
             :loading="loading"
-            class="bg-pulse-gradient font-black py-5 rounded-2xl shadow-xl shadow-primary-500/20 hover:scale-[1.02] transition-transform mt-10"
+            class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-black py-5 rounded-2xl shadow-xl hover:scale-[1.02] transition-transform mt-10 border-0"
           >
-            {{ isLogin ? 'Увійти в систему' : 'Зареєструватися' }}
+            {{ isLogin ? 'Sign In' : 'Create Account' }}
           </UButton>
         </UForm>
 
         <template #footer>
-          <div class="text-center pt-2">
+          <div class="text-center">
             <p class="text-neutral-500 font-medium">
-              {{ isLogin ? 'Немає облікового запису?' : 'Вже маєте акаунт?' }}
+              {{ isLogin ? "Don't have an account?" : "Already have an account?" }}
               <UButton 
                 variant="link" 
                 color="primary" 
-                class="font-black p-0 ml-1 text-pink-500 hover:text-pink-400 decoration-2 underline-offset-4"
+                class="font-black p-0 ml-1 text-primary-500 hover:text-primary-400 decoration-2 underline-offset-4"
                 @click="isLogin = !isLogin"
               >
-                {{ isLogin ? 'Зареєструватися' : 'Увійти' }}
+                {{ isLogin ? 'Sign Up' : 'Log In' }}
               </UButton>
             </p>
           </div>
