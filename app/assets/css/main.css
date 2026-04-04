@@ -19,21 +19,21 @@
 
 @layer utilities {
   .glass-card {
-    @apply bg-white/60 dark:bg-neutral-950/40 backdrop-blur-3xl border border-neutral-200/50 dark:border-white/10 shadow-2xl dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)];
+    @apply bg-white/60 dark:bg-neutral-900/30 backdrop-blur-3xl border border-neutral-200/50 dark:border-white/10 shadow-2xl dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)];
   }
   
   /* Premium Neon Input */
   .neon-input {
-    @apply relative transition-all duration-500 rounded-2xl overflow-hidden bg-neutral-100/80 dark:bg-neutral-900/40 border border-neutral-200 dark:border-white/5 w-full block;
+    @apply relative transition-all duration-500 rounded-2xl overflow-hidden bg-neutral-100/80 dark:bg-neutral-800/50 border border-neutral-200 dark:border-white/10 w-full block;
     box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.05);
   }
 
   .neon-input:hover {
-    @apply border-neutral-300 dark:border-white/10 bg-white dark:bg-neutral-900/60;
+    @apply border-neutral-300 dark:border-white/20 bg-white dark:bg-neutral-800/80;
   }
 
   .neon-input:focus-within {
-    @apply border-primary-500/50 dark:border-primary-500/50 bg-white dark:bg-neutral-900/80 ring-4 ring-primary-500/10;
+    @apply border-primary-500/50 dark:border-primary-500/60 bg-white dark:bg-neutral-800/90 ring-4 ring-primary-500/10;
     box-shadow: 0 0 20px rgba(255, 0, 85, 0.15), inset 0 1px 1px 0 rgba(255, 255, 255, 0.05);
   }
 
