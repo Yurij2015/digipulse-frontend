@@ -4,6 +4,7 @@
     <header class="lg:hidden flex items-center justify-between p-5 border-b border-neutral-200 dark:border-white/5 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md sticky top-0 z-50">
       <div class="text-xl font-black tracking-tight">DigiPulse</div>
       <div class="flex items-center gap-2">
+        <LanguageSwitcher />
         <ThemeSwitcher />
         <UButton icon="i-heroicons-bars-3" variant="ghost" color="neutral" @click="isSidebarOpen = !isSidebarOpen" />
       </div>
@@ -36,15 +37,15 @@
       </nav>
 
       <div class="mt-auto pt-8 border-t border-neutral-100 dark:border-white/5 space-y-4">
-        <div class="flex items-center justify-between px-4 py-2 rounded-xl bg-neutral-50 dark:bg-white/5 text-xs font-bold text-neutral-500">
-          <span>Appearance</span>
+        <div class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-neutral-50 dark:bg-white/5">
+          <LanguageSwitcher />
           <ThemeSwitcher />
         </div>
         <UButton 
           icon="i-heroicons-arrow-left-on-rectangle" 
           color="neutral" 
           variant="ghost" 
-          label="Sign Out" 
+          :label="$t('dashboard.sign_out')" 
           block 
           class="justify-start gap-3 text-neutral-500 font-bold py-3 hover:text-red-500" 
         />
@@ -55,11 +56,11 @@
     <main class="flex-1 p-6 lg:p-12 overflow-y-auto">
       <header class="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-16">
         <div>
-          <h1 class="text-4xl font-black text-neutral-900 dark:text-white mb-3">Dashboard</h1>
-          <p class="text-neutral-500 font-medium">Real-time status of your infrastructure nodes.</p>
+          <h1 class="text-4xl font-black text-neutral-900 dark:text-white mb-3">{{ $t('dashboard.title') }}</h1>
+          <p class="text-neutral-500 font-medium">{{ $t('dashboard.subtitle') }}</p>
         </div>
-        <UButton size="xl" icon="i-heroicons-plus-circle" class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold px-8 rounded-2xl hover:scale-105 transition-transform" to="/add-website">
-          Monitor Node
+        <UButton size="xl" icon="i-heroicons-plus-circle" class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold px-8 rounded-2xl hover:scale-105 transition-transform" :to="localePath('/add-website')">
+          {{ $t('dashboard.monitor_node') }}
         </UButton>
       </header>
 
@@ -74,7 +75,7 @@
       <div class="flex flex-col md:flex-row gap-6 mb-12 items-stretch">
         <UInput 
           v-model="searchQuery" 
-          placeholder="Filter nodes..." 
+          :placeholder="$t('dashboard.filter_placeholder')" 
           icon="i-heroicons-magnifying-glass" 
           size="xl" 
           class="flex-1" 
@@ -116,19 +117,19 @@
 
           <div class="grid grid-cols-2 gap-8 mb-10 py-8 border-y border-neutral-100 dark:border-white/5">
             <div>
-              <div class="text-[9px] uppercase text-neutral-500 font-black tracking-widest mb-3">Response Time</div>
+              <div class="text-[9px] uppercase text-neutral-500 font-black tracking-widest mb-3">{{ $t('dashboard.response_time') }}</div>
               <div class="text-2xl font-black flex items-center gap-1.5" :class="getResponseTimeColor(website.responseTime)">
                 {{ website.responseTime }}<span class="text-xs font-medium opacity-50">ms</span>
               </div>
             </div>
             <div>
-              <div class="text-[9px] uppercase text-neutral-500 font-black tracking-widest mb-3">Uptime 30d</div>
+              <div class="text-[9px] uppercase text-neutral-500 font-black tracking-widest mb-3">{{ $t('dashboard.uptime_30d') }}</div>
               <div class="text-2xl font-black text-neutral-900 dark:text-white">{{ website.uptime }}<span class="text-xs font-medium opacity-50">%</span></div>
             </div>
           </div>
 
           <div class="flex justify-between items-center sm:opacity-0 group-hover:opacity-100 transition-all duration-300">
-            <div class="text-neutral-400 text-[10px] font-bold">Checked: {{ website.lastCheck }}</div>
+            <div class="text-neutral-400 text-[10px] font-bold">{{ $t('dashboard.checked') }}: {{ website.lastCheck }}</div>
             <div class="flex gap-1">
               <UButton icon="i-heroicons-chart-bar" variant="ghost" color="neutral" class="hover:bg-neutral-100 dark:hover:bg-white/5" square />
               <UButton icon="i-heroicons-pencil" variant="ghost" color="neutral" class="hover:bg-neutral-100 dark:hover:bg-white/5" square />
@@ -143,15 +144,17 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useRoute } from '#imports';
+import { useRoute, useI18n, useLocalePath } from '#imports';
 const route = useRoute();
+const { t } = useI18n();
+const localePath = useLocalePath();
 const isSidebarOpen = ref(false);
 
-const links = [
-  { label: 'Dashboard', icon: 'i-heroicons-home', to: '/dashboard' },
-  { label: 'Add Node', icon: 'i-heroicons-plus-circle', to: '/add-website' },
-  { label: 'Settings', icon: 'i-heroicons-cog-6-tooth', to: '/settings' }
-];
+const links = computed(() => [
+  { label: t('dashboard.title'), icon: 'i-heroicons-home', to: localePath('/dashboard') },
+  { label: t('dashboard.monitor_node'), icon: 'i-heroicons-plus-circle', to: localePath('/add-website') },
+  { label: t('dashboard.settings'), icon: 'i-heroicons-cog-6-tooth', to: localePath('/settings') }
+]);
 
 const websites = ref([
   { id: 1, name: 'Google Cloud', url: 'https://google.com', status: 'Online', lastCheck: '2m ago', responseTime: 82, uptime: 99.99 },
@@ -164,17 +167,17 @@ const websites = ref([
 const searchQuery = ref('');
 const filterStatus = ref('');
 
-const statusOptions = [
-  { label: 'All Statuses', value: '' },
-  { label: 'Online Only', value: 'Online' },
-  { label: 'Offline Only', value: 'Offline' },
-  { label: 'Warning Only', value: 'Warning' },
-];
+const statusOptions = computed(() => [
+  { label: t('dashboard.all_statuses'), value: '' },
+  { label: t('dashboard.online_only'), value: 'Online' },
+  { label: t('dashboard.offline_only'), value: 'Offline' },
+  { label: t('dashboard.warning_only'), value: 'Warning' },
+]);
 
 const summaryStats = computed(() => [
-  { label: 'Total Nodes', value: websites.value.length },
-  { label: 'Active Nodes', value: websites.value.filter(s => s.status === 'Online').length },
-  { label: 'Issues Detected', value: websites.value.filter(s => s.status !== 'Online').length },
+  { label: t('dashboard.total_nodes'), value: websites.value.length },
+  { label: t('dashboard.active_nodes'), value: websites.value.filter(s => s.status === 'Online').length },
+  { label: t('dashboard.issues_detected'), value: websites.value.filter(s => s.status !== 'Online').length },
 ]);
 
 const filteredWebsites = computed(() => {
