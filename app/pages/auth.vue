@@ -1,48 +1,89 @@
 <template>
-  <div class="flex items-center justify-center min-h-screen bg-gray-900 text-white">
-    <UCard class="w-full max-w-md p-8 bg-gray-800 rounded-lg shadow-lg">
+  <div class="relative min-h-screen bg-neutral-950 flex items-center justify-center p-4 overflow-hidden">
+    <!-- Background Accents -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary-500/10 blur-[120px] rounded-full"></div>
+
+    <UCard class="glass-card w-full max-w-md relative z-10 border-white/5 ring-0">
       <template #header>
-        <h2 class="text-3xl font-bold text-center text-primary-400">{{ isLogin ? 'Вхід' : 'Реєстрація' }}</h2>
+        <div class="text-center py-4">
+          <div class="inline-flex p-3 rounded-2xl bg-pulse-gradient mb-4 shadow-lg shadow-primary-500/20">
+            <UIcon name="i-heroicons-shield-check" class="text-3xl text-white" />
+          </div>
+          <h2 class="text-3xl font-black text-white tracking-tight">
+            {{ isLogin ? 'Вітаємо знову' : 'Створити акаунт' }}
+          </h2>
+          <p class="text-neutral-500 mt-2">Введіть свої дані для доступу</p>
+        </div>
       </template>
 
-      <UForm :state="state" :schema="schema" @submit="onSubmit" class="space-y-6">
-        <UFormGroup label="Email" name="email">
-          <UInput v-model="state.email" type="email" icon="i-heroicons-envelope" placeholder="you@example.com" />
+      <UForm :state="state" :schema="schema" @submit="onSubmit" class="space-y-5">
+        <UFormGroup label="Ваш Email" name="email">
+          <UInput 
+            v-model="state.email" 
+            type="email" 
+            icon="i-heroicons-envelope" 
+            placeholder="name@company.com"
+            size="lg"
+            class="bg-white/5 border-white/10 text-white"
+          />
         </UFormGroup>
 
         <UFormGroup label="Пароль" name="password">
-          <UInput v-model="state.password" :type="showPassword ? 'text' : 'password'" icon="i-heroicons-lock-closed" placeholder="********">
+          <UInput 
+            v-model="state.password" 
+            :type="showPassword ? 'text' : 'password'" 
+            icon="i-heroicons-lock-closed" 
+            placeholder="••••••••"
+            size="lg"
+            class="bg-white/5 border-white/10 text-white"
+          >
             <template #append>
               <UButton
-                variant="link"
-                color="gray"
+                variant="ghost"
+                color="neutral"
                 :icon="showPassword ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
                 @click="showPassword = !showPassword"
+                square
               />
             </template>
           </UInput>
         </UFormGroup>
 
-        <UFormGroup v-if="!isLogin" label="Підтвердіть пароль" name="confirmPassword">
-          <UInput v-model="state.confirmPassword" :type="showPassword ? 'text' : 'password'" icon="i-heroicons-lock-closed" placeholder="********" />
+        <UFormGroup v-if="!isLogin" label="Підтвердження" name="confirmPassword">
+          <UInput 
+            v-model="state.confirmPassword" 
+            :type="showPassword ? 'text' : 'password'" 
+            icon="i-heroicons-lock-closed-solid" 
+            placeholder="••••••••"
+            size="lg"
+            class="bg-white/5 border-white/10 text-white"
+          />
         </UFormGroup>
 
-        <UButton type="submit" block size="lg" :loading="loading">
-          {{ isLogin ? 'Увійти' : 'Зареєструватися' }}
+        <UButton 
+          type="submit" 
+          block 
+          size="xl" 
+          :loading="loading"
+          class="bg-pulse-gradient font-bold shadow-lg shadow-primary-500/20 hover:opacity-90 transition-opacity mt-8"
+        >
+          {{ isLogin ? 'Увійти в систему' : 'Зареєструватися' }}
         </UButton>
       </UForm>
 
       <template #footer>
-        <div class="text-center mt-6">
-          <p v-if="isLogin" class="text-gray-400">
-            Немає облікового запису?
-            <UButton variant="link" @click="isLogin = false">Зареєструватися</UButton>
+        <div class="text-center">
+          <p class="text-neutral-400">
+            {{ isLogin ? 'Немає облікового запису?' : 'Вже маєте акаунт?' }}
+            <UButton 
+              variant="link" 
+              color="primary" 
+              class="font-bold p-0 ml-1 text-pink-500 hover:text-pink-400"
+              @click="isLogin = !isLogin"
+            >
+              {{ isLogin ? 'Зареєструватися' : 'Увійти' }}
+            </UButton>
           </p>
-          <p v-else class="text-gray-400">
-            Вже є обліковий запис?
-            <UButton variant="link" @click="isLogin = true">Увійти</UButton>
-          </p>
-          <UButton v-if="isLogin" variant="link" class="mt-2">Забули пароль?</UButton>
         </div>
       </template>
     </UCard>
@@ -75,15 +116,9 @@ const schema = object({
 
 async function onSubmit() {
   loading.value = true;
-  // Тут буде логіка для входу або реєстрації
   console.log('Form submitted:', state.value);
-  await new Promise(resolve => setTimeout(resolve, 1500)); // Імітація затримки
+  await new Promise(resolve => setTimeout(resolve, 1500));
   loading.value = false;
-  // Після успішного входу/реєстрації можна перенаправити користувача
-  // наприклад, navigateTo('/dashboard');
+  navigateTo('/dashboard');
 }
 </script>
-
-<style scoped>
-/* Додаткові стилі, якщо потрібні, але Tailwind CSS та Nuxt UI вже надають багато */
-</style>

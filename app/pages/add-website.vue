@@ -1,37 +1,75 @@
 <template>
-  <div class="flex items-center justify-center min-h-screen bg-gray-900 text-white p-4">
-    <UCard class="w-full max-w-2xl p-8 bg-gray-800 rounded-lg shadow-lg">
-      <template #header>
-        <h2 class="text-3xl font-bold text-center text-primary-400">Додати новий сайт</h2>
-      </template>
+  <div class="relative min-h-screen bg-neutral-950 flex flex-col items-center justify-center p-4 overflow-hidden">
+    <!-- Background Gradient Pulse -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary-500/10 blur-[150px] rounded-full pointer-events-none"></div>
 
-      <UForm :state="state" :schema="schema" @submit="onSubmit" class="space-y-6">
-        <UFormGroup label="URL сайту" name="url" help="Наприклад: https://example.com">
-          <UInput v-model="state.url" type="url" icon="i-heroicons-globe-alt" placeholder="https://example.com" />
-        </UFormGroup>
+    <div class="w-full max-w-xl relative z-10">
+      <div class="mb-10 text-center">
+        <UButton to="/dashboard" variant="ghost" color="neutral" icon="i-heroicons-arrow-left" label="Назад до дашборду" class="mb-6 hover:bg-white/5" />
+        <h1 class="text-4xl font-black text-white tracking-tight mb-2">Новий моніторинг</h1>
+        <p class="text-neutral-500 font-medium">Додайте ресурс для миттєвого відстеження стану</p>
+      </div>
 
-        <UFormGroup label="Назва сайту (опціонально)" name="name">
-          <UInput v-model="state.name" placeholder="Мій чудовий сайт" />
-        </UFormGroup>
+      <UCard class="glass-card rounded-[2.5rem] border-white/5 ring-0 p-4">
+        <UForm :state="state" :schema="schema" @submit="onSubmit" class="space-y-8">
+          <div class="space-y-6">
+            <UFormGroup label="Назва сайту" name="name" help="Наприклад: Мій Блог або API Gateway">
+              <UInput 
+                v-model="state.name" 
+                placeholder="Введіть зрозумілу назву" 
+                size="xl"
+                class="bg-white/5 border-white/10 rounded-2xl"
+              />
+            </UFormGroup>
 
-        <UFormGroup label="Опис (опціонально)" name="description">
-          <UTextarea v-model="state.description" placeholder="Короткий опис сайту" />
-        </UFormGroup>
+            <UFormGroup label="URL Адреса" name="url" help="Має починатися з http:// або https://">
+              <UInput 
+                v-model="state.url" 
+                placeholder="https://example.com" 
+                size="xl"
+                icon="i-heroicons-globe-alt"
+                class="bg-white/5 border-white/10 rounded-2xl"
+              />
+            </UFormGroup>
 
-        <UFormGroup label="Інтервал моніторингу" name="interval">
-          <USelect v-model="state.interval" :options="intervalOptions" placeholder="Оберіть інтервал" />
-        </UFormGroup>
+            <div class="grid grid-cols-2 gap-4">
+              <UFormGroup label="Частота перевірки" name="interval">
+                <USelect 
+                  v-model="state.interval" 
+                  :options="intervalOptions" 
+                  size="xl"
+                  class="bg-white/5 border-white/10 rounded-2xl"
+                />
+              </UFormGroup>
+              <UFormGroup label="Тип запиту" name="method">
+                <USelect 
+                  v-model="state.method" 
+                  :options="['GET', 'POST', 'HEAD']" 
+                  size="xl"
+                  class="bg-white/5 border-white/10 rounded-2xl"
+                />
+              </UFormGroup>
+            </div>
+          </div>
 
-        <UFormGroup label="Тип моніторингу" name="monitorType">
-          <URadioGroup v-model="state.monitorType" :options="monitorTypeOptions" />
-        </UFormGroup>
+          <UButton 
+            type="submit" 
+            block 
+            size="xl" 
+            :loading="loading"
+            class="bg-pulse-gradient font-black py-4 rounded-2xl shadow-xl shadow-primary-500/20 hover:scale-[1.02] transition-transform"
+          >
+            Запустити моніторинг
+          </UButton>
+        </UForm>
+      </UCard>
 
-        <div class="flex justify-end space-x-4 mt-8">
-          <UButton type="button" color="gray" variant="solid" @click="cancel">Скасувати</UButton>
-          <UButton type="submit" :loading="loading">Додати сайт</UButton>
+      <div class="mt-8 grid grid-cols-3 gap-4">
+        <div v-for="i in 3" :key="i" class="h-1 bg-white/5 rounded-full overflow-hidden">
+          <div :class="`h-full bg-pulse-gradient w-[${i * 33}%]`"></div>
         </div>
-      </UForm>
-    </UCard>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -42,52 +80,29 @@ import { object, string } from 'yup';
 const loading = ref(false);
 
 const state = ref({
-  url: '',
   name: '',
-  description: '',
-  interval: '1min',
-  monitorType: 'http',
+  url: '',
+  interval: '60s',
+  method: 'GET'
 });
 
 const intervalOptions = [
-  { label: 'Кожні 1 хвилина', value: '1min' },
-  { label: 'Кожні 5 хвилин', value: '5min' },
-  { label: 'Кожні 15 хвилин', value: '15min' },
-  { label: 'Кожні 30 хвилин', value: '30min' },
-  { label: 'Кожну годину', value: '1hour' },
-];
-
-const monitorTypeOptions = [
-  { label: 'HTTP/HTTPS', value: 'http' },
-  { label: 'Ping', value: 'ping' },
-  { label: 'Port Check', value: 'port' },
+  { label: 'Кожну хвилину (60s)', value: '60s' },
+  { label: 'Кожні 5 хв', value: '5m' },
+  { label: 'Кожні 15 хв', value: '15m' },
+  { label: 'Щогодини', value: '1h' },
 ];
 
 const schema = object({
-  url: string().url('Будь ласка, введіть дійсний URL').required('URL сайту є обов\'язковим'),
-  name: string().max(100, 'Назва сайту занадто довга'),
-  description: string().max(500, 'Опис занадто довгий'),
-  interval: string().required('Інтервал моніторингу є обов\'язковим'),
-  monitorType: string().required('Тип моніторингу є обов\'язковим'),
+  name: string().required('Назва обов\'язкова'),
+  url: string().url('Введіть коректний URL').required('URL обов\'язковий'),
 });
 
 async function onSubmit() {
   loading.value = true;
-  // Тут буде логіка для додавання сайту
-  console.log('Add website form submitted:', state.value);
-  await new Promise(resolve => setTimeout(resolve, 1500)); // Імітація затримки
+  console.log('Adding website:', state.value);
+  await new Promise(resolve => setTimeout(resolve, 2000));
   loading.value = false;
-  // Після успішного додавання можна перенаправити користувача на дашборд
-  // navigateTo('/dashboard');
-}
-
-function cancel() {
-  // Логіка для скасування, наприклад, перехід на попередню сторінку або дашборд
-  console.log('Form cancelled');
-  // navigateTo('/dashboard');
+  navigateTo('/dashboard');
 }
 </script>
-
-<style scoped>
-/* Додаткові стилі, якщо потрібні */
-</style>
