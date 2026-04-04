@@ -3,7 +3,10 @@
     <!-- Mobile Header -->
     <header class="lg:hidden flex items-center justify-between p-4 border-b border-neutral-200 dark:border-white/10 bg-white/50 dark:bg-neutral-900/50 backdrop-blur-md sticky top-0 z-50">
       <div class="text-xl font-black bg-pulse-gradient bg-clip-text text-transparent">DigiPulse</div>
-      <UButton icon="i-heroicons-bars-3" variant="ghost" color="neutral" @click="isSidebarOpen = !isSidebarOpen" />
+      <div class="flex items-center gap-2">
+        <ThemeSwitcher />
+        <UButton icon="i-heroicons-bars-3" variant="ghost" color="neutral" @click="isSidebarOpen = !isSidebarOpen" />
+      </div>
     </header>
 
     <!-- Sidebar Overlay for Mobile -->

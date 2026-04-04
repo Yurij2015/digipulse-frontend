@@ -1,5 +1,9 @@
 <template>
   <div class="relative min-h-screen bg-neutral-50 dark:bg-neutral-950 flex flex-col items-center justify-center p-6 overflow-hidden transition-colors duration-500">
+    <!-- Top-right Theme Switcher -->
+    <div class="fixed top-6 right-6 z-1001">
+      <ThemeSwitcher />
+    </div>
     <!-- Background Accents -->
     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[600px] aspect-square bg-primary-500/10 dark:bg-primary-500/5 blur-[120px] rounded-full pointer-events-none"></div>
 
