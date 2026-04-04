@@ -35,8 +35,10 @@
     @apply border-primary-500/50 dark:border-primary-500/50 bg-white dark:bg-neutral-800/30 ring-4 ring-primary-500/10;
   }
 
-  .neon-input input {
-    @apply bg-transparent! border-0! ring-0! outline-none! text-neutral-900 dark:text-white py-4 px-5 font-medium placeholder:text-neutral-400 dark:placeholder:text-neutral-600 w-full;
+  .neon-input input, 
+  .neon-input select,
+  .neon-input textarea {
+    @apply bg-transparent! border-0! ring-0! outline-none! text-neutral-900 dark:text-white py-5 font-medium placeholder:text-neutral-400 dark:placeholder:text-neutral-600 w-full h-full;
   }
 
   .bg-pulse-gradient {

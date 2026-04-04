@@ -13,7 +13,7 @@
       </div>
 
       <UCard class="glass-card border-neutral-200/50 dark:border-white/5 ring-0 overflow-visible rounded-[2.5rem] shadow-2xl">
-        <UForm :state="state" :schema="schema" @submit="onSubmit" class="space-y-6">
+        <UForm :state="state" :schema="schema" @submit="onSubmit" class="space-y-12">
           <UFormGroup label="Email" name="email" class="premium-label">
             <div class="neon-input">
               <UInput 
@@ -38,14 +38,16 @@
                 :ui="{ base: 'rounded-2xl border-0 ring-0 bg-transparent' }"
               >
                 <template #trailing>
-                  <UButton
-                    variant="ghost"
-                    color="neutral"
-                    :icon="showPassword ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
-                    @click="showPassword = !showPassword"
-                    square
-                    class="mr-2"
-                  />
+                  <div class="absolute inset-y-0 right-0 flex items-center pr-4">
+                    <UButton
+                      variant="ghost"
+                      color="neutral"
+                      :icon="showPassword ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
+                      @click="showPassword = !showPassword"
+                      square
+                      class="hover:bg-neutral-100 dark:hover:bg-white/10 rounded-full transition-colors"
+                    />
+                  </div>
                 </template>
               </UInput>
             </div>
