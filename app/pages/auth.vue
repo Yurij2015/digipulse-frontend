@@ -1,9 +1,7 @@
 <template>
   <div class="relative min-h-screen bg-white dark:bg-neutral-950 mesh-bg flex flex-col items-center justify-center p-6 overflow-hidden transition-colors duration-500">
     <div class="w-full max-w-md relative z-10 transition-all duration-700 delay-100">
-      <div class="absolute top-4 right-4 z-50">
-        <LanguageSwitcher />
-      </div>
+      <!-- Global LanguageSwitcher in app.vue handles this -->
       <div class="text-center mb-12">
         <div class="inline-flex items-center gap-2 px-3 py-1 mb-8 rounded-full bg-primary-500/5 border border-primary-500/10 text-primary-500 dark:text-primary-400 text-xs font-bold tracking-tight">
           <div class="w-1 h-1 rounded-full bg-primary-500"></div>

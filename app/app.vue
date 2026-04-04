@@ -7,11 +7,12 @@ const route = useRoute()
   <UApp>
     <div 
       v-if="!route.path.match(/^\/(?:uk|pl)?\/?dashboard/)"
-      class="fixed z-1001"
+      class="fixed z-1001 flex items-center gap-4"
       :class="[
         (route.path.match(/^\/(?:uk|pl)?\/?$/) || route.path.match(/^\/(?:uk|pl)?\/?auth/) || route.path.match(/^\/(?:uk|pl)?\/?add-website/)) ? 'top-6 right-6' : 'bottom-6 left-6'
       ]"
     >
+      <LanguageSwitcher />
       <ThemeSwitcher />
     </div>
     <NuxtRouteAnnouncer />

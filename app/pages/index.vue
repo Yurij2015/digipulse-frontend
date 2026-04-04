@@ -6,11 +6,7 @@
       <div class="absolute bottom-[10%] right-[10%] w-[40%] h-[40%] bg-accent-500 animate-pulse-slow blur-[120px] rounded-full delay-1000"></div>
     </div>
 
-    <!-- Header Actions -->
-    <div class="absolute top-6 right-6 z-50 flex items-center gap-4">
-      <LanguageSwitcher />
-      <ThemeSwitcher />
-    </div>
+    <!-- Header Actions are now global in app.vue -->
 
     <div class="relative z-10 w-full max-w-5xl text-center flex flex-col items-center">
       <!-- Sophisticated Badge -->
