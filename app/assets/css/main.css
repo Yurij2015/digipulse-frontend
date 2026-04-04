@@ -23,22 +23,22 @@
     @apply bg-white/40 dark:bg-neutral-900/40 backdrop-blur-xl border border-neutral-200/50 dark:border-white/5 shadow-xl transition-all duration-300;
   }
   
-  .neon-input {
-    @apply relative transition-all duration-300 rounded-2xl overflow-hidden bg-neutral-100/50 dark:bg-neutral-800/10 border border-neutral-200 dark:border-white/10 w-full block;
+  .premium-input {
+    @apply transition-all duration-300 rounded-2xl bg-neutral-100/50 dark:bg-neutral-800/10 border border-neutral-200 dark:border-white/10 ring-0 h-auto w-full;
   }
-
-  .neon-input:hover {
+  
+  .premium-input:hover {
     @apply border-neutral-300 dark:border-white/20 bg-white/80 dark:bg-neutral-800/20;
   }
 
-  .neon-input:focus-within {
+  .premium-input:focus-within {
     @apply border-primary-500/50 dark:border-primary-500/50 bg-white dark:bg-neutral-800/30 ring-4 ring-primary-500/10;
   }
 
-  .neon-input input, 
-  .neon-input select,
-  .neon-input textarea {
-    @apply bg-transparent! border-0! ring-0! outline-none! text-neutral-900 dark:text-white py-5 font-medium placeholder:text-neutral-400 dark:placeholder:text-neutral-600 w-full h-full;
+  .premium-input input, 
+  .premium-input select,
+  .premium-input textarea {
+    @apply bg-transparent! border-0! ring-0! outline-none! text-neutral-900 dark:text-white font-medium placeholder:text-neutral-400 dark:placeholder:text-neutral-600;
   }
 
   .bg-pulse-gradient {

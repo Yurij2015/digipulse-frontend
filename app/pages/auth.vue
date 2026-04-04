@@ -15,55 +15,61 @@
       <UCard class="glass-card border-neutral-200/50 dark:border-white/5 ring-0 overflow-visible rounded-[2.5rem] shadow-2xl">
         <UForm :state="state" :schema="schema" @submit="onSubmit" class="space-y-12">
           <UFormGroup label="Email" name="email" class="premium-label">
-            <div class="neon-input">
-              <UInput 
-                v-model="state.email" 
-                type="email" 
-                icon="i-heroicons-envelope" 
-                placeholder="name@company.com"
-                size="xl"
-                :ui="{ base: 'rounded-2xl border-0 ring-0 bg-transparent' }"
-              />
-            </div>
+            <UInput 
+              v-model="state.email" 
+              type="email" 
+              icon="i-heroicons-envelope" 
+              placeholder="name@company.com"
+              size="xl"
+              class="w-full"
+              :ui="{ 
+                root: 'premium-input w-full',
+                base: 'py-5 ps-12! px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
+              }"
+            />
           </UFormGroup>
 
           <UFormGroup label="Password" name="password" class="premium-label">
-            <div class="neon-input">
-              <UInput 
-                v-model="state.password" 
-                :type="showPassword ? 'text' : 'password'" 
-                icon="i-heroicons-lock-closed" 
-                placeholder="••••••••"
-                size="xl"
-                :ui="{ base: 'rounded-2xl border-0 ring-0 bg-transparent' }"
-              >
-                <template #trailing>
-                  <div class="absolute inset-y-0 right-0 flex items-center pr-4">
-                    <UButton
-                      variant="ghost"
-                      color="neutral"
-                      :icon="showPassword ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
-                      @click="showPassword = !showPassword"
-                      square
-                      class="hover:bg-neutral-100 dark:hover:bg-white/10 rounded-full transition-colors"
-                    />
-                  </div>
-                </template>
-              </UInput>
-            </div>
+            <UInput 
+              v-model="state.password" 
+              :type="showPassword ? 'text' : 'password'" 
+              icon="i-heroicons-lock-closed" 
+              placeholder="••••••••"
+              size="xl"
+              class="w-full"
+              :ui="{ 
+                root: 'premium-input w-full relative',
+                base: 'py-5 ps-12! pe-14! px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
+              }"
+            >
+              <template #trailing>
+                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-auto">
+                  <UButton
+                    variant="ghost"
+                    color="neutral"
+                    :icon="showPassword ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
+                    @click="showPassword = !showPassword"
+                    square
+                    class="hover:bg-neutral-100 dark:hover:bg-white/10 rounded-full transition-colors flex items-center justify-center p-2.5"
+                  />
+                </div>
+              </template>
+            </UInput>
           </UFormGroup>
 
           <UFormGroup v-if="!isLogin" label="Confirm Password" name="confirmPassword" class="premium-label">
-            <div class="neon-input">
-              <UInput 
-                v-model="state.confirmPassword" 
-                :type="showPassword ? 'text' : 'password'" 
-                icon="i-heroicons-lock-closed-solid" 
-                placeholder="••••••••"
-                size="xl"
-                :ui="{ base: 'rounded-2xl border-0 ring-0 bg-transparent' }"
-              />
-            </div>
+            <UInput 
+              v-model="state.confirmPassword" 
+              :type="showPassword ? 'text' : 'password'" 
+              icon="i-heroicons-lock-closed-solid" 
+              placeholder="••••••••"
+              size="xl"
+              class="w-full"
+              :ui="{ 
+                root: 'premium-input w-full',
+                base: 'py-5 ps-12! px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
+              }"
+            />
           </UFormGroup>
 
           <UButton 

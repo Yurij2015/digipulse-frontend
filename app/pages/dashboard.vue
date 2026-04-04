@@ -71,21 +71,27 @@
         </div>
       </div>
 
-      <div class="flex flex-col md:flex-row gap-4 mb-12 items-stretch">
+      <div class="flex flex-col md:flex-row gap-6 mb-12 items-stretch">
         <UInput 
           v-model="searchQuery" 
           placeholder="Filter nodes..." 
           icon="i-heroicons-magnifying-glass" 
           size="xl" 
-          class="flex-1 neon-input" 
-          :ui="{ base: 'rounded-2xl border-0 ring-0 bg-transparent' }" 
+          class="flex-1" 
+          :ui="{ 
+            root: 'premium-input flex-1',
+            base: 'py-5 ps-12! px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0'
+          }" 
         />
         <USelect 
           v-model="filterStatus" 
           :options="statusOptions" 
           size="xl" 
-          class="w-full md:w-64 neon-input" 
-          :ui="{ base: 'rounded-2xl border-0 ring-0 bg-transparent' }" 
+          class="w-full md:w-64" 
+          :ui="{ 
+            root: 'premium-input w-full md:w-64',
+            base: 'py-5 px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 appearance-none'
+          }" 
         />
       </div>
 

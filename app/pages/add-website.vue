@@ -11,50 +11,56 @@
         <UForm :state="state" :schema="schema" @submit="onSubmit" class="space-y-12">
           <div class="space-y-10">
             <UFormGroup label="Node Name" name="name" class="premium-label" help="e.g.: Google Cloud or API Gateway">
-              <div class="neon-input">
-                <UInput 
-                  v-model="state.name" 
-                  placeholder="Enter a descriptive name" 
-                  size="xl"
-                  :ui="{ base: 'rounded-2xl border-0 ring-0 bg-transparent' }"
-                />
-              </div>
+              <UInput 
+                v-model="state.name" 
+                placeholder="Enter a descriptive name" 
+                size="xl"
+                class="w-full"
+                :ui="{ 
+                  root: 'premium-input w-full',
+                  base: 'py-5 px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
+                }"
+              />
             </UFormGroup>
 
             <UFormGroup label="Endpoint URL" name="url" class="premium-label" help="Must start with http:// or https://">
-              <div class="neon-input">
-                <UInput 
-                  v-model="state.url" 
-                  placeholder="https://example.com" 
-                  size="xl"
-                  icon="i-heroicons-globe-alt"
-                  :ui="{ base: 'rounded-2xl border-0 ring-0 bg-transparent' }"
-                />
-              </div>
+              <UInput 
+                v-model="state.url" 
+                placeholder="https://example.com" 
+                size="xl"
+                icon="i-heroicons-globe-alt"
+                class="w-full"
+                :ui="{ 
+                  root: 'premium-input w-full',
+                  base: 'py-5 ps-12! px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
+                }"
+              />
             </UFormGroup>
 
-            <div class="grid grid-cols-2 gap-6">
+            <div class="grid grid-cols-2 gap-8">
               <UFormGroup label="Frequency" name="interval" class="premium-label">
-                <div class="neon-input">
-                  <USelect 
-                    v-model="state.interval" 
-                    :options="intervalOptions" 
-                    size="xl"
-                    class="overflow-hidden"
-                    :ui="{ base: 'rounded-2xl border-0 ring-0 bg-transparent' }"
-                  />
-                </div>
+                <USelect 
+                  v-model="state.interval" 
+                  :options="intervalOptions" 
+                  size="xl"
+                  class="w-full"
+                  :ui="{ 
+                    root: 'premium-input w-full',
+                    base: 'py-5 px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 appearance-none'
+                  }"
+                />
               </UFormGroup>
                <UFormGroup label="Method" name="method" class="premium-label">
-                <div class="neon-input">
-                  <USelect 
-                    v-model="state.method" 
-                    :options="['GET', 'POST', 'HEAD']" 
-                    size="xl"
-                    class="overflow-hidden"
-                    :ui="{ base: 'rounded-2xl border-0 ring-0 bg-transparent' }"
-                  />
-                </div>
+                <USelect 
+                  v-model="state.method" 
+                  :options="['GET', 'POST', 'HEAD']" 
+                  size="xl"
+                  class="w-full"
+                  :ui="{ 
+                    root: 'premium-input w-full',
+                    base: 'py-5 px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 appearance-none'
+                  }"
+                />
               </UFormGroup>
             </div>
           </div>
