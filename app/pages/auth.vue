@@ -14,7 +14,7 @@
       </div>
 
       <UCard class="glass-card border-neutral-200/50 dark:border-white/5 ring-0 overflow-visible rounded-[2.5rem] shadow-2xl">
-        <UForm :state="state" :schema="schema" @submit="onSubmit" class="space-y-6">
+        <UForm :state="state" :schema="schema" @submit="onSubmit" class="flex flex-col gap-6">
           <UFormGroup :label="$t('auth.email')" name="email" class="premium-label">
             <UInput 
               v-model="state.email" 

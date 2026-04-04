@@ -28,7 +28,7 @@
           :to="link.to"
           :variant="route.path === link.to ? 'soft' : 'ghost'"
           :color="route.path === link.to ? 'primary' : 'neutral'"
-          class="w-full justify-start gap-3 font-bold py-3 px-4 rounded-xl transition-all"
+          class="w-full justify-start gap-3 font-bold py-2.5 px-4 rounded-xl transition-all"
         >
           <UIcon :name="link.icon" class="text-lg" />
           {{ link.label }}
@@ -46,7 +46,7 @@
           variant="ghost" 
           :label="$t('dashboard.sign_out')" 
           block 
-          class="justify-start gap-3 text-neutral-500 font-bold py-3 hover:text-red-500" 
+          class="justify-start gap-3 text-neutral-500 font-bold py-2.5 hover:text-red-500" 
         />
       </div>
     </aside>
@@ -80,7 +80,7 @@
           class="flex-1" 
           :ui="{ 
             root: 'premium-input flex-1',
-            base: 'py-5 ps-12! px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0'
+            base: 'py-3 ps-12! px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0'
           }" 
         />
         <USelect 
@@ -90,7 +90,7 @@
           class="w-full md:w-64" 
           :ui="{ 
             root: 'premium-input w-full md:w-64',
-            base: 'py-5 px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 appearance-none'
+            base: 'py-3 px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 appearance-none'
           }" 
         />
       </div>

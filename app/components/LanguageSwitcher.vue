@@ -2,10 +2,10 @@
   <div class="relative z-50">
     <button
       @click="open = !open"
-      class="font-black flex items-center gap-2 group hover:bg-neutral-100 dark:hover:bg-white/5 transition-all px-3 py-2 rounded-xl select-none"
+      class="flex items-center gap-2 group hover:bg-neutral-100 dark:hover:bg-white/5 transition-all px-3 py-1.5 rounded-xl select-none"
     >
-      <UIcon name="i-heroicons-globe-alt" class="text-xl text-neutral-500 group-hover:text-primary-500 transition-colors" />
-      <span class="uppercase tracking-[0.2em] text-[10px]">{{ locale }}</span>
+      <UIcon name="i-heroicons-globe-alt" class="text-lg text-neutral-500 group-hover:text-primary-500 transition-colors" />
+      <span class="font-black uppercase tracking-[0.2em] text-[10px]">{{ locale }}</span>
       <UIcon 
         name="i-heroicons-chevron-down-20-solid" 
         class="text-xs opacity-30 shrink-0 transition-transform duration-150" 
@@ -22,13 +22,14 @@
     <transition name="fade">
       <div 
         v-show="open"
-        class="absolute right-0 bottom-full mb-2 min-w-[140px] bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl shadow-lg z-20 overflow-hidden"
+        class="absolute right-0 min-w-[140px] bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl shadow-lg z-20 overflow-hidden"
+        :class="side === 'top' ? 'top-full mt-2' : 'bottom-full mb-2'"
       >
         <button
           v-for="loc in availableLocales"
           :key="loc.code"
           @click="switchLocale(loc.code)"
-          class="w-full flex items-center justify-between px-4 py-2.5 text-left hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors text-sm"
+          class="w-full flex items-center justify-between px-3 py-1.5 text-left hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors text-xs"
           :class="locale === loc.code ? 'text-primary-500 font-medium' : 'text-neutral-700 dark:text-neutral-300'"
         >
           <span>{{ loc.name }}</span>
@@ -36,7 +37,7 @@
             v-if="locale === loc.code" 
             class="text-primary-500"
           >
-            <UIcon name="i-heroicons-check-16-solid" class="w-4 h-4" />
+            <UIcon name="i-heroicons-check-16-solid" class="w-3.5 h-3.5" />
           </span>
         </button>
       </div>
@@ -47,6 +48,12 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useI18n } from '#imports';
+
+const props = defineProps<{
+  side?: 'top' | 'bottom'
+}>();
+
+const side = computed(() => props.side || 'bottom');
 
 const open = ref(false);
 
@@ -64,7 +71,7 @@ const switchLocale = async (code: string) => {
   open.value = false;
   
   // Миттєве перемикання без повного перезавантаження сторінки
-  await setLocale(code);
+  await setLocale(code as any);
 };
 
 // Закривати по кліку зовні

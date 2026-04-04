@@ -8,8 +8,8 @@
       </div>
 
       <UCard class="glass-card rounded-[3rem] border-neutral-200/50 dark:border-white/5 ring-0 p-8 shadow-2xl">
-        <UForm :state="state" :schema="schema" @submit="onSubmit" class="space-y-8">
-          <div class="space-y-6">
+        <UForm :state="state" :schema="schema" @submit="onSubmit" class="flex flex-col gap-10">
+          <div class="flex flex-col gap-8">
             <UFormGroup :label="$t('add_website.node_name')" name="name" class="premium-label" :help="$t('add_website.node_name_help')">
               <UInput 
                 v-model="state.name" 

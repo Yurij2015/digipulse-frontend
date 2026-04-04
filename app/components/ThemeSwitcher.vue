@@ -19,10 +19,10 @@ const isDark = computed({
       :icon="isDark ? 'i-heroicons-sun-20-solid' : 'i-heroicons-moon-20-solid'"
       color="neutral"
       variant="ghost"
-      size="xl"
+      size="md"
       aria-label="Theme"
       @click="isDark = !isDark"
-      class="rounded-full hover:bg-neutral-200 dark:hover:bg-white/10 text-neutral-600 dark:text-neutral-400 hover:text-primary-500 dark:hover:text-primary-500 transition-all duration-300 shadow-sm dark:shadow-none bg-white/50 dark:bg-transparent backdrop-blur-sm dark:backdrop-blur-none"
+      class="rounded-xl hover:bg-neutral-100 dark:hover:bg-white/5 text-neutral-500 hover:text-primary-500 transition-all duration-300 select-none px-3"
     />
   </ClientOnly>
 </template>

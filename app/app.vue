@@ -12,7 +12,7 @@ const route = useRoute()
         (route.path.match(/^\/(?:uk|pl)?\/?$/) || route.path.match(/^\/(?:uk|pl)?\/?auth/) || route.path.match(/^\/(?:uk|pl)?\/?add-website/)) ? 'top-6 right-6' : 'bottom-6 left-6'
       ]"
     >
-      <LanguageSwitcher />
+      <LanguageSwitcher :side="(route.path.match(/^\/(?:uk|pl)?\/?$/) || route.path.match(/^\/(?:uk|pl)?\/?auth/) || route.path.match(/^\/(?:uk|pl)?\/?add-website/)) ? 'top' : 'bottom'" />
       <ThemeSwitcher />
     </div>
     <NuxtRouteAnnouncer />
