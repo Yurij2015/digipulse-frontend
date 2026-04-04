@@ -6,10 +6,10 @@ const route = useRoute()
 <template>
   <UApp>
     <div 
-      v-if="!route.path.startsWith('/dashboard')"
+      v-if="!route.path.match(/^\/(?:uk|pl)?\/?dashboard/)"
       class="fixed z-1001"
       :class="[
-        (route.path === '/' || route.path.startsWith('/auth') || route.path.startsWith('/add-website')) ? 'top-6 right-6' : 'bottom-6 left-6'
+        (route.path.match(/^\/(?:uk|pl)?\/?$/) || route.path.match(/^\/(?:uk|pl)?\/?auth/) || route.path.match(/^\/(?:uk|pl)?\/?add-website/)) ? 'top-6 right-6' : 'bottom-6 left-6'
       ]"
     >
       <ThemeSwitcher />
