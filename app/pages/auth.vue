@@ -108,13 +108,17 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { object, string, ref as yupRef } from 'yup';
-import { navigateTo, useI18n, useLocalePath } from '#imports';
+import { useI18n, useLocalePath } from '#i18n';
+import { navigateTo, useAuth } from '#imports';
+import type { AuthResponse } from '~/types/auth';
+
 
 const { t } = useI18n();
 const localePath = useLocalePath();
 const isLogin = ref(true);
 const showPassword = ref(false);
 const loading = ref(false);
+const { setAuth } = useAuth();
 
 const state = ref({
   email: '',
@@ -134,9 +138,36 @@ const schema = computed(() => object({
 
 async function onSubmit() {
   loading.value = true;
-  console.log('Form submitted:', state.value);
-  await new Promise(resolve => setTimeout(resolve, 1500));
-  loading.value = false;
-  navigateTo(localePath('/dashboard'));
+  
+  try {
+    // Ендпоїнт та заголовки згідно ТЗ
+    const response = await $fetch<AuthResponse>('http://localhost/api/login', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'X-Frontend-Key': 'cvdMXAq7pkUEXJAh16ICaf1YjIAg/cvfEbOqndBjyKie1dMXAq7pfEbOqndBjyKie1'
+      },
+      body: {
+        email: state.value.email,
+        password: state.value.password,
+      }
+    });
+
+    if (response.token && response.user) {
+      setAuth(response);
+      navigateTo(localePath('/dashboard'));
+    }
+  } catch (error: any) {
+    console.error('Login error:', error);
+    // Додати сповіщення про помилку
+    useToast().add({
+      title: t('auth.error_title') || 'Error',
+      description: error.data?.message || t('auth.error_desc') || 'Invalid credentials',
+      color: 'red'
+    });
+  } finally {
+    loading.value = false;
+  }
 }
 </script>

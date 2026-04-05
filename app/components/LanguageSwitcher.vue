@@ -47,7 +47,8 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useI18n } from '#imports';
+import { useI18n } from '#i18n';
+
 
 const props = defineProps<{
   side?: 'top' | 'bottom'

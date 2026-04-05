@@ -1,6 +1,11 @@
 <script setup lang="ts">
-import { useRoute } from '#imports'
+import { useRoute, useAuth, onMounted } from '#imports'
 const route = useRoute()
+const { init } = useAuth()
+
+onMounted(() => {
+  init()
+})
 </script>
 
 <template>

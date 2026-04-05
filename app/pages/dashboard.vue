@@ -155,11 +155,15 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useRoute, useI18n, useLocalePath } from '#imports';
-const route = useRoute();
+import { useI18n, useLocalePath } from '#i18n';
+import { useRoute } from '#imports';
 const { t } = useI18n();
 const localePath = useLocalePath();
 const isSidebarOpen = ref(false);
+
+definePageMeta({
+  middleware: 'auth'
+});
 
 const links = computed(() => [
   { label: t('dashboard.title'), icon: 'i-heroicons-home', to: localePath('/dashboard') },

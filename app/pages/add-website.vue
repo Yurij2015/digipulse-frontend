@@ -88,6 +88,10 @@ import { navigateTo, useI18n, useLocalePath } from '#imports';
 
 const { t } = useI18n();
 const localePath = useLocalePath();
+
+definePageMeta({
+  middleware: 'auth'
+});
 const loading = ref(false);
 
 const state = ref({
