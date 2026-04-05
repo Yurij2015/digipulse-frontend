@@ -13,7 +13,8 @@
         <p class="text-neutral-500 font-medium">{{ $t('auth.subtitle') }}</p>
       </div>
 
-      <UCard class="glass-card border-neutral-200/50 dark:border-white/5 ring-0 overflow-visible rounded-2xl shadow-2xl">
+      <UCard class="glass-card border-neutral-200/50 dark:border-white/10 ring-0 overflow-visible rounded-2xl shadow-2xl relative shadow-primary-500/5">
+        <div class="absolute -top-px left-10 right-10 h-px bg-linear-to-r from-transparent via-primary-500/50 to-transparent"></div>
         <UForm :state="state" :schema="schema" @submit="onSubmit" class="flex flex-col gap-6">
           <UFormGroup :label="$t('auth.email')" name="email" class="premium-label">
             <UInput 
@@ -78,7 +79,7 @@
             block 
             size="xl" 
             :loading="loading"
-            class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-black py-5 rounded-xl shadow-xl hover:scale-[1.02] transition-transform mt-10 border-0"
+            class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-black py-5 rounded-xl shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all mt-10 border-0 shimmer-effect"
           >
             {{ isLogin ? $t('auth.sign_in') : $t('auth.create_account') }}
           </UButton>
@@ -91,7 +92,7 @@
               <UButton 
                 variant="link" 
                 color="primary" 
-                class="font-black p-0 ml-1 text-primary-500 hover:text-primary-400 decoration-2 underline-offset-4"
+                class="font-black p-0 ml-1 text-primary-500 hover:text-primary-400 decoration-none hover:underline underline-offset-4 transition-all"
                 @click="isLogin = !isLogin"
               >
                 {{ isLogin ? $t('auth.sign_up') : $t('auth.log_in') }}

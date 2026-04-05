@@ -2,7 +2,7 @@
   <div class="relative z-50">
     <button
       @click="open = !open"
-      class="flex items-center gap-2 group hover:bg-neutral-100 dark:hover:bg-white/5 transition-all px-3 py-1.5 rounded-lg select-none"
+      class="flex items-center gap-2 group hover:bg-neutral-100 dark:hover:bg-white/5 transition-all px-3 py-1.5 rounded-lg select-none cursor-pointer"
     >
       <UIcon name="i-heroicons-globe-alt" class="text-lg text-neutral-500 group-hover:text-primary-500 transition-colors" />
       <span class="font-black uppercase tracking-[0.2em] text-[10px]">{{ locale }}</span>
@@ -29,7 +29,7 @@
           v-for="loc in availableLocales"
           :key="loc.code"
           @click="switchLocale(loc.code)"
-          class="w-full flex items-center justify-between px-3 py-1.5 text-left hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors text-xs"
+          class="w-full flex items-center justify-between px-3 py-1.5 text-left hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors text-xs cursor-pointer"
           :class="locale === loc.code ? 'text-primary-500 font-medium' : 'text-neutral-700 dark:text-neutral-300'"
         >
           <span>{{ loc.name }}</span>

@@ -28,15 +28,16 @@
           :to="link.to"
           :variant="route.path === link.to ? 'soft' : 'ghost'"
           :color="route.path === link.to ? 'primary' : 'neutral'"
-          class="w-full justify-start gap-3 font-bold py-2.5 px-4 rounded-lg transition-all"
+          class="w-full justify-start gap-4 font-bold py-3 px-5 rounded-lg transition-all transform active:scale-95"
+          :class="route.path === link.to ? 'shadow-sm bg-primary-100/10 dark:bg-primary-500/10 ring-1 ring-primary-500/20' : 'text-neutral-500'"
         >
-          <UIcon :name="link.icon" class="text-lg" />
-          {{ link.label }}
+          <UIcon :name="link.icon" class="text-xl" />
+          <span class="text-[13px] tracking-tight">{{ link.label }}</span>
         </UButton>
       </nav>
 
       <div class="mt-auto pt-8 border-t border-neutral-100 dark:border-white/5">
-        <div class="flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-neutral-50 dark:bg-white/5">
+        <div class="flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-neutral-50 dark:bg-white/5 mb-2">
           <LanguageSwitcher />
           <ThemeSwitcher />
         </div>
@@ -65,9 +66,12 @@
 
       <!-- Stats Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-16">
-        <div v-for="stat in summaryStats" :key="stat.label" class="glass-card p-8 rounded-2xl border-neutral-200/50 dark:border-white/5">
-          <div class="text-neutral-500 dark:text-neutral-400 text-[10px] font-black uppercase tracking-wider mb-4">{{ stat.label }}</div>
-          <div class="text-5xl font-black text-neutral-900 dark:text-white leading-none">{{ stat.value }}</div>
+        <div v-for="stat in summaryStats" :key="stat.label" class="glass-card p-8 rounded-2xl border-neutral-200/50 dark:border-white/5 group hover:border-primary-500/30 transition-all cursor-default">
+          <div class="flex items-center justify-between mb-4">
+            <div class="text-neutral-500 dark:text-neutral-400 text-[10px] font-black uppercase tracking-widest">{{ stat.label }}</div>
+            <UIcon :name="stat.icon" class="text-xl text-neutral-400 group-hover:text-primary-500 transition-colors" />
+          </div>
+          <div class="text-5xl font-black text-neutral-900 dark:text-white leading-none tracking-tighter">{{ stat.value }}</div>
         </div>
       </div>
 
@@ -97,19 +101,27 @@
 
       <!-- Websites Cards -->
       <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-        <div v-for="website in filteredWebsites" :key="website.id" class="glass-card rounded-2xl p-8 hover:translate-y-[-4px] group">
+        <div v-for="website in filteredWebsites" :key="website.id" class="glass-card rounded-2xl p-8 hover:translate-y-[-4px] group hover:border-primary-500/20 active:scale-[0.99] transition-all duration-300">
           <div class="flex justify-between items-start mb-10">
             <div class="flex flex-col gap-1.5 max-w-[70%]">
-              <h3 class="text-2xl font-black text-neutral-900 dark:text-white truncate">{{ website.name }}</h3>
-              <a :href="website.url" target="_blank" class="text-neutral-500 text-xs hover:text-primary-500 transition-colors flex items-center gap-1">
-                {{ website.url }} <UIcon name="i-heroicons-arrow-top-right-on-square" size="xs" />
-              </a>
+              <h3 class="text-2xl font-black text-neutral-900 dark:text-white truncate tracking-tight group-hover:text-primary-500 transition-colors">{{ website.name }}</h3>
+              <div class="flex items-center gap-1.5">
+                <a :href="website.url" target="_blank" class="text-neutral-500 text-[11px] font-medium hover:text-primary-500 transition-colors flex items-center gap-1">
+                  {{ website.url.replace('https://', '') }} <UIcon name="i-heroicons-arrow-top-right-on-square" size="xs" />
+                </a>
+                <span class="text-neutral-300 dark:text-neutral-800">·</span>
+                <button class="text-neutral-400 hover:text-primary-500 transition-colors cursor-pointer">
+                  <UIcon name="i-heroicons-clipboard-document" size="xs" />
+                </button>
+              </div>
             </div>
             <div :class="[
-              'px-4 py-1.5 rounded-full text-[10px] font-black uppercase flex items-center gap-2 border transition-colors',
+              'px-4 py-1.5 rounded-full text-[10px] font-black uppercase flex items-center gap-2 border transition-all duration-500',
               getStatusClasses(website.status)
             ]">
-              <div v-if="website.status === 'Online'" class="w-1.5 h-1.5 rounded-full bg-current"></div>
+              <div v-if="website.status === 'Online'" class="w-1.5 h-1.5 rounded-full bg-current pulse-neon shadow-[0_0_8px_rgba(34,197,94,0.5)]"></div>
+              <div v-else-if="website.status === 'Offline'" class="w-1.5 h-1.5 rounded-full bg-current opacity-70"></div>
+              <div v-else class="w-1.5 h-1.5 rounded-full bg-current pulse-neon shadow-[0_0_8px_rgba(234,179,8,0.5)]"></div>
               {{ website.status }}
             </div>
           </div>
@@ -174,9 +186,9 @@ const statusOptions = computed(() => [
 ]);
 
 const summaryStats = computed(() => [
-  { label: t('dashboard.total_nodes'), value: websites.value.length },
-  { label: t('dashboard.active_nodes'), value: websites.value.filter(s => s.status === 'Online').length },
-  { label: t('dashboard.issues_detected'), value: websites.value.filter(s => s.status !== 'Online').length },
+  { label: t('dashboard.total_nodes'), value: websites.value.length, icon: 'i-heroicons-server-stack' },
+  { label: t('dashboard.active_nodes'), value: websites.value.filter(s => s.status === 'Online').length, icon: 'i-heroicons-check-circle' },
+  { label: t('dashboard.issues_detected'), value: websites.value.filter(s => s.status !== 'Online').length, icon: 'i-heroicons-exclamation-triangle' },
 ]);
 
 const filteredWebsites = computed(() => {
