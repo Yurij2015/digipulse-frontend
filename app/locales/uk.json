@@ -19,7 +19,16 @@
     "email_required": "Email є обов'язковим",
     "password_min": "Пароль має містити мінімум 6 символів",
     "password_required": "Пароль є обов'язковим",
-    "passwords_mismatch": "Паролі не співпадають"
+    "passwords_mismatch": "Паролі не співпадають",
+    "username": "Нікнейм",
+    "first_name": "Ім'я",
+    "last_name": "Прізвище",
+    "username_required": "Нікнейм є обов'язковим",
+    "first_name_required": "Ім'я є обов'язковим",
+    "last_name_required": "Прізвище є обов'язковим",
+    "username_placeholder": "johndou",
+    "first_name_placeholder": "John",
+    "last_name_placeholder": "Dou"
   },
   "dashboard": {
     "title": "Дашборд",

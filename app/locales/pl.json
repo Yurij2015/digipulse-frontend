@@ -19,7 +19,16 @@
     "email_required": "E-mail jest wymagany",
     "password_min": "Hasło musi mieć co najmniej 6 znaków",
     "password_required": "Hasło jest wymagane",
-    "passwords_mismatch": "Hasła nie pasują do siebie"
+    "passwords_mismatch": "Hasła nie pasują do siebie",
+    "username": "Nazwa użytkownika",
+    "first_name": "Imię",
+    "last_name": "Nazwisko",
+    "username_required": "Nazwa użytkownika jest wymagana",
+    "first_name_required": "Imię jest wymagane",
+    "last_name_required": "Nazwisko jest wymagane",
+    "username_placeholder": "johndou",
+    "first_name_placeholder": "John",
+    "last_name_placeholder": "Dou"
   },
   "dashboard": {
     "title": "Panel główny",

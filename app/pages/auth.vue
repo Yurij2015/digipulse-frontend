@@ -16,6 +16,46 @@
       <UCard class="glass-card border-neutral-200/50 dark:border-white/10 ring-0 overflow-visible rounded-2xl shadow-2xl relative shadow-primary-500/5">
         <div class="absolute -top-px left-10 right-10 h-px bg-linear-to-r from-transparent via-primary-500/50 to-transparent"></div>
         <UForm :state="state" :schema="schema" @submit="onSubmit" class="flex flex-col gap-6">
+          <UFormField v-if="!isLogin" :label="$t('auth.username')" name="name" class="premium-label">
+            <UInput 
+              v-model="state.name" 
+              icon="i-heroicons-user" 
+              :placeholder="$t('auth.username_placeholder')"
+              size="xl"
+              class="w-full"
+              :ui="{ 
+                base: 'py-3 ps-10! px-4 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
+              }"
+            />
+          </UFormField>
+
+          <div v-if="!isLogin" class="grid grid-cols-2 gap-4">
+            <UFormField :label="$t('auth.first_name')" name="first_name" class="premium-label">
+              <UInput 
+                v-model="state.first_name" 
+                icon="i-heroicons-identification" 
+                :placeholder="$t('auth.first_name_placeholder')"
+                size="xl"
+                class="w-full"
+                :ui="{ 
+                  base: 'py-3 ps-10! px-4 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
+                }"
+              />
+            </UFormField>
+            <UFormField :label="$t('auth.last_name')" name="last_name" class="premium-label">
+              <UInput 
+                v-model="state.last_name" 
+                icon="i-heroicons-identification" 
+                :placeholder="$t('auth.last_name_placeholder')"
+                size="xl"
+                class="w-full"
+                :ui="{ 
+                  base: 'py-3 ps-10! px-4 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
+                }"
+              />
+            </UFormField>
+          </div>
+
           <UFormField :label="$t('auth.email')" name="email" class="premium-label">
             <UInput 
               v-model="state.email" 
@@ -25,7 +65,6 @@
               size="xl"
               class="w-full"
               :ui="{ 
-                root: 'premium-input w-full',
                 base: 'py-3 ps-10! px-4 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
               }"
             />
@@ -128,12 +167,30 @@ const loading = ref(false);
 
 const state = ref({
   email: '',
+  name: '',
+  first_name: '',
+  last_name: '',
   password: '',
   confirmPassword: '',
 });
 
 const schema = computed(() => object({
   email: string().email(t('auth.invalid_email')).required(t('auth.email_required')),
+  name: string().when('isLogin', {
+    is: () => !isLogin.value,
+    then: (schema) => schema.required(t('auth.username_required')),
+    otherwise: (schema) => schema.optional(),
+  }),
+  first_name: string().when('isLogin', {
+    is: () => !isLogin.value,
+    then: (schema) => schema.required(t('auth.first_name_required')),
+    otherwise: (schema) => schema.optional(),
+  }),
+  last_name: string().when('isLogin', {
+    is: () => !isLogin.value,
+    then: (schema) => schema.required(t('auth.last_name_required')),
+    otherwise: (schema) => schema.optional(),
+  }),
   password: string().min(6, t('auth.password_min')).required(t('auth.password_required')),
   confirmPassword: string().when('password', {
     is: (val: string) => !isLogin.value && val && val.length > 0,
@@ -153,6 +210,9 @@ async function onSubmit() {
     };
     
     if (!isLogin.value) {
+      body.name = state.value.name;
+      body.first_name = state.value.first_name;
+      body.last_name = state.value.last_name;
       body.password_confirmation = state.value.confirmPassword;
     }
 
