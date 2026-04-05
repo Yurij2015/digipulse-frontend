@@ -16,7 +16,7 @@
       <UCard class="glass-card border-neutral-200/50 dark:border-white/10 ring-0 overflow-visible rounded-2xl shadow-2xl relative shadow-primary-500/5">
         <div class="absolute -top-px left-10 right-10 h-px bg-linear-to-r from-transparent via-primary-500/50 to-transparent"></div>
         <UForm :state="state" :schema="schema" @submit="onSubmit" class="flex flex-col gap-6">
-          <UFormGroup :label="$t('auth.email')" name="email" class="premium-label">
+          <UFormField :label="$t('auth.email')" name="email" class="premium-label">
             <UInput 
               v-model="state.email" 
               type="email" 
@@ -29,9 +29,9 @@
                 base: 'py-3 ps-10! px-4 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
               }"
             />
-          </UFormGroup>
+          </UFormField>
 
-          <UFormGroup :label="$t('auth.password')" name="password" class="premium-label">
+          <UFormField :label="$t('auth.password')" name="password" class="premium-label">
             <UInput 
               v-model="state.password" 
               :type="showPassword ? 'text' : 'password'" 
@@ -57,9 +57,9 @@
                 </div>
               </template>
             </UInput>
-          </UFormGroup>
+          </UFormField>
 
-          <UFormGroup v-if="!isLogin" :label="$t('auth.confirm_password')" name="confirmPassword" class="premium-label">
+          <UFormField v-if="!isLogin" :label="$t('auth.confirm_password')" name="confirmPassword" class="premium-label">
             <UInput 
               v-model="state.confirmPassword" 
               :type="showPassword ? 'text' : 'password'" 
@@ -72,7 +72,7 @@
                 base: 'py-3 ps-10! px-4 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
               }"
             />
-          </UFormGroup>
+          </UFormField>
 
           <UButton 
             type="submit" 
@@ -109,16 +109,22 @@
 import { ref, computed } from 'vue';
 import { object, string, ref as yupRef } from 'yup';
 import { useI18n, useLocalePath } from '#i18n';
-import { navigateTo, useAuth } from '#imports';
+import { useRouter, useAuth, useToast } from '#imports';
 import type { AuthResponse } from '~/types/auth';
 
+definePageMeta({
+  middleware: 'guest'
+});
 
 const { t } = useI18n();
 const localePath = useLocalePath();
+const router = useRouter();
+const { setAuth } = useAuth();
+const toast = useToast();
+
 const isLogin = ref(true);
 const showPassword = ref(false);
 const loading = ref(false);
-const { setAuth } = useAuth();
 
 const state = ref({
   email: '',
@@ -154,17 +160,27 @@ async function onSubmit() {
       }
     });
 
-    if (response.token && response.user) {
+    console.log('Login Response:', response);
+
+    if (response && response.token && response.user) {
       setAuth(response);
-      navigateTo(localePath('/dashboard'));
+      console.log('Auth successful, redirecting...');
+      const target = localePath('/dashboard');
+      await router.push(target);
+    } else {
+      console.error('Invalid response from API:', response);
+      toast.add({
+        title: 'Auth Error',
+        description: 'Server returned invalid data structure',
+        color: 'error'
+      });
     }
   } catch (error: any) {
-    console.error('Login error:', error);
-    // Додати сповіщення про помилку
-    useToast().add({
-      title: t('auth.error_title') || 'Error',
-      description: error.data?.message || t('auth.error_desc') || 'Invalid credentials',
-      color: 'red'
+    console.error('Submit Error:', error);
+    toast.add({
+      title: 'Connection Error',
+      description: error.data?.message || 'Failed to connect to server',
+      color: 'error'
     });
   } finally {
     loading.value = false;

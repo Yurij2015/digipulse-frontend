@@ -1,5 +1,3 @@
-import { defineNuxtConfig } from "nuxt/config";
-
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   future: {
@@ -17,7 +15,7 @@ export default defineNuxtConfig({
     strategy: "prefix_except_default",
     langDir: "locales",
     restructureDir: "app",
-    debug: true,
+    lazy: true,
   },
   colorMode: {
     preference: "dark",

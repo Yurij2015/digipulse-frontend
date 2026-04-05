@@ -11,7 +11,7 @@
         <div class="absolute -top-px left-10 right-10 h-px bg-linear-to-r from-transparent via-primary-500/50 to-transparent"></div>
         <UForm :state="state" :schema="schema" @submit="onSubmit" class="flex flex-col gap-10">
           <div class="flex flex-col gap-8">
-            <UFormGroup :label="$t('add_website.node_name')" name="name" class="premium-label" :help="$t('add_website.node_name_help')">
+            <UFormField :label="$t('add_website.node_name')" name="name" class="premium-label" :help="$t('add_website.node_name_help')">
               <UInput 
                 v-model="state.name" 
                 :placeholder="$t('add_website.node_name_placeholder')" 
@@ -22,9 +22,9 @@
                   base: 'py-3 px-4 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
                 }"
               />
-            </UFormGroup>
+            </UFormField>
 
-            <UFormGroup :label="$t('add_website.endpoint_url')" name="url" class="premium-label" :help="$t('add_website.endpoint_url_help')">
+            <UFormField :label="$t('add_website.endpoint_url')" name="url" class="premium-label" :help="$t('add_website.endpoint_url_help')">
               <UInput 
                 v-model="state.url" 
                 :placeholder="$t('add_website.endpoint_url_placeholder')" 
@@ -36,10 +36,10 @@
                   base: 'py-3 ps-10! px-4 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
                 }"
               />
-            </UFormGroup>
+            </UFormField>
 
             <div class="grid grid-cols-2 gap-6">
-              <UFormGroup :label="$t('add_website.frequency')" name="interval" class="premium-label">
+              <UFormField :label="$t('add_website.frequency')" name="interval" class="premium-label">
                 <USelect 
                   v-model="state.interval" 
                   :options="intervalOptions" 
@@ -50,8 +50,8 @@
                     base: 'py-3 px-4 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 appearance-none'
                   }"
                 />
-              </UFormGroup>
-               <UFormGroup :label="$t('add_website.method')" name="method" class="premium-label">
+              </UFormField>
+               <UFormField :label="$t('add_website.method')" name="method" class="premium-label">
                 <USelect 
                   v-model="state.method" 
                   :options="['GET', 'POST', 'HEAD']" 
@@ -62,7 +62,7 @@
                     base: 'py-6 px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 appearance-none'
                   }"
                 />
-              </UFormGroup>
+              </UFormField>
             </div>
           </div>
 
@@ -84,7 +84,8 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { object, string } from 'yup';
-import { navigateTo, useI18n, useLocalePath } from '#imports';
+import { navigateTo, useRouter } from '#imports';
+import { useI18n, useLocalePath } from '#i18n';
 
 const { t } = useI18n();
 const localePath = useLocalePath();

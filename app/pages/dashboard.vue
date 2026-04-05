@@ -157,6 +157,7 @@
 import { ref, computed } from 'vue';
 import { useI18n, useLocalePath } from '#i18n';
 import { useRoute } from '#imports';
+const route = useRoute();
 const { t } = useI18n();
 const localePath = useLocalePath();
 const isSidebarOpen = ref(false);
