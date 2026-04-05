@@ -36,8 +36,23 @@
         </UButton>
       </nav>
 
-      <div class="mt-auto pt-8 border-t border-neutral-100 dark:border-white/5">
-        <div class="flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-neutral-50 dark:bg-white/5 mb-2">
+      <div class="mt-auto pt-8 border-t border-neutral-100 dark:border-white/5 space-y-4">
+        <!-- User Profile Block -->
+        <NuxtLink :to="localePath('/settings')" class="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 dark:hover:bg-white/5 transition-all group">
+          <div class="w-10 h-10 rounded-lg bg-primary-500/10 flex items-center justify-center text-primary-500 font-black text-sm border border-primary-500/20 group-hover:scale-110 transition-transform">
+            {{ userInitials }}
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-black text-neutral-900 dark:text-white truncate uppercase tracking-tight">
+              {{ user?.name || 'User' }}
+            </div>
+            <div class="text-[11px] font-medium text-neutral-500 truncate">
+              {{ user?.email }}
+            </div>
+          </div>
+        </NuxtLink>
+
+        <div class="flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-neutral-50 dark:bg-white/5">
           <LanguageSwitcher />
           <ThemeSwitcher />
         </div>
@@ -162,8 +177,13 @@ const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
 const localePath = useLocalePath();
-const { logout, token } = useAuth();
+const { logout, token, user } = useAuth();
 const isSidebarOpen = ref(false);
+
+const userInitials = computed(() => {
+  if (!user.value?.first_name || !user.value?.last_name) return user.value?.name?.substring(0, 2).toUpperCase() || '??';
+  return (user.value.first_name[0] + user.value.last_name[0]).toUpperCase();
+});
 
 async function handleLogout() {
   try {
