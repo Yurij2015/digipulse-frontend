@@ -6,6 +6,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
   
   // Тепер isAuthenticated працює і на сервері завдяки Cookies
   if (isAuthenticated.value) {
-    return navigateTo(localePath('/'));
+    return navigateTo(localePath('/dashboard'));
   }
 });

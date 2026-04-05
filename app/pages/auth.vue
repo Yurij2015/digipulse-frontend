@@ -146,26 +146,34 @@ async function onSubmit() {
   loading.value = true;
   
   try {
-    // Ендпоїнт та заголовки згідно ТЗ
-    const response = await $fetch<AuthResponse>('http://localhost/api/login', {
+    const endpoint = isLogin.value ? 'http://localhost/api/login' : 'http://localhost/api/register';
+    const body: any = {
+      email: state.value.email,
+      password: state.value.password,
+    };
+    
+    if (!isLogin.value) {
+      body.password_confirmation = state.value.confirmPassword;
+    }
+
+    console.log(`Sending ${isLogin.value ? 'login' : 'register'} request to: ${endpoint}`);
+    
+    const response = await $fetch<AuthResponse>(endpoint, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
         'X-Frontend-Key': 'cvdMXAq7pkUEXJAh16ICaf1YjIAg/cvfEbOqndBjyKie1dMXAq7pfEbOqndBjyKie1'
       },
-      body: {
-        email: state.value.email,
-        password: state.value.password,
-      }
+      body
     });
 
-    console.log('Login Response:', response);
+    console.log('API Response received:', response);
 
     if (response && response.token && response.user) {
       setAuth(response);
-      console.log('Auth successful, redirecting...');
-      const target = localePath('/');
+      console.log('Auth successful, redirecting to dashboard...');
+      const target = localePath('/dashboard');
       await router.push(target);
     } else {
       console.error('Invalid response from API:', response);

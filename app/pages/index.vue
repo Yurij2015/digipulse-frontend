@@ -63,6 +63,10 @@
 import { computed } from 'vue';
 import { useI18n, useLocalePath } from '#imports';
 
+definePageMeta({
+  middleware: 'guest'
+});
+
 const { t } = useI18n();
 const localePath = useLocalePath();
 
