@@ -1,5 +1,5 @@
 <template>
-  <div class="relative min-h-screen bg-white dark:bg-neutral-950 mesh-bg flex flex-col pt-32 md:pt-48 pb-24 items-center px-4 overflow-hidden">
+  <div class="relative min-h-screen bg-white dark:bg-neutral-950 mesh-bg flex flex-col pt-20 md:pt-32 pb-24 items-center px-4 overflow-hidden">
     <!-- Sophisticated Mesh Background Layer -->
     <div class="absolute inset-0 z-0 pointer-events-none opacity-40 dark:opacity-60">
       <div class="absolute top-[10%] left-[10%] w-[40%] h-[40%] bg-primary-500 animate-pulse-slow blur-[120px] rounded-full"></div>
@@ -29,7 +29,7 @@
         <UButton
           :to="localePath('/auth')"
           size="xl"
-          class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:scale-105 transition-transform duration-300 px-12 py-5 font-black rounded-2xl shadow-2xl"
+          class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:scale-105 active:scale-[0.98] transition-all duration-300 px-12 py-5 font-black rounded-xl shadow-2xl shimmer-effect border-0"
         >
           {{ $t('index.get_started') }}
         </UButton>
@@ -39,21 +39,20 @@
           size="xl"
           variant="ghost"
           color="neutral"
-          class="px-12 py-5 border border-neutral-200 dark:border-white/10 hover:bg-neutral-100 dark:hover:bg-white/5 transition-all font-bold rounded-2xl"
+          class="px-12 py-5 border border-neutral-200 dark:border-white/10 hover:bg-neutral-100 dark:hover:bg-white/5 transition-all font-bold rounded-xl"
         >
           {{ $t('index.login') }}
         </UButton>
       </div>
 
-      <!-- Feature highlight -->
       <div class="mt-32 grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
         <div v-for="(feat, i) in features" :key="i" 
-             class="glass-card p-8 rounded-4xl flex flex-col items-start text-left group hover:translate-y-[-4px]">
-          <div class="w-10 h-10 rounded-xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center mb-6 group-hover:bg-primary-500/10 transition-colors">
-            <UIcon :name="feat.icon" class="text-xl text-neutral-600 dark:text-neutral-400 group-hover:text-primary-500" />
+             class="glass-card p-10 rounded-2xl flex flex-col items-start text-left group hover:translate-y-[-4px] hover:border-primary-500/30 transition-all cursor-default">
+          <div class="w-12 h-12 rounded-xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center mb-8 group-hover:bg-primary-500/10 transition-colors">
+            <UIcon :name="feat.icon" class="text-2xl text-neutral-600 dark:text-neutral-400 group-hover:text-primary-500 transition-colors" />
           </div>
-          <h3 class="text-xl font-bold mb-3 text-neutral-900 dark:text-white">{{ feat.title }}</h3>
-          <p class="text-neutral-500 dark:text-neutral-400 text-sm leading-relaxed">{{ feat.desc }}</p>
+          <h3 class="text-xl font-black mb-4 text-neutral-900 dark:text-white tracking-tight">{{ feat.title }}</h3>
+          <p class="text-neutral-500 dark:text-neutral-400 text-sm leading-[1.6] font-medium">{{ feat.desc }}</p>
         </div>
       </div>
     </div>
