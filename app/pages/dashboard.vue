@@ -47,7 +47,8 @@
           variant="ghost" 
           :label="$t('dashboard.sign_out')" 
           block 
-          class="justify-start gap-3 text-neutral-500 font-bold py-2.5 hover:text-red-500" 
+          @click="handleLogout"
+          class="justify-start gap-3 text-neutral-500 font-bold py-2.5 hover:text-error" 
         />
       </div>
     </aside>
@@ -156,11 +157,32 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useI18n, useLocalePath } from '#i18n';
-import { useRoute } from '#imports';
+import { useRoute, useRouter, useAuth } from '#imports';
 const route = useRoute();
+const router = useRouter();
 const { t } = useI18n();
 const localePath = useLocalePath();
+const { logout, token } = useAuth();
 const isSidebarOpen = ref(false);
+
+async function handleLogout() {
+  try {
+    await $fetch('http://localhost/api/logout', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'X-Frontend-Key': 'cvdMXAq7pkUEXJAh16ICaf1YjIAg/cvfEbOqndBjyKie1dMXAq7pfEbOqndBjyKie1',
+        'Authorization': `Bearer ${token.value}`,
+        'X-CSRF-TOKEN': ''
+      }
+    });
+  } catch (error) {
+    console.error('Logout API Error:', error);
+  } finally {
+    logout();
+    router.push(localePath('/auth'));
+  }
+}
 
 definePageMeta({
   middleware: 'auth'
