@@ -1,25 +1,23 @@
 import type { User, AuthResponse } from '~/types/auth';
-import { useState, useRuntimeConfig, computed } from '#imports';
+import { useState, computed, useCookie } from '#imports';
 
 export const useAuth = () => {
-  const user = useState<User | null>('auth-user', () => null);
-  const token = useState<string | null>('auth-token', () => null);
+  // Використовуємо useCookie для SSR-сумісності (працює і на сервері, і на клієнті)
+  const tokenCookie = useCookie<string | null>('auth-token', { path: '/', maxAge: 60 * 60 * 24 * 7 }); // 7 днів
+  const userCookie = useCookie<User | null>('auth-user', { path: '/', maxAge: 60 * 60 * 24 * 7 });
 
-  // Ініціалізація з sessionStorage
+  // Реактивний стан, який синхронізується з Cookies
+  const user = useState<User | null>('auth-user-state', () => userCookie.value || null);
+  const token = useState<string | null>('auth-token-state', () => tokenCookie.value || null);
+
   const init = () => {
-    if (typeof window === 'undefined') return;
-    
-    const savedToken = sessionStorage.getItem('token');
-    const savedUser = sessionStorage.getItem('user');
-
-    if (savedToken && savedUser) {
-      token.value = savedToken;
-      try {
-        user.value = JSON.parse(savedUser);
-      } catch (e) {
-        console.error('Failed to parse saved user', e);
-        logout();
-      }
+    // В Nuxt 4 з useCookie ініціалізація відбувається автоматично
+    // Але ми тримаємо цей метод для сумісності з іншими частинами коду
+    if (tokenCookie.value) {
+      token.value = tokenCookie.value;
+    }
+    if (userCookie.value) {
+      user.value = userCookie.value;
     }
   };
 
@@ -27,20 +25,18 @@ export const useAuth = () => {
     user.value = response.user;
     token.value = response.token;
     
-    if (typeof window !== 'undefined') {
-      sessionStorage.setItem('token', response.token);
-      sessionStorage.setItem('user', JSON.stringify(response.user));
-    }
+    // Оновлюємо Cookies
+    userCookie.value = response.user;
+    tokenCookie.value = response.token;
   };
 
   const logout = () => {
     user.value = null;
     token.value = null;
     
-    if (typeof window !== 'undefined') {
-      sessionStorage.removeItem('token');
-      sessionStorage.removeItem('user');
-    }
+    // Очищуємо Cookies
+    userCookie.value = null;
+    tokenCookie.value = null;
   };
 
   const isAuthenticated = computed(() => !!token.value);

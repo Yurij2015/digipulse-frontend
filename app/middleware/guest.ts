@@ -1,16 +1,11 @@
 import { defineNuxtRouteMiddleware, navigateTo, useAuth, useLocalePath } from '#imports';
 
 export default defineNuxtRouteMiddleware((to, from) => {
-  const { isAuthenticated, init } = useAuth();
+  const { isAuthenticated } = useAuth();
   const localePath = useLocalePath();
   
-  // Якщо ми на клієнті і ще не ініціалізовані - пробуємо ініціалізуватися
-  if (typeof window !== 'undefined' && !isAuthenticated.value) {
-    init();
-  }
-
-  // Якщо користувач вже авторизований - направляємо на дашборд
+  // Тепер isAuthenticated працює і на сервері завдяки Cookies
   if (isAuthenticated.value) {
-    return navigateTo(localePath('/dashboard'));
+    return navigateTo(localePath('/'));
   }
 });

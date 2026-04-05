@@ -165,7 +165,7 @@ async function onSubmit() {
     if (response && response.token && response.user) {
       setAuth(response);
       console.log('Auth successful, redirecting...');
-      const target = localePath('/dashboard');
+      const target = localePath('/');
       await router.push(target);
     } else {
       console.error('Invalid response from API:', response);

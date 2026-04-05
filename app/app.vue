@@ -3,9 +3,7 @@ import { useRoute, useAuth, onMounted } from '#imports'
 const route = useRoute()
 const { init } = useAuth()
 
-onMounted(() => {
-  init()
-})
+// Auth initialization is now handled automatically by useCookie state
 </script>
 
 <template>
