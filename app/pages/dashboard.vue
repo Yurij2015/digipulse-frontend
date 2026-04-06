@@ -26,27 +26,24 @@
       </div>
 
       <div class="flex flex-col md:flex-row gap-6 mb-12 items-stretch">
-        <UInput 
-          v-model="searchQuery" 
-          :placeholder="t('dashboard.filter_placeholder')" 
-          icon="i-heroicons-magnifying-glass" 
-          size="xl" 
-          class="flex-1" 
-          :ui="{ 
-            base: 'py-3 ps-12! px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0'
-          }" 
-        />
+        <div class="flex-1 relative">
+          <input 
+            v-model="searchQuery" 
+            placeholder="Debug: Type to search..." 
+            class="w-full py-3 px-5 rounded-xl border border-neutral-200 dark:border-white/10 bg-white dark:bg-white/5 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none"
+          />
+          <div class="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-neutral-400">
+            Query: "{{ searchQuery }}" | Found: {{ filteredWebsites.length }}
+          </div>
+        </div>
         <USelectMenu 
           v-model="filterStatus" 
           :options="statusOptions" 
           value-attribute="value"
           option-attribute="label"
           size="xl" 
-          class="w-full md:w-64 premium-input" 
+          class="w-full md:w-64"
           icon="i-heroicons-funnel"
-          :ui="{ 
-            base: 'py-3 px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 appearance-none w-full text-left flex items-center justify-between'
-          }" 
         />
       </div>
 
@@ -55,11 +52,20 @@
         <div v-for="website in filteredWebsites" :key="website.id" class="glass-card rounded-2xl p-8 hover:translate-y-[-4px] group hover:border-primary-500/20 active:scale-[0.99] transition-all duration-300">
           <div class="flex justify-between items-start mb-10">
             <div class="flex flex-col gap-1.5 max-w-[70%]">
-              <h3 class="text-2xl font-black text-neutral-900 dark:text-white truncate tracking-tight group-hover:text-primary-500 transition-colors">{{ website.name }}</h3>
+              <h3 class="text-2xl font-black text-neutral-900 dark:text-white truncate tracking-tight group-hover:text-primary-500 transition-colors">
+                {{ website.name || 'Unnamed Node' }}
+              </h3>
               <div class="flex items-center gap-1.5">
-                <a :href="website.url" target="_blank" class="text-neutral-500 text-[11px] font-medium hover:text-primary-500 transition-colors flex items-center gap-1">
-                  {{ website.url.replace('https://', '') }} <UIcon name="i-heroicons-arrow-top-right-on-square" size="xs" />
+                <a 
+                  v-if="website.url"
+                  :href="website.url" 
+                  target="_blank" 
+                  class="text-neutral-500 text-[11px] font-medium hover:text-primary-500 transition-colors flex items-center gap-1"
+                >
+                  {{ website.url.replace(/^https?:\/\//, '') }} <UIcon name="i-heroicons-arrow-top-right-on-square" size="xs" />
                 </a>
+                <span v-else class="text-neutral-400 text-[11px] italic">No URL</span>
+
                 <span class="text-neutral-300 dark:text-neutral-800">·</span>
                 <button class="text-neutral-400 hover:text-primary-500 transition-colors cursor-pointer">
                   <UIcon name="i-heroicons-clipboard-document" size="xs" />
@@ -76,6 +82,24 @@
               {{ website.status }}
             </div>
           </div>
+
+          <!-- Monitoring Badges Section -->
+          <div v-if="(website.configurations?.length || website.checks?.length)" class="flex flex-wrap gap-2 pt-2 mb-2">
+            <UBadge 
+              v-for="config in (website.configurations || website.checks)" 
+              :key="config.id"
+              size="xs"
+              variant="subtle"
+              :color="getBadgeColor(config.check_type?.slug || config.type?.slug)"
+              class="font-black text-[9px] uppercase tracking-tighter px-1.5 py-0.5 rounded-md inline-flex items-center"
+            >
+              <UIcon v-if="(config.check_type?.slug || config.type?.slug) === 'ping'" name="i-heroicons-bolt" class="mr-1 text-[10px]" />
+              <UIcon v-else-if="(config.check_type?.slug || config.type?.slug) === 'http_status'" name="i-heroicons-globe-alt" class="mr-1 text-[10px]" />
+              <UIcon v-else-if="(config.check_type?.slug || config.type?.slug) === 'keyword_search'" name="i-heroicons-magnifying-glass" class="mr-1 text-[10px]" />
+              {{ config.check_type?.name || config.type?.name }}
+            </UBadge>
+          </div>
+
 
           <div class="grid grid-cols-2 gap-8 mb-10 py-8 border-y border-neutral-100 dark:border-white/5">
             <div>
@@ -179,9 +203,16 @@ const summaryStats = computed(() => [
 ]);
 
 const filteredWebsites = computed(() => {
+  if (!websites.value) return [];
+  
   return websites.value.filter(site => {
-    const matchesSearch = site.name.toLowerCase().includes(searchQuery.value.toLowerCase()) || site.url.toLowerCase().includes(searchQuery.value.toLowerCase());
+    const name = (site.name || '').toLowerCase();
+    const url = (site.url || '').toLowerCase();
+    const query = (searchQuery.value || '').toLowerCase();
+    
+    const matchesSearch = name.includes(query) || url.includes(query);
     const matchesStatus = filterStatus.value === '' || site.status === filterStatus.value;
+    
     return matchesSearch && matchesStatus;
   });
 });
@@ -190,6 +221,9 @@ const filteredWebsites = computed(() => {
 const { data: response, refresh: refreshSites } = await useAsyncData('dashboard-sites', async () => {
     if (!token.value) return null;
     return await $fetch<any>(`${config.public.apiBase}/api/sites`, {
+      params: {
+        'with[]': ['configurations', 'checks', 'configurations.checkType', 'checks.checkType']
+      },
       headers: {
         'Accept': 'application/json',
         'X-Frontend-Key': config.public.frontendKey as string,
@@ -273,7 +307,18 @@ function getResponseTimeColor(time: number) {
   return 'text-green-600 dark:text-green-400';
 }
 
+function getBadgeColor(slug: string) {
+  switch (slug) {
+    case 'ping': return 'success';
+    case 'http_status': return 'primary';
+    case 'keyword_search': return 'secondary';
+    case 'ssl_check': return 'info';
+    default: return 'neutral';
+  }
+}
+
 definePageMeta({
   middleware: 'auth'
 });
 </script>
+
