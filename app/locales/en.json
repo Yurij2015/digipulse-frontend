@@ -89,5 +89,21 @@
     "feat2_desc": "Multi-channel notifications across Telegram, Slack, and email.",
     "feat3_title": "Advanced Metrics",
     "feat3_desc": "Predictive analytics and deep historical data for smarter uptime."
+  },
+  "sites": {
+    "title": "Sites",
+    "subtitle": "Manage all your infrastructure nodes in one place.",
+    "add_node": "Add New Node",
+    "table": {
+      "name": "Name",
+      "url": "URL",
+      "status": "Status",
+      "actions": "Actions",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "confirm_delete": "Confirm Delete",
+    "delete_question": "Are you sure you want to delete this site? This action cannot be undone.",
+    "deleted_success": "Site has been deleted successfully."
   }
 }

@@ -7,10 +7,10 @@
         <p class="text-neutral-500 font-medium">{{ $t('add_website.subtitle') }}</p>
       </div>
 
-      <UCard class="glass-card rounded-2xl border-neutral-200/50 dark:border-white/10 ring-0 p-8 shadow-2xl relative">
+      <UCard class="glass-card rounded-2xl border-neutral-200/50 dark:border-white/10 ring-0 p-6 shadow-2xl relative">
         <div class="absolute -top-px left-10 right-10 h-px bg-linear-to-r from-transparent via-primary-500/50 to-transparent"></div>
-        <UForm :state="state" :schema="schema" @submit="onSubmit" class="flex flex-col gap-10">
-          <div class="flex flex-col gap-8">
+        <UForm :state="state" :schema="schema" @submit="onSubmit" class="flex flex-col gap-8">
+          <div class="flex flex-col gap-6">
             <UFormField :label="$t('add_website.node_name')" name="name" class="premium-label" :help="$t('add_website.node_name_help')">
               <UInput 
                 v-model="state.name" 
@@ -57,24 +57,24 @@
             </UFormField>
 
             <!-- Dynamic Monitoring Checks Section -->
-            <div v-if="checkTypes.length > 0" class="flex flex-col gap-6 mt-4">
-              <div class="text-[10px] font-black uppercase tracking-widest text-neutral-400 mb-2">Monitoring Configuration</div>
-              <div v-for="type in checkTypes" :key="type.id" class="glass-card p-6 rounded-xl border-neutral-200/50 dark:border-white/5 group hover:border-primary-500/20 transition-all">
-                <div class="flex items-center justify-between gap-4 mb-4">
+            <div v-if="checkTypes.length > 0" class="flex flex-col gap-4 mt-2">
+              <div class="text-[10px] font-black uppercase tracking-widest text-neutral-400 mb-1">Monitoring Configuration</div>
+              <div v-for="type in checkTypes" :key="type.id" class="glass-card p-4 rounded-xl border-neutral-200/50 dark:border-white/5 group hover:border-primary-500/20 transition-all">
+                <div class="flex items-center justify-between gap-4">
                   <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-lg bg-neutral-100 dark:bg-white/5 flex items-center justify-center text-neutral-500 group-hover:text-primary-500 transition-colors">
                       <UIcon :name="type.icon || 'i-heroicons-bolt'" class="text-xl" />
                     </div>
                     <div>
                       <div class="text-sm font-black text-neutral-900 dark:text-white">{{ type.name }}</div>
-                      <div class="text-[10px] text-neutral-500 font-medium">{{ type.description }}</div>
+                      <div class="text-[10px] text-neutral-500 font-medium leading-tight">{{ type.description }}</div>
                     </div>
                   </div>
-                  <USwitch v-model="state.selectedChecks[type.id].enabled" color="primary" />
+                  <USwitch v-model="state.selectedChecks[type.id].enabled" color="primary" size="sm" />
                 </div>
 
                 <!-- Parameters for specific check types -->
-                <div v-if="state.selectedChecks[type.id].enabled && type.slug === 'keyword_search'" class="mt-4 pt-4 border-t border-neutral-100 dark:border-white/5">
+                <div v-if="state.selectedChecks[type.id].enabled && type.slug === 'keyword_search'" class="mt-2 pt-2 border-t border-neutral-100 dark:border-white/5">
                   <UFormField label="Keyword to search for" class="premium-label">
                     <UInput 
                       v-model="state.selectedChecks[type.id].params.keyword" 
@@ -94,7 +94,7 @@
             block 
             size="xl" 
             :loading="loading"
-            class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-black py-5 rounded-xl shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all mt-10 border-0 shimmer-effect"
+            class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-black py-5 rounded-xl shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all border-0 shimmer-effect"
           >
             {{ $t('add_website.submit') }}
           </UButton>
