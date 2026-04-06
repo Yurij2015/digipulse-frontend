@@ -9,13 +9,10 @@ const { init } = useAuth()
 <template>
   <UApp>
     <div 
-      v-if="!route.path.match(/^\/(?:uk|pl)?\/?dashboard/)"
-      class="fixed z-1001 flex items-center gap-4"
-      :class="[
-        (route.path.match(/^\/(?:uk|pl)?\/?$/) || route.path.match(/^\/(?:uk|pl)?\/?auth/) || route.path.match(/^\/(?:uk|pl)?\/?add-website/)) ? 'top-6 right-6' : 'bottom-6 left-6'
-      ]"
+      v-if="!route.path.match(/^\/(?:uk|pl)?\/?(?:dashboard|sites|settings)/)"
+      class="fixed z-1001 flex items-center gap-4 top-6 right-6"
     >
-      <LanguageSwitcher :side="(route.path.match(/^\/(?:uk|pl)?\/?$/) || route.path.match(/^\/(?:uk|pl)?\/?auth/) || route.path.match(/^\/(?:uk|pl)?\/?add-website/)) ? 'top' : 'bottom'" />
+      <LanguageSwitcher side="top" />
       <ThemeSwitcher />
     </div>
     <NuxtRouteAnnouncer />

@@ -1,45 +1,6 @@
 <template>
   <div class="flex flex-col lg:flex-row min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white transition-colors duration-500 mesh-bg">
-    <!-- Sidebar (same as dashboard) -->
-    <aside class="hidden lg:flex fixed inset-y-0 left-0 z-52 w-72 h-screen bg-white dark:bg-neutral-900 border-r border-neutral-200 dark:border-white/5 p-8 flex-col">
-      <div class="flex items-center justify-between mb-12">
-        <div class="text-2xl font-black tracking-tight cursor-pointer" @click="navigateTo(localePath('/dashboard'))">DigiPulse</div>
-      </div>
-
-      <nav class="space-y-1">
-        <UButton
-          v-for="link in links" :key="link.to"
-          :to="link.to"
-          :variant="route.path === link.to ? 'soft' : 'ghost'"
-          :color="route.path === link.to ? 'primary' : 'neutral'"
-          class="w-full justify-start gap-4 font-bold py-3 px-5 rounded-lg transition-all"
-          :class="route.path === link.to ? 'shadow-sm bg-primary-100/10 dark:bg-primary-500/10 ring-1 ring-primary-500/20' : 'text-neutral-500'"
-        >
-          <UIcon :name="link.icon" class="text-xl" />
-          <span class="text-[13px] tracking-tight">{{ link.label }}</span>
-        </UButton>
-      </nav>
-
-      <div class="mt-auto pt-8 border-t border-neutral-100 dark:border-white/5 space-y-4">
-        <div class="flex items-center gap-3 p-3 rounded-xl bg-primary-50 dark:bg-primary-500/5 border border-primary-500/10">
-          <div class="w-10 h-10 rounded-lg bg-primary-500 flex items-center justify-center text-white font-black text-sm shadow-lg shadow-primary-500/20">
-            {{ userInitials }}
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="text-sm font-black text-neutral-900 dark:text-white truncate uppercase tracking-tight">
-              {{ user?.name }}
-            </div>
-            <div class="text-[11px] font-medium text-neutral-500 truncate italic">
-              Settings Mode
-            </div>
-          </div>
-        </div>
-        <div class="flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-neutral-50 dark:bg-white/5">
-          <LanguageSwitcher />
-          <ThemeSwitcher />
-        </div>
-      </div>
-    </aside>
+    <AppSidebar />
 
     <!-- Main Content -->
     <main class="flex-1 p-6 lg:p-12 lg:ml-72 min-h-screen">
@@ -97,12 +58,9 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useI18n, useLocalePath } from '#i18n';
-import { useRoute, useRouter, useAuth } from '#imports';
+import { useLocalePath } from '#i18n';
+import { useAuth } from '#imports';
 
-const route = useRoute();
-const router = useRouter();
-const { t } = useI18n();
 const localePath = useLocalePath();
 const { user } = useAuth();
 
@@ -112,8 +70,9 @@ definePageMeta({
 
 const userInitials = computed(() => {
   if (!user.value) return '??';
-  if (!user.value.first_name || !user.value.last_name) return user.value.name?.substring(0, 2).toUpperCase() || '??';
-  return (user.value.first_name[0] + user.value.last_name[0]).toUpperCase();
+  const u = user.value as any;
+  if (!u.first_name || !u.last_name) return u.name?.substring(0, 2).toUpperCase() || '??';
+  return (u.first_name[0] + u.last_name[0]).toUpperCase();
 });
 
 const profileFields = computed(() => [
@@ -121,12 +80,5 @@ const profileFields = computed(() => [
   { label: 'First Name', value: user.value?.first_name, icon: 'i-heroicons-user' },
   { label: 'Last Name', value: user.value?.last_name, icon: 'i-heroicons-user' },
   { label: 'Email Address', value: user.value?.email, icon: 'i-heroicons-envelope' },
-]);
-
-const links = computed(() => [
-  { label: t('dashboard.title'), icon: 'i-heroicons-home', to: localePath('/dashboard') },
-  { label: t('sites.title'), icon: 'i-heroicons-globe-alt', to: localePath('/sites') },
-  { label: t('dashboard.monitor_node'), icon: 'i-heroicons-plus-circle', to: localePath('/add-website') },
-  { label: t('dashboard.settings'), icon: 'i-heroicons-cog-6-tooth', to: localePath('/settings') }
 ]);
 </script>

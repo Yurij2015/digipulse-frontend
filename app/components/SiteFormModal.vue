@@ -6,6 +6,7 @@ import { useAuth, useRuntimeConfig } from '#imports';
 
 const props = defineProps<{
   siteId?: number | null;
+  siteData?: any | null;
   open: boolean;
 }>();
 
@@ -58,7 +59,7 @@ async function fetchData() {
   formErrors.value = {};
   
   try {
-    // 1. Fetch check types
+    // 1. Fetch check types (always needed)
     const typesResponse = await $fetch<any>(`${config.public.apiBase}/api/check-types`, {
       headers: {
         'Accept': 'application/json',
@@ -66,40 +67,60 @@ async function fetchData() {
         'Authorization': `Bearer ${token.value}`
       }
     });
-    checkTypes.value = (typesResponse.data || []).filter((c: any) => c.is_active);
     
-    // Initialize state
-    state.value.name = '';
-    state.value.url = '';
-    state.value.interval = 300;
-    state.value.selectedChecks = {};
+    const typesData = Array.isArray(typesResponse) ? typesResponse : (typesResponse?.data || []);
+    checkTypes.value = typesData.filter((c: any) => c.is_active);
+    
+    // Reset state before populating
+    state.value = {
+      name: '',
+      url: '',
+      interval: 300,
+      selectedChecks: {}
+    };
     
     checkTypes.value.forEach(type => {
       state.value.selectedChecks[type.id] = { enabled: false, params: {} };
     });
 
-    // 2. Fetch site data if editing
+    // 2. Populate data if editing
     if (isEdit.value) {
-      const siteResponse = await $fetch<any>(`${config.public.apiBase}/api/sites/${props.siteId}`, {
-        headers: {
-          'Accept': 'application/json',
-          'X-Frontend-Key': config.public.frontendKey as string,
-          'Authorization': `Bearer ${token.value}`
+      // Try to use siteData if provided, otherwise fetch
+      let site = props.siteData;
+      
+      // If we don't have enough data (like checks missing in the list object), try fetching
+      if (!site || !site.checks) {
+        try {
+          const siteResponse = await $fetch<any>(`${config.public.apiBase}/api/sites/${props.siteId}`, {
+            headers: {
+              'Accept': 'application/json',
+              'X-Frontend-Key': config.public.frontendKey as string,
+              'Authorization': `Bearer ${token.value}`
+            }
+          });
+          site = siteResponse?.data || siteResponse;
+        } catch (e) {
+          console.error('Fetch detail failed, falling back to props data:', e);
+          if (!site) site = props.siteData;
         }
-      });
+      }
 
-      const site = siteResponse.data;
-      state.value.name = site.name;
-      state.value.url = site.url;
-      state.value.interval = site.update_interval;
+      if (site) {
+        state.value.name = site.name || '';
+        state.value.url = site.url || '';
+        state.value.interval = Number(site.update_interval || site.interval || 300);
 
-      if (site.checks && Array.isArray(site.checks)) {
-        site.checks.forEach((check: any) => {
-          if (state.value.selectedChecks[check.check_type_id]) {
-            state.value.selectedChecks[check.check_type_id].enabled = true;
-            state.value.selectedChecks[check.check_type_id].params = check.params || {};
-          }
-        });
+        // Support both backend formats: 'configurations' and 'checks'
+        const configs = site.configurations || site.checks;
+        if (configs && Array.isArray(configs)) {
+          configs.forEach((item: any) => {
+            const checkTypeId = Number(item.check_type?.id || item.check_type_id);
+            if (state.value.selectedChecks[checkTypeId]) {
+              state.value.selectedChecks[checkTypeId].enabled = true;
+              state.value.selectedChecks[checkTypeId].params = JSON.parse(JSON.stringify(item.params || {}));
+            }
+          });
+        }
       }
     }
   } catch (error) {
@@ -111,6 +132,10 @@ async function fetchData() {
 
 watch(() => props.open, (newVal) => {
   if (newVal) fetchData();
+});
+
+watch(() => props.siteId, (newVal) => {
+  if (isOpen.value && newVal !== undefined) fetchData();
 });
 
 async function onSubmit() {
