@@ -26,16 +26,13 @@
       </div>
 
       <div class="flex flex-col md:flex-row gap-6 mb-12 items-stretch">
-        <div class="flex-1 relative">
-          <input 
-            v-model="searchQuery" 
-            placeholder="Debug: Type to search..." 
-            class="w-full py-3 px-5 rounded-xl border border-neutral-200 dark:border-white/10 bg-white dark:bg-white/5 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none"
-          />
-          <div class="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-neutral-400">
-            Query: "{{ searchQuery }}" | Found: {{ filteredWebsites.length }}
-          </div>
-        </div>
+        <UInput 
+          v-model="searchQuery" 
+          :placeholder="$t('dashboard.filter_placeholder')" 
+          icon="i-heroicons-magnifying-glass" 
+          size="xl" 
+          class="flex-1" 
+        />
         <USelectMenu 
           v-model="filterStatus" 
           :options="statusOptions" 
@@ -221,9 +218,6 @@ const filteredWebsites = computed(() => {
 const { data: response, refresh: refreshSites } = await useAsyncData('dashboard-sites', async () => {
     if (!token.value) return null;
     return await $fetch<any>(`${config.public.apiBase}/api/sites`, {
-      params: {
-        'with[]': ['configurations', 'checks', 'configurations.checkType', 'checks.checkType']
-      },
       headers: {
         'Accept': 'application/json',
         'X-Frontend-Key': config.public.frontendKey as string,
@@ -236,8 +230,10 @@ const { data: response, refresh: refreshSites } = await useAsyncData('dashboard-
 });
 
 watch(response, (newResponse) => {
+    console.log('Dashboard API Response:', newResponse);
     if (!newResponse) return;
     const dataArray = Array.isArray(newResponse) ? newResponse : (newResponse?.data || []);
+    console.log('Mapping websites from:', dataArray);
     websites.value = dataArray.map((site: any) => ({
       ...site,
       id: site.id,
