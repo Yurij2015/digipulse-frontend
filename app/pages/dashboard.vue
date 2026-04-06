@@ -15,13 +15,20 @@
       </header>
 
       <!-- Stats Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-16">
-        <div v-for="stat in summaryStats" :key="stat.label" class="glass-card p-8 rounded-2xl border-neutral-200/50 dark:border-white/5 group hover:border-primary-500/30 transition-all cursor-default">
-          <div class="flex items-center justify-between mb-4">
-            <div class="text-neutral-500 dark:text-neutral-400 text-[10px] font-black uppercase tracking-widest">{{ stat.label }}</div>
-            <UIcon :name="stat.icon" class="text-xl text-neutral-400 group-hover:text-primary-500 transition-colors" />
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <div v-for="(stat, index) in summaryStats" :key="stat.label" class="p-6 rounded-[24px] bg-white dark:bg-white/5 border border-neutral-200/50 dark:border-white/5 hover:border-primary-500/30 transition-all cursor-default flex items-center gap-5 group">
+          <div :class="[
+            'w-14 h-14 rounded-2xl flex items-center justify-center transition-colors',
+            index === 0 ? 'bg-primary-50 dark:bg-primary-950/30 text-primary-600 dark:text-primary-400' :
+            index === 1 ? 'bg-green-50 dark:bg-green-950/20 text-green-600 dark:text-green-400' :
+            (stat.value > 0 ? 'bg-red-50 dark:bg-red-950/20 text-red-600 dark:text-red-400' : 'bg-neutral-50 dark:bg-neutral-900 text-neutral-400')
+          ]">
+            <UIcon :name="stat.icon" class="w-7 h-7" />
           </div>
-          <div class="text-5xl font-black text-neutral-900 dark:text-white leading-none tracking-tighter">{{ stat.value }}</div>
+          <div class="flex flex-col">
+            <div class="text-neutral-400 text-[10px] font-bold uppercase tracking-widest mb-1">{{ stat.label }}</div>
+            <div class="text-3xl font-semibold text-neutral-900 dark:text-white leading-none tabular-nums group-hover:scale-105 transition-transform origin-left">{{ stat.value }}</div>
+          </div>
         </div>
       </div>
 
