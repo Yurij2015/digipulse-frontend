@@ -227,12 +227,12 @@ async function onSubmit() {
                   <div class="text-[9px] text-neutral-500 leading-tight">{{ type.description }}</div>
                 </div>
               </div>
-              <USwitch v-model="state.selectedChecks[type.id].enabled" size="sm" />
+              <USwitch v-model="state.selectedChecks[type.id]!.enabled" size="sm" />
             </div>
             
             <div v-if="state.selectedChecks[type.id]?.enabled && type.slug === 'keyword_search'" class="mt-3 pt-3 border-t border-neutral-100 dark:border-white/5">
               <UFormField label="Keyword" size="sm">
-                <UInput v-model="state.selectedChecks[type.id].params.keyword" placeholder="e.g. 'Out of stock'" class="w-full" />
+                <UInput v-model="state.selectedChecks[type.id]!.params.keyword" placeholder="e.g. 'Out of stock'" class="w-full" />
               </UFormField>
             </div>
           </div>
