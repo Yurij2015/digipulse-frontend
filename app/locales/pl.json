@@ -89,5 +89,21 @@
     "feat2_desc": "Wielokanałowe powiadomienia na Telegram, Slack i Email.",
     "feat3_title": "Zaawansowana analityka",
     "feat3_desc": "Analiza predykcyjna i głębokie dane historyczne dla lepszego działania."
+  },
+  "sites": {
+    "title": "Strony",
+    "subtitle": "Zarządzaj wszystkimi węzłami infrastruktury w jednym miejscu.",
+    "add_node": "Dodaj węzeł",
+    "table": {
+      "name": "Nazwa",
+      "url": "URL",
+      "status": "Status",
+      "actions": "Działania",
+      "edit": "Edytuj",
+      "delete": "Usuń"
+    },
+    "confirm_delete": "Potwierdź usunięcie",
+    "delete_question": "Czy na pewno chcesz usunąć tę stronę? Tej operacji nie można cofnąć.",
+    "deleted_success": "Strona została pomyślnie usunięta."
   }
 }

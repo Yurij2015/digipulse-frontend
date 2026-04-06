@@ -60,7 +60,7 @@
           icon="i-heroicons-arrow-left-on-rectangle" 
           color="neutral" 
           variant="ghost" 
-          :label="$t('dashboard.sign_out')" 
+          :label="t('dashboard.sign_out')" 
           block 
           @click="handleLogout"
           class="justify-start gap-3 text-neutral-500 font-bold py-2.5 hover:text-error" 
@@ -72,11 +72,11 @@
     <main class="flex-1 p-6 lg:p-12 overflow-y-auto lg:ml-72 h-screen">
       <header class="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-16">
         <div>
-          <h1 class="text-4xl font-black text-neutral-900 dark:text-white mb-3">{{ $t('dashboard.title') }}</h1>
-          <p class="text-neutral-500 font-medium">{{ $t('dashboard.subtitle') }}</p>
+          <h1 class="text-4xl font-black text-neutral-900 dark:text-white mb-3">{{ t('dashboard.title') }}</h1>
+          <p class="text-neutral-500 font-medium">{{ t('dashboard.subtitle') }}</p>
         </div>
-        <UButton size="xl" icon="i-heroicons-plus-circle" class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold px-8 rounded-xl hover:scale-105 transition-transform" :to="localePath('/add-website')">
-          {{ $t('dashboard.monitor_node') }}
+        <UButton size="xl" icon="i-heroicons-plus-circle" class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold px-8 rounded-xl hover:scale-105 transition-transform" @click="openAddModal">
+          {{ t('dashboard.monitor_node') }}
         </UButton>
       </header>
 
@@ -94,7 +94,7 @@
       <div class="flex flex-col md:flex-row gap-6 mb-12 items-stretch">
         <UInput 
           v-model="searchQuery" 
-          :placeholder="$t('dashboard.filter_placeholder')" 
+          :placeholder="t('dashboard.filter_placeholder')" 
           icon="i-heroicons-magnifying-glass" 
           size="xl" 
           class="flex-1" 
@@ -145,13 +145,13 @@
 
           <div class="grid grid-cols-2 gap-8 mb-10 py-8 border-y border-neutral-100 dark:border-white/5">
             <div>
-              <div class="text-[9px] uppercase text-neutral-500 font-black tracking-widest mb-3">{{ $t('dashboard.response_time') }}</div>
+              <div class="text-[9px] uppercase text-neutral-500 font-black tracking-widest mb-3">{{ t('dashboard.response_time') }}</div>
               <div class="text-2xl font-black flex items-center gap-1.5" :class="getResponseTimeColor(website.responseTime)">
                 {{ website.responseTime }}<span class="text-xs font-medium opacity-50">ms</span>
               </div>
             </div>
             <div>
-              <div class="text-[9px] uppercase text-neutral-500 font-black tracking-widest mb-3">{{ $t('dashboard.uptime_30d') }}</div>
+              <div class="text-[9px] uppercase text-neutral-500 font-black tracking-widest mb-3">{{ t('dashboard.uptime_30d') }}</div>
               <div class="text-2xl font-black text-neutral-900 dark:text-white">{{ website.uptime }}<span class="text-xs font-medium opacity-50">%</span></div>
             </div>
           </div>
@@ -160,73 +160,92 @@
             <div class="text-neutral-400 text-[10px] font-bold">{{ $t('dashboard.checked') }}: {{ website.lastCheck }}</div>
             <div class="flex gap-1">
               <UButton icon="i-heroicons-chart-bar" variant="ghost" color="neutral" class="hover:bg-neutral-100 dark:hover:bg-white/5" square />
-              <UButton icon="i-heroicons-pencil" variant="ghost" color="neutral" class="hover:bg-neutral-100 dark:hover:bg-white/5" square />
-              <UButton icon="i-heroicons-trash" variant="ghost" color="error" class="hover:bg-red-500/10" square />
+              <UButton 
+                icon="i-heroicons-pencil" 
+                variant="ghost" 
+                color="neutral" 
+                class="hover:bg-neutral-100 dark:hover:bg-white/5" 
+                square 
+                @click="openEditModal(website)"
+              />
+              <UButton 
+                icon="i-heroicons-trash" 
+                variant="ghost" 
+                color="error" 
+                class="hover:bg-red-500/10" 
+                square 
+                @click="confirmDelete(website)"
+              />
             </div>
           </div>
         </div>
       </div>
+
+      <!-- Delete Confirmation Modal -->
+      <UModal v-model:open="isDeleteModalOpen" :title="t('sites.confirm_delete')" :description="t('sites.delete_question')">
+        <template #body>
+          <div class="p-2">
+            <p class="text-sm text-neutral-500">
+              Сайт: <strong class="text-neutral-900 dark:text-white">{{ siteToDelete?.name }}</strong>
+            </p>
+          </div>
+        </template>
+
+        <template #footer>
+          <div class="flex justify-end gap-3 w-full">
+            <UButton color="neutral" variant="ghost" @click="isDeleteModalOpen = false">
+              Cancel
+            </UButton>
+            <UButton color="error" :loading="isDeleting" @click="handleDelete">
+              {{ $t('sites.table.delete') }}
+            </UButton>
+          </div>
+        </template>
+      </UModal>
+
+      <!-- Site Form Modal -->
+      <SiteFormModal v-model:open="isSiteModalOpen" :site-id="editingSiteId" @success="refreshSites" />
+
     </main>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useI18n, useLocalePath } from '#i18n';
-import { useRoute, useRouter, useAuth } from '#imports';
+import { useRoute, useRouter, useAuth, useRuntimeConfig, useNuxtApp } from '#imports';
 const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
 const localePath = useLocalePath();
 const config = useRuntimeConfig();
 const { logout, token, user } = useAuth();
-const isSidebarOpen = ref(false);
 
+// --- State ---
+const isSidebarOpen = ref(false);
+const websites = ref<any[]>([]);
+const isDeleteModalOpen = ref(false);
+const isDeleting = ref(false);
+const siteToDelete = ref<any>(null);
+const searchQuery = ref('');
+const filterStatus = ref('');
+const isSiteModalOpen = ref(false);
+const editingSiteId = ref<number | null>(null);
+
+// --- Computed ---
 const userInitials = computed(() => {
   if (!user.value) return '??';
-  if (!user.value.first_name || !user.value.last_name) return user.value.name?.substring(0, 2).toUpperCase() || '??';
-  return (user.value.first_name[0] + user.value.last_name[0]).toUpperCase();
-});
-
-async function handleLogout() {
-  try {
-    await $fetch(`${config.public.apiBase}/api/logout`, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'X-Frontend-Key': config.public.frontendKey as string,
-        'Authorization': `Bearer ${token.value}`,
-        'X-CSRF-TOKEN': ''
-      }
-    });
-  } catch (error) {
-    console.error('Logout API Error:', error);
-  } finally {
-    logout();
-    router.push(localePath('/auth'));
-  }
-}
-
-definePageMeta({
-  middleware: 'auth'
+  const u = user.value as any;
+  if (!u.first_name || !u.last_name) return u.name?.substring(0, 2).toUpperCase() || '??';
+  return (u.first_name[0] + u.last_name[0]).toUpperCase();
 });
 
 const links = computed(() => [
   { label: t('dashboard.title'), icon: 'i-heroicons-home', to: localePath('/dashboard') },
+  { label: t('sites.title'), icon: 'i-heroicons-globe-alt', to: localePath('/sites') },
   { label: t('dashboard.monitor_node'), icon: 'i-heroicons-plus-circle', to: localePath('/add-website') },
   { label: t('dashboard.settings'), icon: 'i-heroicons-cog-6-tooth', to: localePath('/settings') }
 ]);
-
-const websites = ref([
-  { id: 1, name: 'Google Cloud', url: 'https://google.com', status: 'Online', lastCheck: '2m ago', responseTime: 82, uptime: 99.99 },
-  { id: 2, name: 'Facebook App', url: 'https://facebook.com', status: 'Online', lastCheck: '5m ago', responseTime: 145, uptime: 99.95 },
-  { id: 3, name: 'Main API', url: 'https://api.example.com', status: 'Offline', lastCheck: '1m ago', responseTime: 0, uptime: 98.50 },
-  { id: 4, name: 'Slow DB Store', url: 'https://db.example.com', status: 'Warning', lastCheck: '10m ago', responseTime: 820, uptime: 99.10 },
-  { id: 5, name: 'Corporate Blog', url: 'https://blog.com', status: 'Online', lastCheck: '3m ago', responseTime: 112, uptime: 99.98 },
-]);
-
-const searchQuery = ref('');
-const filterStatus = ref('');
 
 const statusOptions = computed(() => [
   { label: t('dashboard.all_statuses'), value: '' },
@@ -249,6 +268,97 @@ const filteredWebsites = computed(() => {
   });
 });
 
+// --- Async Logic ---
+const { data: response, refresh: refreshSites } = await useAsyncData('dashboard-sites', async () => {
+    if (!token.value) return null;
+    return await $fetch<any>(`${config.public.apiBase}/api/sites`, {
+      headers: {
+        'Accept': 'application/json',
+        'X-Frontend-Key': config.public.frontendKey as string,
+        'Authorization': `Bearer ${token.value}`
+      }
+    });
+}, {
+    server: true,
+    watch: [token]
+});
+
+watch(response, (newResponse) => {
+    if (!newResponse) return;
+    const dataArray = Array.isArray(newResponse) ? newResponse : (newResponse?.data || []);
+    websites.value = dataArray.map((site: any) => ({
+      id: site.id,
+      name: site.name,
+      url: site.url,
+      status: site.status || 'Offline',
+      lastCheck: site.last_check || 'Never',
+      responseTime: site.response_time || 0,
+      uptime: site.uptime || 0
+    }));
+}, { immediate: true });
+
+async function fetchSites() {
+  await refreshSites();
+}
+
+// --- Interaction Functions ---
+async function handleLogout() {
+  try {
+    await $fetch(`${config.public.apiBase}/api/logout`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'X-Frontend-Key': config.public.frontendKey as string,
+        'Authorization': `Bearer ${token.value}`
+      }
+    });
+  } catch (error) {
+    console.error('Logout API Error:', error);
+  } finally {
+    logout();
+    router.push(localePath('/auth'));
+  }
+}
+
+function openAddModal() {
+  editingSiteId.value = null;
+  isSiteModalOpen.value = true;
+}
+
+function openEditModal(site: any) {
+  editingSiteId.value = site.id;
+  isSiteModalOpen.value = true;
+}
+
+function confirmDelete(site: any) {
+  siteToDelete.value = site;
+  isDeleteModalOpen.value = true;
+}
+
+async function handleDelete() {
+  if (!siteToDelete.value) return;
+  
+  isDeleting.value = true;
+  try {
+    await $fetch(`${config.public.apiBase}/api/sites/${siteToDelete.value.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'X-Frontend-Key': config.public.frontendKey as string,
+        'Authorization': `Bearer ${token.value}`
+      }
+    });
+    
+    await refreshSites();
+    isDeleteModalOpen.value = false;
+  } catch (error) {
+    console.error('Failed to delete site:', error);
+  } finally {
+    isDeleting.value = false;
+    siteToDelete.value = null;
+  }
+}
+
 function getStatusClasses(status: string) {
   switch (status) {
     case 'Online': return 'bg-green-500/5 text-green-600 dark:text-green-400 border-green-500/10';
@@ -264,4 +374,12 @@ function getResponseTimeColor(time: number) {
   if (time > 200) return 'text-yellow-500';
   return 'text-green-600 dark:text-green-400';
 }
+
+onMounted(() => {
+  fetchSites();
+});
+
+definePageMeta({
+  middleware: 'auth'
+});
 </script>

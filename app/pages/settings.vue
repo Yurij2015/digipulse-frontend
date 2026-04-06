@@ -125,6 +125,7 @@ const profileFields = computed(() => [
 
 const links = computed(() => [
   { label: t('dashboard.title'), icon: 'i-heroicons-home', to: localePath('/dashboard') },
+  { label: t('sites.title'), icon: 'i-heroicons-globe-alt', to: localePath('/sites') },
   { label: t('dashboard.monitor_node'), icon: 'i-heroicons-plus-circle', to: localePath('/add-website') },
   { label: t('dashboard.settings'), icon: 'i-heroicons-cog-6-tooth', to: localePath('/settings') }
 ]);
