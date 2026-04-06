@@ -58,7 +58,7 @@
 
           <!-- Monitoring Column -->
           <template #monitoring-cell="{ row }">
-            <div class="flex flex-wrap gap-1.5">
+            <div class="flex flex-col gap-1.5 items-start py-1">
               <template v-if="(row.original.configurations?.length || row.original.checks?.length)">
                 <UBadge 
                   v-for="config in (row.original.configurations || row.original.checks)" 
