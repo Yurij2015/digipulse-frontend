@@ -111,7 +111,8 @@ definePageMeta({
 });
 
 const userInitials = computed(() => {
-  if (!user.value?.first_name || !user.value?.last_name) return user.value?.name?.substring(0, 2).toUpperCase() || '??';
+  if (!user.value) return '??';
+  if (!user.value.first_name || !user.value.last_name) return user.value.name?.substring(0, 2).toUpperCase() || '??';
   return (user.value.first_name[0] + user.value.last_name[0]).toUpperCase();
 });
 

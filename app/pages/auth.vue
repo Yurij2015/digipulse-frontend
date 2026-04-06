@@ -158,6 +158,7 @@ definePageMeta({
 const { t } = useI18n();
 const localePath = useLocalePath();
 const router = useRouter();
+const config = useRuntimeConfig();
 const { setAuth } = useAuth();
 const toast = useToast();
 
@@ -203,7 +204,7 @@ async function onSubmit() {
   loading.value = true;
   
   try {
-    const endpoint = isLogin.value ? 'http://localhost/api/login' : 'http://localhost/api/register';
+    const endpoint = isLogin.value ? `${config.public.apiBase}/api/login` : `${config.public.apiBase}/api/register`;
     const body: any = {
       email: state.value.email,
       password: state.value.password,
@@ -223,7 +224,7 @@ async function onSubmit() {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'X-Frontend-Key': 'cvdMXAq7pkUEXJAh16ICaf1YjIAg/cvfEbOqndBjyKie1dMXAq7pfEbOqndBjyKie1'
+        'X-Frontend-Key': config.public.frontendKey as string
       },
       body
     });

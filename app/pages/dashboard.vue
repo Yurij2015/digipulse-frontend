@@ -99,18 +99,19 @@
           size="xl" 
           class="flex-1" 
           :ui="{ 
-            root: 'premium-input flex-1',
             base: 'py-3 ps-12! px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0'
           }" 
         />
-        <USelect 
+        <USelectMenu 
           v-model="filterStatus" 
           :options="statusOptions" 
+          value-attribute="value"
+          option-attribute="label"
           size="xl" 
-          class="w-full md:w-64" 
+          class="w-full md:w-64 premium-input" 
+          icon="i-heroicons-funnel"
           :ui="{ 
-            root: 'premium-input w-full md:w-64',
-            base: 'py-3 px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 appearance-none'
+            base: 'py-3 px-5 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 appearance-none w-full text-left flex items-center justify-between'
           }" 
         />
       </div>
@@ -177,21 +178,23 @@ const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
 const localePath = useLocalePath();
+const config = useRuntimeConfig();
 const { logout, token, user } = useAuth();
 const isSidebarOpen = ref(false);
 
 const userInitials = computed(() => {
-  if (!user.value?.first_name || !user.value?.last_name) return user.value?.name?.substring(0, 2).toUpperCase() || '??';
+  if (!user.value) return '??';
+  if (!user.value.first_name || !user.value.last_name) return user.value.name?.substring(0, 2).toUpperCase() || '??';
   return (user.value.first_name[0] + user.value.last_name[0]).toUpperCase();
 });
 
 async function handleLogout() {
   try {
-    await $fetch('http://localhost/api/logout', {
+    await $fetch(`${config.public.apiBase}/api/logout`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'X-Frontend-Key': 'cvdMXAq7pkUEXJAh16ICaf1YjIAg/cvfEbOqndBjyKie1dMXAq7pfEbOqndBjyKie1',
+        'X-Frontend-Key': config.public.frontendKey as string,
         'Authorization': `Bearer ${token.value}`,
         'X-CSRF-TOKEN': ''
       }

@@ -23,4 +23,10 @@ export default defineNuxtConfig({
     classSuffix: "",
   },
   css: ["~/assets/css/main.css"],
+  runtimeConfig: {
+    public: {
+      apiBase: 'http://localhost',
+      frontendKey: ''
+    }
+  }
 });
