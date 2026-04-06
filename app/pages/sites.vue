@@ -195,7 +195,29 @@ const { data: response, refresh: refreshSites } = await useAsyncData('sites-list
 watch(response, (newResponse) => {
     if (!newResponse) return;
     const dataArray = Array.isArray(newResponse) ? newResponse : (newResponse?.data || []);
-    sites.value = dataArray;
+    
+    // Calculate statuses for each site
+    sites.value = dataArray.map((site: any) => {
+      let status = 'Offline';
+      const configs = site.configurations || site.checks || [];
+      const hasAnyCheckResult = configs.some((c: any) => c.last_checked_at || c.last_status);
+      
+      if (site.is_active) {
+        if (!hasAnyCheckResult) {
+          status = 'Pending';
+        } else {
+          status = 'Online';
+          if (configs.some((c: any) => c.last_status === 'Warning')) {
+            status = 'Warning';
+          }
+        }
+      }
+      
+      return {
+        ...site,
+        status: status
+      };
+    });
 }, { immediate: true });
 
 function openAddModal() {
@@ -244,6 +266,7 @@ function getStatusClasses(status: string) {
     case 'Online': return 'bg-green-500/5 text-green-600 dark:text-green-400 border-green-500/10';
     case 'Offline': return 'bg-red-500/5 text-red-600 dark:text-red-500 border-red-500/10';
     case 'Warning': return 'bg-yellow-500/5 text-yellow-600 dark:text-yellow-500 border-yellow-500/10';
+    case 'Pending': return 'bg-neutral-500/5 text-neutral-500 dark:text-neutral-400 border-neutral-500/10';
     default: return 'bg-neutral-500/5 text-neutral-500 border-neutral-500/10';
   }
 }
