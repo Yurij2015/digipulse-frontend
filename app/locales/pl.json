@@ -105,5 +105,15 @@
     "confirm_delete": "Potwierdź usunięcie",
     "delete_question": "Czy na pewno chcesz usunąć tę stronę? Tej operacji nie można cofnąć.",
     "deleted_success": "Strona została pomyślnie usunięta."
+  },
+  "history": {
+    "title": "Historia",
+    "subtitle": "Tygodniowa wydajność monitorowania i incydenty.",
+    "no_data_title": "Brak danych",
+    "no_data_desc": "Brak rekordów monitorowania dla tego tygodnia.",
+    "prev_week": "Poprzedni tydzień",
+    "next_week": "Następny tydzień",
+    "incidents": "Incydenty przestoju",
+    "view_history": "Zobacz historię"
   }
 }

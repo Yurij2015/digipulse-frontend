@@ -81,20 +81,16 @@
           <!-- Actions Column -->
           <template #actions-cell="{ row }">
             <div class="flex items-center gap-2">
-              <UButton 
-                icon="i-heroicons-pencil" 
-                variant="ghost" 
-                color="neutral" 
-                size="sm"
-                @click="openEditModal(row.original)"
-              />
-              <UButton 
-                icon="i-heroicons-trash" 
-                variant="ghost" 
-                color="error" 
-                size="sm"
-                @click="confirmDelete(row.original)"
-              />
+              <UButton icon="i-heroicons-chart-bar" variant="ghost" color="primary" size="sm" :to="localePath(`/sites/${row.original.id}/history`)" />
+              <UButton icon="i-heroicons-pencil" variant="ghost" color="neutral" size="sm" @click="openEditModal(row.original)" />
+              <UButton icon="i-heroicons-trash" variant="ghost" color="error" size="sm" @click="confirmDelete(row.original)" />
+            </div>
+          </template>
+          <template #actions-data="{ row }">
+            <div class="flex items-center gap-2">
+              <UButton icon="i-heroicons-chart-bar" variant="ghost" color="primary" size="sm" :to="localePath(`/sites/${row.original.id}/history`)" />
+              <UButton icon="i-heroicons-pencil" variant="ghost" color="neutral" size="sm" @click="openEditModal(row.original)" />
+              <UButton icon="i-heroicons-trash" variant="ghost" color="error" size="sm" @click="confirmDelete(row.original)" />
             </div>
           </template>
         </UTable>
@@ -140,10 +136,11 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { useI18n } from '#i18n';
+import { useI18n, useLocalePath } from '#i18n';
 import { useAuth, useRuntimeConfig } from '#imports';
 
 const { t } = useI18n();
+const localePath = useLocalePath();
 const config = useRuntimeConfig();
 const { token } = useAuth();
 

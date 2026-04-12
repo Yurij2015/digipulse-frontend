@@ -136,10 +136,17 @@
             </div>
           </div>
 
-          <div class="flex justify-between items-center sm:opacity-0 group-hover:opacity-100 transition-all duration-300">
+          <div class="flex justify-between items-center transition-all duration-300">
             <div class="text-neutral-400 text-[10px] font-bold">{{ $t('dashboard.checked') }}: {{ website.lastCheck }}</div>
             <div class="flex gap-1">
-              <UButton icon="i-heroicons-chart-bar" variant="ghost" color="neutral" class="hover:bg-neutral-100 dark:hover:bg-white/5" square />
+              <UButton 
+                icon="i-heroicons-chart-bar" 
+                variant="ghost" 
+                color="primary" 
+                class="hover:bg-primary-500/10" 
+                square 
+                :to="localePath(`/sites/${website.id}/history`)"
+              />
               <UButton 
                 icon="i-heroicons-pencil" 
                 variant="ghost" 
@@ -192,10 +199,11 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { useI18n } from '#i18n';
+import { useI18n, useLocalePath } from '#i18n';
 import { useAuth, useRuntimeConfig } from '#imports';
 
 const { t } = useI18n();
+const localePath = useLocalePath();
 const config = useRuntimeConfig();
 const { token } = useAuth();
 
@@ -251,7 +259,6 @@ const fetchError = ref<string | null>(null);
 // --- Async Logic ---
 async function loadSites() {
   if (!token.value) {
-    console.log('Dashboard: waiting for token...');
     return;
   }
   
@@ -269,7 +276,6 @@ async function loadSites() {
       }
     });
     
-    console.log('Dashboard data received:', data);
     const dataArray = Array.isArray(data) ? data : (data?.data || []);
     
     websites.value = dataArray.map((site: any) => {
