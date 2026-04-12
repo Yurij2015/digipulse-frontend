@@ -113,6 +113,11 @@
             />
           </UFormField>
 
+          <!-- Cloudflare Turnstile -->
+          <div class="flex justify-center mt-2">
+            <NuxtTurnstile v-model="token" />
+          </div>
+
           <UButton 
             type="submit" 
             block 
@@ -165,6 +170,7 @@ const toast = useToast();
 const isLogin = ref(true);
 const showPassword = ref(false);
 const loading = ref(false);
+const token = ref('');
 
 const state = ref({
   email: '',
@@ -217,6 +223,8 @@ async function onSubmit() {
       body.password_confirmation = state.value.confirmPassword;
     }
 
+    // Include Turnstile token
+    body.captcha_token = token.value;
     
     const response = await $fetch<AuthResponse>(endpoint, {
       method: 'POST',
