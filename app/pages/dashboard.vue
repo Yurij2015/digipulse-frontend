@@ -106,9 +106,15 @@
               :key="config.id"
               size="sm"
               variant="subtle"
-              :color="getBadgeColor(config.check_type?.slug || config.type?.slug)"
-              class="font-bold text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-md"
+              :class="[
+                'font-bold text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-md border',
+                getBadgeClass(config.check_type?.slug || config.type?.slug)
+              ]"
             >
+              <UIcon 
+                :name="getBadgeIcon(config.check_type?.slug || config.type?.slug)" 
+                class="mr-1 text-[10px]"
+              />
               {{ config.check_type?.name || config.type?.name }}
             </UBadge>
           </div>
@@ -338,14 +344,26 @@ function getResponseTimeColor(time: number) {
   return 'text-green-600 dark:text-green-400';
 }
 
-function getBadgeColor(slug: string) {
-  switch (slug) {
-    case 'ping': return 'success';
-    case 'http_status': return 'primary';
-    case 'keyword_search': return 'secondary';
-    case 'ssl_check': return 'info';
-    default: return 'neutral';
-  }
+function getBadgeIcon(slug: string) {
+  if (!slug) return 'i-heroicons-question-mark-circle';
+  const s = slug.toLowerCase();
+  if (s.includes('ping')) return 'i-heroicons-signal';
+  if (s.includes('http')) return 'i-heroicons-globe-alt';
+  if (s.includes('ssl')) return 'i-heroicons-shield-check';
+  if (s.includes('dns')) return 'i-heroicons-server';
+  if (s.includes('port')) return 'i-heroicons-bolt';
+  return 'i-heroicons-adjustments-horizontal';
+}
+
+function getBadgeClass(slug: string) {
+  if (!slug) return 'bg-neutral-50 text-neutral-600 border-neutral-200';
+  const s = slug.toLowerCase();
+  if (s.includes('ping')) return 'bg-emerald-500/10! text-emerald-500! border-emerald-500/20!';
+  if (s.includes('http')) return 'bg-blue-500/10! text-blue-500! border-blue-500/20!';
+  if (s.includes('ssl')) return 'bg-amber-500/10! text-amber-500! border-amber-500/20!';
+  if (s.includes('dns')) return 'bg-pink-500/10! text-pink-500! border-pink-500/20!';
+  if (s.includes('port')) return 'bg-violet-500/10! text-violet-500! border-violet-500/20!';
+  return 'bg-neutral-500/10! text-neutral-500! border-neutral-500/20!';
 }
 
 definePageMeta({

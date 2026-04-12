@@ -138,6 +138,17 @@ watch(() => props.siteId, (newVal) => {
   if (isOpen.value && newVal !== undefined) fetchData();
 });
 
+function getCheckTypeColor(slug: string) {
+  if (!slug) return 'text-neutral-400';
+  const s = slug.toLowerCase();
+  if (s.includes('ping')) return 'text-emerald-500';
+  if (s.includes('http')) return 'text-blue-500';
+  if (s.includes('ssl')) return 'text-amber-500';
+  if (s.includes('dns')) return 'text-pink-500';
+  if (s.includes('port')) return 'text-violet-500';
+  return 'text-neutral-400';
+}
+
 async function onSubmit() {
   loading.value = true;
   formErrors.value = {};
@@ -221,7 +232,11 @@ async function onSubmit() {
           <div v-for="type in checkTypes" :key="type.id" class="p-3 rounded-xl border border-neutral-100 dark:border-white/5 bg-neutral-50/50 dark:bg-white/2">
             <div class="flex items-center justify-between gap-3">
               <div class="flex items-center gap-3">
-                <UIcon :name="type.icon || 'i-heroicons-bolt'" class="text-lg text-neutral-400" />
+                <UIcon 
+                  :name="(type.icon || 'heroicon-o-bolt').replace('heroicon-o-', 'i-heroicons-').replace('heroicon-s-', 'i-heroicons-')" 
+                  class="text-lg" 
+                  :class="getCheckTypeColor(type.slug)"
+                />
                 <div>
                   <div class="text-xs font-bold text-neutral-900 dark:text-white">{{ type.name }}</div>
                   <div class="text-[9px] text-neutral-500 leading-tight">{{ type.description }}</div>
