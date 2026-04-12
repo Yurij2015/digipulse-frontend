@@ -52,7 +52,7 @@
         </div>
         
         <div v-if="!hasData && !pending" class="flex flex-col items-center justify-center h-[400px]">
-           <UIcon name="i-heroicons-chart-bar-slash" class="text-5xl text-neutral-300 dark:text-neutral-700 mb-4" />
+           <UIcon name="i-heroicons-chart-bar" class="text-5xl text-neutral-300 dark:text-neutral-700 mb-4" />
            <h3 class="text-xl font-black text-neutral-900 dark:text-white mb-2">No Data Available</h3>
            <p class="text-neutral-500 font-medium text-sm">There are no monitoring records for this week.</p>
         </div>
@@ -101,6 +101,7 @@
 import { ref, computed, watch, nextTick, onMounted } from 'vue';
 import { useRoute, useRouter } from '#app';
 import { useRuntimeConfig, useNuxtApp, useAuth } from '#imports';
+import { useSitesStore } from '~/stores/sites';
 import { useI18n, useLocalePath } from '#i18n';
 import AppSidebar from '~/components/AppSidebar.vue';
 import { subWeeks, addWeeks, getISOWeekYear, getISOWeek, startOfISOWeek, endOfISOWeek, format, parseISO, isSameWeek } from 'date-fns';
@@ -113,6 +114,7 @@ const route = useRoute();
 const router = useRouter();
 const config = useRuntimeConfig();
 const { token } = useAuth();
+const sitesStore = useSitesStore();
 const localePath = useLocalePath();
 const siteId = route.params.id;
 
@@ -196,9 +198,9 @@ const fetchData = async () => {
     pending.value = true;
     try {
        const [siteRes, histRes] = await Promise.all([
-          !site.value ? $fetch<any>(`${config.public.apiBase}/api/sites/${siteId}`, {
+          !site.value ? (sitesStore.sites.find((s: any) => String(s.id) === String(siteId)) ? Promise.resolve({ data: sitesStore.sites.find((s: any) => String(s.id) === String(siteId)) }) : $fetch<any>(`${config.public.apiBase}/api/sites/${siteId}`, {
              headers: { 'Accept': 'application/json', 'X-Frontend-Key': config.public.frontendKey as string, 'Authorization': `Bearer ${token.value}` }
-          }) : Promise.resolve({ data: site.value }),
+          })) : Promise.resolve({ data: site.value }),
           $fetch<any>(`${config.public.apiBase}/api/sites/${siteId}/history`, {
              params: { 
                week: weekParam.value,
@@ -279,7 +281,7 @@ const chartData = computed(() => {
     const labels = stats.map((s: any) => format(parseISO(s.timestamp), 'EEE HH:mm'));
     
     const responseTimeData = stats.map((s: any) => s.response_time || null);
-    const uptimeData = stats.map((s: any) => s.uptime !== null ? (s.uptime * 100) : null);
+    const uptimeData = stats.map((s: any) => s.uptime !== null ? (s.uptime) : null);
 
     const incidentPoints = stats.map((s: any) => {
        const hourStart = parseISO(s.timestamp);
@@ -336,7 +338,7 @@ const chartOptions = computed(() => {
        responsive: true,
        maintainAspectRatio: false,
        interaction: {
-          mode: 'index',
+          mode: 'index' as const,
           intersect: false,
        },
        plugins: {

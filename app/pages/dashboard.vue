@@ -66,7 +66,7 @@
         >
           <div class="flex justify-between items-start mb-6">
             <div class="flex flex-col gap-1">
-              <h3 class="text-lg font-semibold text-neutral-900 dark:text-white group-hover:text-primary-600 transition-colors truncate max-w-[180px]">
+              <h3 class="text-lg font-semibold text-neutral-900 dark:text-white group-hover:text-primary-600 transition-colors truncate max-w-45">
                 {{ website.name || 'Unnamed Node' }}
               </h3>
               <div class="flex items-center gap-1.5 flex-wrap">
@@ -100,7 +100,7 @@
           </div>
 
           <!-- Monitoring Badges Section -->
-          <div v-if="(website.configurations?.length || website.checks?.length)" class="flex flex-wrap gap-1.5 mb-6 min-h-[22px]">
+          <div v-if="(website.configurations?.length || website.checks?.length)" class="flex flex-wrap gap-1.5 mb-6 min-h-5.5">
             <UBadge 
               v-for="config in (website.configurations || website.checks)" 
               :key="config.id"
@@ -198,22 +198,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useI18n, useLocalePath } from '#i18n';
 import { useAuth, useRuntimeConfig } from '#imports';
+import { useSitesStore } from '~/stores/sites';
 
 const { t } = useI18n();
 const localePath = useLocalePath();
 const config = useRuntimeConfig();
 const { token } = useAuth();
+const sitesStore = useSitesStore();
 
-// --- State ---
-const websites = ref<any[]>([]);
+const websites = computed(() => sitesStore.sites);
+const isLoading = computed(() => sitesStore.loading);
+const fetchError = computed(() => sitesStore.error);
+
+const searchQuery = ref('');
+const filterStatus = ref('');
 const isDeleteModalOpen = ref(false);
 const isDeleting = ref(false);
 const siteToDelete = ref<any>(null);
-const searchQuery = ref('');
-const filterStatus = ref<any>(null); // Start with null carefully
+
 const isSiteModalOpen = ref(false);
 const editingSiteId = ref<number | null>(null);
 const selectedSite = ref<any>(null);
@@ -228,8 +233,8 @@ const statusOptions = [
 
 const summaryStats = computed(() => [
   { label: t('dashboard.total_nodes'), value: websites.value.length, icon: 'i-heroicons-server-stack' },
-  { label: t('dashboard.active_nodes'), value: websites.value.filter(s => s.status === 'Online').length, icon: 'i-heroicons-check-circle' },
-  { label: t('dashboard.issues_detected'), value: websites.value.filter(s => s.status !== 'Online').length, icon: 'i-heroicons-exclamation-triangle' },
+  { label: t('dashboard.active_nodes'), value: websites.value.filter((s: any) => s.status === 'Online').length, icon: 'i-heroicons-check-circle' },
+  { label: t('dashboard.issues_detected'), value: websites.value.filter((s: any) => s.status !== 'Online').length, icon: 'i-heroicons-exclamation-triangle' },
 ]);
 
 const filteredWebsites = computed(() => {
@@ -243,9 +248,9 @@ const filteredWebsites = computed(() => {
     const matchesSearch = name.includes(query) || url.includes(query);
     
     // Status filter: extract value from either string or object
-    const rawFilterValue = typeof filterStatus.value === 'object' ? filterStatus.value?.value : filterStatus.value;
+    const rawFilterValue = typeof filterStatus.value === 'object' ? (filterStatus.value as any)?.value : filterStatus.value;
     const selectedStatus = (rawFilterValue || '').toLowerCase();
-    const siteStatus = (site.status || 'offline').toLowerCase();
+    const siteStatus = ((site as any).status || 'offline').toLowerCase();
     
     const matchesStatus = selectedStatus === '' || siteStatus === selectedStatus;
     
@@ -253,80 +258,21 @@ const filteredWebsites = computed(() => {
   });
 });
 
-const isLoading = ref(true);
-const fetchError = ref<string | null>(null);
-
 // --- Async Logic ---
 async function loadSites() {
-  if (!token.value) {
-    return;
-  }
-  
-  isLoading.value = true;
-  fetchError.value = null;
-  try {
-    const data = await $fetch<any>(`${config.public.apiBase}/api/sites`, {
-      params: {
-        'with[]': ['configurations', 'checks', 'configurations.checkType', 'checks.checkType']
-      },
-      headers: {
-        'Accept': 'application/json',
-        'X-Frontend-Key': config.public.frontendKey as string,
-        'Authorization': `Bearer ${token.value}`
-      }
-    });
-    
-    const dataArray = Array.isArray(data) ? data : (data?.data || []);
-    
-    websites.value = dataArray.map((site: any) => {
-      // Determine real status from API data
-      let status = 'Offline';
-      const configs = site.configurations || site.checks || [];
-      
-      // Check if any of the monitoring methods has actually run
-      const hasAnyCheckResult = configs.some((c: any) => c.last_checked_at || c.last_status);
-      
-      if (site.is_active) {
-        if (!hasAnyCheckResult) {
-          status = 'Pending';
-        } else {
-          status = 'Online';
-          // Check if any configuration has a warning
-          if (configs.some((c: any) => c.last_status === 'Warning')) {
-            status = 'Warning';
-          }
-        }
-      }
-      
-      return {
-        ...site,
-        id: site.id,
-        name: site.name,
-        url: site.url,
-        status: status,
-        lastCheck: site.last_checked_at || site.last_check || 'Never',
-        responseTime: site.responseTime || site.response_time || 0,
-        uptime: site.uptime || 0
-      };
-    });
-  } catch (err: any) {
-    console.error('Dashboard fetch error:', err);
-    fetchError.value = err.message || 'Failed to load sites';
-  } finally {
-    isLoading.value = false;
-  }
+  await sitesStore.fetchSites();
 }
 
 // Watch token to load data when it becomes available
 watch(token, (newToken) => {
   if (newToken && websites.value.length === 0) {
-    loadSites();
+    sitesStore.fetchSites();
   }
 }, { immediate: true });
 
 onMounted(() => {
   if (token.value) {
-    loadSites();
+    sitesStore.fetchSites();
   }
 });
 // Refresh after action
@@ -365,7 +311,7 @@ async function handleDelete() {
       }
     });
     
-    await loadSites();
+    await sitesStore.fetchSites(true);
     isDeleteModalOpen.value = false;
   } catch (error) {
     console.error('Failed to delete site:', error);

@@ -4,7 +4,7 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
   devtools: { enabled: true },
-  modules: ["@nuxt/ui", "@nuxtjs/color-mode", "@nuxtjs/i18n"],
+  modules: ["@nuxt/ui", "@nuxtjs/color-mode", "@nuxtjs/i18n", "@pinia/nuxt"],
   i18n: {
     locales: [
       { code: "en", language: "en-US", file: "en.json", name: "English" },
@@ -15,7 +15,6 @@ export default defineNuxtConfig({
     strategy: "prefix_except_default",
     langDir: "locales",
     restructureDir: "app",
-    lazy: true,
   },
   colorMode: {
     preference: "dark",

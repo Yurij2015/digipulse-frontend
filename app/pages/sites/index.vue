@@ -135,18 +135,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useI18n, useLocalePath } from '#i18n';
 import { useAuth, useRuntimeConfig } from '#imports';
+import { useSitesStore } from '~/stores/sites';
 
 const { t } = useI18n();
 const localePath = useLocalePath();
 const config = useRuntimeConfig();
 const { token } = useAuth();
+const sitesStore = useSitesStore();
 
 // --- State ---
 const search = ref('');
-const sites = ref<any[]>([]);
+const sites = computed(() => sitesStore.sites);
 const isDeleteModalOpen = ref(false);
 const isDeleting = ref(false);
 const siteToDelete = ref<any>(null);
@@ -170,52 +172,18 @@ const filteredRows = computed(() => {
   });
 });
 
-// useAsyncData is much more reliable in Nuxt for initial load
-const { data: response, refresh: refreshSites } = await useAsyncData('sites-list', async () => {
-    if (!token.value) return null;
-    return await $fetch<any>(`${config.public.apiBase}/api/sites`, {
-      params: {
-        'with[]': ['configurations', 'checks', 'configurations.checkType', 'checks.checkType']
-      },
-      headers: {
-        'Accept': 'application/json',
-        'X-Frontend-Key': config.public.frontendKey as string,
-        'Authorization': `Bearer ${token.value}`
-      }
-    });
-}, {
-    server: true,
-    watch: [token]
+// Initial load
+onMounted(async () => {
+    if (token.value) {
+        await sitesStore.fetchSites();
+    }
 });
 
-// Sync data when response changes
-watch(response, (newResponse) => {
-    if (!newResponse) return;
-    const dataArray = Array.isArray(newResponse) ? newResponse : (newResponse?.data || []);
-    
-    // Calculate statuses for each site
-    sites.value = dataArray.map((site: any) => {
-      let status = 'Offline';
-      const configs = site.configurations || site.checks || [];
-      const hasAnyCheckResult = configs.some((c: any) => c.last_checked_at || c.last_status);
-      
-      if (site.is_active) {
-        if (!hasAnyCheckResult) {
-          status = 'Pending';
-        } else {
-          status = 'Online';
-          if (configs.some((c: any) => c.last_status === 'Warning')) {
-            status = 'Warning';
-          }
-        }
-      }
-      
-      return {
-        ...site,
-        status: status
-      };
-    });
-}, { immediate: true });
+// Refresh function
+const refreshSites = async () => {
+    await sitesStore.fetchSites(true);
+};
+
 
 function openAddModal() {
   editingSiteId.value = null;

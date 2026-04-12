@@ -217,7 +217,6 @@ async function onSubmit() {
       body.password_confirmation = state.value.confirmPassword;
     }
 
-    console.log(`Sending ${isLogin.value ? 'login' : 'register'} request to: ${endpoint}`);
     
     const response = await $fetch<AuthResponse>(endpoint, {
       method: 'POST',
@@ -229,11 +228,8 @@ async function onSubmit() {
       body
     });
 
-    console.log('API Response received:', response);
-
     if (response && response.token && response.user) {
       setAuth(response);
-      console.log('Auth successful, redirecting to dashboard...');
       const target = localePath('/dashboard');
       await router.push(target);
     } else {
