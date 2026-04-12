@@ -195,6 +195,7 @@ async function onSubmit() {
 
 <template>
   <UModal v-model:open="isOpen" :title="isEdit ? 'Edit Node' : t('add_website.title')" :description="isEdit ? 'Update your infrastructure monitoring configuration.' : t('add_website.subtitle')">
+    <BaseLoader :show="loading" />
     <template #body>
       <div v-if="pageLoading" class="p-10 text-center">
         <UIcon name="i-heroicons-arrow-path" class="text-3xl animate-spin text-primary-500" />

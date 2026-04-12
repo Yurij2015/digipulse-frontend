@@ -151,7 +151,8 @@ const sitesStore = useSitesStore();
 
 // --- State ---
 const search = ref('');
-const sites = computed(() => sitesStore.sites);
+const sites = computed(() => sitesStore.sites || []);
+const isLoading = computed(() => sitesStore.loading);
 const isDeleteModalOpen = ref(false);
 const isDeleting = ref(false);
 const siteToDelete = ref<any>(null);
