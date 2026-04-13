@@ -25,6 +25,7 @@
               size="xl"
               class="w-full"
               :ui="{ 
+                root: 'premium-input w-full',
                 base: 'py-3 ps-10! px-4 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
               }"
             />
@@ -39,6 +40,7 @@
                 size="xl"
                 class="w-full"
                 :ui="{ 
+                  root: 'premium-input w-full',
                   base: 'py-3 ps-10! px-4 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
                 }"
               />
@@ -51,6 +53,7 @@
                 size="xl"
                 class="w-full"
                 :ui="{ 
+                  root: 'premium-input w-full',
                   base: 'py-3 ps-10! px-4 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
                 }"
               />
@@ -66,6 +69,7 @@
               size="xl"
               class="w-full"
               :ui="{ 
+                root: 'premium-input w-full',
                 base: 'py-3 ps-10! px-4 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
               }"
             />
