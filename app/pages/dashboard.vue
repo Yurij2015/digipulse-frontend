@@ -144,7 +144,9 @@
           </div>
 
           <div class="flex justify-between items-center transition-all duration-300">
-            <div class="text-neutral-400 text-[10px] font-bold">{{ $t('dashboard.checked') }}: {{ website.lastCheck }}</div>
+            <div class="text-neutral-400 text-[10px] font-bold">
+              {{ $t('dashboard.checked') }}: {{ formatCheckTime(website.lastCheck) }}
+            </div>
             <div class="flex gap-1">
               <UButton 
                 icon="i-heroicons-chart-bar" 
@@ -209,8 +211,10 @@ import { ref, computed, watch, onMounted } from 'vue';
 import { useI18n, useLocalePath } from '#i18n';
 import { useAuth, useRuntimeConfig } from '#imports';
 import { useSitesStore } from '~/stores/sites';
+import { formatDistanceToNow } from 'date-fns';
+import { uk, pl, enUS } from 'date-fns/locale';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const localePath = useLocalePath();
 const config = useRuntimeConfig();
 const { token } = useAuth();
@@ -365,6 +369,22 @@ function getBadgeClass(slug: string) {
   if (s.includes('dns')) return 'bg-pink-500/10! text-pink-500! border-pink-500/20!';
   if (s.includes('port')) return 'bg-violet-500/10! text-violet-500! border-violet-500/20!';
   return 'bg-neutral-500/10! text-neutral-500! border-neutral-500/20!';
+}
+
+const locales = { uk, pl, en: enUS };
+
+function formatCheckTime(dateStr: string) {
+  if (!dateStr || dateStr === 'Never') return t('dashboard.never');
+  
+  try {
+    const date = new Date(dateStr);
+    return formatDistanceToNow(date, { 
+      addSuffix: true, 
+      locale: locales[locale.value as keyof typeof locales] || enUS 
+    });
+  } catch (e) {
+    return dateStr;
+  }
 }
 
 definePageMeta({
