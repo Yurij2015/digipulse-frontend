@@ -4,7 +4,13 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
   devtools: { enabled: true },
-  modules: ["@nuxt/ui", "@nuxtjs/color-mode", "@nuxtjs/i18n", "@pinia/nuxt", "@nuxtjs/turnstile"],
+  modules: [
+    "@nuxt/ui",
+    "@nuxtjs/color-mode",
+    "@nuxtjs/i18n",
+    "@pinia/nuxt",
+    "@nuxtjs/turnstile",
+  ],
   i18n: {
     locales: [
       { code: "en", language: "en-US", file: "en.json", name: "English" },
@@ -20,9 +26,6 @@ export default defineNuxtConfig({
     preference: "dark",
     fallback: "dark",
     classSuffix: "",
-  },
-  turnstile: {
-    siteKey: '1x00000000000000000000AA',
   },
   css: ["~/assets/css/main.css"],
   runtimeConfig: {

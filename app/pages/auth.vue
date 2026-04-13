@@ -225,7 +225,7 @@ async function onSubmit() {
     }
 
     // Include Turnstile token
-    body.captcha_token = token.value;
+    body.cf_turnstile_response = token.value;
     
     const response = await $fetch<AuthResponse>(endpoint, {
       method: 'POST',
@@ -248,6 +248,8 @@ async function onSubmit() {
         description: 'Server returned invalid data structure',
         color: 'error'
       });
+      // Reset Turnstile on error
+      token.value = '';
     }
   } catch (error: any) {
     console.error('Submit Error:', error);
@@ -256,6 +258,8 @@ async function onSubmit() {
       description: error.data?.message || 'Failed to connect to server',
       color: 'error'
     });
+    // Reset Turnstile on error
+    token.value = '';
   } finally {
     loading.value = false;
   }
