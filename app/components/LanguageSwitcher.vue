@@ -5,7 +5,7 @@
       class="flex items-center gap-2 group hover:bg-neutral-100 dark:hover:bg-white/5 transition-all px-3 py-1.5 rounded-lg select-none cursor-pointer"
     >
       <UIcon name="i-heroicons-globe-alt" class="text-lg text-neutral-500 group-hover:text-primary-500 transition-colors" />
-      <span class="font-black uppercase tracking-[0.2em] text-[10px]">{{ locale }}</span>
+      <span class="font-normal uppercase tracking-[0.05em] text-lg text-neutral-500 group-hover:text-primary-500 transition-colors">{{ locale }}</span>
       <UIcon 
         name="i-heroicons-chevron-down-20-solid" 
         class="text-xs opacity-30 shrink-0 transition-transform duration-150" 
@@ -46,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useI18n } from '#i18n';
 
 
@@ -61,7 +61,7 @@ const open = ref(false);
 const { locales, locale, setLocale } = useI18n();
 
 const availableLocales = computed(() => {
-  return locales.value && locales.value.length > 0 ? locales.value : [
+  return locales.value && locales.value.length > 0 ? (locales.value as any[]) : [
     { code: 'en', name: 'English' },
     { code: 'uk', name: 'Українська' },
     { code: 'pl', name: 'Polski' }
@@ -76,13 +76,20 @@ const switchLocale = async (code: string) => {
 };
 
 // Закривати по кліку зовні
-if (typeof window !== 'undefined') {
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('.relative.z-50')) {
-      open.value = false;
-    }
-  });
-}
+const handleGlobalClick = (e: MouseEvent) => {
+  const target = e.target as HTMLElement;
+  if (target && !target.closest('.relative.z-50')) {
+    open.value = false;
+  }
+};
+
+onMounted(() => {
+  document.addEventListener('click', handleGlobalClick);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleGlobalClick);
+});
 </script>
 
 <style scoped>
