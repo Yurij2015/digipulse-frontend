@@ -28,6 +28,9 @@ export default defineNuxtConfig({
     classSuffix: "",
   },
   css: ["~/assets/css/main.css"],
+  turnstile: {
+    siteKey: "",
+  },
   runtimeConfig: {
     public: {
       apiBase: "http://localhost",
@@ -35,9 +38,6 @@ export default defineNuxtConfig({
     },
     turnstile: {
       secretKey: "",
-      options: {
-        appearance: "interaction-only",
-      },
     },
   },
 });
