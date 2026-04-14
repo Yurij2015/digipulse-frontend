@@ -33,7 +33,7 @@
   "dashboard": {
     "title": "Panel główny",
     "subtitle": "Stan węzłów infrastruktury w czasie rzeczywistym.",
-    "monitor_node": "Nowe monitorowanie",
+    "monitor_node": "Dodaj witrynę",
     "total_nodes": "Wszystkie węzły",
     "active_nodes": "Aktywne węzły",
     "issues_detected": "Wykryte błędy",
@@ -73,7 +73,7 @@
     "freq_6h": "6 godzin",
     "freq_12h": "12 godzin",
     "freq_24h": "24 godziny",
-    "submit": "Rozpocznij monitorowanie",
+    "submit": "Dodaj witrynę",
     "name_required": "Nazwa jest wymagana",
     "url_invalid": "Wprowadź prawidłowy adres URL",
     "url_required": "URL jest wymagany"
@@ -95,7 +95,7 @@
   "sites": {
     "title": "Strony",
     "subtitle": "Zarządzaj wszystkimi węzłami infrastruktury w jednym miejscu.",
-    "add_node": "Dodaj węzeł",
+    "add_node": "Dodaj witrynę",
     "table": {
       "name": "Nazwa",
       "url": "URL",
