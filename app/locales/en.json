@@ -33,7 +33,7 @@
   "dashboard": {
     "title": "Dashboard",
     "subtitle": "Real-time status of your infrastructure nodes.",
-    "monitor_node": "Monitor Node",
+    "monitor_node": "Add Site",
     "total_nodes": "Total Nodes",
     "active_nodes": "Active Nodes",
     "issues_detected": "Issues Detected",
@@ -73,7 +73,7 @@
     "freq_6h": "6 hours",
     "freq_12h": "12 hours",
     "freq_24h": "24 hours",
-    "submit": "Start Monitoring Node",
+    "submit": "Add Site",
     "name_required": "Name is required",
     "url_invalid": "Enter a valid URL",
     "url_required": "URL is required"
@@ -95,7 +95,7 @@
   "sites": {
     "title": "Sites",
     "subtitle": "Manage all your infrastructure nodes in one place.",
-    "add_node": "Add New Node",
+    "add_node": "Add Site",
     "table": {
       "name": "Name",
       "url": "URL",
