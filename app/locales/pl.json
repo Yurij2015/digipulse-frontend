@@ -28,7 +28,10 @@
     "last_name_required": "Nazwisko jest wymagane",
     "username_placeholder": "johndou",
     "first_name_placeholder": "John",
-    "last_name_placeholder": "Dou"
+    "last_name_placeholder": "Dou",
+    "forgot_password_link": "Zapomniałeś hasła?",
+    "google_sign_in": "Zaloguj się przez Google",
+    "google_sign_up": "Zarejestruj się przez Google"
   },
   "dashboard": {
     "title": "Panel główny",
@@ -110,12 +113,40 @@
   },
   "history": {
     "title": "Historia",
-    "subtitle": "Tygodniowa wydajność monitorowania i incydenty.",
+    "subtitle": "Tygodniowa wydajność monitorowania i incydenty przestojów.",
     "no_data_title": "Brak danych",
     "no_data_desc": "Brak rekordów monitorowania dla tego tygodnia.",
     "prev_week": "Poprzedni tydzień",
     "next_week": "Następny tydzień",
-    "incidents": "Incydenty przestoju",
+    "incidents": "Incydenty przestojów",
     "view_history": "Zobacz historię"
+  },
+  "profile": {
+    "title": "Profil użytkownika",
+    "subtitle": "Zarządzaj swoimi danymi osobowymi i bezpieczeństwem konta.",
+    "username": "Nazwa użytkownika",
+    "first_name": "Imię",
+    "last_name": "Nazwisko",
+    "email": "Adres e-mail",
+    "premium_member": "Członek Premium",
+    "telegram_title": "Powiadomienia Telegram",
+    "telegram_desc": "Otrzymuj natychmiastowe alerty o dostępności Twoich witryn bezpośrednio на Telegramie.",
+    "telegram_connect": "Połącz z Telegramem",
+    "telegram_connected": "Telegram połączony"
+  },
+  "forgot_password": {
+    "title": "Resetowanie hasła",
+    "subtitle": "Wprowadź swój e-mail, а wyślemy Ci link do zmiany hasła.",
+    "send_link": "Wyślij link",
+    "back_to_login": "Powrót do logowania",
+    "success_title": "E-mail wysłany",
+    "success_desc": "Sprawdź свою skrzynkę odbiorczą, aby uzyskać instrukcje."
+  },
+  "reset_password": {
+    "title": "Nowe hasło",
+    "subtitle": "Ustaw nowe hasło dla swojego konta.",
+    "submit": "Zaktualizuj hasło",
+    "success_title": "Hasło zmienione",
+    "success_desc": "Możesz teraz zalogować się z nowym hasłem."
   }
 }

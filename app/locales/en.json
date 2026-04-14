@@ -28,7 +28,10 @@
     "last_name_required": "Last Name is required",
     "username_placeholder": "johndou",
     "first_name_placeholder": "John",
-    "last_name_placeholder": "Dou"
+    "last_name_placeholder": "Dou",
+    "forgot_password_link": "Forgot Password?",
+    "google_sign_in": "Sign in with Google",
+    "google_sign_up": "Sign up with Google"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -117,5 +120,33 @@
     "next_week": "Next Week",
     "incidents": "Downtime Incidents",
     "view_history": "View History"
+  },
+  "profile": {
+    "title": "User Profile",
+    "subtitle": "Manage your personal information and account security.",
+    "username": "Username",
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "email": "Email Address",
+    "premium_member": "Premium Member",
+    "telegram_title": "Telegram Notifications",
+    "telegram_desc": "Receive instant alerts about your site availability directly in Telegram.",
+    "telegram_connect": "Connect Telegram",
+    "telegram_connected": "Telegram Connected"
+  },
+  "forgot_password": {
+    "title": "Reset Password",
+    "subtitle": "Enter your email and we'll send you a link to reset your password.",
+    "send_link": "Send Reset Link",
+    "back_to_login": "Back to Login",
+    "success_title": "Email Sent",
+    "success_desc": "Please check your inbox for instructions."
+  },
+  "reset_password": {
+    "title": "New Password",
+    "subtitle": "Set a new password for your account.",
+    "submit": "Update Password",
+    "success_title": "Password Reset",
+    "success_desc": "You can now log in with your new password."
   }
 }

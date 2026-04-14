@@ -30,8 +30,14 @@ export default defineNuxtConfig({
   css: ["~/assets/css/main.css"],
   runtimeConfig: {
     public: {
-      apiBase: 'http://localhost',
-      frontendKey: ''
-    }
-  }
+      apiBase: "http://localhost",
+      frontendKey: "",
+    },
+    turnstile: {
+      secretKey: "",
+      options: {
+        appearance: "interaction-only",
+      },
+    },
+  },
 });
