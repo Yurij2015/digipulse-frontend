@@ -4,6 +4,20 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
   devtools: { enabled: true },
+  app: {
+    head: {
+      title: "DigiPulse - Premium Monitoring",
+      meta: [
+        {
+          name: "description",
+          content: "Modern digital health monitoring with premium aesthetics.",
+        },
+      ],
+      link: [
+        { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      ],
+    },
+  },
   modules: [
     "@nuxt/ui",
     "@nuxtjs/color-mode",
