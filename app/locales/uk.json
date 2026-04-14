@@ -26,9 +26,10 @@
     "username_required": "Нікнейм є обов'язковим",
     "first_name_required": "Ім'я є обов'язковим",
     "last_name_required": "Прізвище є обов'язковим",
-    "username_placeholder": "johndou",
-    "first_name_placeholder": "John",
-    "last_name_placeholder": "Dou"
+    "last_name_placeholder": "Dou",
+    "forgot_password_link": "Забули пароль?",
+    "google_sign_in": "Ввійти через Google",
+    "google_sign_up": "Зареєструватися через Google"
   },
   "dashboard": {
     "title": "Дашборд",
@@ -117,5 +118,33 @@
     "next_week": "Наступний тиждень",
     "incidents": "Інциденти простою",
     "view_history": "Переглянути історію"
+  },
+  "profile": {
+    "title": "Профіль користувача",
+    "subtitle": "Керуйте своєю особистою інформацією та безпекою акаунту.",
+    "username": "Нікнейм",
+    "first_name": "Ім'я",
+    "last_name": "Прізвище",
+    "email": "Email адреса",
+    "premium_member": "Преміум учасник",
+    "telegram_title": "Telegram Сповіщення",
+    "telegram_desc": "Отримуйте миттєві сповіщення про доступність ваших сайтів прямо у Telegram.",
+    "telegram_connect": "Підключити Telegram",
+    "telegram_connected": "Telegram підключено"
+  },
+  "forgot_password": {
+    "title": "Відновлення пароля",
+    "subtitle": "Введіть ваш email, і ми надішлемо вам посилання для зміни пароля.",
+    "send_link": "Надіслати посилання",
+    "back_to_login": "Повернутися до входу",
+    "success_title": "Лист надіслано",
+    "success_desc": "Перевірте вашу поштову скриньку на наявність інструкцій."
+  },
+  "reset_password": {
+    "title": "Новий пароль",
+    "subtitle": "Встановіть новий пароль для вашого акаунту.",
+    "submit": "Оновити пароль",
+    "success_title": "Пароль змінено",
+    "success_desc": "Тепер ви можете увійти з новим паролем."
   }
 }
