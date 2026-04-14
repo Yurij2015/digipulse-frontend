@@ -1,0 +1,202 @@
+name: Deploy DigiPulse Frontend
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  create-deployment-artifacts:
+    name: Create deployment artifacts
+    runs-on: ubuntu-latest
+    outputs:
+      DEPLOYMENT_MATRIX: ${{ steps.export-deployment-matrix.outputs.DEPLOYMENT_MATRIX }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Generate .env.production from repository variables
+        env:
+          NUXT_PUBLIC_API_BASE: ${{ vars.NUXT_PUBLIC_API_BASE }}
+          NUXT_PUBLIC_FRONTEND_KEY: ${{ vars.NUXT_PUBLIC_FRONTEND_KEY }}
+          NUXT_TURNSTILE_SITE_KEY: ${{ vars.NUXT_TURNSTILE_SITE_KEY }}
+        run: |
+          echo "Creating .env.production from repository variables"
+          printf 'NUXT_PUBLIC_API_BASE=%s\n' "${NUXT_PUBLIC_API_BASE}" > .env.production
+          printf 'NUXT_PUBLIC_FRONTEND_KEY=%s\n' "${NUXT_PUBLIC_FRONTEND_KEY}" >> .env.production
+          printf 'NUXT_TURNSTILE_SITE_KEY=%s\n' "${NUXT_TURNSTILE_SITE_KEY}" >> .env.production
+          echo ".env.production created"
+
+      - name: Build project
+        run: pnpm run build
+
+      - name: Create deployment artifact
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+        run: |
+          tar -czf "${GITHUB_SHA}".tar.gz --exclude=.git --exclude='./node_modules' .output public package.json pnpm-lock.yaml .env.production --ignore-failed-read || true
+          rm -f .env.production || true
+
+      - name: Store artifact for distribution
+        uses: actions/upload-artifact@v4.6.1
+        with:
+          name: app-build
+          path: ${{ github.sha }}.tar.gz
+          retention-days: 7
+
+      - name: Export deployment matrix
+        id: export-deployment-matrix
+        run: |
+          delimiter="$(openssl rand -hex 8)"
+          JSON="$(cat ./deployment-config.json)"
+          echo "DEPLOYMENT_MATRIX<<${delimiter}" >> "${GITHUB_OUTPUT}"
+          echo "$JSON" >> "${GITHUB_OUTPUT}"
+          echo "${delimiter}" >> "${GITHUB_OUTPUT}"
+
+  prepare-release-on-servers:
+    name: "${{ matrix.server.name }}: Prepare release"
+    runs-on: ubuntu-latest
+    needs: create-deployment-artifacts
+    strategy:
+      matrix:
+        server: ${{ fromJson(needs.create-deployment-artifacts.outputs.DEPLOYMENT_MATRIX) }}
+    steps:
+      - uses: actions/download-artifact@v4.1.9
+        with:
+          name: app-build
+
+      - name: Upload artifact to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ matrix.server.ip }}
+          username: ${{ matrix.server.username }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ matrix.server.port }}
+          source: ${{ github.sha }}.tar.gz
+          target: ${{ matrix.server.path }}/artifacts
+
+      - name: Extract archive and create directories on server
+        uses: appleboy/ssh-action@v1.2.5
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+        with:
+          host: ${{ matrix.server.ip }}
+          username: ${{ matrix.server.username }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ matrix.server.port }}
+          envs: GITHUB_SHA
+          script: |
+            set -e
+            RELEASE_PATH="${{ matrix.server.path }}/releases/${GITHUB_SHA}"
+            ARTIFACT_PATH="${{ matrix.server.path }}/artifacts/${GITHUB_SHA}.tar.gz"
+
+            mkdir -p "$RELEASE_PATH"
+            tar xzf "$ARTIFACT_PATH" --no-same-owner --no-same-permissions -C "$RELEASE_PATH"
+
+      - name: Install production dependencies on server
+        uses: appleboy/ssh-action@v1.2.5
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+        with:
+          host: ${{ matrix.server.ip }}
+          username: ${{ matrix.server.username }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ matrix.server.port }}
+          envs: GITHUB_SHA
+          script: |
+            set -e
+            RELEASE_PATH="${{ matrix.server.path }}/releases/${GITHUB_SHA}"
+            cd "$RELEASE_PATH"
+            if ! command -v pnpm >/dev/null 2>&1; then
+              sudo npm install -g pnpm
+            fi
+            if [ -f pnpm-lock.yaml ]; then
+              pnpm install --prod --no-frozen-lockfile
+            else
+              pnpm install --prod
+            fi
+
+  activate-release:
+    name: "${{ matrix.server.name }}: Activate release"
+    runs-on: ubuntu-latest
+    needs:
+      [
+        create-deployment-artifacts,
+        prepare-release-on-servers,
+      ]
+    strategy:
+      matrix:
+        server: ${{ fromJson(needs.create-deployment-artifacts.outputs.DEPLOYMENT_MATRIX) }}
+    steps:
+      - name: Activate release
+        uses: appleboy/ssh-action@v1.2.5
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+          RELEASE_PATH: ${{ matrix.server.path }}/releases/${{ github.sha }}
+          ACTIVE_RELEASE_PATH: ${{ matrix.server.path }}/current
+          BASE_PATH: ${{ matrix.server.path }}
+        with:
+          host: ${{ matrix.server.ip }}
+          username: ${{ matrix.server.username }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ matrix.server.port }}
+          envs: GITHUB_SHA,RELEASE_PATH,ACTIVE_RELEASE_PATH,BASE_PATH
+          script: |
+            ln -sfn "$RELEASE_PATH" "$ACTIVE_RELEASE_PATH"
+
+            if [ -f "${BASE_PATH}/.env" ]; then
+              ln -s -f "${BASE_PATH}/.env" "$RELEASE_PATH/.env" || true
+            fi
+
+  clean-up:
+    name: "${{ matrix.server.name }}: Clean up"
+    runs-on: ubuntu-latest
+    needs:
+      [
+        create-deployment-artifacts,
+        prepare-release-on-servers,
+        activate-release,
+      ]
+    strategy:
+      matrix:
+        server: ${{ fromJson(needs.create-deployment-artifacts.outputs.DEPLOYMENT_MATRIX) }}
+    steps:
+      - name: Clean old releases and artifacts
+        uses: appleboy/ssh-action@v1.2.5
+        env:
+          RELEASES_PATH: ${{ matrix.server.path }}/releases
+          ARTIFACTS_PATH: ${{ matrix.server.path }}/artifacts
+        with:
+          host: ${{ matrix.server.ip }}
+          username: ${{ matrix.server.username }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ matrix.server.port }}
+          envs: RELEASES_PATH,ARTIFACTS_PATH
+          script: |
+            cd "$RELEASES_PATH" && ls -t -1 | tail -n +6 | xargs rm -rf || true
+            cd "$ARTIFACTS_PATH" && ls -t -1 | tail -n +6 | xargs rm -rf || true
+
+  delete-artifact:
+    name: Delete GitHub artifact
+    runs-on: ubuntu-latest
+    needs: [create-deployment-artifacts, clean-up]
+    if: always()
+    steps:
+      - name: Delete artifact
+        uses: geekyeggo/delete-artifact@v6.0.0
+        with:
+          name: app-build
+          failOnError: false
