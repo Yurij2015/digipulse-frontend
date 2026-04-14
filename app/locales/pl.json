@@ -47,7 +47,9 @@
     "checked": "Sprawdzono",
     "settings": "Ustawienia",
     "appearance": "Wygląd",
-    "sign_out": "Wyloguj się"
+    "sign_out": "Wyloguj się",
+    "copied": "Skopiowano",
+    "never": "Nigdy"
   },
   "add_website": {
     "back": "Powrót do panelu",

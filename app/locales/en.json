@@ -47,7 +47,9 @@
     "checked": "Checked",
     "settings": "Settings",
     "appearance": "Appearance",
-    "sign_out": "Sign Out"
+    "sign_out": "Sign Out",
+    "copied": "Copied",
+    "never": "Never"
   },
   "add_website": {
     "back": "Back to Dashboard",

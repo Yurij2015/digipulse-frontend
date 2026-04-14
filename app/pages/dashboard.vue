@@ -83,7 +83,10 @@
                 <span v-else class="text-neutral-400 text-[11px] italic font-normal">No URL</span>
                 
                 <span class="text-neutral-300 dark:text-neutral-700">·</span>
-                <button class="text-neutral-400 hover:text-primary-500 transition-all cursor-pointer p-0.5">
+                <button 
+                  class="text-neutral-400 hover:text-primary-500 transition-all cursor-pointer p-0.5"
+                  @click.stop="copyToClipboard(website.url)"
+                >
                   <UIcon name="i-heroicons-clipboard-document" class="w-3 h-3" />
                 </button>
               </div>
@@ -215,6 +218,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { uk, pl, enUS } from 'date-fns/locale';
 
 const { t, locale } = useI18n();
+const toast = useToast();
 const localePath = useLocalePath();
 const config = useRuntimeConfig();
 const { token } = useAuth();
@@ -384,6 +388,22 @@ function formatCheckTime(dateStr: string) {
     });
   } catch (e) {
     return dateStr;
+  }
+}
+
+async function copyToClipboard(text: string) {
+  if (!text) return;
+  
+  try {
+    await navigator.clipboard.writeText(text);
+    toast.add({
+      title: t('dashboard.copied'),
+      color: 'success',
+      icon: 'i-heroicons-check-circle',
+      description: text
+    });
+  } catch (err) {
+    console.error('Failed to copy text: ', err);
   }
 }
 

@@ -21,25 +21,13 @@
             </div>
             <UButton icon="i-heroicons-chevron-right" variant="ghost" color="neutral" @click="nextWeek" :disabled="isCurrentWeek" />
           </div>
-          
-          <!-- Configuration Filter -->
-          <div v-if="site?.configurations?.length" class="flex items-center gap-2">
-            <USelectMenu 
-              v-model="selectedConfigurationId" 
-              :options="configurationOptions"
-              placeholder="All Configurations"
-              size="sm"
-              class="w-48"
-              :ui="{ base: 'bg-neutral-50 dark:bg-white/5 border-0 ring-1 ring-neutral-200 dark:ring-white/10 focus:ring-primary-500' }"
-            />
-          </div>
         </div>
       </header>
       
       <!-- Chart Area -->
       <div class="glass-card rounded-2xl border border-neutral-200/50 dark:border-white/10 p-4 md:p-6 mb-8 relative min-h-[500px] shadow-sm">
         <!-- Loading Skeleton -->
-        <div v-if="pending" class="absolute inset-0 flex items-center justify-center bg-white/50 dark:bg-neutral-950/50 backdrop-blur-sm z-10 rounded-2xl">
+        <div v-if="pending" class="absolute inset-0 f                                                                                                                                                                                lex items-center justify-center bg-white/50 dark:bg-neutral-950/50 backdrop-blur-sm z-10 rounded-2xl">
           <div class="w-full max-w-md space-y-4 p-6">
             <div class="space-y-2">
               <div class="h-4 bg-neutral-200 dark:bg-neutral-800 rounded-full animate-pulse"></div>
@@ -132,12 +120,6 @@ const getWeekFromQuery = () => {
   return new Date();
 };
 
-// Initialize configuration from URL query
-const getConfigurationFromQuery = () => {
-  const configQuery = route.query.configuration_id;
-  return configQuery ? Number(configQuery) : null;
-};
-
 const currentDate = ref(getWeekFromQuery());
 
 const isCurrentWeek = computed(() => isSameWeek(currentDate.value, new Date(), { weekStartsOn: 1 }));
@@ -176,13 +158,6 @@ function updateUrlQuery() {
     week: newWeek
   };
   
-  // Only include configuration_id if it's not null
-  if (selectedConfigurationId.value) {
-    query.configuration_id = selectedConfigurationId.value;
-  } else {
-    delete query.configuration_id;
-  }
-  
   router.push({
     path: route.path,
     query
@@ -192,19 +167,17 @@ function updateUrlQuery() {
 const site = ref<any>(null);
 const historyData = ref<{ stats: any[], incidents: any[] } | null>(null);
 const pending = ref(false);
-const selectedConfigurationId = ref<number | null>(getConfigurationFromQuery());
 
 const fetchData = async () => {
     pending.value = true;
     try {
-       const [siteRes, histRes] = await Promise.all([
+        const [siteRes, histRes] = await Promise.all([
           !site.value ? (sitesStore.sites.find((s: any) => String(s.id) === String(siteId)) ? Promise.resolve({ data: sitesStore.sites.find((s: any) => String(s.id) === String(siteId)) }) : $fetch<any>(`${config.public.apiBase}/api/sites/${siteId}`, {
              headers: { 'Accept': 'application/json', 'X-Frontend-Key': config.public.frontendKey as string, 'Authorization': `Bearer ${token.value}` }
           })) : Promise.resolve({ data: site.value }),
           $fetch<any>(`${config.public.apiBase}/api/sites/${siteId}/history`, {
              params: { 
-               week: weekParam.value,
-               ...(selectedConfigurationId.value && { configuration_id: selectedConfigurationId.value })
+               week: weekParam.value
              },
              headers: { 'Accept': 'application/json', 'X-Frontend-Key': config.public.frontendKey as string, 'Authorization': `Bearer ${token.value}` }
           }).catch(e => {
@@ -238,33 +211,16 @@ onMounted(() => {
   fetchData();
 });
 
-watch([weekParam, selectedConfigurationId], fetchData);
+watch(weekParam, fetchData);
 
-// Watch for route changes to sync date and configuration
+// Watch for route changes to sync date
 watch(() => route.query.week, (newWeek) => {
   if (newWeek && newWeek !== weekParam.value) {
     currentDate.value = getWeekFromQuery();
   }
 }, { immediate: false });
 
-watch(() => route.query.configuration_id, (newConfig) => {
-  const configValue = newConfig ? Number(newConfig) : null;
-  if (configValue !== selectedConfigurationId.value) {
-    selectedConfigurationId.value = configValue;
-  }
-}, { immediate: false });
-
 const incidents = computed(() => historyData.value?.incidents || []);
-const configurationOptions = computed(() => {
-  if (!site.value?.configurations) return [];
-  return [
-    { label: 'All Configurations', value: null },
-    ...site.value.configurations.map((config: any) => ({
-      label: config.check_type?.name || config.type?.name || `Configuration ${config.id}`,
-      value: config.id
-    }))
-  ];
-});
 
 const hasData = computed(() => {
   const stats = historyData.value?.stats || [];
