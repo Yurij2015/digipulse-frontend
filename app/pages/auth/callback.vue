@@ -8,8 +8,22 @@ const { setAuth } = useAuth()
 const config = useRuntimeConfig()
 
 onMounted(async () => {
-  const token = route.query.token as string
-  const userDataRaw = route.query.user as string
+  console.log('Callback page mounted, checking for token...')
+  let token = route.query.token as string
+  let userDataRaw = route.query.user as string
+
+  // Handle token from URL fragment (#token=xxx)
+  // We check window.location.hash directly as route.hash might be empty during some redirects
+  const hash = route.hash || (typeof window !== 'undefined' ? window.location.hash : '')
+  console.log('Current hash:', hash)
+
+  if (!token && hash) {
+    const hashParams = new URLSearchParams(hash.substring(1))
+    token = hashParams.get('token') || ''
+    userDataRaw = hashParams.get('user') || ''
+  }
+
+  console.log('Token found:', token ? 'YES (truncated: ' + token.substring(0, 5) + '...)' : 'NO')
 
   if (!token) {
     console.error('No token found in callback')
@@ -33,7 +47,8 @@ onMounted(async () => {
     if (!user) {
       const response = await $fetch<any>(`${config.public.apiBase}/api/me`, {
         headers: {
-          Authorization: `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
+          'X-Frontend-Key': config.public.frontendKey as string
         }
       })
       user = response.user || response
