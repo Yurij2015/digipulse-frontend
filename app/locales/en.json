@@ -31,7 +31,15 @@
     "last_name_placeholder": "Dou",
     "forgot_password_link": "Forgot Password?",
     "google_sign_in": "Sign in with Google",
-    "google_sign_up": "Sign up with Google"
+    "google_sign_up": "Sign up with Google",
+    "callback": {
+      "authenticating": "AUTHENTICATING",
+      "redirecting": "Preparing your workspace..."
+    },
+    "errors": {
+      "no_token": "Token not found. Please try logging in again.",
+      "auth_failed": "Authentication failed. Please contact support."
+    }
   },
   "dashboard": {
     "title": "Dashboard",

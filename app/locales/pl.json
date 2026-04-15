@@ -31,7 +31,15 @@
     "last_name_placeholder": "Dou",
     "forgot_password_link": "Zapomniałeś hasła?",
     "google_sign_in": "Zaloguj się przez Google",
-    "google_sign_up": "Zarejestruj się przez Google"
+    "google_sign_up": "Zarejestruj się przez Google",
+    "callback": {
+      "authenticating": "AUTORYZACJA",
+      "redirecting": "Przygotowujemy Twoją przestrzeń roboczą..."
+    },
+    "errors": {
+      "no_token": "Nie znaleziono tokenu. Spróbuj zalogować się ponownie.",
+      "auth_failed": "Błąd uwierzytelniania. Skontaktuj się z pomocą techniczną."
+    }
   },
   "dashboard": {
     "title": "Panel główny",
