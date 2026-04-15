@@ -254,7 +254,7 @@ const schema = computed(() => object({
 
 const handleGoogleLogin = () => {
   // Redirect to backend Google Auth endpoint
-  window.location.href = `${config.public.apiBase}/api/login/google`;
+  window.location.href = `${config.public.apiBase}/auth/redirect`;
 };
 
 async function onSubmit() {
