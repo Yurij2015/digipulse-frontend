@@ -9,7 +9,7 @@
           <h1 class="text-4xl font-black text-neutral-900 dark:text-white mb-3">{{ t('sites.title') }}</h1>
           <p class="text-neutral-500 font-medium">{{ t('sites.subtitle') }}</p>
         </div>
-        <UButton size="xl" icon="i-heroicons-plus-circle" class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold px-8 rounded-xl hover:scale-105 transition-transform" @click="openAddModal">
+        <UButton size="xl" icon="i-heroicons-plus-circle" class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold px-8 rounded-xl hover:scale-105 transition-transform cursor-pointer" @click="openAddModal">
           {{ t('sites.add_node') }}
         </UButton>
       </header>
@@ -40,7 +40,7 @@
 
           <!-- URL Column -->
           <template #url-cell="{ row }">
-            <a :href="row.original.url" target="_blank" class="text-neutral-500 dark:text-neutral-400 hover:text-primary-500 transition-colors flex items-center gap-1 text-sm font-medium">
+            <a :href="row.original.url" target="_blank" class="text-neutral-500 dark:text-neutral-400 hover:text-primary-500 transition-colors flex items-center gap-1 text-sm font-medium cursor-pointer">
               {{ row.original.url }} <UIcon name="i-heroicons-arrow-top-right-on-square" class="text-xs" />
             </a>
           </template>
@@ -84,16 +84,16 @@
           <!-- Actions Column -->
           <template #actions-cell="{ row }">
             <div class="flex items-center gap-2">
-              <UButton icon="i-heroicons-chart-bar" variant="ghost" color="primary" size="sm" :to="localePath(`/sites/${row.original.id}/history`)" />
-              <UButton icon="i-heroicons-pencil" variant="ghost" color="neutral" size="sm" @click="openEditModal(row.original)" />
-              <UButton icon="i-heroicons-trash" variant="ghost" color="error" size="sm" @click="confirmDelete(row.original)" />
+              <UButton icon="i-heroicons-chart-bar" variant="ghost" color="primary" size="sm" :to="localePath(`/sites/${row.original.id}/history`)" class="cursor-pointer" />
+              <UButton icon="i-heroicons-pencil" variant="ghost" color="neutral" size="sm" @click="openEditModal(row.original)" class="cursor-pointer" />
+              <UButton icon="i-heroicons-trash" variant="ghost" color="error" size="sm" @click="confirmDelete(row.original)" class="cursor-pointer" />
             </div>
           </template>
           <template #actions-data="{ row }">
             <div class="flex items-center gap-2">
-              <UButton icon="i-heroicons-chart-bar" variant="ghost" color="primary" size="sm" :to="localePath(`/sites/${row.original.id}/history`)" />
-              <UButton icon="i-heroicons-pencil" variant="ghost" color="neutral" size="sm" @click="openEditModal(row.original)" />
-              <UButton icon="i-heroicons-trash" variant="ghost" color="error" size="sm" @click="confirmDelete(row.original)" />
+              <UButton icon="i-heroicons-chart-bar" variant="ghost" color="primary" size="sm" :to="localePath(`/sites/${row.original.id}/history`)" class="cursor-pointer" />
+              <UButton icon="i-heroicons-pencil" variant="ghost" color="neutral" size="sm" @click="openEditModal(row.original)" class="cursor-pointer" />
+              <UButton icon="i-heroicons-trash" variant="ghost" color="error" size="sm" @click="confirmDelete(row.original)" class="cursor-pointer" />
             </div>
           </template>
         </UTable>
@@ -121,10 +121,10 @@
 
       <template #footer>
         <div class="flex justify-end gap-3 w-full">
-          <UButton color="neutral" variant="ghost" @click="isDeleteModalOpen = false">
+          <UButton color="neutral" variant="ghost" @click="isDeleteModalOpen = false" class="cursor-pointer">
             Cancel
           </UButton>
-          <UButton color="error" :loading="isDeleting" @click="handleDelete">
+          <UButton color="error" :loading="isDeleting" @click="handleDelete" class="cursor-pointer">
             {{ t('sites.table.delete') }}
           </UButton>
         </div>

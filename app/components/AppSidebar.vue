@@ -51,12 +51,12 @@ async function handleLogout() {
       <div class="text-xl font-black tracking-tight">DigiPulse</div>
       <div class="flex items-center gap-2">
         <ThemeSwitcher />
-        <UButton icon="i-heroicons-bars-3" variant="ghost" color="neutral" @click="isSidebarOpen = !isSidebarOpen" />
+        <UButton icon="i-heroicons-bars-3" variant="ghost" color="neutral" @click="isSidebarOpen = !isSidebarOpen" class="cursor-pointer" />
       </div>
     </header>
 
     <!-- Sidebar Overlay for Mobile -->
-    <div v-if="isSidebarOpen" class="fixed inset-0 bg-neutral-950/40 backdrop-blur-sm z-51 lg:hidden" @click="isSidebarOpen = false"></div>
+    <div v-if="isSidebarOpen" class="fixed inset-0 bg-neutral-950/40 backdrop-blur-sm z-51 lg:hidden cursor-pointer" @click="isSidebarOpen = false"></div>
 
     <!-- Sidebar -->
     <aside :class="[
@@ -65,7 +65,7 @@ async function handleLogout() {
     ]">
       <div class="flex items-center justify-between mb-12">
         <div class="text-2xl font-black tracking-tight">DigiPulse</div>
-        <UButton class="lg:hidden" icon="i-heroicons-x-mark" variant="ghost" color="neutral" @click="isSidebarOpen = false" />
+        <UButton class="lg:hidden cursor-pointer" icon="i-heroicons-x-mark" variant="ghost" color="neutral" @click="isSidebarOpen = false" />
       </div>
 
       <nav class="space-y-1">
@@ -74,7 +74,7 @@ async function handleLogout() {
           :to="link.to"
           :variant="route.path === link.to ? 'soft' : 'ghost'"
           :color="route.path === link.to ? 'primary' : 'neutral'"
-          class="w-full justify-start gap-4 font-bold py-3 px-5 rounded-lg transition-all transform active:scale-95"
+          class="w-full justify-start gap-4 font-bold py-3 px-5 rounded-lg transition-all transform active:scale-95 cursor-pointer"
           :class="route.path === link.to ? 'shadow-sm bg-primary-100/10 dark:bg-primary-500/10 ring-1 ring-primary-500/20' : 'text-neutral-500'"
         >
           <UIcon :name="link.icon" class="text-xl" />
@@ -84,7 +84,7 @@ async function handleLogout() {
 
       <div class="mt-auto pt-8 border-t border-neutral-100 dark:border-white/5 space-y-4">
         <!-- User Profile Block -->
-        <NuxtLink :to="localePath('/settings')" class="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 dark:hover:bg-white/5 transition-all group">
+        <NuxtLink :to="localePath('/settings')" class="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 dark:hover:bg-white/5 transition-all group cursor-pointer">
           <div class="w-10 h-10 rounded-lg bg-primary-500/10 flex items-center justify-center text-primary-500 font-black text-sm border border-primary-500/20 group-hover:scale-110 transition-transform">
             {{ userInitials }}
           </div>
@@ -109,7 +109,7 @@ async function handleLogout() {
           :label="t('dashboard.sign_out')" 
           block 
           @click="handleLogout"
-          class="justify-start gap-3 text-neutral-500 font-bold py-2.5 hover:text-error" 
+          class="justify-start gap-3 text-neutral-500 font-bold py-2.5 hover:text-error cursor-pointer" 
         />
       </div>
     </aside>

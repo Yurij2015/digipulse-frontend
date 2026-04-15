@@ -35,7 +35,7 @@
               block 
               size="xl" 
               :loading="loading"
-              class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-black py-5 rounded-xl shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all mt-4 border-0 shimmer-effect"
+              class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-black py-5 rounded-xl shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all mt-4 border-0 shimmer-effect cursor-pointer"
             >
               {{ $t('forgot_password.send_link') }}
             </UButton>
@@ -49,7 +49,7 @@
           <UButton 
             variant="link" 
             color="primary" 
-            class="font-black text-primary-500 hover:text-primary-400 decoration-none hover:underline underline-offset-4"
+            class="font-black text-primary-500 hover:text-primary-400 decoration-none hover:underline underline-offset-4 cursor-pointer"
             @click="isSuccess = false"
           >
             {{ $t('forgot_password.send_link') }} ще раз
@@ -63,7 +63,7 @@
               variant="link" 
               color="neutral" 
               icon="i-heroicons-arrow-left"
-              class="font-bold text-neutral-500 hover:text-neutral-900 dark:hover:text-white"
+              class="font-bold text-neutral-500 hover:text-neutral-900 dark:hover:text-white cursor-pointer"
             >
               {{ $t('forgot_password.back_to_login') }}
             </UButton>
