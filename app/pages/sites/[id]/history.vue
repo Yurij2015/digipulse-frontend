@@ -5,7 +5,7 @@
     <main class="flex-1 p-6 lg:p-12 overflow-y-auto lg:ml-72 h-screen relative">
       <header class="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-12">
         <div class="flex items-center gap-4">
-          <UButton :to="localePath('/sites')" variant="ghost" color="neutral" icon="i-heroicons-arrow-left" class="hover:bg-neutral-200 dark:hover:bg-white/5 font-bold p-3" />
+          <UButton :to="localePath('/sites')" variant="ghost" color="neutral" icon="i-heroicons-arrow-left" class="hover:bg-neutral-200 dark:hover:bg-white/5 font-bold p-3 cursor-pointer" />
           <div>
             <h1 class="text-4xl font-black tracking-tight"><span class="text-primary-500">{{ site?.name || 'Site' }}</span> History</h1>
             <p class="text-neutral-500 font-medium">Weekly monitoring performance and downtime incidents.</p>
@@ -14,12 +14,12 @@
 
         <div class="flex items-center gap-4">
           <div class="flex items-center gap-3 bg-neutral-50 dark:bg-white/5 p-1 rounded-xl border border-neutral-200/50 dark:border-white/10 shadow-xs">
-            <UButton icon="i-heroicons-chevron-left" variant="ghost" color="neutral" @click="prevWeek" />
+            <UButton icon="i-heroicons-chevron-left" variant="ghost" color="neutral" @click="prevWeek" class="cursor-pointer" />
             <div class="text-sm font-bold min-w-[160px] text-center flex flex-col">
               <span class="text-neutral-900 dark:text-white leading-tight">{{ weekLabel }}</span>
               <span class="text-[10px] text-neutral-500 font-medium uppercase tracking-widest">{{ weekParam }}</span>
             </div>
-            <UButton icon="i-heroicons-chevron-right" variant="ghost" color="neutral" @click="nextWeek" :disabled="isCurrentWeek" />
+            <UButton icon="i-heroicons-chevron-right" variant="ghost" color="neutral" @click="nextWeek" :disabled="isCurrentWeek" class="cursor-pointer" />
           </div>
         </div>
       </header>

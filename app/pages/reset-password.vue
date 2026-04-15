@@ -50,7 +50,7 @@
               block 
               size="xl" 
               :loading="loading"
-              class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-black py-5 rounded-xl shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all mt-4 border-0 shimmer-effect"
+              class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-black py-5 rounded-xl shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all mt-4 border-0 shimmer-effect cursor-pointer"
             >
               {{ $t('reset_password.submit') }}
             </UButton>
@@ -64,7 +64,7 @@
           <UButton 
             :to="localePath('/auth')"
             size="xl"
-            class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-black py-4 px-8 rounded-xl"
+            class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-black py-4 px-8 rounded-xl cursor-pointer"
           >
             {{ $t('auth.sign_in') }}
           </UButton>

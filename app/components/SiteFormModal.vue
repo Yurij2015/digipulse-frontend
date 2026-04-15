@@ -219,7 +219,7 @@ async function onSubmit() {
               :variant="state.interval === opt.value ? 'soft' : 'outline'"
               :color="state.interval === opt.value ? 'primary' : 'neutral'"
               size="xs"
-              class="justify-center px-1"
+              class="justify-center px-1 cursor-pointer"
               @click="state.interval = opt.value"
             >
               {{ opt.label }}
@@ -243,7 +243,7 @@ async function onSubmit() {
                   <div class="text-[9px] text-neutral-500 leading-tight">{{ type.description }}</div>
                 </div>
               </div>
-              <USwitch v-model="state.selectedChecks[type.id]!.enabled" size="sm" />
+              <USwitch v-model="state.selectedChecks[type.id]!.enabled" size="sm" class="cursor-pointer" />
             </div>
             
             <div v-if="state.selectedChecks[type.id]?.enabled && type.slug === 'keyword_search'" class="mt-3 pt-3 border-t border-neutral-100 dark:border-white/5">
@@ -258,8 +258,8 @@ async function onSubmit() {
 
     <template #footer>
       <div class="flex justify-end gap-3 w-full">
-        <UButton color="neutral" variant="ghost" @click="isOpen = false">Cancel</UButton>
-        <UButton type="submit" color="primary" :loading="loading" @click="onSubmit">
+        <UButton color="neutral" variant="ghost" @click="isOpen = false" class="cursor-pointer">Cancel</UButton>
+        <UButton type="submit" color="primary" :loading="loading" @click="onSubmit" class="cursor-pointer">
           {{ isEdit ? 'Save Changes' : t('add_website.submit') }}
         </UButton>
       </div>
