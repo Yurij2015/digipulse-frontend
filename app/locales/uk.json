@@ -31,7 +31,15 @@
     "last_name_placeholder": "Dou",
     "forgot_password_link": "Забули пароль?",
     "google_sign_in": "Увійти через Google",
-    "google_sign_up": "Зареєструватися через Google"
+    "google_sign_up": "Зареєструватися через Google",
+    "callback": {
+      "authenticating": "АВТОРИЗАЦІЯ",
+      "redirecting": "Готуємо ваш робочий простір..."
+    },
+    "errors": {
+      "no_token": "Токен не знайдено. Спробуйте увійти знову.",
+      "auth_failed": "Помилка авторизації. Зверніться в підтримку."
+    }
   },
   "dashboard": {
     "title": "Дашборд",
