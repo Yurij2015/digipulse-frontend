@@ -49,11 +49,11 @@ jobs:
         env:
           GITHUB_SHA: ${{ github.sha }}
         run: |
-          tar -czf "${GITHUB_SHA}".tar.gz --exclude=.git --exclude='./node_modules' .output public package.json pnpm-lock.yaml .env.production --ignore-failed-read || true
-          rm -f .env.production || true
+          tar -czf "${GITHUB_SHA}.tar.gz" --exclude=.git --exclude='./node_modules' .output public package.json pnpm-lock.yaml .env.production
+          rm -f .env.production
 
       - name: Store artifact for distribution
-        uses: actions/upload-artifact@v4.6.1
+        uses: actions/upload-artifact@v4
         with:
           name: app-build
           path: ${{ github.sha }}.tar.gz
@@ -76,7 +76,7 @@ jobs:
       matrix:
         server: ${{ fromJson(needs.create-deployment-artifacts.outputs.DEPLOYMENT_MATRIX) }}
     steps:
-      - uses: actions/download-artifact@v4.1.9
+      - uses: actions/download-artifact@v4
         with:
           name: app-build
 
@@ -89,7 +89,7 @@ jobs:
           port: ${{ matrix.server.port }}
           script: |
             # Idempotent: create all required dirs on a clean server
-            mkdir -p ${{ matrix.server.path }}/{releases,artifacts,current}
+            mkdir -p "${{ matrix.server.path }}/releases" "${{ matrix.server.path }}/artifacts" "${{ matrix.server.path }}/current"
 
       - name: Upload artifact to server
         uses: appleboy/scp-action@v0.1.7
