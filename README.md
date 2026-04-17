@@ -1,75 +1,49 @@
-# Nuxt Minimal Starter
+# DigiPulse Frontend (Nuxt 4)
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A modern, high-performance monitoring dashboard built with Nuxt 4 and Vanilla CSS, featuring a premium Bento Grid UI.
 
-## Setup
+## Technology Stack
 
-Make sure to install dependencies:
+- **Nuxt 4** (SSR)
+- **Styling**: Vanilla CSS (Modern CSS features)
+- **State Management**: Pinia / Nuxt Built-ins
+- **UI Components**: Custom Bento Grid implementation
+- **Security**: Cloudflare Turnstile integration
 
-```bash
-# npm
-npm install
+## Key Features
 
-# pnpm
-pnpm install
+- **Live Dashboard**: Real-time site status updates.
+- **Bento Grid Layout**: Responsive and visually stunning data presentation.
+- **Glassmorphism**: Modern aesthetics with backdrop filters and smooth transitions.
+- **SEO Optimized**: Meta tags and structured data included.
 
-# yarn
-yarn install
+## Deployment (CI/CD)
 
-# bun
-bun install
-```
+Deployments are automated via **GitHub Actions**.
 
-## Development Server
+### Workflow:
+1.  **Build**: Project is built using `pnpm build`, generating a self-contained `.output`.
+2.  **Environment**: Public variables are injected during the build process from GitHub Variables.
+3.  **Deploy**: The `.output` bundle is uploaded to the server via SCP and symlinked to `/home/yurii/digi-pulse-frontend/current`.
+4.  **Runtime**: A Node.js container on the server executes the Nitro build.
 
-Start the development server on `http://localhost:3000`:
+### Required GitHub Variables/Secrets:
 
-```bash
-# npm
-npm run dev
+| Variable | Description |
+|---|---|
+| `NUXT_PUBLIC_API_BASE` | URL of the Backend API (e.g., `https://api.pulse.digispace.pro/api`). |
+| `NUXT_TURNSTILE_SITE_KEY` | Cloudflare Turnstile Site Key. |
+| `SSH_KEY` (Secret) | Private SSH key for the Hetzner server. |
 
-# pnpm
-pnpm dev
+## Local Development
 
-# yarn
-yarn dev
+1.  Clone the repository.
+2.  Install dependencies: `pnpm install`.
+3.  Start dev server: `pnpm dev`.
+4.  Open `http://localhost:3000`.
 
-# bun
-bun run dev
-```
+## Design Principles
 
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+- **Rich Aesthetics**: Avoid browser defaults. Use harmonious color palettes and modern typography.
+- **Micro-animations**: Subtle interactions for improved UX.
+- **Performance First**: Minimal external dependencies, leveraging native browser capabilities.
