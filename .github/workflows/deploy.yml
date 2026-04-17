@@ -78,6 +78,17 @@ jobs:
         with:
           name: app-build
 
+      - name: Bootstrap server directories
+        uses: appleboy/ssh-action@v1.2.5
+        with:
+          host: ${{ matrix.server.ip }}
+          username: ${{ matrix.server.username }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ matrix.server.port }}
+          script: |
+            # Idempotent: create all required dirs on a clean server
+            mkdir -p ${{ matrix.server.path }}/{releases,artifacts,current}
+
       - name: Upload artifact to server
         uses: appleboy/scp-action@v0.1.7
         with:
