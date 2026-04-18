@@ -49,6 +49,9 @@ export default defineNuxtConfig({
     public: {
       apiBase: "http://localhost",
       frontendKey: "",
+      turnstile: {
+        siteKey: "",
+      },
     },
     turnstile: {
       secretKey: "",
