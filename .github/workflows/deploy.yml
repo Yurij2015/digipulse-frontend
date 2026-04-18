@@ -89,7 +89,7 @@ jobs:
           port: ${{ matrix.server.port }}
           script: |
             # Idempotent: create all required dirs on a clean server
-            mkdir -p "${{ matrix.server.path }}/releases" "${{ matrix.server.path }}/artifacts" "${{ matrix.server.path }}/current"
+            mkdir -p "${{ matrix.server.path }}/releases" "${{ matrix.server.path }}/artifacts"
 
       - name: Upload artifact to server
         uses: appleboy/scp-action@v0.1.7
