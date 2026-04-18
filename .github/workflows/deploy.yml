@@ -26,7 +26,9 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile --only-built-dependencies=@parcel/watcher,esbuild,vue-demi
+        run: |
+          pnpm approve-builds --all
+          pnpm install --no-frozen-lockfile
 
       - name: Generate .env.production from repository variables
         env:
