@@ -27,5 +27,12 @@
   },
   "devDependencies": {
     "@nuxtjs/color-mode": "^4.0.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "esbuild",
+      "vue-demi"
+    ]
   }
 }
