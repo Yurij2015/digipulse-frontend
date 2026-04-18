@@ -43,7 +43,7 @@ export default defineNuxtConfig({
   },
   css: ["~/assets/css/main.css"],
   turnstile: {
-    siteKey: "",
+    siteKey: process.env.NUXT_PUBLIC_TURNSTILE_SITE_KEY || '',
   },
   runtimeConfig: {
     public: {
