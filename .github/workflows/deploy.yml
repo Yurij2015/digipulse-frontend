@@ -36,13 +36,13 @@ jobs:
           NUXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.NUXT_PUBLIC_TURNSTILE_SITE_KEY }}
           NUXT_TURNSTILE_SECRET_KEY: ${{ vars.NUXT_TURNSTILE_SECRET_KEY }}
         run: |
-          echo "Creating .env.production from repository variables"
-          printf 'NUXT_PUBLIC_API_BASE=%s\n' "${NUXT_PUBLIC_API_BASE}" > .env.production
-          printf 'NUXT_PUBLIC_FRONTEND_KEY=%s\n' "${NUXT_PUBLIC_FRONTEND_KEY}" >> .env.production
-          printf 'NUXT_TURNSTILE_SITE_KEY=%s\n' "${NUXT_TURNSTILE_SITE_KEY}" >> .env.production
-          printf 'NUXT_PUBLIC_TURNSTILE_SITE_KEY=%s\n' "${NUXT_PUBLIC_TURNSTILE_SITE_KEY}" >> .env.production
-          printf 'NUXT_TURNSTILE_SECRET_KEY=%s\n' "${NUXT_TURNSTILE_SECRET_KEY}" >> .env.production
-          echo ".env.production created"
+          echo "Creating .env from repository variables"
+          printf 'NUXT_PUBLIC_API_BASE=%s\n' "${NUXT_PUBLIC_API_BASE}" > .env
+          printf 'NUXT_PUBLIC_FRONTEND_KEY=%s\n' "${NUXT_PUBLIC_FRONTEND_KEY}" >> .env
+          printf 'NUXT_TURNSTILE_SITE_KEY=%s\n' "${NUXT_TURNSTILE_SITE_KEY}" >> .env
+          printf 'NUXT_PUBLIC_TURNSTILE_SITE_KEY=%s\n' "${NUXT_PUBLIC_TURNSTILE_SITE_KEY}" >> .env
+          printf 'NUXT_TURNSTILE_SECRET_KEY=%s\n' "${NUXT_TURNSTILE_SECRET_KEY}" >> .env
+          echo ".env created"
 
       - name: Build project
         run: pnpm run build
@@ -51,8 +51,8 @@ jobs:
         env:
           GITHUB_SHA: ${{ github.sha }}
         run: |
-          tar -czf "${GITHUB_SHA}.tar.gz" --exclude=.git --exclude='./node_modules' .output public package.json pnpm-lock.yaml .env.production
-          rm -f .env.production
+          tar -czf "${GITHUB_SHA}.tar.gz" --exclude=.git --exclude='./node_modules' .output public package.json pnpm-lock.yaml .env
+          rm -f .env
 
       - name: Store artifact for distribution
         uses: actions/upload-artifact@v7
