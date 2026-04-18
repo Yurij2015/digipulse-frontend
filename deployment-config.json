@@ -5,7 +5,7 @@
         "port": "2229",
         "username": "yurii",
         "beforeHooks": "",
-        "afterHooks": "docker restart frontend-app",
+        "afterHooks": "docker restart digipulse-frontend",
         "path": "/home/yurii/digi-pulse-frontend"
     }
 ]
