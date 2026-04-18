@@ -148,11 +148,12 @@ jobs:
           port: ${{ matrix.server.port }}
           envs: GITHUB_SHA,RELEASE_PATH,ACTIVE_RELEASE_PATH,BASE_PATH
           script: |
-            ln -sfn "$RELEASE_PATH" "$ACTIVE_RELEASE_PATH"
-
-            if [ -f "${BASE_PATH}/.env" ]; then
-              ln -s -f "${BASE_PATH}/.env" "$RELEASE_PATH/.env" || true
+            # If current exists as a directory (common when docker creates volumes before deploy), remove it
+            if [ -d "$ACTIVE_RELEASE_PATH" ] && [ ! -L "$ACTIVE_RELEASE_PATH" ]; then
+              rm -rf "$ACTIVE_RELEASE_PATH"
             fi
+
+            ln -sfn "$RELEASE_PATH" "$ACTIVE_RELEASE_PATH"
 
   clean-up:
     name: "${{ matrix.server.name }}: Clean up"
