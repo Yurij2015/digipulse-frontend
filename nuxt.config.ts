@@ -61,8 +61,6 @@ export default defineNuxtConfig({
   },
   routeRules: {
     '/': { isr: 3600 },
-    '/auth/**': { ssr: false },
-    '/dashboard/**': { ssr: false },
   },
   experimental: {
     payloadExtraction: true,
