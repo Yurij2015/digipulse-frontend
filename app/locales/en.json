@@ -101,7 +101,9 @@
     "feat2_title": "Instant Alerts",
     "feat2_desc": "Multi-channel notifications across Telegram, Slack, and email.",
     "feat3_title": "Advanced Metrics",
-    "feat3_desc": "Predictive analytics and deep historical data for smarter uptime."
+    "feat3_desc": "Predictive analytics and deep historical data for smarter uptime.",
+    "seo_title": "DigiPulse - Premium Uptime Monitoring",
+    "seo_description": "Next-generation digital health monitoring with premium aesthetics. Real-time insights for your infrastructure with zero latency."
   },
   "sites": {
     "title": "Sites",

@@ -128,7 +128,7 @@
         <!-- Disconnect Confirmation Modal -->
         <UModal v-model:open="isDisconnectModalOpen">
           <template #content>
-            <UCard class="glass-card !border-neutral-200/50 dark:!border-white/10 overflow-hidden relative shadow-2xl">
+            <UCard class="glass-card border-neutral-200/50! dark:border-white/10! overflow-hidden relative shadow-2xl">
               <div class="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-rose-500 to-rose-600"></div>
               
               <div class="flex items-center gap-4 mb-6">

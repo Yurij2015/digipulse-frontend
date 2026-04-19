@@ -12,6 +12,11 @@ export default defineNuxtConfig({
           name: "description",
           content: "Modern digital health monitoring with premium aesthetics.",
         },
+        { property: "og:type", content: "website" },
+        { property: "og:site_name", content: "DigiPulse" },
+        { property: "og:image", content: "/og-image.png" },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:image", content: "/og-image.png" },
       ],
       link: [
         { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
@@ -49,6 +54,7 @@ export default defineNuxtConfig({
     public: {
       apiBase: "http://localhost",
       frontendKey: "",
+      siteUrl: "",
       turnstile: {
         siteKey: "",
       },
