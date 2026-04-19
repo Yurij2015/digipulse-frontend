@@ -135,7 +135,7 @@ const connectTelegram = async () => {
     isTelegramConnecting.value = true;
     console.log('[Telegram Connect] Starting connection process...');
     
-    const response = await $fetch<{ url: string }>(`${config.public.apiBase}/telegram/connect`, {
+    const response = await $fetch<{ url: string }>(`${config.public.apiBase}/api/telegram/connect`, {
       headers: {
         Authorization: `Bearer ${token.value}`,
         'X-Frontend-Key': config.public.frontendKey as string,
