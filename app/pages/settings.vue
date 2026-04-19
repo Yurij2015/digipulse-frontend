@@ -85,6 +85,7 @@
                   icon="i-heroicons-plus-circle"
                   size="xl"
                   class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-black px-8 py-4 rounded-2xl hover:scale-[1.05] active:scale-95 transition-all shadow-xl shadow-primary-500/10"
+                  :loading="isTelegramConnecting"
                   @click="connectTelegram"
                 >
                   {{ $t('profile.telegram_connect') }}
@@ -99,16 +100,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useLocalePath } from '#i18n';
-import { useAuth } from '#imports';
+import { useAuth, useRuntimeConfig } from '#imports';
 
 const localePath = useLocalePath();
-const { user } = useAuth();
+const { user, token } = useAuth();
+const config = useRuntimeConfig();
 
 definePageMeta({
   middleware: 'auth'
 });
+
+const isTelegramConnecting = ref(false);
 
 const userInitials = computed(() => {
   if (!user.value) return '??';
@@ -124,8 +128,33 @@ const profileFields = computed(() => [
   { label: 'profile.email', value: user.value?.email, icon: 'i-heroicons-envelope' },
 ]);
 
-const connectTelegram = () => {
-  // Logic to redirect to Telegram Bot with user-specific token
-  window.open('https://t.me/YourDigiPulseBot', '_blank');
+const connectTelegram = async () => {
+  if (isTelegramConnecting.value) return;
+  
+  try {
+    isTelegramConnecting.value = true;
+    console.log('[Telegram Connect] Starting connection process...');
+    
+    const response = await $fetch<{ url: string }>(`${config.public.apiBase}/telegram/connect`, {
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+        'X-Frontend-Key': config.public.frontendKey as string,
+        Accept: 'application/json',
+      }
+    });
+
+    console.log('[Telegram Connect] Received API response:', response);
+
+    if (response.url) {
+      console.log('[Telegram Connect] Redirecting to bot URL:', response.url);
+      window.open(response.url, '_blank');
+    } else {
+      console.warn('[Telegram Connect] No URL found in response');
+    }
+  } catch (error) {
+    console.error('[Telegram Connect] Error during connection:', error);
+  } finally {
+    isTelegramConnecting.value = false;
+  }
 };
 </script>
