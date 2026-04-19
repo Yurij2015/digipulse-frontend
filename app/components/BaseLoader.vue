@@ -29,9 +29,9 @@
       
       <!-- Text Loader -->
       <div class="mt-12 text-center">
-        <h3 class="text-xl font-black text-neutral-900 dark:text-white tracking-widest uppercase mb-2 animate-pulse">
+        <div class="text-xl font-black text-neutral-900 dark:text-white tracking-widest uppercase mb-2 animate-pulse">
           DigiPulse
-        </h3>
+        </div>
         <p class="text-[10px] font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-[0.3em]">
           Initializing Secure Connection
         </p>

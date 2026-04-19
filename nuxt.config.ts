@@ -20,6 +20,8 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+        { rel: "preconnect", href: "https://fonts.googleapis.com" },
+        { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" },
       ],
     },
   },
@@ -47,6 +49,24 @@ export default defineNuxtConfig({
     classSuffix: "",
   },
   css: ["~/assets/css/main.css"],
+  nitro: {
+    compressPublicAssets: {
+      brotli: true,
+      gzip: true,
+    },
+    prerender: {
+      routes: ['/'],
+      crawlLinks: true
+    }
+  },
+  routeRules: {
+    '/': { isr: 3600 },
+    '/auth/**': { ssr: false },
+    '/dashboard/**': { ssr: false },
+  },
+  experimental: {
+    payloadExtraction: true,
+  },
   turnstile: {
     siteKey: "",
   },

@@ -12,6 +12,14 @@ const isVisible = ref(false)
 let timer: any = null
 let finishTimeout: any = null
 
+const head = useLocaleHead()
+
+useHead({
+  htmlAttrs: head.value.htmlAttrs,
+  link: head.value.link,
+  meta: head.value.meta
+})
+
 watch(() => sitesStore.loading, (loading) => {
   if (loading) {
     if (finishTimeout) clearTimeout(finishTimeout)
@@ -54,6 +62,8 @@ watch(() => sitesStore.loading, (loading) => {
     ></div>
     <PublicHeader />
     <NuxtRouteAnnouncer />
-    <NuxtPage />
+    <main id="main-content" role="main">
+      <NuxtPage />
+    </main>
   </UApp>
 </template>
