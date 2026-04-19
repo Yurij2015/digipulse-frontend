@@ -45,6 +45,7 @@
         </UButton>
       </div>
 
+      <!-- Features Grid -->
       <div class="mt-32 grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
         <div v-for="(feat, i) in features" :key="i" 
              class="glass-card p-10 rounded-2xl flex flex-col items-start text-left group hover:-translate-y-1 hover:border-primary-500/30 transition-all cursor-default">
@@ -55,6 +56,61 @@
           <p class="text-neutral-500 dark:text-neutral-400 text-sm leading-[1.6] font-medium">{{ feat.desc }}</p>
         </div>
       </div>
+
+      <!-- How it Works Section -->
+      <div class="mt-48 w-full max-w-4xl text-center">
+        <h2 class="text-4xl md:text-5xl font-black mb-16 text-neutral-900 dark:text-white tracking-tight">{{ $t('index.how_it_works_title') }}</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
+          <!-- Connector Lines for desktop -->
+          <div class="hidden md:block absolute top-1/4 left-1/4 right-1/4 h-px bg-linear-to-r from-transparent via-neutral-200 dark:via-neutral-800 to-transparent z-0"></div>
+          
+          <div class="relative z-10 flex flex-col items-center">
+            <div class="w-16 h-16 rounded-full bg-primary-500 text-white flex items-center justify-center text-xl font-black mb-6 shadow-xl shadow-primary-500/20">1</div>
+            <h4 class="text-lg font-bold mb-3 text-neutral-900 dark:text-white">{{ $t('index.step1_title') }}</h4>
+            <p class="text-neutral-500 dark:text-neutral-400 text-sm px-4">{{ $t('index.step1_desc') }}</p>
+          </div>
+          
+          <div class="relative z-10 flex flex-col items-center">
+            <div class="w-16 h-16 rounded-full bg-primary-500 text-white flex items-center justify-center text-xl font-black mb-6 shadow-xl shadow-primary-500/20">2</div>
+            <h4 class="text-lg font-bold mb-3 text-neutral-900 dark:text-white">{{ $t('index.step2_title') }}</h4>
+            <p class="text-neutral-500 dark:text-neutral-400 text-sm px-4">{{ $t('index.step2_desc') }}</p>
+          </div>
+          
+          <div class="relative z-10 flex flex-col items-center">
+            <div class="w-16 h-16 rounded-full bg-primary-500 text-white flex items-center justify-center text-xl font-black mb-6 shadow-xl shadow-primary-500/20">3</div>
+            <h4 class="text-lg font-bold mb-3 text-neutral-900 dark:text-white">{{ $t('index.step3_title') }}</h4>
+            <p class="text-neutral-500 dark:text-neutral-400 text-sm px-4">{{ $t('index.step3_desc') }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Final CTA Section -->
+      <div class="mt-56 w-full glass-card p-16 rounded-[40px] text-center max-w-4xl border-primary-500/10 mb-20">
+        <h2 class="text-3xl md:text-5xl font-black mb-6 text-neutral-900 dark:text-white leading-tight">
+          {{ $t('index.cta_ready_title') }}
+        </h2>
+        <p class="text-neutral-500 dark:text-neutral-400 text-lg mb-10 max-w-xl mx-auto">
+          {{ $t('index.cta_ready_desc') }}
+        </p>
+        <UButton
+          :to="localePath('/auth')"
+          size="xl"
+          class="bg-primary-500 hover:bg-primary-600 text-white hover:scale-105 active:scale-[0.98] transition-all px-10 py-4 font-black rounded-xl shadow-xl shadow-primary-500/20"
+        >
+          {{ $t('index.get_started') }}
+        </UButton>
+      </div>
+
+      <!-- Minimal Footer -->
+      <footer class="mt-12 w-full border-t border-neutral-100 dark:border-neutral-900 pt-12 flex flex-col md:flex-row items-center justify-between gap-6 opacity-60">
+        <div class="flex items-center gap-2">
+          <div class="w-6 h-6 rounded-md bg-linear-to-br from-primary-500 to-indigo-500"></div>
+          <span class="font-bold text-neutral-900 dark:text-white tracking-widest text-xs">DIGIPULSE</span>
+        </div>
+        <p class="text-xs text-neutral-500 font-medium">
+          {{ $t('index.footer_rights') }}
+        </p>
+      </footer>
     </div>
   </div>
 </template>
@@ -77,8 +133,8 @@ useSeoMeta({
   description: () => t('index.seo_description'),
   ogDescription: () => t('index.seo_description'),
   ogUrl: () => url.href,
-  ogImage: () => `${url.origin}/og-image.png`,
-  twitterImage: () => `${url.origin}/og-image.png`,
+  ogImage: () => `${url.origin}/og-image-social.png`,
+  twitterImage: () => `${url.origin}/og-image-social.png`,
 })
 
 const features = computed(() => [

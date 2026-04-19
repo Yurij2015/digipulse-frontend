@@ -103,7 +103,17 @@
     "feat3_title": "Zaawansowana analityka",
     "feat3_desc": "Statystyki minuta po minucie i szczegółowa historia sprawdzeń dla kontroli stabilności.",
     "seo_title": "DigiPulse - Profesjonalny Monitoring Infrastruktury",
-    "seo_description": "Profesjonalny monitoring infrastruktury z odpowiednią analityką i błyskawicznymi powiadomieniami dla niezakłóconej pracy Twoich usług."
+    "seo_description": "Profesjonalny monitoring infrastruktury z odpowiednią analityką i błyskawicznymi powiadomieniami dla niezakłóconej pracy Twoich usług.",
+    "how_it_works_title": "Jak to działa",
+    "step1_title": "Dodaj swoje zasoby",
+    "step1_desc": "Skonfiguruj swoje witryny, API lub punkty końcowe do monitorowania w kilka sekund.",
+    "step2_title": "Ciągły monitoring",
+    "step2_desc": "Nasze węzły oparte na Go wykonują szybkie sprawdzenia z najwyższą precyzją.",
+    "step3_title": "Bądź na bieżąco",
+    "step3_desc": "Otrzymuj natychmiastowe powiadomienia na Telegramie i analizuj historię stabilności.",
+    "cta_ready_title": "Gotowy na stabilizację swojej infrastruktury?",
+    "cta_ready_desc": "Dołącz do DigiPulse już dziś i nigdy więcej nie przegap awarii.",
+    "footer_rights": "© 2026 DigiPulse. Wszelkie prawa zastrzeżone."
   },
   "sites": {
     "title": "Strony",

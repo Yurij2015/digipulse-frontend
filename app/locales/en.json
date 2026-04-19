@@ -103,7 +103,17 @@
     "feat3_title": "Advanced Metrics",
     "feat3_desc": "Minute-by-minute stats and detailed check history for stability control.",
     "seo_title": "DigiPulse - Professional Infrastructure Monitoring",
-    "seo_description": "Professional infrastructure monitoring with detailed analytics and instant alerts for the uninterrupted operation of your services."
+    "seo_description": "Professional infrastructure monitoring with detailed analytics and instant alerts for the uninterrupted operation of your services.",
+    "how_it_works_title": "How it Works",
+    "step1_title": "Add Your Assets",
+    "step1_desc": "Configure your sites, APIs, or endpoints for monitoring in seconds.",
+    "step2_title": "Continuous Monitoring",
+    "step2_desc": "Our Go-powered nodes perform high-speed checks with precision.",
+    "step3_title": "Stay Informed",
+    "step3_desc": "Receive instant Telegram alerts and analyze stability history.",
+    "cta_ready_title": "Ready to stabilize your infrastructure?",
+    "cta_ready_desc": "Join DigiPulse today and never miss a downtime incident again.",
+    "footer_rights": "© 2026 DigiPulse. All rights reserved."
   },
   "sites": {
     "title": "Sites",
