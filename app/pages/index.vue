@@ -47,7 +47,7 @@
 
       <div class="mt-32 grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
         <div v-for="(feat, i) in features" :key="i" 
-             class="glass-card p-10 rounded-2xl flex flex-col items-start text-left group hover:translate-y-[-4px] hover:border-primary-500/30 transition-all cursor-default">
+             class="glass-card p-10 rounded-2xl flex flex-col items-start text-left group hover:-translate-y-1 hover:border-primary-500/30 transition-all cursor-default">
           <div class="w-12 h-12 rounded-xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center mb-8 group-hover:bg-primary-500/10 transition-colors">
             <UIcon :name="feat.icon" class="text-2xl text-neutral-600 dark:text-neutral-400 group-hover:text-primary-500 transition-colors" />
           </div>
@@ -69,6 +69,17 @@ definePageMeta({
 
 const { t } = useI18n();
 const localePath = useLocalePath();
+const url = useRequestURL();
+
+useSeoMeta({
+  title: () => t('index.seo_title'),
+  ogTitle: () => t('index.seo_title'),
+  description: () => t('index.seo_description'),
+  ogDescription: () => t('index.seo_description'),
+  ogUrl: () => url.href,
+  ogImage: () => `${url.origin}/og-image.png`,
+  twitterImage: () => `${url.origin}/og-image.png`,
+})
 
 const features = computed(() => [
   { icon: 'i-heroicons-clock', title: t('index.feat1_title'), desc: t('index.feat1_desc') },
