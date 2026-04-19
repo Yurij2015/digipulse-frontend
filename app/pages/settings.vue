@@ -44,8 +44,8 @@
                 <div class="text-sm text-neutral-500 font-medium lowercase">
                   @{{ user?.name }}
                 </div>
-                <div class="mt-4 px-3 py-1 rounded-full bg-primary-500/10 text-primary-500 text-[10px] font-black uppercase tracking-tighter border border-primary-500/20">
-                  {{ $t('profile.premium_member') }}
+                <div class="mt-4 px-3 py-1 rounded-full bg-primary-500/10 text-primary-500 text-[10px] font-black tracking-tight border border-primary-500/20">
+                  {{ user?.email }}
                 </div>
               </div>
             </div>
@@ -76,19 +76,49 @@
               </div>
 
               <div class="flex items-center gap-4">
-                <div v-if="(user as any)?.telegram_chat_id" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20 text-xs font-black uppercase tracking-tight">
-                  <div class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
+                <div v-if="(user as any)?.telegram_chat_id" class="flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-emerald-500/5 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/15 backdrop-blur-md text-[10px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/5">
+                  <div class="relative flex h-2 w-2">
+                    <div class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-40"></div>
+                    <div class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
+                  </div>
                   {{ $t('profile.telegram_connected') }}
                 </div>
                 <UButton
-                  v-else
-                  icon="i-heroicons-plus-circle"
+                  v-if="!(user as any)?.telegram_chat_id"
                   size="xl"
-                  class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-black px-8 py-4 rounded-2xl hover:scale-[1.05] active:scale-95 transition-all shadow-xl shadow-primary-500/10"
+                  variant="ghost"
+                  class="group relative overflow-hidden px-8 py-5 rounded-3xl border border-neutral-200 dark:border-white/10 hover:border-sky-500/30 hover:bg-sky-500/5 transition-all duration-500"
                   :loading="isTelegramConnecting"
                   @click="connectTelegram"
                 >
-                  {{ $t('profile.telegram_connect') }}
+                  <div class="flex items-center gap-4">
+                    <div class="p-2.5 rounded-2xl bg-sky-500/10 text-sky-500 group-hover:bg-sky-500 group-hover:text-white transition-all duration-500 shadow-lg shadow-sky-500/5">
+                      <UIcon name="i-heroicons-paper-airplane" class="text-xl" />
+                    </div>
+                    <span class="text-base font-black text-neutral-900 dark:text-white">
+                      {{ $t('profile.telegram_connect') }}
+                    </span>
+                  </div>
+                  <div class="absolute -bottom-12 -right-12 w-24 h-24 bg-sky-500/10 blur-3xl group-hover:bg-sky-500/20 transition-all duration-700"></div>
+                </UButton>
+
+                <UButton
+                  v-else
+                  size="xl"
+                  variant="ghost"
+                  class="group relative overflow-hidden px-8 py-5 rounded-3xl border border-neutral-200 dark:border-white/10 hover:border-rose-500/30 hover:bg-rose-500/5 transition-all duration-500"
+                  :loading="isTelegramDisconnecting"
+                  @click="disconnectTelegram"
+                >
+                  <div class="flex items-center gap-4">
+                    <div class="p-2.5 rounded-2xl bg-rose-500/10 text-rose-500 group-hover:bg-rose-500 group-hover:text-white transition-all duration-500 shadow-lg shadow-rose-500/5">
+                      <UIcon name="i-heroicons-trash" class="text-xl" />
+                    </div>
+                    <span class="text-base font-black text-neutral-900 dark:text-white">
+                      {{ $t('profile.telegram_disconnect') }}
+                    </span>
+                  </div>
+                  <div class="absolute -bottom-12 -right-12 w-24 h-24 bg-rose-500/10 blur-3xl group-hover:bg-rose-500/20 transition-all duration-700"></div>
                 </UButton>
               </div>
             </div>
@@ -105,14 +135,14 @@ import { useLocalePath } from '#i18n';
 import { useAuth, useRuntimeConfig } from '#imports';
 
 const localePath = useLocalePath();
-const { user, token } = useAuth();
+const isTelegramConnecting = ref(false);
+const isTelegramDisconnecting = ref(false);
+const { user, token, setAuth } = useAuth();
 const config = useRuntimeConfig();
 
 definePageMeta({
   middleware: 'auth'
 });
-
-const isTelegramConnecting = ref(false);
 
 const userInitials = computed(() => {
   if (!user.value) return '??';
@@ -142,19 +172,43 @@ const connectTelegram = async () => {
         Accept: 'application/json',
       }
     });
-
-    console.log('[Telegram Connect] Received API response:', response);
-
+    
     if (response.url) {
-      console.log('[Telegram Connect] Redirecting to bot URL:', response.url);
       window.open(response.url, '_blank');
-    } else {
-      console.warn('[Telegram Connect] No URL found in response');
     }
   } catch (error) {
-    console.error('[Telegram Connect] Error during connection:', error);
+    console.error('Failed to get Telegram link:', error);
   } finally {
     isTelegramConnecting.value = false;
+  }
+};
+
+const disconnectTelegram = async () => {
+  if (!window.confirm($t('profile.telegram_disconnect_confirm'))) {
+    return;
+  }
+
+  isTelegramDisconnecting.value = true;
+  try {
+    const response = await $fetch<{ user: any }>(`${config.public.apiBase}/api/telegram/disconnect`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+        'X-Frontend-Key': config.public.frontendKey as string,
+        Accept: 'application/json',
+      }
+    });
+    
+    // Update local user state
+    setAuth({
+      token: token.value as string,
+      user: response.user
+    });
+
+  } catch (error) {
+    console.error('Failed to disconnect Telegram:', error);
+  } finally {
+    isTelegramDisconnecting.value = false;
   }
 };
 </script>

@@ -140,7 +140,11 @@
     "telegram_title": "Powiadomienia Telegram",
     "telegram_desc": "Otrzymuj natychmiastowe alerty o dostępności Twoich witryn bezpośrednio на Telegramie.",
     "telegram_connect": "Połącz z Telegramem",
-    "telegram_connected": "Telegram połączony"
+    "telegram_reconnect": "Połącz ponownie z Telegramem",
+    "telegram_disconnect": "Odłącz Telegram",
+    "telegram_disconnect_confirm": "Czy na pewno chcesz odłączyć powiadomienia Telegram?",
+    "telegram_connected": "Telegram połączony",
+    "telegram_disconnected_success": "Telegram został pomyślnie odłączony."
   },
   "forgot_password": {
     "title": "Resetowanie hasła",
