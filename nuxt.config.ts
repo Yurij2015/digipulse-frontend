@@ -61,6 +61,7 @@ export default defineNuxtConfig({
   },
   routeRules: {
     '/': { isr: 3600 },
+    '/auth/callback': { ssr: false },
   },
   experimental: {
     payloadExtraction: true,
