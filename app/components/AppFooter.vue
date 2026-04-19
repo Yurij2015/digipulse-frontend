@@ -1,7 +1,7 @@
 <template>
-  <footer class="mt-12 w-full border-t border-neutral-100 dark:border-neutral-900 pt-12 flex flex-col md:flex-row items-center justify-between gap-6 opacity-60">
+  <footer class="mt-12 w-full border-t border-neutral-100 dark:border-neutral-900 pt-12 flex flex-col md:flex-row items-center justify-between gap-6">
     <div class="flex items-center gap-3">
-      <svg class="w-10 h-10 shadow-lg shadow-primary-500/20 rounded-xl" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg class="w-10 h-10 shadow-lg shadow-primary-500/20 rounded-xl transition-opacity hover:opacity-100" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect width="40" height="40" rx="10" fill="url(#footer-grad)" />
         <g transform="translate(4, 4)">
           <rect x="2" y="18" width="3" height="10" rx="1" fill="white" />
@@ -22,14 +22,14 @@
     </div>
     <div class="flex flex-col md:flex-row items-center gap-4 md:gap-8 w-full md:w-auto">
       <div class="flex items-center gap-6">
-        <NuxtLink :to="localePath('/privacy')" class="text-xs text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200 transition-colors font-medium">
+        <NuxtLink :to="localePath('/privacy')" class="text-xs text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200 transition-colors font-medium">
           {{ $t('index.privacy_policy') }}
         </NuxtLink>
-        <NuxtLink :to="localePath('/terms')" class="text-xs text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200 transition-colors font-medium">
+        <NuxtLink :to="localePath('/terms')" class="text-xs text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200 transition-colors font-medium">
           {{ $t('index.terms_of_service') }}
         </NuxtLink>
       </div>
-      <p class="text-xs text-neutral-500 font-medium text-center md:text-right">
+      <p class="text-xs text-neutral-600 dark:text-neutral-400 font-medium text-center md:text-right">
         {{ $t('index.footer_rights') }}
       </p>
     </div>

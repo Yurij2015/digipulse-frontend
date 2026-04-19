@@ -1,17 +1,21 @@
 <template>
   <div class="relative min-h-screen bg-white dark:bg-neutral-950 mesh-bg flex flex-col pt-20 md:pt-32 pb-24 items-center px-4 overflow-hidden">
     <!-- Sophisticated Mesh Background Layer -->
-    <div class="absolute inset-0 z-0 pointer-events-none opacity-40 dark:opacity-60">
-      <div class="absolute top-[10%] left-[10%] w-[40%] h-[40%] bg-primary-500 animate-pulse-slow blur-[120px] rounded-full"></div>
-      <div class="absolute bottom-[10%] right-[10%] w-[40%] h-[40%] bg-accent-500 animate-pulse-slow blur-[120px] rounded-full delay-1000"></div>
+    <div class="absolute inset-0 z-0 pointer-events-none opacity-60 dark:opacity-80 overflow-hidden">
+      <!-- Pink Pulse -->
+      <div class="absolute top-[5%] left-[5%] w-[50%] h-[50%] bg-primary-500/30 animate-pulse-slow blur-[100px] rounded-full will-change-opacity"></div>
+      <!-- Cyan Pulse -->
+      <div class="absolute bottom-[5%] right-[5%] w-[50%] h-[50%] bg-accent-500/25 animate-pulse-slow blur-[100px] rounded-full delay-1000 will-change-opacity"></div>
+      <!-- Violet/Indigo Pulse for depth -->
+      <div class="absolute top-[20%] right-[10%] w-[40%] h-[40%] bg-indigo-500/20 animate-pulse-slow blur-[80px] rounded-full delay-2000 will-change-opacity"></div>
     </div>
 
     <!-- Header Actions are now global in app.vue -->
 
     <div class="relative z-10 w-full max-w-5xl text-center flex flex-col items-center">
       <!-- Sophisticated Badge -->
-      <div class="inline-flex items-center gap-2 px-3 py-1 mb-12 rounded-full bg-primary-500/10 border border-primary-500/20 text-primary-500 dark:text-primary-400 text-[10px] font-black tracking-[0.2em] transition-all hover:bg-primary-500/20">
-        <div class="w-1.5 h-1.5 rounded-full bg-primary-500 animate-pulse"></div>
+      <div class="inline-flex items-center gap-2 px-3 py-1 mb-12 rounded-full bg-primary-500/15 border border-primary-500/30 text-primary-700 dark:text-primary-300 text-[10px] font-black tracking-[0.2em] transition-all hover:bg-primary-500/25">
+        <div class="w-1.5 h-1.5 rounded-full bg-primary-700 dark:bg-primary-400 animate-pulse"></div>
         <span>{{ $t('index.premium_monitoring') }}</span>
       </div>
 
@@ -21,7 +25,7 @@
         <span class="opacity-90 leading-tight">{{ $t('index.subtitle') }}</span>
       </h1>
       
-      <p class="text-xl text-neutral-500 dark:text-neutral-400 max-w-2xl mb-16 font-medium leading-relaxed">
+      <p class="text-xl text-neutral-600 dark:text-neutral-300 max-w-2xl mb-16 font-medium leading-relaxed">
         {{ $t('index.description') }}
       </p>
 
@@ -52,8 +56,8 @@
           <div class="w-12 h-12 rounded-xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center mb-8 group-hover:bg-primary-500/10 transition-colors">
             <UIcon :name="feat.icon" class="text-2xl text-neutral-600 dark:text-neutral-400 group-hover:text-primary-500 transition-colors" />
           </div>
-          <h3 class="text-xl font-black mb-4 text-neutral-900 dark:text-white tracking-tight">{{ feat.title }}</h3>
-          <p class="text-neutral-500 dark:text-neutral-400 text-sm leading-[1.6] font-medium">{{ feat.desc }}</p>
+          <h2 class="text-xl font-black mb-4 text-neutral-900 dark:text-white tracking-tight">{{ feat.title }}</h2>
+          <p class="text-neutral-600 dark:text-neutral-300 text-sm leading-[1.6] font-medium">{{ feat.desc }}</p>
         </div>
       </div>
 
@@ -66,20 +70,20 @@
           
           <div class="relative z-10 flex flex-col items-center">
             <div class="w-16 h-16 rounded-full bg-primary-500 text-white flex items-center justify-center text-xl font-black mb-6 shadow-xl shadow-primary-500/20">1</div>
-            <h4 class="text-lg font-bold mb-3 text-neutral-900 dark:text-white">{{ $t('index.step1_title') }}</h4>
+            <h3 class="text-lg font-bold mb-3 text-neutral-900 dark:text-white">{{ $t('index.step1_title') }}</h3>
             <p class="text-neutral-500 dark:text-neutral-400 text-sm px-4">{{ $t('index.step1_desc') }}</p>
           </div>
           
           <div class="relative z-10 flex flex-col items-center">
             <div class="w-16 h-16 rounded-full bg-primary-500 text-white flex items-center justify-center text-xl font-black mb-6 shadow-xl shadow-primary-500/20">2</div>
-            <h4 class="text-lg font-bold mb-3 text-neutral-900 dark:text-white">{{ $t('index.step2_title') }}</h4>
+            <h3 class="text-lg font-bold mb-3 text-neutral-900 dark:text-white">{{ $t('index.step2_title') }}</h3>
             <p class="text-neutral-500 dark:text-neutral-400 text-sm px-4">{{ $t('index.step2_desc') }}</p>
           </div>
           
           <div class="relative z-10 flex flex-col items-center">
             <div class="w-16 h-16 rounded-full bg-primary-500 text-white flex items-center justify-center text-xl font-black mb-6 shadow-xl shadow-primary-500/20">3</div>
-            <h4 class="text-lg font-bold mb-3 text-neutral-900 dark:text-white">{{ $t('index.step3_title') }}</h4>
-            <p class="text-neutral-500 dark:text-neutral-400 text-sm px-4">{{ $t('index.step3_desc') }}</p>
+            <h3 class="text-lg font-bold mb-3 text-neutral-900 dark:text-white">{{ $t('index.step3_title') }}</h3>
+            <p class="text-neutral-600 dark:text-neutral-300 text-sm px-4">{{ $t('index.step3_desc') }}</p>
           </div>
         </div>
       </div>
@@ -89,7 +93,7 @@
         <h2 class="text-3xl md:text-5xl font-black mb-6 text-neutral-900 dark:text-white leading-tight">
           {{ $t('index.cta_ready_title') }}
         </h2>
-        <p class="text-neutral-500 dark:text-neutral-400 text-lg mb-10 max-w-xl mx-auto">
+        <p class="text-neutral-600 dark:text-neutral-300 text-lg mb-10 max-w-xl mx-auto">
           {{ $t('index.cta_ready_desc') }}
         </p>
         <UButton
@@ -101,7 +105,7 @@
         </UButton>
       </div>
 
-      <AppFooter />
+      <LazyAppFooter />
     </div>
   </div>
 </template>
