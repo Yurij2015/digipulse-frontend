@@ -142,7 +142,8 @@
     "telegram_connect": "Connect Telegram",
     "telegram_reconnect": "Reconnect Telegram",
     "telegram_disconnect": "Disconnect Telegram",
-    "telegram_disconnect_confirm": "Are you sure you want to disconnect Telegram notifications?",
+    "telegram_disconnect_confirm_title": "Disconnect Telegram",
+    "telegram_disconnect_confirm": "Are you sure you want to disconnect Telegram notifications? You will stop receiving downtime alerts for your sites.",
     "telegram_connected": "Telegram Connected",
     "telegram_disconnected_success": "Telegram disconnected successfully."
   },
@@ -159,6 +160,11 @@
     "subtitle": "Set a new password for your account.",
     "submit": "Update Password",
     "success_title": "Password Reset",
-    "success_desc": "You can now log in with your new password."
+    "success_desc": "Your password has been updated. You can now log in with your new credentials."
+  },
+  "common": {
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save"
   }
 }

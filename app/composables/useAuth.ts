@@ -32,6 +32,30 @@ export const useAuth = () => {
   };
 
   const isAuthenticated = computed(() => !!token.value);
+  const config = useRuntimeConfig();
+
+  const fetchUser = async () => {
+    if (!token.value) return;
+
+    try {
+      const response = await $fetch<{ user: User }>(`${config.public.apiBase}/api/me`, {
+        headers: {
+          Authorization: `Bearer ${token.value}`,
+          'X-Frontend-Key': config.public.frontendKey as string,
+          Accept: 'application/json',
+        }
+      });
+
+      if (response.user) {
+        user.value = response.user;
+      }
+    } catch (error: any) {
+      console.error('Failed to fetch user:', error);
+      if (error?.status === 401) {
+        logout();
+      }
+    }
+  };
 
   return {
     user,
@@ -39,6 +63,7 @@ export const useAuth = () => {
     isAuthenticated,
     init,
     setAuth,
-    logout
+    logout,
+    fetchUser
   };
 };

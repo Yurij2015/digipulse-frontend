@@ -124,6 +124,49 @@
             </div>
           </div>
         </div>
+
+        <!-- Disconnect Confirmation Modal -->
+        <UModal v-model:open="isDisconnectModalOpen">
+          <template #content>
+            <UCard class="glass-card !border-neutral-200/50 dark:!border-white/10 overflow-hidden relative shadow-2xl">
+              <div class="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-rose-500 to-rose-600"></div>
+              
+              <div class="flex items-center gap-4 mb-6">
+                <div class="p-3 rounded-2xl bg-rose-500/10 text-rose-600 border border-rose-500/20">
+                  <UIcon name="i-heroicons-exclamation-triangle" class="text-2xl" />
+                </div>
+                <h3 class="text-xl font-black text-neutral-900 dark:text-white">
+                  {{ $t('profile.telegram_disconnect_confirm_title') }}
+                </h3>
+              </div>
+              
+              <p class="text-neutral-500 font-medium leading-relaxed mb-8">
+                {{ $t('profile.telegram_disconnect_confirm') }}
+              </p>
+              
+              <div class="flex justify-end gap-3">
+                <UButton
+                  size="lg"
+                  variant="subtle"
+                  color="neutral"
+                  class="rounded-xl font-bold px-6"
+                  @click="isDisconnectModalOpen = false"
+                >
+                  {{ $t('common.cancel') }}
+                </UButton>
+                <UButton
+                  size="lg"
+                  color="error"
+                  class="rounded-xl font-black px-6 shadow-lg shadow-rose-500/20"
+                  :loading="isTelegramDisconnecting"
+                  @click="confirmDisconnect"
+                >
+                  {{ $t('profile.telegram_disconnect') }}
+                </UButton>
+              </div>
+            </UCard>
+          </template>
+        </UModal>
       </div>
     </main>
   </div>
@@ -132,13 +175,20 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useLocalePath } from '#i18n';
-import { useAuth, useRuntimeConfig } from '#imports';
+import { useAuth, useRuntimeConfig, useToast } from '#imports';
 
 const localePath = useLocalePath();
 const isTelegramConnecting = ref(false);
 const isTelegramDisconnecting = ref(false);
-const { user, token, setAuth } = useAuth();
+const isDisconnectModalOpen = ref(false);
+const { user, token, setAuth, fetchUser } = useAuth();
 const config = useRuntimeConfig();
+const toast = useToast();
+
+import { onMounted } from 'vue';
+onMounted(() => {
+  fetchUser();
+});
 
 definePageMeta({
   middleware: 'auth'
@@ -163,7 +213,6 @@ const connectTelegram = async () => {
   
   try {
     isTelegramConnecting.value = true;
-    console.log('[Telegram Connect] Starting connection process...');
     
     const response = await $fetch<{ url: string }>(`${config.public.apiBase}/api/telegram/connect`, {
       headers: {
@@ -175,22 +224,36 @@ const connectTelegram = async () => {
     
     if (response.url) {
       window.open(response.url, '_blank');
+      toast.add({
+        title: 'Telegram Bot',
+        description: 'Please complete the connection in your Telegram app.',
+        icon: 'i-heroicons-paper-airplane',
+        color: 'info'
+      });
     }
   } catch (error) {
     console.error('Failed to get Telegram link:', error);
+    toast.add({
+      title: 'Connection Error',
+      description: 'Failed to generate Telegram connection link.',
+      icon: 'i-heroicons-x-circle',
+      color: 'error'
+    });
   } finally {
     isTelegramConnecting.value = false;
   }
 };
 
-const disconnectTelegram = async () => {
-  if (!window.confirm($t('profile.telegram_disconnect_confirm'))) {
-    return;
-  }
+const disconnectTelegram = () => {
+  isDisconnectModalOpen.value = true;
+};
+
+const confirmDisconnect = async () => {
+  if (isTelegramDisconnecting.value) return;
 
   isTelegramDisconnecting.value = true;
   try {
-    const response = await $fetch<{ user: any }>(`${config.public.apiBase}/api/telegram/disconnect`, {
+    await $fetch(`${config.public.apiBase}/api/telegram/disconnect`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token.value}`,
@@ -199,16 +262,27 @@ const disconnectTelegram = async () => {
       }
     });
     
-    // Update local user state
-    setAuth({
-      token: token.value as string,
-      user: response.user
+    // Update local user state from Single Source of Truth (/api/me)
+    await fetchUser();
+
+    toast.add({
+      title: 'Telegram Disconnected',
+      description: 'Telegram notifications have been successfully unlinked.',
+      icon: 'i-heroicons-check-circle',
+      color: 'success'
     });
 
   } catch (error) {
     console.error('Failed to disconnect Telegram:', error);
+    toast.add({
+      title: 'Error',
+      description: 'Failed to disconnect Telegram notifications. Please try again.',
+      icon: 'i-heroicons-x-circle',
+      color: 'error'
+    });
   } finally {
     isTelegramDisconnecting.value = false;
+    isDisconnectModalOpen.value = false;
   }
 };
 </script>
