@@ -98,7 +98,8 @@
     "submit": "Add Site",
     "name_required": "Name is required",
     "url_invalid": "Enter a valid URL",
-    "url_required": "URL is required"
+    "url_required": "URL is required",
+    "url_unique": "This site has already been added. If this is your site and you have problems adding it, please contact support: admin{'@'}digispace.pro"
   },
   "index": {
     "premium_monitoring": "PREMIUM MONITORING SYSTEM",

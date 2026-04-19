@@ -185,6 +185,9 @@ async function onSubmit() {
   } catch (error: any) {
     if (error.status === 422) {
       formErrors.value = error.data.errors;
+      if (formErrors.value.url && formErrors.value.url.includes('ERROR_URL_TAKEN')) {
+         formErrors.value.url = [t('add_website.url_unique')];
+      }
     }
     console.error('Submit Error:', error);
   } finally {
