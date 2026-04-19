@@ -157,6 +157,7 @@ import AppFooter from '~/components/AppFooter.vue'
 const route = useRoute()
 const localePath = useLocalePath()
 const url = useRequestURL()
+const config = useRuntimeConfig()
 
 // SEO Meta
 useSeoMeta({
@@ -177,7 +178,7 @@ useHead({
   link: [
     {
       rel: 'canonical',
-      href: `https://digipulse.com${route.fullPath}`,
+      href: `${config.public.siteUrl}${route.fullPath}`,
     },
   ],
 })

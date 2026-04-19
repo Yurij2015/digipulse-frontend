@@ -14,9 +14,9 @@ export default defineNuxtConfig({
         },
         { property: "og:type", content: "website" },
         { property: "og:site_name", content: "DigiPulse" },
-        { property: "og:image", content: "/og-image.png" },
+        { property: "og:image", content: "/og-image-social.png" },
         { name: "twitter:card", content: "summary_large_image" },
-        { name: "twitter:image", content: "/og-image.png" },
+        { name: "twitter:image", content: "/og-image-social.png" },
       ],
       link: [
         { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },

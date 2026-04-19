@@ -6,30 +6,68 @@
     <main class="flex-1 p-6 lg:p-12 lg:ml-72 min-h-screen">
       <header class="mb-16">
         <UButton :to="localePath('/dashboard')" icon="i-heroicons-arrow-left" variant="ghost" color="neutral" class="mb-8 font-bold hover:gap-3 transition-all">
-          {{ $t('add_website.back') }}
+          {{ t('add_website.back') }}
         </UButton>
-        <h1 class="text-4xl font-black text-neutral-900 dark:text-white mb-3">{{ $t('profile.title') }}</h1>
-        <p class="text-neutral-500 font-medium">{{ $t('profile.subtitle') }}</p>
+        <h1 class="text-4xl font-black text-neutral-900 dark:text-white mb-3">{{ t('profile.title') }}</h1>
+        <p class="text-neutral-500 font-medium">{{ t('profile.subtitle') }}</p>
       </header>
 
       <div class="max-w-3xl">
         <div class="glass-card p-10 rounded-3xl border-neutral-200/50 dark:border-white/5 relative overflow-hidden">
           <div class="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-primary-500 to-purple-500"></div>
           
+          <div class="flex items-center justify-between mb-8">
+            <h2 class="text-xl font-black text-neutral-900 dark:text-white uppercase tracking-wider">
+              {{ t('profile.title') }}
+            </h2>
+            <UButton
+              v-if="!isEditing"
+              icon="i-heroicons-pencil-square"
+              variant="subtle"
+              color="primary"
+              class="rounded-xl font-bold"
+              @click="toggleEdit"
+            >
+              {{ t('profile.edit_profile') }}
+            </UButton>
+          </div>
+
           <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-            <!-- Info List -->
+            <!-- Info List / Edit Form -->
             <div class="space-y-8">
-              <div v-for="field in profileFields" :key="field.label">
-                <div class="text-[10px] font-black uppercase tracking-widest text-neutral-400 mb-2">{{ $t(field.label) }}</div>
-                <div class="flex items-center gap-3">
-                  <div class="p-2 rounded-lg bg-neutral-100 dark:bg-white/5 text-neutral-500">
-                    <UIcon :name="field.icon" class="text-lg" />
-                  </div>
-                  <div class="text-lg font-bold text-neutral-900 dark:text-white">
-                    {{ field.value || '—' }}
+              <template v-if="!isEditing">
+                <div v-for="field in profileFields" :key="field.label">
+                  <div class="text-[10px] font-black uppercase tracking-widest text-neutral-400 mb-2">{{ t(field.label) }}</div>
+                  <div class="flex items-center gap-3">
+                    <div class="p-2 rounded-lg bg-neutral-100 dark:bg-white/5 text-neutral-500">
+                      <UIcon :name="field.icon" class="text-lg" />
+                    </div>
+                    <div class="text-lg font-bold text-neutral-900 dark:text-white">
+                      {{ field.value || '—' }}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </template>
+              <UForm v-else :state="editForm" class="space-y-6" @submit="onUpdateProfile">
+                <UFormField :label="t('profile.username')" name="name">
+                  <UInput v-model="editForm.name" icon="i-heroicons-at-symbol" class="rounded-xl" />
+                </UFormField>
+                <UFormField :label="t('profile.first_name')" name="first_name">
+                  <UInput v-model="editForm.first_name" icon="i-heroicons-user" class="rounded-xl" />
+                </UFormField>
+                <UFormField :label="t('profile.last_name')" name="last_name">
+                  <UInput v-model="editForm.last_name" icon="i-heroicons-user" class="rounded-xl" />
+                </UFormField>
+                
+                <div class="flex gap-3 pt-4">
+                  <UButton type="submit" color="primary" class="rounded-xl font-black px-6" :loading="isUpdatingProfile">
+                    {{ t('profile.save_changes') }}
+                  </UButton>
+                  <UButton variant="ghost" color="neutral" class="rounded-xl font-bold" @click="isEditing = false">
+                    {{ t('common.cancel') }}
+                  </UButton>
+                </div>
+              </UForm>
             </div>
 
             <!-- Visual Profile Card -->
@@ -52,6 +90,39 @@
           </div>
         </div>
 
+        <!-- Security Section -->
+        <div class="mt-12">
+          <h2 class="text-xl font-black text-neutral-900 dark:text-white mb-6 px-2 flex items-center gap-3">
+            <UIcon name="i-heroicons-shield-check" class="text-primary-500" />
+            {{ t('profile.security') }}
+          </h2>
+          
+          <div class="glass-card p-10 rounded-3xl border-neutral-200/50 dark:border-white/5 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-indigo-500 to-primary-500/20 opacity-50"></div>
+            
+            <UForm :state="passwordForm" class="space-y-6 max-w-md" @submit="onChangePassword">
+              <UFormField :label="t('profile.current_password')" name="current_password">
+                <UInput v-model="passwordForm.current_password" type="password" icon="i-heroicons-lock-closed" class="rounded-xl" />
+              </UFormField>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <UFormField :label="t('profile.new_password')" name="password">
+                  <UInput v-model="passwordForm.password" type="password" icon="i-heroicons-key" class="rounded-xl" />
+                </UFormField>
+                <UFormField :label="t('profile.confirm_new_password')" name="password_confirmation">
+                  <UInput v-model="passwordForm.password_confirmation" type="password" icon="i-heroicons-check-badge" class="rounded-xl" />
+                </UFormField>
+              </div>
+              
+              <div class="pt-4">
+                <UButton type="submit" color="indigo" class="rounded-xl font-black px-10 shadow-lg shadow-indigo-500/10" :loading="isChangingPassword">
+                  {{ t('profile.change_password') }}
+                </UButton>
+              </div>
+            </UForm>
+          </div>
+        </div>
+
         <!-- Integrations Section -->
         <div class="mt-12">
           <h2 class="text-xl font-black text-neutral-900 dark:text-white mb-6 px-2 flex items-center gap-3">
@@ -67,10 +138,10 @@
                 </div>
                 <div class="max-w-md">
                   <h3 class="text-lg font-black text-neutral-900 dark:text-white mb-1">
-                    {{ $t('profile.telegram_title') }}
+                    {{ t('profile.telegram_title') }}
                   </h3>
                   <p class="text-sm text-neutral-500 font-medium leading-relaxed">
-                    {{ $t('profile.telegram_desc') }}
+                    {{ t('profile.telegram_desc') }}
                   </p>
                 </div>
               </div>
@@ -81,7 +152,7 @@
                     <div class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-40"></div>
                     <div class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
                   </div>
-                  {{ $t('profile.telegram_connected') }}
+                  {{ t('profile.telegram_connected') }}
                 </div>
                 <UButton
                   v-if="!(user as any)?.telegram_chat_id"
@@ -96,7 +167,7 @@
                       <UIcon name="i-heroicons-paper-airplane" class="text-xl" />
                     </div>
                     <span class="text-base font-black text-neutral-900 dark:text-white">
-                      {{ $t('profile.telegram_connect') }}
+                      {{ t('profile.telegram_connect') }}
                     </span>
                   </div>
                   <div class="absolute -bottom-12 -right-12 w-24 h-24 bg-sky-500/10 blur-3xl group-hover:bg-sky-500/20 transition-all duration-700"></div>
@@ -115,7 +186,7 @@
                       <UIcon name="i-heroicons-trash" class="text-xl" />
                     </div>
                     <span class="text-base font-black text-neutral-900 dark:text-white">
-                      {{ $t('profile.telegram_disconnect') }}
+                      {{ t('profile.telegram_disconnect') }}
                     </span>
                   </div>
                   <div class="absolute -bottom-12 -right-12 w-24 h-24 bg-rose-500/10 blur-3xl group-hover:bg-rose-500/20 transition-all duration-700"></div>
@@ -136,12 +207,12 @@
                   <UIcon name="i-heroicons-exclamation-triangle" class="text-2xl" />
                 </div>
                 <h3 class="text-xl font-black text-neutral-900 dark:text-white">
-                  {{ $t('profile.telegram_disconnect_confirm_title') }}
+                  {{ t('profile.telegram_disconnect_confirm_title') }}
                 </h3>
               </div>
               
               <p class="text-neutral-500 font-medium leading-relaxed mb-8">
-                {{ $t('profile.telegram_disconnect_confirm') }}
+                {{ t('profile.telegram_disconnect_confirm') }}
               </p>
               
               <div class="flex justify-end gap-3">
@@ -152,7 +223,7 @@
                   class="rounded-xl font-bold px-6"
                   @click="isDisconnectModalOpen = false"
                 >
-                  {{ $t('common.cancel') }}
+                  {{ t('common.cancel') }}
                 </UButton>
                 <UButton
                   size="lg"
@@ -161,7 +232,7 @@
                   :loading="isTelegramDisconnecting"
                   @click="confirmDisconnect"
                 >
-                  {{ $t('profile.telegram_disconnect') }}
+                  {{ t('profile.telegram_disconnect') }}
                 </UButton>
               </div>
             </UCard>
@@ -173,26 +244,129 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { useLocalePath } from '#i18n';
-import { useAuth, useRuntimeConfig, useToast } from '#imports';
+import { computed, ref, onMounted } from 'vue';
+const { t } = useI18n();
 
 const localePath = useLocalePath();
 const isTelegramConnecting = ref(false);
 const isTelegramDisconnecting = ref(false);
 const isDisconnectModalOpen = ref(false);
-const { user, token, setAuth, fetchUser } = useAuth();
+
+// Edit States
+const isEditing = ref(false);
+const isUpdatingProfile = ref(false);
+const editForm = ref({
+  name: '',
+  first_name: '',
+  last_name: ''
+});
+
+// Password States
+const isChangingPassword = ref(false);
+const passwordForm = ref({
+  current_password: '',
+  password: '',
+  password_confirmation: ''
+});
+
+const { user, token, fetchUser } = useAuth();
 const config = useRuntimeConfig();
 const toast = useToast();
 
-import { onMounted } from 'vue';
-onMounted(() => {
-  fetchUser();
+onMounted(async () => {
+  await fetchUser();
 });
 
 definePageMeta({
   middleware: 'auth'
 });
+
+const toggleEdit = () => {
+  if (user.value) {
+    editForm.value = {
+      name: user.value.name || '',
+      first_name: (user.value as any).first_name || '',
+      last_name: (user.value as any).last_name || ''
+    };
+    isEditing.value = true;
+  }
+};
+
+const onUpdateProfile = async () => {
+  if (isUpdatingProfile.value) return;
+  isUpdatingProfile.value = true;
+
+  try {
+    await $fetch(`${config.public.apiBase}/api/profile`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+        'X-Frontend-Key': config.public.frontendKey as string,
+        Accept: 'application/json',
+      },
+      body: editForm.value
+    });
+
+    await fetchUser();
+    isEditing.value = false;
+    toast.add({
+      title: 'Success',
+      description: 'Profile updated successfully.',
+      icon: 'i-heroicons-check-circle',
+      color: 'success'
+    });
+  } catch (error: any) {
+    console.error('Update profile error:', error);
+    toast.add({
+      title: 'Error',
+      description: error.data?.message || 'Failed to update profile.',
+      icon: 'i-heroicons-x-circle',
+      color: 'error'
+    });
+  } finally {
+    isUpdatingProfile.value = false;
+  }
+};
+
+const onChangePassword = async () => {
+  if (isChangingPassword.value) return;
+  isChangingPassword.value = true;
+
+  try {
+    await $fetch(`${config.public.apiBase}/api/profile/password`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+        'X-Frontend-Key': config.public.frontendKey as string,
+        Accept: 'application/json',
+      },
+      body: passwordForm.value
+    });
+
+    passwordForm.value = {
+      current_password: '',
+      password: '',
+      password_confirmation: ''
+    };
+
+    toast.add({
+      title: 'Success',
+      description: 'Password changed successfully.',
+      icon: 'i-heroicons-check-circle',
+      color: 'success'
+    });
+  } catch (error: any) {
+    console.error('Change password error:', error);
+    toast.add({
+      title: 'Error',
+      description: error.data?.message || 'Failed to change password.',
+      icon: 'i-heroicons-x-circle',
+      color: 'error'
+    });
+  } finally {
+    isChangingPassword.value = false;
+  }
+};
 
 const userInitials = computed(() => {
   if (!user.value) return '??';
@@ -203,8 +377,8 @@ const userInitials = computed(() => {
 
 const profileFields = computed(() => [
   { label: 'profile.username', value: user.value?.name, icon: 'i-heroicons-at-symbol' },
-  { label: 'profile.first_name', value: user.value?.first_name, icon: 'i-heroicons-user' },
-  { label: 'profile.last_name', value: user.value?.last_name, icon: 'i-heroicons-user' },
+  { label: 'profile.first_name', value: (user.value as any)?.first_name, icon: 'i-heroicons-user' },
+  { label: 'profile.last_name', value: (user.value as any)?.last_name, icon: 'i-heroicons-user' },
   { label: 'profile.email', value: user.value?.email, icon: 'i-heroicons-envelope' },
 ]);
 

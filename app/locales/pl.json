@@ -122,10 +122,11 @@
     "step2_desc": "Nasze szybkie węzły wykonują ciągłe sprawdzenia z najwyższą precyzją.",
     "step3_title": "Bądź na bieżąco",
     "step3_desc": "Otrzymuj natychmiastowe powiadomienia na Telegramie i analizuj historię stabilności.",
-    "cta_ready_title": "Gotowy na stabilizację swojej infrastruktury?",
+    "cta_ready_title": "Gotowy rozpocząć monitorowanie swoich projektów online, aplikacji webowych i stron?",
     "cta_ready_desc": "Dołącz do DigiPulse już dziś i nigdy więcej nie przegap awarii.",
     "footer_rights": "© 2026 DigiPulse. Wszelkie prawa zastrzeżone.",
-    "privacy_policy": "Polityka prywatności"
+    "privacy_policy": "Polityka prywatności",
+    "terms_of_service": "Warunki korzystania z usług"
   },
   "sites": {
     "title": "Strony",
@@ -168,7 +169,18 @@
     "telegram_disconnect": "Odłącz Telegram",
     "telegram_disconnect_confirm": "Czy na pewno chcesz odłączyć powiadomienia Telegram?",
     "telegram_connected": "Telegram połączony",
-    "telegram_disconnected_success": "Telegram został pomyślnie odłączony."
+    "telegram_disconnected_success": "Telegram został pomyślnie odłączony.",
+    "edit_profile": "Edytuj profil",
+    "save_changes": "Zapisz zmiany",
+    "profile_updated": "Profil został pomyślnie zaktualizowany.",
+    "change_password": "Zmień hasło",
+    "current_password": "Bieżące hasło",
+    "new_password": "Nowe hasło",
+    "confirm_new_password": "Potwierdź nowe hasło",
+    "password_changed": "Hasło zostało pomyślnie zmienione.",
+    "current_password_required": "Bieżące hasło jest wymagane",
+    "new_password_required": "Nowe hasło jest wymagane",
+    "security": "Bezpieczeństwo"
   },
   "forgot_password": {
     "title": "Resetowanie hasła",
@@ -219,7 +231,29 @@
     "data_portability": "Otrzymania kopii swoich danych w przenośnym formacie.",
     "opt_out": "Rezygnacji z komunikacji marketingowej.",
     "contact": "Skontaktuj się z nami",
-    "contact_desc": "Jeśli masz pytania dotyczące tej Polityki prywatności, skontaktuj się z nami pod adresem: privacy{'@'}digipulse.com",
-    "email": "privacy{'@'}digipulse.com"
+    "contact_desc": "Jeśli masz pytania dotyczące tej Polityki prywatności, skontaktuj się z nami pod adresem: admin{'@'}digispace.pro",
+    "email": "admin{'@'}digispace.pro"
+  },
+  "terms": {
+    "title": "Warunki korzystania z usług",
+    "seo_title": "Warunki korzystania z usług - DigiPulse",
+    "seo_description": "Przeczytaj warunki korzystania przed rozpoczęciem korzystania z usługi monitorowania DigiPulse.",
+    "last_updated": "Ostatnia aktualizacja: kwiecień 2026",
+    "intro": "Te Warunki korzystania z usług regulują korzystanie z usługi monitorowania witryn internetowych DigiPulse.",
+    "acceptance": "Akceptacja warunków",
+    "acceptance_desc": "Rejestrując się i korzystając z DigiPulse, zgadzasz się przestrzegać tych warunków. Jeśli nie zgadzasz się z jakąkolwiek częścią warunków, nie możesz uzyskać dostępu do usługi.",
+    "service_rules": "Zasady korzystania z usług",
+    "service_rules_desc": "Zgadzasz się:",
+    "rule_1": "Korzystać z usługi wyłącznie w celach zgodnych z prawem.",
+    "rule_2": "Nie monitorować witryn, których nie posiadasz lub na które nie masz pozwolenia na monitorowanie.",
+    "rule_3": "Nie próbować ominąć lub naruszyć bezpieczeństwa usługi.",
+    "account": "Konta robocze",
+    "account_desc": "Tworzysz konto w serwisie. Jesteś odpowiedzialny za zachowanie poufności swojego konta i hasła. Zgadzasz się natychmiast powiadomić nas o jakimkolwiek nieautoryzowanym użyciu twojego konta.",
+    "termination": "Zakończenie działania",
+    "termination_desc": "Możemy zakończyć lub zawiesić twoje konto w dowolnym momencie, bez uprzedniego powiadomienia lub odpowiedzialności, z jakiegokolwiek powodu, w tym, bez ograniczeń, naruszenia tych Warunków.",
+    "changes": "Zmiany w warunkach",
+    "changes_desc": "Zastrzegamy sobie prawo do zmiany tych warunków w dowolnym momencie. Kontynuując korzystanie z usługi po takich zmianach, akceptujesz nowe warunki.",
+    "contact": "Skontaktuj się z nami",
+    "contact_desc": "Jeśli masz pytania dotyczące tych Warunków, skontaktuj się z nami pod adresem: admin{'@'}digispace.pro"
   }
 }
