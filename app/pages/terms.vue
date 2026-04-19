@@ -71,7 +71,7 @@
 
         <section>
           <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('terms.contact') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 mb-4 leading-relaxed">{{ $t('terms.contact_desc') }}</p>
+          <p class="text-neutral-600 dark:text-neutral-300 mb-4 leading-relaxed" v-html="$t('terms.contact_desc').replace('admin@digispace.pro', `<a href='mailto:admin@digispace.pro?subject=DigiPulse Support' class='text-primary-500 hover:underline font-bold'>admin@digispace.pro</a>`)"></p>
         </section>
       </article>
 
