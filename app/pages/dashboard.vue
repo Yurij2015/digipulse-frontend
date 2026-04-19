@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col lg:flex-row min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white transition-colors duration-500 mesh-bg">
+  <div class="flex flex-col lg:flex-row min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white mesh-bg">
     <AppSidebar />
 
     <!-- Main Content -->
