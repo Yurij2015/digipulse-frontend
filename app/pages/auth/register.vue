@@ -1,5 +1,5 @@
 <template>
-  <div class="relative min-h-screen bg-white dark:bg-neutral-950 mesh-bg flex flex-col items-center justify-center p-6 overflow-hidden transition-colors duration-500">
+  <div class="relative min-h-screen bg-white dark:bg-neutral-950 mesh-bg flex flex-col items-center justify-center pt-24 pb-12 px-6 md:pt-32 overflow-hidden transition-colors duration-500">
     <BaseLoader :show="loading" />
     <div class="w-full max-w-md relative z-10 transition-all duration-700 delay-100">
       <div class="mb-4 flex">
@@ -51,7 +51,7 @@
             />
           </UFormField>
 
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <UFormField :label="t('auth.first_name')" name="first_name" class="premium-label">
               <UInput 
                 v-model="state.first_name" 

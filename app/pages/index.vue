@@ -15,10 +15,10 @@
         <span>{{ $t('index.premium_monitoring') }}</span>
       </div>
 
-      <h1 class="text-6xl md:text-9xl font-black tracking-tight mb-8 leading-[1.1] text-neutral-900 dark:text-white">
+      <h1 class="text-4xl sm:text-6xl md:text-9xl font-black tracking-tight mb-8 leading-[1.1] text-neutral-900 dark:text-white">
         <span class="bg-linear-to-br from-primary-500 to-indigo-500 bg-clip-text text-transparent inline-block py-2">{{ $t('index.title') }}</span>
         <br />
-        <span class="opacity-90">{{ $t('index.subtitle') }}</span>
+        <span class="opacity-90 leading-tight">{{ $t('index.subtitle') }}</span>
       </h1>
       
       <p class="text-xl text-neutral-500 dark:text-neutral-400 max-w-2xl mb-16 font-medium leading-relaxed">
