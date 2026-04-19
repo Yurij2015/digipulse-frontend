@@ -27,7 +27,7 @@
 
       <div class="flex flex-col sm:flex-row items-center justify-center gap-6 w-full px-6">
         <UButton
-          :to="localePath('/auth?mode=register')"
+          :to="localePath('/auth/register')"
           size="xl"
           class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:scale-105 active:scale-[0.98] transition-all duration-300 px-12 py-5 font-black rounded-xl shadow-2xl shimmer-effect border-0"
         >
@@ -35,7 +35,7 @@
         </UButton>
         
         <UButton
-          :to="localePath('/auth?mode=login')"
+          :to="localePath('/auth/login')"
           size="xl"
           variant="ghost"
           color="neutral"
@@ -93,7 +93,7 @@
           {{ $t('index.cta_ready_desc') }}
         </p>
         <UButton
-          :to="localePath('/auth?mode=register')"
+          :to="localePath('/auth/register')"
           size="xl"
           class="bg-primary-500 hover:bg-primary-600 text-white hover:scale-105 active:scale-[0.98] transition-all px-10 py-4 font-black rounded-xl shadow-xl shadow-primary-500/20"
         >
