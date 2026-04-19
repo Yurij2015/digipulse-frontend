@@ -10,22 +10,21 @@
           icon="i-heroicons-arrow-left"
           class="font-bold text-neutral-500 hover:text-neutral-900 dark:hover:text-white p-0 cursor-pointer"
         >
-          {{ $t('auth.back_to_home') }}
+          {{ t('auth.back_to_home') }}
         </UButton>
       </div>
-      <!-- Global LanguageSwitcher in app.vue handles this -->
+
       <div class="text-center mb-12">
         <div class="inline-flex items-center gap-2 px-3 py-1 mb-8 rounded-full bg-primary-500/5 border border-primary-500/10 text-primary-500 dark:text-primary-400 text-xs font-bold tracking-tight">
           <div class="w-1 h-1 rounded-full bg-primary-500"></div>
-          {{ $t('auth.secure_access') }}
+          {{ t('auth.secure_access') }}
         </div>
         <h2 class="text-5xl font-black text-neutral-900 dark:text-white tracking-tighter mb-4">
-          {{ isLogin ? $t('auth.welcome_back') : $t('auth.join_pulse') }}
+          {{ t('auth.join_pulse') }}
         </h2>
-        <p class="text-neutral-500 font-medium">{{ $t('auth.subtitle') }}</p>
+        <p class="text-neutral-500 font-medium">{{ t('auth.subtitle') }}</p>
       </div>
 
-      <!-- Error Message Display -->
       <UAlert
         v-if="errorMessage"
         icon="i-heroicons-exclamation-triangle"
@@ -38,11 +37,11 @@
       <UCard class="glass-card border-neutral-200/50 dark:border-white/10 ring-0 overflow-visible rounded-2xl shadow-2xl relative shadow-primary-500/5">
         <div class="absolute -top-px left-10 right-10 h-px bg-linear-to-r from-transparent via-primary-500/50 to-transparent"></div>
         <UForm :state="state" :schema="schema" @submit="onSubmit" class="flex flex-col gap-5">
-          <UFormField v-if="!isLogin" :label="$t('auth.username')" name="name" class="premium-label">
+          <UFormField :label="t('auth.username')" name="name" class="premium-label">
             <UInput 
               v-model="state.name" 
               icon="i-heroicons-user" 
-              :placeholder="$t('auth.username_placeholder')"
+              :placeholder="t('auth.username_placeholder')"
               size="xl"
               class="w-full"
               :ui="{ 
@@ -52,12 +51,12 @@
             />
           </UFormField>
 
-          <div v-if="!isLogin" class="grid grid-cols-2 gap-4">
-            <UFormField :label="$t('auth.first_name')" name="first_name" class="premium-label">
+          <div class="grid grid-cols-2 gap-4">
+            <UFormField :label="t('auth.first_name')" name="first_name" class="premium-label">
               <UInput 
                 v-model="state.first_name" 
                 icon="i-heroicons-identification" 
-                :placeholder="$t('auth.first_name_placeholder')"
+                :placeholder="t('auth.first_name_placeholder')"
                 size="xl"
                 class="w-full"
                 :ui="{ 
@@ -66,11 +65,11 @@
                 }"
               />
             </UFormField>
-            <UFormField :label="$t('auth.last_name')" name="last_name" class="premium-label">
+            <UFormField :label="t('auth.last_name')" name="last_name" class="premium-label">
               <UInput 
                 v-model="state.last_name" 
                 icon="i-heroicons-identification" 
-                :placeholder="$t('auth.last_name_placeholder')"
+                :placeholder="t('auth.last_name_placeholder')"
                 size="xl"
                 class="w-full"
                 :ui="{ 
@@ -81,12 +80,12 @@
             </UFormField>
           </div>
 
-          <UFormField :label="$t('auth.email')" name="email" class="premium-label">
+          <UFormField :label="t('auth.email')" name="email" class="premium-label">
             <UInput 
               v-model="state.email" 
               type="email" 
               icon="i-heroicons-envelope" 
-              :placeholder="$t('auth.email_placeholder')"
+              :placeholder="t('auth.email_placeholder')"
               size="xl"
               class="w-full"
               :ui="{ 
@@ -96,12 +95,12 @@
             />
           </UFormField>
 
-          <UFormField :label="$t('auth.password')" name="password" class="premium-label">
+          <UFormField :label="t('auth.password')" name="password" class="premium-label">
             <UInput 
               v-model="state.password" 
               :type="showPassword ? 'text' : 'password'" 
               icon="i-heroicons-lock-closed" 
-              :placeholder="$t('auth.password_placeholder')"
+              :placeholder="t('auth.password_placeholder')"
               size="xl"
               class="w-full"
               :ui="{ 
@@ -122,25 +121,14 @@
                 </div>
               </template>
             </UInput>
-            <div v-if="isLogin" class="flex justify-end mt-1">
-              <UButton 
-                variant="link" 
-                color="primary" 
-                size="xs" 
-                class="p-0 font-bold decoration-none hover:underline cursor-pointer"
-                :to="localePath('/forgot-password')"
-              >
-                {{ $t('auth.forgot_password_link') }}
-              </UButton>
-            </div>
           </UFormField>
 
-          <UFormField v-if="!isLogin" :label="$t('auth.confirm_password')" name="confirmPassword" class="premium-label">
+          <UFormField :label="t('auth.confirm_password')" name="confirmPassword" class="premium-label">
             <UInput 
               v-model="state.confirmPassword" 
               :type="showPassword ? 'text' : 'password'" 
               icon="i-heroicons-lock-closed-solid" 
-              :placeholder="$t('auth.password_placeholder')"
+              :placeholder="t('auth.password_placeholder')"
               size="xl"
               class="w-full"
               :ui="{ 
@@ -150,7 +138,6 @@
             />
           </UFormField>
 
-          <!-- Cloudflare Turnstile -->
           <div class="flex justify-center mt-1">
             <NuxtTurnstile 
               v-model="token" 
@@ -166,10 +153,9 @@
             :loading="loading"
             class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-black py-5 rounded-xl shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all mt-4 border-0 shimmer-effect"
           >
-            {{ isLogin ? $t('auth.sign_in') : $t('auth.create_account') }}
+            {{ t('auth.create_account') }}
           </UButton>
 
-          <!-- Google SSO Button -->
           <UButton
             block
             variant="outline"
@@ -189,22 +175,21 @@
                 </svg>
               </div>
             </template>
-            {{ isLogin ? $t('auth.google_sign_in') : $t('auth.google_sign_up') }}
+            {{ t('auth.google_sign_up') }}
           </UButton>
-
         </UForm>
 
         <template #footer>
           <div class="text-center">
             <p class="text-neutral-500 font-medium">
-              {{ isLogin ? $t('auth.no_account') : $t('auth.have_account') }}
+              {{ t('auth.have_account') }}
               <UButton 
                 variant="link" 
                 color="primary" 
                 class="font-black p-0 ml-1 text-primary-500 hover:text-primary-400 decoration-none hover:underline underline-offset-4 transition-all cursor-pointer"
-                @click="toggleMode"
+                :to="localePath('/auth/login')"
               >
-                {{ isLogin ? $t('auth.sign_up') : $t('auth.log_in') }}
+                {{ t('auth.log_in') }}
               </UButton>
             </p>
           </div>
@@ -218,7 +203,7 @@
 import { ref, computed } from 'vue';
 import { object, string, ref as yupRef } from 'yup';
 import { useI18n, useLocalePath } from '#i18n';
-import { useRouter, useAuth, useToast } from '#imports';
+import { useRouter, useAuth, useToast, useRuntimeConfig, useColorMode, useRoute } from '#imports';
 import type { AuthResponse } from '~/types/auth';
 
 definePageMeta({
@@ -228,37 +213,16 @@ definePageMeta({
 const { t } = useI18n();
 const localePath = useLocalePath();
 const router = useRouter();
+const route = useRoute();
 const config = useRuntimeConfig();
 const { setAuth } = useAuth();
 const toast = useToast();
+const colorMode = useColorMode();
 
-const isLogin = ref(true);
 const showPassword = ref(false);
 const loading = ref(false);
-const colorMode = useColorMode();
-const turnstileTheme = computed(() => colorMode.value === 'dark' ? 'dark' : 'light');
-
-const route = useRoute();
 const token = ref('');
-
-const toggleMode = () => {
-  isLogin.value = !isLogin.value;
-  router.replace({ 
-    query: { 
-      ...route.query, 
-      mode: isLogin.value ? 'login' : 'register' 
-    } 
-  });
-};
-
-// Auto-switch mode based on query parameter
-watch(() => route.query.mode, (newMode) => {
-  if (newMode === 'register') {
-    isLogin.value = false;
-  } else if (newMode === 'login') {
-    isLogin.value = true;
-  }
-}, { immediate: true });
+const turnstileTheme = computed(() => colorMode.value === 'dark' ? 'dark' : 'light');
 
 const errorMessage = computed(() => {
   const error = route.query.error as string;
@@ -275,33 +239,16 @@ const state = ref({
   confirmPassword: '',
 });
 
-const schema = computed(() => object({
+const schema = object({
   email: string().email(t('auth.invalid_email')).required(t('auth.email_required')),
-  name: string().when('isLogin', {
-    is: () => !isLogin.value,
-    then: (schema) => schema.required(t('auth.username_required')),
-    otherwise: (schema) => schema.optional(),
-  }),
-  first_name: string().when('isLogin', {
-    is: () => !isLogin.value,
-    then: (schema) => schema.required(t('auth.first_name_required')),
-    otherwise: (schema) => schema.optional(),
-  }),
-  last_name: string().when('isLogin', {
-    is: () => !isLogin.value,
-    then: (schema) => schema.required(t('auth.last_name_required')),
-    otherwise: (schema) => schema.optional(),
-  }),
+  name: string().required(t('auth.username_required')),
+  first_name: string().required(t('auth.first_name_required')),
+  last_name: string().required(t('auth.last_name_required')),
   password: string().min(6, t('auth.password_min')).required(t('auth.password_required')),
-  confirmPassword: string().when('password', {
-    is: (val: string) => !isLogin.value && val && val.length > 0,
-    then: (schema) => schema.oneOf([yupRef('password')], t('auth.passwords_mismatch')).required(t('auth.passwords_mismatch')),
-    otherwise: (schema) => schema,
-  }),
-}));
+  confirmPassword: string().oneOf([yupRef('password')], t('auth.passwords_mismatch')).required(t('auth.passwords_mismatch')),
+});
 
 const handleGoogleLogin = () => {
-  // Redirect to backend Google Auth endpoint
   window.location.href = `${config.public.apiBase}/auth/redirect`;
 };
 
@@ -309,44 +256,33 @@ async function onSubmit() {
   loading.value = true;
   
   try {
-    const endpoint = isLogin.value ? `${config.public.apiBase}/api/login` : `${config.public.apiBase}/api/register`;
-    const body: any = {
-      email: state.value.email,
-      password: state.value.password,
-    };
-    
-    if (!isLogin.value) {
-      body.name = state.value.name;
-      body.first_name = state.value.first_name;
-      body.last_name = state.value.last_name;
-      body.password_confirmation = state.value.confirmPassword;
-    }
-
-    // Include Turnstile token
-    body.cf_turnstile_response = token.value;
-    
-    const response = await $fetch<AuthResponse>(endpoint, {
+    const response = await $fetch<AuthResponse>(`${config.public.apiBase}/api/register`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
         'X-Frontend-Key': config.public.frontendKey as string
       },
-      body
+      body: {
+        name: state.value.name,
+        email: state.value.email,
+        first_name: state.value.first_name,
+        last_name: state.value.last_name,
+        password: state.value.password,
+        password_confirmation: state.value.confirmPassword,
+        cf_turnstile_response: token.value
+      }
     });
 
     if (response && response.token && response.user) {
       setAuth(response);
-      const target = localePath('/dashboard');
-      await router.push(target);
+      await router.push(localePath('/dashboard'));
     } else {
-      console.error('Invalid response from API:', response);
       toast.add({
         title: 'Auth Error',
         description: 'Server returned invalid data structure',
         color: 'error'
       });
-      // Reset Turnstile on error
       token.value = '';
     }
   } catch (error: any) {
@@ -356,7 +292,6 @@ async function onSubmit() {
       description: error.data?.message || 'Failed to connect to server',
       color: 'error'
     });
-    // Reset Turnstile on error
     token.value = '';
   } finally {
     loading.value = false;

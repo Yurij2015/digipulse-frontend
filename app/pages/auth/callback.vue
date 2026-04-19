@@ -27,7 +27,7 @@ onMounted(async () => {
 
   if (!token) {
     console.error('No token found in callback')
-    router.push('/auth?error=no_token')
+    router.push('/auth/login?error=no_token')
     return
   }
 
@@ -64,7 +64,7 @@ onMounted(async () => {
     
   } catch (error) {
     console.error('Authentication failed:', error)
-    router.push('/auth?error=auth_failed')
+    router.push('/auth/login?error=auth_failed')
   }
 })
 
