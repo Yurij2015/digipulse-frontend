@@ -2,6 +2,17 @@
   <div class="relative min-h-screen bg-white dark:bg-neutral-950 mesh-bg flex flex-col items-center justify-center p-6 overflow-hidden transition-colors duration-500">
     <BaseLoader :show="loading" />
     <div class="w-full max-w-md relative z-10 transition-all duration-700 delay-100">
+      <div class="mb-4 flex">
+        <UButton
+          :to="localePath('/')"
+          variant="link"
+          color="neutral"
+          icon="i-heroicons-arrow-left"
+          class="font-bold text-neutral-500 hover:text-neutral-900 dark:hover:text-white p-0 cursor-pointer"
+        >
+          {{ $t('auth.back_to_home') }}
+        </UButton>
+      </div>
       <!-- Global LanguageSwitcher in app.vue handles this -->
       <div class="text-center mb-12">
         <div class="inline-flex items-center gap-2 px-3 py-1 mb-8 rounded-full bg-primary-500/5 border border-primary-500/10 text-primary-500 dark:text-primary-400 text-xs font-bold tracking-tight">
@@ -191,7 +202,7 @@
                 variant="link" 
                 color="primary" 
                 class="font-black p-0 ml-1 text-primary-500 hover:text-primary-400 decoration-none hover:underline underline-offset-4 transition-all cursor-pointer"
-                @click="isLogin = !isLogin"
+                @click="toggleMode"
               >
                 {{ isLogin ? $t('auth.sign_up') : $t('auth.log_in') }}
               </UButton>
@@ -229,6 +240,25 @@ const turnstileTheme = computed(() => colorMode.value === 'dark' ? 'dark' : 'lig
 
 const route = useRoute();
 const token = ref('');
+
+const toggleMode = () => {
+  isLogin.value = !isLogin.value;
+  router.replace({ 
+    query: { 
+      ...route.query, 
+      mode: isLogin.value ? 'login' : 'register' 
+    } 
+  });
+};
+
+// Auto-switch mode based on query parameter
+watch(() => route.query.mode, (newMode) => {
+  if (newMode === 'register') {
+    isLogin.value = false;
+  } else if (newMode === 'login') {
+    isLogin.value = true;
+  }
+}, { immediate: true });
 
 const errorMessage = computed(() => {
   const error = route.query.error as string;

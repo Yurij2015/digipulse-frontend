@@ -1,5 +1,6 @@
 {
   "auth": {
+    "back_to_home": "Back to home",
     "secure_access": "SECURE ACCESS",
     "welcome_back": "Welcome Back",
     "join_pulse": "Join Pulse",
@@ -108,7 +109,7 @@
     "step1_title": "Add Your Assets",
     "step1_desc": "Configure your sites, APIs, or endpoints for monitoring in seconds.",
     "step2_title": "Continuous Monitoring",
-    "step2_desc": "Our Go-powered nodes perform high-speed checks with precision.",
+    "step2_desc": "Our high-speed nodes perform continuous checks with maximum precision.",
     "step3_title": "Stay Informed",
     "step3_desc": "Receive instant Telegram alerts and analyze stability history.",
     "cta_ready_title": "Ready to stabilize your infrastructure?",

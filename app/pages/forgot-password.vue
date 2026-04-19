@@ -1,6 +1,17 @@
 <template>
   <div class="relative min-h-screen bg-white dark:bg-neutral-950 mesh-bg flex flex-col items-center justify-center p-6 overflow-hidden transition-colors duration-500">
     <div class="w-full max-w-md relative z-10 transition-all duration-700">
+      <div class="mb-4 flex">
+        <UButton
+          :to="localePath('/')"
+          variant="link"
+          color="neutral"
+          icon="i-heroicons-arrow-left"
+          class="font-bold text-neutral-500 hover:text-neutral-900 dark:hover:text-white p-0 cursor-pointer"
+        >
+          {{ $t('auth.back_to_home') }}
+        </UButton>
+      </div>
       <div class="text-center mb-12">
         <h2 class="text-5xl font-black text-neutral-900 dark:text-white tracking-tighter mb-4">
           {{ isSuccess ? $t('forgot_password.success_title') : $t('forgot_password.title') }}
@@ -59,7 +70,7 @@
         <template #footer>
           <div class="text-center">
             <UButton 
-              :to="localePath('/auth')" 
+              :to="localePath('/auth?mode=login')" 
               variant="link" 
               color="neutral" 
               icon="i-heroicons-arrow-left"
