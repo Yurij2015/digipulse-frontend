@@ -140,7 +140,11 @@
     "telegram_title": "Telegram Notifications",
     "telegram_desc": "Receive instant alerts about your site availability directly in Telegram.",
     "telegram_connect": "Connect Telegram",
-    "telegram_connected": "Telegram Connected"
+    "telegram_reconnect": "Reconnect Telegram",
+    "telegram_disconnect": "Disconnect Telegram",
+    "telegram_disconnect_confirm": "Are you sure you want to disconnect Telegram notifications?",
+    "telegram_connected": "Telegram Connected",
+    "telegram_disconnected_success": "Telegram disconnected successfully."
   },
   "forgot_password": {
     "title": "Reset Password",
