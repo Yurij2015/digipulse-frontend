@@ -46,7 +46,7 @@
       </div>
 
       <!-- Features Grid -->
-      <div class="mt-32 grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
+      <div class="mt-20 md:mt-32 grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
         <div v-for="(feat, i) in features" :key="i" 
              class="glass-card p-10 rounded-2xl flex flex-col items-start text-left group hover:-translate-y-1 hover:border-primary-500/30 transition-all cursor-default">
           <div class="w-12 h-12 rounded-xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center mb-8 group-hover:bg-primary-500/10 transition-colors">
@@ -58,7 +58,7 @@
       </div>
 
       <!-- How it Works Section -->
-      <div class="mt-48 w-full max-w-4xl text-center">
+      <div class="mt-24 md:mt-48 w-full max-w-4xl text-center">
         <h2 class="text-4xl md:text-5xl font-black mb-16 text-neutral-900 dark:text-white tracking-tight">{{ $t('index.how_it_works_title') }}</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
           <!-- Connector Lines for desktop -->
@@ -85,7 +85,7 @@
       </div>
 
       <!-- Final CTA Section -->
-      <div class="mt-56 w-full glass-card p-16 rounded-[40px] text-center max-w-4xl border-primary-500/10 mb-20">
+      <div class="mt-32 md:mt-56 w-full glass-card p-10 md:p-16 rounded-[40px] text-center max-w-4xl border-primary-500/10 mb-20">
         <h2 class="text-3xl md:text-5xl font-black mb-6 text-neutral-900 dark:text-white leading-tight">
           {{ $t('index.cta_ready_title') }}
         </h2>
