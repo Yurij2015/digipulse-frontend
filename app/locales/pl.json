@@ -40,6 +40,16 @@
     "errors": {
       "no_token": "Nie znaleziono tokenu. Spróbuj zalogować się ponownie.",
       "auth_failed": "Błąd uwierzytelniania. Skontaktuj się z pomocą techniczną."
+    },
+    "verify_email": {
+      "title": "Weryfikacja e-mail",
+      "subtitle": "Proszę czekać, weryfikujemy Twój adres e-mail.",
+      "success_title": "E-mail zweryfikowany",
+      "success_desc": "Twój adres e-mail został pomyślnie zweryfikowany. Możesz teraz korzystać ze wszystkich funkcji.",
+      "error_title": "Weryfikacja nieudana",
+      "error_desc": "Link weryfikacyjny jest nieprawidłowy lub wygasł.",
+      "verifying": "WERYFIKACJA",
+      "back_to_login": "Przejdź do logowania"
     }
   },
   "dashboard": {
@@ -114,7 +124,8 @@
     "step3_desc": "Otrzymuj natychmiastowe powiadomienia na Telegramie i analizuj historię stabilności.",
     "cta_ready_title": "Gotowy na stabilizację swojej infrastruktury?",
     "cta_ready_desc": "Dołącz do DigiPulse już dziś i nigdy więcej nie przegap awarii.",
-    "footer_rights": "© 2026 DigiPulse. Wszelkie prawa zastrzeżone."
+    "footer_rights": "© 2026 DigiPulse. Wszelkie prawa zastrzeżone.",
+    "privacy_policy": "Polityka prywatności"
   },
   "sites": {
     "title": "Strony",
@@ -165,7 +176,7 @@
     "send_link": "Wyślij link",
     "back_to_login": "Powrót do logowania",
     "success_title": "E-mail wysłany",
-    "success_desc": "Sprawdź свою skrzynkę odbiorczą, aby uzyskać instrukcje."
+    "success_desc": "Sprawdź swoją skrzynkę odbiorczą, aby uzyskać instrukcje."
   },
   "reset_password": {
     "title": "Nowe hasło",
@@ -173,5 +184,42 @@
     "submit": "Zaktualizuj hasło",
     "success_title": "Hasło zmienione",
     "success_desc": "Możesz teraz zalogować się z nowym hasłem."
+  },
+  "privacy": {
+    "title": "Polityka prywatności",
+    "seo_title": "Polityka prywatności - DigiPulse",
+    "seo_description": "Dowiedz się, jak DigiPulse gromadzi, wykorzystuje i chroni Twoje dane osobowe.",
+    "last_updated": "Ostatnia aktualizacja: kwiecień 2026",
+    "intro": "Ta Polityka prywatności opisuje, jak DigiPulse gromadzi, wykorzystuje i chroni Twoje dane osobowe podczas korzystania z naszego serwisu monitorowania stron internetowych.",
+    "what_we_collect": "Co zbieramy",
+    "what_we_collect_desc": "Zbieramy następujące typy informacji:",
+    "personal_info": "Dane osobowe: Adres e-mail, imię, nazwa użytkownika podane podczas rejestracji.",
+    "site_data": "Dane stron: Adresy URL i nazwy stron internetowych, które monitorujesz.",
+    "monitoring_data": "Dane monitorowania: Czasy odpowiedzi, statystyki dostępności i historia statusów.",
+    "technical_info": "Informacje techniczne: Adresy IP, typ przeglądarki i dane użytkowania.",
+    "how_we_use": "Jak wykorzystujemy Twoje informacje",
+    "how_we_use_desc": "Wykorzystujemy Twoje informacje do:",
+    "provide_service": "Świadczenia i utrzymania naszego serwisu monitorowania.",
+    "send_notifications": "Wysyłania alertów i powiadomień o monitorowanych stronach.",
+    "improve_service": "Poprawy naszego serwisu i rozwoju nowych funkcji.",
+    "comply_laws": "Przestrzegania wymogów prawnych.",
+    "sharing": "Udostępnianie Twoich informacji",
+    "sharing_desc": "Nie sprzedajemy ani nie wynajmujemy Twoich danych osobowych. Możemy udostępniać Twoje informacje tylko w następujących przypadkach:",
+    "service_providers": "Z zaufanymi dostawcami usług, którzy pomagają nam prowadzić nasz serwis (np. hosting, analityka).",
+    "legal_requirements": "Gdy jest to wymagane przez prawo lub w celu ochrony naszych praw.",
+    "retention": "Przechowywanie danych",
+    "retention_desc": "Przechowujemy Twoje dane osobowe tak długo, jak długo Twoje konto jest aktywne lub tak długo, jak jest to potrzebne do świadczenia naszych usług. Możesz zażądać usunięcia swoich danych w dowolnym momencie.",
+    "security": "Bezpieczeństwo danych",
+    "security_desc": "Wdrażamy odpowiednie środki bezpieczeństwa w celu ochrony Twoich danych osobowych przed nieautoryzowanym dostępem, zmianą, ujawnieniem lub zniszczeniem.",
+    "your_rights": "Twoje prawa",
+    "your_rights_desc": "Masz prawo do:",
+    "access_data": "Dostępu do danych osobowych, które o Tobie przechowujemy.",
+    "correct_data": "Poprawienia niedokładnych lub niekompletnych informacji.",
+    "delete_data": "Żądania usunięcia Twoich danych osobowych.",
+    "data_portability": "Otrzymania kopii swoich danych w przenośnym formacie.",
+    "opt_out": "Rezygnacji z komunikacji marketingowej.",
+    "contact": "Skontaktuj się z nami",
+    "contact_desc": "Jeśli masz pytania dotyczące tej Polityki prywatności, skontaktuj się z nami pod adresem: privacy{'@'}digipulse.com",
+    "email": "privacy{'@'}digipulse.com"
   }
 }
