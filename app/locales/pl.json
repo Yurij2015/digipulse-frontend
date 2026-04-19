@@ -95,10 +95,11 @@
     "freq_6h": "6 godzin",
     "freq_12h": "12 godzin",
     "freq_24h": "24 godziny",
-    "submit": "Dodaj witrynę",
+    "submit": "Dodać węzeł",
     "name_required": "Nazwa jest wymagana",
     "url_invalid": "Wprowadź prawidłowy adres URL",
-    "url_required": "URL jest wymagany"
+    "url_required": "Adres URL jest wymagany",
+    "url_unique": "Ta strona została już dodana. Jeśli to Twoja strona i masz problemy z jej dodaniem, skontaktuj się ze wsparciem: admin{'@'}digispace.pro"
   },
   "index": {
     "premium_monitoring": "ZAAWANSOWANY SYSTEM MONITOROWANIA",

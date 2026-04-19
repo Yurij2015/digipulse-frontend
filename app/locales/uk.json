@@ -98,7 +98,8 @@
     "submit": "Додати сайт",
     "name_required": "Назва обов'язкова",
     "url_invalid": "Введіть коректний URL",
-    "url_required": "URL обов'язковий"
+    "url_required": "URL обов'язковий",
+    "url_unique": "Цей сайт вже додано. Якщо це ваш сайт і виникли проблеми з додаванням, зверніться в підтримку: admin{'@'}digispace.pro"
   },
   "index": {
     "premium_monitoring": "ПРЕМІАЛЬНА СИСТЕМА МОНІТОРИНГУ",
