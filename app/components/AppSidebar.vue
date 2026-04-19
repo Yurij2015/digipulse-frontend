@@ -39,7 +39,7 @@ async function handleLogout() {
     console.error('Logout API Error:', error);
   } finally {
     logout();
-    router.push(localePath('/auth'));
+    router.push(localePath('/'));
   }
 }
 </script>
