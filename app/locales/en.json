@@ -40,6 +40,16 @@
     "errors": {
       "no_token": "Token not found. Please try logging in again.",
       "auth_failed": "Authentication failed. Please contact support."
+    },
+    "verify_email": {
+      "title": "Verify Email",
+      "subtitle": "Please wait while we verify your email address.",
+      "success_title": "Email Verified",
+      "success_desc": "Your email has been successfully verified. You can now access all features.",
+      "error_title": "Verification Failed",
+      "error_desc": "The verification link is invalid or has expired.",
+      "verifying": "VERIFYING",
+      "back_to_login": "Go to Login"
     }
   },
   "dashboard": {
@@ -114,7 +124,8 @@
     "step3_desc": "Receive instant Telegram alerts and analyze stability history.",
     "cta_ready_title": "Ready to stabilize your infrastructure?",
     "cta_ready_desc": "Join DigiPulse today and never miss a downtime incident again.",
-    "footer_rights": "© 2026 DigiPulse. All rights reserved."
+    "footer_rights": "© 2026 DigiPulse. All rights reserved.",
+    "privacy_policy": "Privacy Policy"
   },
   "sites": {
     "title": "Sites",
@@ -179,5 +190,42 @@
     "cancel": "Cancel",
     "confirm": "Confirm",
     "save": "Save"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "seo_title": "Privacy Policy - DigiPulse",
+    "seo_description": "Learn how DigiPulse collects, uses, and protects your personal information.",
+    "last_updated": "Last updated: April 2026",
+    "intro": "This Privacy Policy describes how DigiPulse collects, uses, and protects your personal information when you use our website monitoring service.",
+    "what_we_collect": "What We Collect",
+    "what_we_collect_desc": "We collect the following types of information:",
+    "personal_info": "Personal Information: Email address, name, username provided during registration.",
+    "site_data": "Site Data: URLs and names of websites you monitor.",
+    "monitoring_data": "Monitoring Data: Response times, uptime statistics, and status history.",
+    "technical_info": "Technical Information: IP addresses, browser type, and usage data.",
+    "how_we_use": "How We Use Your Information",
+    "how_we_use_desc": "We use your information to:",
+    "provide_service": "Provide and maintain our monitoring service.",
+    "send_notifications": "Send alerts and notifications about your monitored sites.",
+    "improve_service": "Improve our service and develop new features.",
+    "comply_laws": "Comply with legal obligations.",
+    "sharing": "Sharing Your Information",
+    "sharing_desc": "We do not sell or rent your personal information. We may share your information only in the following cases:",
+    "service_providers": "With trusted service providers who help us operate our service (e.g., hosting, analytics).",
+    "legal_requirements": "When required by law or to protect our rights.",
+    "retention": "Data Retention",
+    "retention_desc": "We retain your personal information for as long as your account is active or as needed to provide our services. You can request deletion of your data at any time.",
+    "security": "Data Security",
+    "security_desc": "We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.",
+    "your_rights": "Your Rights",
+    "your_rights_desc": "You have the right to:",
+    "access_data": "Access the personal information we hold about you.",
+    "correct_data": "Correct inaccurate or incomplete information.",
+    "delete_data": "Request deletion of your personal information.",
+    "data_portability": "Receive a copy of your data in a portable format.",
+    "opt_out": "Opt out of marketing communications.",
+    "contact": "Contact Us",
+    "contact_desc": "If you have any questions about this Privacy Policy, please contact us at: privacy{'@'}digipulse.com",
+    "email": "privacy{'@'}digipulse.com"
   }
 }

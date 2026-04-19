@@ -30,6 +30,7 @@ This application is a Nuxt 4 application. Ensure you abide by these specific pac
 
 ## Best Practices
 
+- Always check app and package versions before implementing code to avoid using deprecated features from older versions that are not supported in newer versions.
 - Use `useAsyncData` for initial data fetching on pages.
 - Ensure proper localization using `@nuxtjs/i18n`.
 - Keep components small and focused.
