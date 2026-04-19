@@ -1,5 +1,5 @@
 <template>
-  <div class="relative min-h-screen bg-white dark:bg-neutral-950 mesh-bg flex flex-col items-center justify-center p-6 overflow-hidden transition-colors duration-500">
+  <div class="relative min-h-screen bg-white dark:bg-neutral-950 mesh-bg flex flex-col items-center justify-center pt-24 pb-12 px-6 md:pt-32 overflow-hidden transition-colors duration-500">
     <BaseLoader :show="loading" />
     <div class="w-full max-w-md relative z-10 transition-all duration-700 delay-100">
       <div class="mb-4 flex">

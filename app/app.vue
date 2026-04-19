@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { useRoute, useAuth } from '#imports'
+import { useAuth } from '#imports'
 import { watch, ref } from 'vue'
 import { useSitesStore } from '~/stores/sites'
 
-const route = useRoute()
 const { init } = useAuth()
 const sitesStore = useSitesStore()
 
@@ -53,14 +52,7 @@ watch(() => sitesStore.loading, (loading) => {
         background: 'linear-gradient(to right, #ec4899, #8b5cf6, #06b6d4)',
       }"
     ></div>
-    
-    <div 
-      v-if="!route.path.match(/^\/(?:uk|pl)?\/?(?:dashboard|sites|settings)/)"
-      class="fixed z-1001 flex items-center gap-4 top-6 right-6"
-    >
-      <LanguageSwitcher side="top" />
-      <ThemeSwitcher />
-    </div>
+    <PublicHeader />
     <NuxtRouteAnnouncer />
     <NuxtPage />
   </UApp>

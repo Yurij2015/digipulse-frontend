@@ -20,14 +20,16 @@
         </defs>
       </svg>
     </div>
-    <div class="flex items-center gap-6">
-      <NuxtLink :to="localePath('/privacy')" class="text-xs text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200 transition-colors font-medium">
-        {{ $t('index.privacy_policy') }}
-      </NuxtLink>
-      <NuxtLink :to="localePath('/terms')" class="text-xs text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200 transition-colors font-medium">
-        {{ $t('index.terms_of_service') }}
-      </NuxtLink>
-      <p class="text-xs text-neutral-500 font-medium">
+    <div class="flex flex-col md:flex-row items-center gap-4 md:gap-8 w-full md:w-auto">
+      <div class="flex items-center gap-6">
+        <NuxtLink :to="localePath('/privacy')" class="text-xs text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200 transition-colors font-medium">
+          {{ $t('index.privacy_policy') }}
+        </NuxtLink>
+        <NuxtLink :to="localePath('/terms')" class="text-xs text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200 transition-colors font-medium">
+          {{ $t('index.terms_of_service') }}
+        </NuxtLink>
+      </div>
+      <p class="text-xs text-neutral-500 font-medium text-center md:text-right">
         {{ $t('index.footer_rights') }}
       </p>
     </div>
