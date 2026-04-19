@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   create-deployment-artifacts:
     name: Create deployment artifacts
@@ -94,7 +97,7 @@ jobs:
             mkdir -p "${{ matrix.server.path }}/releases" "${{ matrix.server.path }}/artifacts"
 
       - name: Upload artifact to server
-        uses: appleboy/scp-action@v0.1.7
+        uses: appleboy/scp-action@v1.0.0
         with:
           host: ${{ matrix.server.ip }}
           username: ${{ matrix.server.username }}
