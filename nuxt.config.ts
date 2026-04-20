@@ -51,6 +51,12 @@ export default defineNuxtConfig({
     classSuffix: "",
   },
   css: ["~/assets/css/main.css"],
+  nitro: {
+    compressPublicAssets: {
+      brotli: true,
+      gzip: true,
+    }
+  },
   experimental: {
     payloadExtraction: true,
   },
