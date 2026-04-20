@@ -39,6 +39,8 @@ export default defineNuxtConfig({
     "@nuxtjs/turnstile",
   ],
   i18n: {
+    // @ts-ignore
+    baseUrl: process.env.NUXT_PUBLIC_SITE_URL,
     locales: [
       { code: "en", language: "en-US", file: "en.json", name: "English" },
       { code: "uk", language: "uk-UA", file: "uk.json", name: "Українська" },
@@ -75,7 +77,8 @@ export default defineNuxtConfig({
     public: {
       apiBase: "http://localhost",
       frontendKey: "",
-      siteUrl: "",
+      // @ts-ignore
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL,
       turnstile: {
         siteKey: "",
       },
