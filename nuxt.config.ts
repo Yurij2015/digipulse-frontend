@@ -32,6 +32,9 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@nuxtjs/turnstile",
   ],
+  features: {
+    inlineStyles: true,
+  },
   i18n: {
     // @ts-ignore
     baseUrl: process.env.NUXT_PUBLIC_SITE_URL,
