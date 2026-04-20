@@ -6,13 +6,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   app: {
     head: {
-      htmlAttrs: {
-        class: 'dark'
-      },
       title: "DigiPulse - Premium Monitoring",
-      style: [
-        { innerHTML: 'html.dark { background-color: #0a0a0a !important; } body { background-color: #0a0a0a !important; color: #f5f5f5; }' }
-      ],
       meta: [
         {
           name: "description",
@@ -57,16 +51,6 @@ export default defineNuxtConfig({
     classSuffix: "",
   },
   css: ["~/assets/css/main.css"],
-  nitro: {
-    compressPublicAssets: {
-      brotli: true,
-      gzip: true,
-    },
-    prerender: {
-      routes: ['/'],
-      crawlLinks: true
-    }
-  },
   experimental: {
     payloadExtraction: true,
   },
