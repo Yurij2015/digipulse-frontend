@@ -61,6 +61,11 @@ export default defineNuxtConfig({
   experimental: {
     payloadExtraction: false,
   },
+  icon: {
+    serverBundle: {
+      collections: ['heroicons']
+    }
+  },
   turnstile: {
     siteKey: "",
   },
