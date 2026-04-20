@@ -6,7 +6,13 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   app: {
     head: {
+      htmlAttrs: {
+        class: 'dark'
+      },
       title: "DigiPulse - Premium Monitoring",
+      style: [
+        { innerHTML: 'html.dark { background-color: #0a0a0a !important; } body { background-color: #0a0a0a !important; color: #f5f5f5; }' }
+      ],
       meta: [
         {
           name: "description",
@@ -58,10 +64,6 @@ export default defineNuxtConfig({
       routes: ['/'],
       crawlLinks: true
     }
-  },
-  routeRules: {
-    '/': { isr: 3600 },
-    '/auth/callback': { ssr: false },
   },
   experimental: {
     payloadExtraction: true,
