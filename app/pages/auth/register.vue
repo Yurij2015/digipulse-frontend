@@ -141,8 +141,8 @@
           <div class="flex justify-center mt-1">
             <NuxtTurnstile 
               v-model="turnstileToken" 
-              @success="(val: string) => turnstileToken = val"
-              :options="{ appearance: 'always', theme: turnstileTheme }" 
+              :key="turnstileTheme"
+              :options="{ appearance: 'execute', theme: turnstileTheme }" 
             />
           </div>
 
