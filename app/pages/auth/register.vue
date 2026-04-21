@@ -140,9 +140,9 @@
 
           <div class="flex justify-center mt-1">
             <NuxtTurnstile 
-              v-model="token" 
-              :key="turnstileTheme"
-              :options="{ appearance: 'execute', theme: turnstileTheme }" 
+              v-model="turnstileToken" 
+              @success="(val: string) => turnstileToken = val"
+              :options="{ appearance: 'always', theme: turnstileTheme }" 
             />
           </div>
 
@@ -221,7 +221,7 @@ const colorMode = useColorMode();
 
 const showPassword = ref(false);
 const loading = ref(false);
-const token = ref('');
+const turnstileToken = ref('');
 const turnstileTheme = computed(() => colorMode.value === 'dark' ? 'dark' : 'light');
 
 const errorMessage = computed(() => {
@@ -270,7 +270,7 @@ async function onSubmit() {
         last_name: state.value.last_name,
         password: state.value.password,
         password_confirmation: state.value.confirmPassword,
-        cf_turnstile_response: token.value
+        cf_turnstile_response: turnstileToken.value
       }
     });
 
@@ -283,7 +283,7 @@ async function onSubmit() {
         description: 'Server returned invalid data structure',
         color: 'error'
       });
-      token.value = '';
+      turnstileToken.value = '';
     }
   } catch (error: any) {
     console.error('Submit Error:', error);
@@ -292,7 +292,7 @@ async function onSubmit() {
       description: error.data?.message || 'Failed to connect to server',
       color: 'error'
     });
-    token.value = '';
+    turnstileToken.value = '';
   } finally {
     loading.value = false;
   }
