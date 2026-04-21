@@ -66,9 +66,6 @@ export default defineNuxtConfig({
       collections: ['heroicons']
     }
   },
-  turnstile: {
-    siteKey: "",
-  },
   runtimeConfig: {
     public: {
       apiBase: "http://localhost",
