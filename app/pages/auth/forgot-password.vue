@@ -1,5 +1,6 @@
 <template>
   <div class="relative min-h-screen bg-white dark:bg-neutral-950 mesh-bg flex flex-col items-center justify-center pt-24 pb-12 px-6 md:pt-32 overflow-hidden transition-colors duration-500">
+    <BaseLoader :show="loading" />
     <div class="w-full max-w-md relative z-10 transition-all duration-700">
       <div class="mb-4 flex">
         <UButton
@@ -40,6 +41,14 @@
                 }"
               />
             </UFormField>
+
+            <div class="flex justify-center mt-1">
+              <NuxtTurnstile 
+                v-model="turnstileToken" 
+                :key="turnstileTheme"
+                :options="{ appearance: 'execute', theme: turnstileTheme }" 
+              />
+            </div>
 
             <UButton 
               type="submit" 
@@ -86,19 +95,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { object, string } from 'yup';
 import { useI18n, useLocalePath } from '#i18n';
-import { useRuntimeConfig, useToast } from '#imports';
+import { useRuntimeConfig, useToast, useColorMode } from '#imports';
 
 const { t } = useI18n();
 const localePath = useLocalePath();
 const config = useRuntimeConfig();
 const toast = useToast();
+const colorMode = useColorMode();
 
 const state = ref({ email: '' });
 const loading = ref(false);
 const isSuccess = ref(false);
+const turnstileToken = ref('');
+const turnstileTheme = computed(() => colorMode.value === 'dark' ? 'dark' : 'light');
 
 const schema = object({
   email: string().email(t('auth.invalid_email')).required(t('auth.email_required')),
@@ -114,7 +126,10 @@ async function onSubmit() {
         'Content-Type': 'application/json',
         'X-Frontend-Key': config.public.frontendKey as string
       },
-      body: { email: state.value.email }
+      body: { 
+        email: state.value.email,
+        cf_turnstile_response: turnstileToken.value
+      }
     });
 
     isSuccess.value = true;
@@ -129,6 +144,7 @@ async function onSubmit() {
       description: error.data?.message || 'Failed to send reset link',
       color: 'error'
     });
+    turnstileToken.value = '';
   } finally {
     loading.value = false;
   }

@@ -1,5 +1,6 @@
 <template>
   <div class="relative min-h-screen bg-white dark:bg-neutral-950 mesh-bg flex flex-col items-center justify-center pt-24 pb-12 px-6 md:pt-32 overflow-hidden transition-colors duration-500">
+    <BaseLoader :show="loading" />
     <div class="w-full max-w-md relative z-10 transition-all duration-700">
       <div class="mb-4 flex">
         <UButton
@@ -56,6 +57,14 @@
               />
             </UFormField>
 
+            <div class="flex justify-center mt-1">
+              <NuxtTurnstile 
+                v-model="turnstileToken" 
+                :key="turnstileTheme"
+                :options="{ appearance: 'execute', theme: turnstileTheme }" 
+              />
+            </div>
+
             <UButton 
               type="submit" 
               block 
@@ -86,10 +95,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { object, string, ref as yupRef } from 'yup';
 import { useI18n, useLocalePath } from '#i18n';
-import { useRouter, useRoute, useRuntimeConfig, useToast } from '#imports';
+import { useRouter, useRoute, useRuntimeConfig, useToast, useColorMode } from '#imports';
 
 const { t } = useI18n();
 const localePath = useLocalePath();
@@ -97,6 +106,7 @@ const route = useRoute();
 const router = useRouter();
 const config = useRuntimeConfig();
 const toast = useToast();
+const colorMode = useColorMode();
 
 const state = ref({
   token: '',
@@ -107,6 +117,8 @@ const state = ref({
 
 const loading = ref(false);
 const isSuccess = ref(false);
+const turnstileToken = ref('');
+const turnstileTheme = computed(() => colorMode.value === 'dark' ? 'dark' : 'light');
 
 onMounted(() => {
   state.value.token = route.query.token as string || '';
@@ -144,7 +156,8 @@ async function onSubmit() {
         token: state.value.token,
         email: state.value.email,
         password: state.value.password,
-        password_confirmation: state.value.password_confirmation
+        password_confirmation: state.value.password_confirmation,
+        cf_turnstile_response: turnstileToken.value
       }
     });
 
@@ -160,6 +173,7 @@ async function onSubmit() {
       description: error.data?.message || 'Failed to reset password',
       color: 'error'
     });
+    turnstileToken.value = '';
   } finally {
     loading.value = false;
   }
