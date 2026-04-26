@@ -102,6 +102,16 @@ async function handleLogout() {
           <LanguageSwitcher />
           <ThemeSwitcher />
         </div>
+
+        <UButton
+          :to="localePath('/support')"
+          variant="ghost"
+          color="neutral"
+          class="w-full justify-start gap-3 font-bold py-2.5 px-4 rounded-lg transition-all text-neutral-500 hover:text-primary-500 cursor-pointer"
+        >
+          <UIcon name="i-heroicons-question-mark-circle" class="text-xl" />
+          <span class="text-[13px] tracking-tight">{{ t('support.title') }}</span>
+        </UButton>
         <UButton 
           icon="i-heroicons-arrow-left-on-rectangle" 
           color="neutral" 

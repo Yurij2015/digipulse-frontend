@@ -39,9 +39,9 @@
                 <div v-for="field in profileFields" :key="field.label">
                   <div class="text-[10px] font-black uppercase tracking-widest text-neutral-400 mb-2">{{ t(field.label) }}</div>
                   <div class="flex items-center gap-3">
-                    <div class="p-2 rounded-lg bg-neutral-100 dark:bg-white/5 text-neutral-500">
-                      <UIcon :name="field.icon" class="text-lg" />
-                    </div>
+                  <div class="flex items-center justify-center p-2 rounded-lg bg-neutral-100 dark:bg-white/5 text-neutral-500">
+                    <UIcon :name="field.icon" class="text-lg" />
+                  </div>
                     <div class="text-lg font-bold text-neutral-900 dark:text-white">
                       {{ field.value || '—' }}
                     </div>
@@ -82,8 +82,29 @@
                 <div class="text-sm text-neutral-500 font-medium lowercase">
                   @{{ user?.name }}
                 </div>
-                <div class="mt-4 px-3 py-1 rounded-full bg-primary-500/10 text-primary-500 text-[10px] font-black tracking-tight border border-primary-500/20">
+                <div class="mt-4 px-3 py-1 rounded-full bg-neutral-200/50 dark:bg-white/5 text-neutral-500 text-[10px] font-black tracking-tight border border-neutral-300 dark:border-white/10 flex items-center gap-2">
+                  <UIcon name="i-heroicons-envelope" />
                   {{ user?.email }}
+                </div>
+                <div v-if="(user as any)?.is_verified" class="mt-3 flex items-center justify-center gap-1.5 text-emerald-500 text-[10px] font-black uppercase tracking-widest bg-emerald-500/10 px-3 py-1 rounded-lg border border-emerald-500/20">
+                  <UIcon name="i-heroicons-check-badge" class="text-sm" />
+                  {{ t('profile.verified') }}
+                </div>
+                <div v-else class="mt-3 flex flex-col items-center gap-3">
+                  <div class="flex items-center justify-center gap-1.5 text-rose-500 text-[10px] font-black uppercase tracking-widest bg-rose-500/10 px-3 py-1 rounded-lg border border-rose-500/20">
+                    <UIcon name="i-heroicons-exclamation-triangle" class="text-sm" />
+                    {{ t('profile.not_verified') }}
+                  </div>
+                  <UButton
+                    size="xs"
+                    variant="link"
+                    color="primary"
+                    class="font-black text-[10px] uppercase tracking-widest p-0"
+                    :loading="isResendingVerification"
+                    @click="resendVerification"
+                  >
+                    {{ t('profile.verify_now') }}
+                  </UButton>
                 </div>
               </div>
             </div>
@@ -115,7 +136,7 @@
               </div>
               
               <div class="pt-4">
-                <UButton type="submit" color="indigo" class="rounded-xl font-black px-10 shadow-lg shadow-indigo-500/10" :loading="isChangingPassword">
+                <UButton type="submit" color="primary" class="rounded-xl font-black px-10 shadow-lg shadow-primary-500/10" :loading="isChangingPassword">
                   {{ t('profile.change_password') }}
                 </UButton>
               </div>
@@ -133,7 +154,7 @@
           <div class="glass-card p-8 rounded-3xl border-neutral-200/50 dark:border-white/5 relative overflow-hidden group">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-8">
               <div class="flex items-start gap-5">
-                <div class="p-4 rounded-2xl bg-[#0088cc]/10 text-[#0088cc] border border-[#0088cc]/20 shadow-inner group-hover:scale-110 transition-transform">
+                <div class="flex items-center justify-center p-4 rounded-2xl bg-[#0088cc]/10 text-[#0088cc] border border-[#0088cc]/20 shadow-inner group-hover:scale-110 transition-transform">
                   <UIcon name="i-heroicons-paper-airplane" class="text-2xl -rotate-45 translate-x-0.5" />
                 </div>
                 <div class="max-w-md">
@@ -163,7 +184,7 @@
                   @click="connectTelegram"
                 >
                   <div class="flex items-center gap-4">
-                    <div class="p-2.5 rounded-2xl bg-sky-500/10 text-sky-500 group-hover:bg-sky-500 group-hover:text-white transition-all duration-500 shadow-lg shadow-sky-500/5">
+                    <div class="flex items-center justify-center p-2.5 rounded-2xl bg-sky-500/10 text-sky-500 group-hover:bg-sky-500 group-hover:text-white transition-all duration-500 shadow-lg shadow-sky-500/5">
                       <UIcon name="i-heroicons-paper-airplane" class="text-xl" />
                     </div>
                     <span class="text-base font-black text-neutral-900 dark:text-white">
@@ -182,7 +203,7 @@
                   @click="disconnectTelegram"
                 >
                   <div class="flex items-center gap-4">
-                    <div class="p-2.5 rounded-2xl bg-rose-500/10 text-rose-500 group-hover:bg-rose-500 group-hover:text-white transition-all duration-500 shadow-lg shadow-rose-500/5">
+                    <div class="flex items-center justify-center p-2.5 rounded-2xl bg-rose-500/10 text-rose-500 group-hover:bg-rose-500 group-hover:text-white transition-all duration-500 shadow-lg shadow-rose-500/5">
                       <UIcon name="i-heroicons-trash" class="text-xl" />
                     </div>
                     <span class="text-base font-black text-neutral-900 dark:text-white">
@@ -193,6 +214,64 @@
                 </UButton>
               </div>
             </div>
+          </div>
+        </div>
+
+        <!-- Notifications Section -->
+        <div class="mt-12 mb-20">
+          <h2 class="text-xl font-black text-neutral-900 dark:text-white mb-6 px-2 flex items-center gap-3">
+            <UIcon name="i-heroicons-bell-alert" class="text-primary-500" />
+            {{ t('profile.notifications') }}
+          </h2>
+          
+          <div class="glass-card p-8 rounded-3xl border-neutral-200/50 dark:border-white/5 relative overflow-hidden group">
+            <div class="space-y-6">
+              <div class="flex items-center justify-between p-4 rounded-2xl bg-neutral-50 dark:bg-white/2 border border-neutral-100 dark:border-white/5 group/item transition-all hover:border-primary-500/20">
+                <div class="flex items-center gap-4">
+                  <div class="flex items-center justify-center p-3 rounded-xl bg-primary-500/10 text-primary-500 group-hover/item:scale-110 transition-transform">
+                    <UIcon name="i-heroicons-envelope" class="text-xl" />
+                  </div>
+                  <div>
+                    <h3 class="font-bold text-neutral-900 dark:text-white">{{ t('profile.notify_email') }}</h3>
+                    <p class="text-xs text-neutral-500">{{ t('profile.notify_email_desc') }}</p>
+                  </div>
+                </div>
+                <USwitch
+                  v-model="notifyEmail"
+                  color="primary"
+                  :loading="isUpdatingSettings"
+                  @update:model-value="updateNotificationSettings"
+                />
+              </div>
+
+              <div class="flex items-center justify-between p-4 rounded-2xl bg-neutral-50 dark:bg-white/2 border border-neutral-100 dark:border-white/5 group/item transition-all hover:border-sky-500/20">
+                <div class="flex items-center gap-4">
+                  <div class="flex items-center justify-center p-3 rounded-xl bg-sky-500/10 text-sky-500 group-hover/item:scale-110 transition-transform">
+                    <UIcon name="i-heroicons-paper-airplane" class="text-xl" />
+                  </div>
+                  <div>
+                    <h3 class="font-bold text-neutral-900 dark:text-white">{{ t('profile.notify_telegram') }}</h3>
+                    <p class="text-xs text-neutral-500">{{ t('profile.notify_telegram_desc') }}</p>
+                  </div>
+                </div>
+                <USwitch
+                  v-model="notifyTelegram"
+                  color="primary"
+                  :loading="isUpdatingSettings"
+                  :disabled="!(user as any)?.telegram_chat_id"
+                  @update:model-value="updateNotificationSettings"
+                />
+              </div>
+              
+              <div v-if="!(user as any)?.telegram_chat_id" class="flex items-center gap-2 px-4 py-3 rounded-xl bg-amber-500/5 border border-amber-500/10">
+                <UIcon name="i-heroicons-information-circle" class="text-amber-500 text-lg" />
+                <p class="text-[11px] text-amber-600 dark:text-amber-400 font-medium">
+                  {{ t('profile.telegram_required_for_notify') }}
+                </p>
+              </div>
+            </div>
+            
+            <div class="absolute -bottom-12 -left-12 w-32 h-32 bg-primary-500/5 blur-3xl rounded-full"></div>
           </div>
         </div>
 
@@ -251,6 +330,10 @@ const localePath = useLocalePath();
 const isTelegramConnecting = ref(false);
 const isTelegramDisconnecting = ref(false);
 const isDisconnectModalOpen = ref(false);
+const isUpdatingSettings = ref(false);
+
+const notifyEmail = ref(true);
+const notifyTelegram = ref(true);
 
 // Edit States
 const isEditing = ref(false);
@@ -269,6 +352,9 @@ const passwordForm = ref({
   password_confirmation: ''
 });
 
+// Verification States
+const isResendingVerification = ref(false);
+
 const { user, token, fetchUser } = useAuth();
 const config = useRuntimeConfig();
 const toast = useToast();
@@ -276,6 +362,13 @@ const toast = useToast();
 onMounted(async () => {
   await fetchUser();
 });
+
+watch(user, (val) => {
+  if (val) {
+    notifyEmail.value = (val as any).notify_email ?? true;
+    notifyTelegram.value = (val as any).notify_telegram ?? true;
+  }
+}, { immediate: true });
 
 definePageMeta({
   middleware: 'auth'
@@ -325,6 +418,49 @@ const onUpdateProfile = async () => {
     });
   } finally {
     isUpdatingProfile.value = false;
+  }
+};
+
+const updateNotificationSettings = async () => {
+  if (isUpdatingSettings.value) return;
+  isUpdatingSettings.value = true;
+  
+  try {
+    await $fetch(`${config.public.apiBase}/api/profile`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+        'X-Frontend-Key': config.public.frontendKey as string,
+        Accept: 'application/json',
+      },
+      body: {
+        notify_email: notifyEmail.value,
+        notify_telegram: notifyTelegram.value
+      }
+    });
+    
+    await fetchUser();
+    toast.add({
+      title: 'Success',
+      description: 'Notification preferences saved.',
+      icon: 'i-heroicons-check-circle',
+      color: 'success'
+    });
+  } catch (error: any) {
+    console.error('Update settings error:', error);
+    toast.add({
+      title: 'Error',
+      description: 'Failed to update notification settings.',
+      icon: 'i-heroicons-x-circle',
+      color: 'error'
+    });
+    // Revert state on error
+    if (user.value) {
+      notifyEmail.value = (user.value as any).notify_email ?? true;
+      notifyTelegram.value = (user.value as any).notify_telegram ?? true;
+    }
+  } finally {
+    isUpdatingSettings.value = false;
   }
 };
 
@@ -380,6 +516,7 @@ const profileFields = computed(() => [
   { label: 'profile.first_name', value: (user.value as any)?.first_name, icon: 'i-heroicons-user' },
   { label: 'profile.last_name', value: (user.value as any)?.last_name, icon: 'i-heroicons-user' },
   { label: 'profile.email', value: user.value?.email, icon: 'i-heroicons-envelope' },
+  { label: 'common.status', value: (user.value as any)?.is_verified ? t('profile.verified') : t('profile.not_verified'), icon: 'i-heroicons-shield-check' },
 ]);
 
 const connectTelegram = async () => {
@@ -457,6 +594,38 @@ const confirmDisconnect = async () => {
   } finally {
     isTelegramDisconnecting.value = false;
     isDisconnectModalOpen.value = false;
+  }
+};
+const resendVerification = async () => {
+  if (isResendingVerification.value) return;
+  isResendingVerification.value = true;
+
+  try {
+    await $fetch(`${config.public.apiBase}/api/email/verification-notification`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+        'X-Frontend-Key': config.public.frontendKey as string,
+        Accept: 'application/json',
+      }
+    });
+
+    toast.add({
+      title: t('forgot_password.success_title'),
+      description: t('forgot_password.success_desc'),
+      icon: 'i-heroicons-check-circle',
+      color: 'success'
+    });
+  } catch (error: any) {
+    console.error('Resend verification error:', error);
+    toast.add({
+      title: 'Error',
+      description: error.data?.message || 'Failed to resend verification email.',
+      icon: 'i-heroicons-x-circle',
+      color: 'error'
+    });
+  } finally {
+    isResendingVerification.value = false;
   }
 };
 </script>

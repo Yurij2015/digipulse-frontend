@@ -40,6 +40,8 @@ jobs:
           NUXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.NUXT_PUBLIC_TURNSTILE_SITE_KEY }}
           NUXT_TURNSTILE_SECRET_KEY: ${{ vars.NUXT_TURNSTILE_SECRET_KEY }}
           NUXT_PUBLIC_SITE_URL: ${{ vars.NUXT_PUBLIC_SITE_URL }}
+          NUXT_PUBLIC_PUSHER_APP_KEY: ${{ vars.NUXT_PUBLIC_PUSHER_APP_KEY }}
+          NUXT_PUBLIC_PUSHER_APP_CLUSTER: ${{ vars.NUXT_PUBLIC_PUSHER_APP_CLUSTER }}
         run: |
           echo "Creating .env from repository variables"
           printf 'NUXT_PUBLIC_API_BASE=%s\n' "${NUXT_PUBLIC_API_BASE}" > .env
@@ -47,6 +49,8 @@ jobs:
           printf 'NUXT_PUBLIC_TURNSTILE_SITE_KEY=%s\n' "${NUXT_PUBLIC_TURNSTILE_SITE_KEY}" >> .env
           printf 'NUXT_TURNSTILE_SECRET_KEY=%s\n' "${NUXT_TURNSTILE_SECRET_KEY}" >> .env
           printf 'NUXT_PUBLIC_SITE_URL=%s\n' "${NUXT_PUBLIC_SITE_URL}" >> .env
+          printf 'NUXT_PUBLIC_PUSHER_APP_KEY=%s\n' "${NUXT_PUBLIC_PUSHER_APP_KEY}" >> .env
+          printf 'NUXT_PUBLIC_PUSHER_APP_CLUSTER=%s\n' "${NUXT_PUBLIC_PUSHER_APP_CLUSTER}" >> .env
           echo ".env created"
 
       - name: Build project

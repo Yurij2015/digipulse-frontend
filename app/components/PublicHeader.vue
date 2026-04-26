@@ -28,9 +28,17 @@
         <span class="text-xl md:text-2xl font-black tracking-tighter text-neutral-900 dark:text-white">DigiPulse</span>
       </NuxtLink>
 
-      <div class="flex items-center gap-2 md:gap-4">
-        <LanguageSwitcher side="top" />
-        <ThemeSwitcher />
+      <div class="flex items-center gap-2 md:gap-6">
+        <NuxtLink 
+          :to="localePath('/support')" 
+          class="hidden md:block text-sm font-black uppercase tracking-widest text-neutral-500 hover:text-primary-500 transition-colors"
+        >
+          {{ $t('support.title') }}
+        </NuxtLink>
+        <div class="flex items-center gap-2 md:gap-4">
+          <LanguageSwitcher side="top" />
+          <ThemeSwitcher />
+        </div>
       </div>
     </div>
   </header>
@@ -44,6 +52,6 @@ const route = useRoute()
 const localePath = useLocalePath()
 
 const show = computed(() => {
-  return !route.path.match(/^\/(?:uk|pl)?\/?(?:dashboard|sites|settings)/)
+  return !route.path.match(/^\/(?:uk|pl)?\/?(?:dashboard|sites|settings|support)/)
 })
 </script>
