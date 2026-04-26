@@ -151,9 +151,13 @@
             </div>
 
             <!-- Ping Info -->
-            <div v-if="website.ping_info" class="flex items-center gap-2 text-[11px] font-medium text-neutral-500 dark:text-neutral-400 px-1">
-              <UIcon name="i-heroicons-signal" class="w-3.5 h-3.5 text-neutral-400" />
-              <span>{{ t('dashboard.network_latency') }} ({{ t('dashboard.ping') }}): <span class="font-bold text-neutral-900 dark:text-white">{{ website.ping_info.latency }}ms</span></span>
+            <div v-if="website.ping_info" class="flex items-center gap-2 text-[11px] font-medium px-1">
+              <UIcon name="i-heroicons-signal" class="w-3.5 h-3.5" :class="website.ping_info.status === 'up' ? 'text-emerald-500' : 'text-red-500'" />
+              <span class="text-neutral-500 dark:text-neutral-400">
+                {{ t('dashboard.ping') }}: 
+                <span v-if="website.ping_info.status === 'up'" class="font-bold text-neutral-900 dark:text-white">{{ website.ping_info.latency }}ms</span>
+                <span v-else class="font-bold text-red-500 uppercase text-[9px]">{{ t('dashboard.offline') }} / Timeout</span>
+              </span>
             </div>
           </div>
 
