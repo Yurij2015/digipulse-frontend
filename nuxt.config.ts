@@ -56,12 +56,9 @@ export default defineNuxtConfig({
       gzip: true,
     },
   },
-  experimental: {
-    payloadExtraction: false,
-  },
   icon: {
-    clientBundle: {
-      scan: true,
+    serverBundle: {
+      collections: ["heroicons"],
     },
   },
   runtimeConfig: {
