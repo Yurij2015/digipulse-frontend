@@ -18,9 +18,7 @@ export default defineNuxtConfig({
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:image", content: "/og-image-social.png" },
       ],
-      link: [
-        { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
-      ],
+      link: [{ rel: "icon", type: "image/svg+xml", href: "/favicon.svg" }],
     },
   },
   modules: [
@@ -56,15 +54,15 @@ export default defineNuxtConfig({
     compressPublicAssets: {
       brotli: true,
       gzip: true,
-    }
+    },
   },
   experimental: {
     payloadExtraction: false,
   },
   icon: {
-    serverBundle: {
-      collections: ['heroicons']
-    }
+    clientBundle: {
+      scan: true,
+    },
   },
   runtimeConfig: {
     public: {
@@ -75,6 +73,8 @@ export default defineNuxtConfig({
       turnstile: {
         siteKey: "",
       },
+      pusherAppKey: "",
+      pusherAppCluster: "eu",
     },
     turnstile: {
       secretKey: "",

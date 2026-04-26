@@ -102,7 +102,6 @@
               {{ website.status }}
             </div>
           </div>
-
           <!-- Monitoring Badges Section -->
           <div v-if="(website.configurations?.length || website.checks?.length)" class="flex flex-wrap gap-1.5 mb-6 min-h-5.5">
             <UBadge 
@@ -111,7 +110,7 @@
               size="sm"
               variant="subtle"
               :class="[
-                'font-bold text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-md border',
+                'font-bold text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-md border inline-flex items-center',
                 getBadgeClass(config.check_type?.slug || config.type?.slug)
               ]"
             >
@@ -123,6 +122,40 @@
             </UBadge>
           </div>
 
+          <!-- Infrastructure Details -->
+          <div v-if="website.server_info || website.ssl_info" class="mb-6 flex flex-col gap-2.5">
+            <!-- Server Info -->
+            <div v-if="website.server_info" class="flex items-center gap-2 text-[11px] font-medium text-neutral-500 dark:text-neutral-400 bg-neutral-50 dark:bg-white/2 p-2 rounded-xl border border-neutral-100 dark:border-white/5">
+              <UIcon name="i-heroicons-server" class="w-3.5 h-3.5 text-neutral-400" />
+              <span class="font-mono text-[10px]">{{ website.server_info.ip }}</span>
+              <span v-if="website.server_info.country_code" class="flex items-center gap-2">
+                <span class="opacity-30">|</span>
+                <span>{{ website.server_info.country_code }}</span>
+              </span>
+              <span v-if="website.server_info.isp" class="flex items-center gap-2 overflow-hidden">
+                <span class="opacity-30">|</span>
+                <span class="truncate">{{ website.server_info.isp }}</span>
+              </span>
+            </div>
+            
+            <!-- SSL Info -->
+            <div v-if="website.ssl_info" class="flex items-center gap-2 text-[11px] font-bold px-1">
+              <UIcon 
+                :name="website.ssl_info.days_remaining < 7 ? 'i-heroicons-exclamation-triangle' : 'i-heroicons-shield-check'" 
+                :class="website.ssl_info.days_remaining < 7 ? 'text-red-500 animate-pulse' : 'text-emerald-500'" 
+                class="w-4 h-4"
+              />
+              <span :class="website.ssl_info.days_remaining < 7 ? 'text-red-500' : 'text-emerald-500'">
+                SSL: {{ website.ssl_info.days_remaining }} days remaining
+              </span>
+            </div>
+
+            <!-- Ping Info -->
+            <div v-if="website.ping_info" class="flex items-center gap-2 text-[11px] font-medium text-neutral-500 dark:text-neutral-400 px-1">
+              <UIcon name="i-heroicons-signal" class="w-3.5 h-3.5 text-neutral-400" />
+              <span>{{ t('dashboard.network_latency') }} ({{ t('dashboard.ping') }}): <span class="font-bold text-neutral-900 dark:text-white">{{ website.ping_info.latency }}ms</span></span>
+            </div>
+          </div>
 
           <!-- Stats Grid -->
           <div class="grid grid-cols-2 gap-4 py-4 border-y border-neutral-100 dark:border-white/5 mb-4">

@@ -27,7 +27,7 @@ onMounted(async () => {
 
   if (!token) {
     console.error('No token found in callback')
-    router.push('/auth/login?error=no_token')
+    await router.push('/auth/login?error=no_token')
     return
   }
 
@@ -64,7 +64,7 @@ onMounted(async () => {
     
   } catch (error) {
     console.error('Authentication failed:', error)
-    router.push('/auth/login?error=auth_failed')
+    await router.push('/auth/login?error=auth_failed')
   }
 })
 
@@ -76,7 +76,7 @@ definePageMeta({
 
 <template>
   <div class="fixed inset-0 bg-[#050505] flex items-center justify-center overflow-hidden">
-    <!-- Premium Backdrop -->
+    <!-- Refined Backdrop -->
     <div class="absolute inset-0 pointer-events-none">
       <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-violet-600/10 blur-[120px]"></div>
       <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-cyan-600/10 blur-[120px]"></div>
@@ -101,7 +101,7 @@ definePageMeta({
       </div>
 
       <!-- Glassy Terminal-like Progress Bar -->
-      <div class="w-48 h-[2px] bg-white/5 rounded-full overflow-hidden relative border border-white/10">
+      <div class="w-48 h-0.5 bg-white/5 rounded-full overflow-hidden relative border border-white/10">
         <div class="absolute inset-0 bg-linear-to-r from-violet-600 via-cyan-500 to-violet-600 bg-size-[200%_100%] animate-[shimmer_2s_infinite_linear] opacity-100"></div>
       </div>
     </div>

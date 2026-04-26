@@ -45,6 +45,46 @@
             </a>
           </template>
 
+          <!-- Server & Security Column -->
+          <template #server-cell="{ row }">
+            <div class="flex flex-col gap-1 py-1">
+              <!-- Server Info -->
+              <div v-if="row.original.server_info" class="flex items-center gap-1.5 text-[10px] font-medium text-neutral-500 dark:text-neutral-400">
+                <UIcon name="i-heroicons-server" class="text-[10px]" />
+                <span class="font-mono">{{ row.original.server_info.ip }}</span>
+                <span v-if="row.original.server_info.country_code" class="flex items-center gap-1">
+                  <span class="text-neutral-300 dark:text-white/10">•</span>
+                  <span>{{ row.original.server_info.country_code }}</span>
+                </span>
+                <span v-if="row.original.server_info.isp" class="flex items-center gap-1">
+                  <span class="text-neutral-300 dark:text-white/10">•</span>
+                  <span class="truncate max-w-20">{{ row.original.server_info.isp }}</span>
+                </span>
+              </div>
+              
+              <!-- SSL Info -->
+              <div v-if="row.original.ssl_info" class="flex items-center gap-1.5 text-[10px] font-bold">
+                <UIcon 
+                  :name="row.original.ssl_info.days_remaining < 7 ? 'i-heroicons-exclamation-triangle' : 'i-heroicons-shield-check'" 
+                  :class="row.original.ssl_info.days_remaining < 7 ? 'text-error-500' : 'text-emerald-500'" 
+                />
+                <span :class="row.original.ssl_info.days_remaining < 7 ? 'text-error-500' : 'text-emerald-500'">
+                  SSL: {{ row.original.ssl_info.days_remaining }} days
+                </span>
+              </div>
+
+              <!-- Ping Info -->
+              <div v-if="row.original.ping_info" class="flex items-center gap-1.5 text-[10px] font-medium text-neutral-500 dark:text-neutral-400">
+                <UIcon name="i-heroicons-signal" class="text-[10px]" />
+                <span>{{ t('dashboard.ping') }}: <span class="font-bold text-neutral-700 dark:text-neutral-300">{{ row.original.ping_info.latency }}ms</span></span>
+              </div>
+
+              <div v-if="!row.original.server_info && !row.original.ssl_info && !row.original.ping_info" class="text-[10px] text-neutral-400 font-medium italic">
+                Pending check...
+              </div>
+            </div>
+          </template>
+
           <!-- Status Column -->
           <template #status-cell="{ row }">
             <div :class="[
@@ -163,8 +203,9 @@ const selectedSite = ref<any>(null);
 const columns = computed(() => [
   { accessorKey: 'name', header: t('sites.table.name') },
   { accessorKey: 'url', header: t('sites.table.url') },
+  { accessorKey: 'server', header: 'Infrastructure' },
   { accessorKey: 'status', header: t('sites.table.status') },
-  { accessorKey: 'monitoring', header: 'Monitoring' },
+  { accessorKey: 'monitoring', header: 'Monitors' },
   { id: 'actions', header: t('sites.table.actions') }
 ]);
 
