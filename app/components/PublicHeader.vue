@@ -30,6 +30,7 @@
 
       <div class="flex items-center gap-2 md:gap-6">
         <NuxtLink 
+          v-if="isAuthenticated"
           :to="localePath('/support')" 
           class="hidden md:block text-sm font-black uppercase tracking-widest text-neutral-500 hover:text-primary-500 transition-colors"
         >
@@ -45,11 +46,12 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute, useLocalePath } from '#imports'
+import { useRoute, useLocalePath, useAuth } from '#imports'
 import { computed } from 'vue'
 
 const route = useRoute()
 const localePath = useLocalePath()
+const { isAuthenticated } = useAuth()
 
 const show = computed(() => {
   return !route.path.match(/^\/(?:uk|pl)?\/?(?:dashboard|sites|settings|support)/)
