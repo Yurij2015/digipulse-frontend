@@ -63,7 +63,8 @@
         <div 
           v-for="website in filteredWebsites" 
           :key="website.id" 
-          class="group p-6 rounded-2xl bg-white dark:bg-white/5 border border-neutral-200 dark:border-white/10 hover:border-primary-500/50 hover:shadow-xl transition-all duration-300 flex flex-col"
+          class="group p-6 rounded-2xl bg-white dark:bg-white/5 border border-neutral-200 dark:border-white/10 hover:border-primary-500/50 hover:shadow-xl transition-all duration-300 flex flex-col relative"
+          :class="{ 'opacity-70 border-dashed border-neutral-300 dark:border-white/5 bg-neutral-50/50 dark:bg-neutral-900/10 grayscale-[0.3]': !(website.configurations?.length || website.checks?.length) }"
         >
           <div class="flex justify-between items-start mb-6">
             <div class="flex flex-col gap-1">
@@ -120,6 +121,12 @@
               />
               {{ config.check_type?.name || config.type?.name }}
             </UBadge>
+          </div>
+          <div v-else class="mb-6 p-2 rounded-lg bg-amber-500/5 border border-amber-500/10 flex items-center gap-2">
+            <UIcon name="i-heroicons-exclamation-triangle" class="text-amber-500 w-4 h-4 shrink-0" />
+            <div class="text-[9px] font-bold text-amber-600/80 leading-tight">
+              {{ t('sites.card_no_monitoring') }}
+            </div>
           </div>
 
           <!-- Infrastructure Details -->

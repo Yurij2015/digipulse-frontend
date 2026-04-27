@@ -22,6 +22,7 @@ const isOpen = computed({
 });
 
 const isEdit = computed(() => !!props.siteId);
+const formRef = ref<any>(null);
 const loading = ref(false);
 const pageLoading = ref(false);
 const formErrors = ref<Record<string, string[]>>({});
@@ -115,9 +116,10 @@ async function fetchData() {
         if (configs && Array.isArray(configs)) {
           configs.forEach((item: any) => {
             const checkTypeId = Number(item.check_type?.id || item.check_type_id);
-            if (state.value.selectedChecks[checkTypeId]) {
-              state.value.selectedChecks[checkTypeId].enabled = true;
-              state.value.selectedChecks[checkTypeId].params = JSON.parse(JSON.stringify(item.params || {}));
+            const currentCheck = state.value.selectedChecks[checkTypeId];
+            if (currentCheck) {
+              currentCheck.enabled = true;
+              currentCheck.params = JSON.parse(JSON.stringify(item.params || {}));
             }
           });
         }
@@ -136,6 +138,11 @@ watch(() => props.open, (newVal) => {
 
 watch(() => props.siteId, (newVal) => {
   if (isOpen.value && newVal !== undefined) fetchData();
+});
+
+
+const hasChecks = computed(() => {
+  return Object.values(state.value.selectedChecks).some(c => (c as any).enabled);
 });
 
 function getCheckTypeColor(slug: string) {
@@ -160,6 +167,7 @@ async function onSubmit() {
         check_type_id: parseInt(id),
         params: val.params
       }));
+
 
     const url = isEdit.value 
       ? `${config.public.apiBase}/api/sites/${props.siteId}`
@@ -203,7 +211,7 @@ async function onSubmit() {
       <div v-if="pageLoading" class="p-10 text-center">
         <UIcon name="i-heroicons-arrow-path" class="text-3xl animate-spin text-primary-500" />
       </div>
-      <UForm v-else :state="state" :schema="schema" @submit="onSubmit" class="flex flex-col gap-6">
+      <UForm ref="formRef" v-else :state="state" :schema="schema" @submit="onSubmit" class="flex flex-col gap-6">
         <UFormField :label="t('add_website.node_name')" name="name">
           <UInput v-model="state.name" :placeholder="t('add_website.node_name_placeholder')" class="w-full" />
           <div v-if="formErrors.name" class="text-xs text-error mt-1">{{ formErrors.name[0] }}</div>
@@ -246,14 +254,18 @@ async function onSubmit() {
                   <div class="text-[9px] text-neutral-500 leading-tight">{{ type.description }}</div>
                 </div>
               </div>
-              <USwitch v-model="state.selectedChecks[type.id]!.enabled" size="sm" class="cursor-pointer" />
+              <USwitch v-if="state.selectedChecks[type.id]" v-model="state.selectedChecks[type.id]!.enabled" size="sm" class="cursor-pointer" />
             </div>
             
             <div v-if="state.selectedChecks[type.id]?.enabled && type.slug === 'keyword_search'" class="mt-3 pt-3 border-t border-neutral-100 dark:border-white/5">
               <UFormField label="Keyword" size="sm">
-                <UInput v-model="state.selectedChecks[type.id]!.params.keyword" placeholder="e.g. 'Out of stock'" class="w-full" />
+                <UInput v-if="state.selectedChecks[type.id]" v-model="state.selectedChecks[type.id]!.params.keyword" placeholder="e.g. 'Out of stock'" class="w-full" />
               </UFormField>
             </div>
+          </div>
+          <div v-if="!hasChecks" class="p-4 rounded-xl bg-amber-500/5 border border-amber-500/10 text-amber-500 text-[10px] font-bold text-center leading-relaxed">
+            <UIcon name="i-heroicons-exclamation-triangle" class="mr-1 text-xs inline-block align-text-top" />
+            {{ t('add_website.no_checks_warning') }}
           </div>
         </div>
       </UForm>
@@ -262,7 +274,7 @@ async function onSubmit() {
     <template #footer>
       <div class="flex justify-end gap-3 w-full">
         <UButton color="neutral" variant="ghost" @click="isOpen = false" class="cursor-pointer">Cancel</UButton>
-        <UButton type="submit" color="primary" :loading="loading" @click="onSubmit" class="cursor-pointer">
+        <UButton color="primary" :loading="loading" @click="onSubmit" class="cursor-pointer">
           {{ isEdit ? 'Save Changes' : t('add_website.submit') }}
         </UButton>
       </div>
