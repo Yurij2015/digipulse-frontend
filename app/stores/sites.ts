@@ -73,12 +73,20 @@ export const useSitesStore = defineStore('sites', () => {
     return computed(() => sites.value.find(s => String(s.id) === String(id)));
   };
 
+  const clearSites = () => {
+    sites.value = [];
+    loading.value = false;
+    error.value = null;
+    lastFetched.value = null;
+  };
+
   return {
     sites,
     loading,
     error,
     lastFetched,
     fetchSites,
-    getSiteById
+    getSiteById,
+    clearSites
   };
 });
