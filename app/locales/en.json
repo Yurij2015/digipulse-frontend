@@ -73,7 +73,8 @@
     "copied": "Copied",
     "never": "Never",
     "network_latency": "Network Latency",
-    "ping": "Ping"
+    "ping": "Ping",
+    "offline": "Offline"
   },
   "add_website": {
     "back": "Back to Dashboard",
