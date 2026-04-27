@@ -102,7 +102,8 @@
     "name_required": "Nazwa jest wymagana",
     "url_invalid": "Wprowadź prawidłowy adres URL",
     "url_required": "Adres URL jest wymagany",
-    "url_unique": "Ta strona została już dodana. Jeśli to Twoja strona i masz problemy z jej dodaniem, skontaktuj się ze wsparciem: admin{'@'}digispace.pro"
+    "url_unique": "Ta strona została już dodana. Jeśli to Twoja strona i masz problemy z jej dodaniem, skontaktuj się ze wsparciem: admin{'@'}digispace.pro",
+    "no_checks_warning": "Monitorowanie jest obecnie nieaktywne. Wybierz co najmniej jedną opcję, aby rozpocząć śledzenie tego węzła."
   },
   "support": {
     "title": "Centrum wsparcia",
@@ -184,7 +185,9 @@
     },
     "confirm_delete": "Potwierdź usunięcie",
     "delete_question": "Czy na pewno chcesz usunąć tę stronę? Tej operacji nie można cofnąć.",
-    "deleted_success": "Strona została pomyślnie usunięta."
+    "deleted_success": "Strona została pomyślnie usunięta.",
+    "card_no_monitoring": "Monitoring nieaktywny. Skonfiguruj opcje, aby śledzić.",
+    "table_no_monitoring": "Brak aktywnych sprawdzeń"
   },
   "history": {
     "title": "Historia",

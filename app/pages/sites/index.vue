@@ -117,7 +117,12 @@
                   {{ config.check_type?.name || config.type?.name }}
                 </UBadge>
               </template>
-              <span v-else class="text-[10px] text-neutral-400 font-medium italic">None</span>
+              <div v-else class="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-amber-500/5 border border-amber-500/10">
+                <UIcon name="i-heroicons-exclamation-triangle" class="text-amber-500 text-[10px]" />
+                <span class="text-[9px] font-bold text-amber-600/80 uppercase tracking-tight">
+                  {{ t('sites.table_no_monitoring') }}
+                </span>
+              </div>
             </div>
           </template>
 

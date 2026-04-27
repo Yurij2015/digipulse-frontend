@@ -3,7 +3,6 @@ import { computed, useCookie, useRuntimeConfig } from '#imports';
 import { useSitesStore } from '~/stores/sites';
 
 export const useAuth = () => {
-  const sitesStore = useSitesStore();
   // В Nuxt useCookie вже є реактивним станом.
   // Використовуємо його як першоджерело (single source of truth).
   const token = useCookie<string | null>('auth-token', { 
@@ -31,6 +30,9 @@ export const useAuth = () => {
   const logout = () => {
     token.value = null;
     user.value = null;
+    
+    // Breaking circular dependency by calling store only when needed
+    const sitesStore = useSitesStore();
     sitesStore.clearSites();
   };
 
