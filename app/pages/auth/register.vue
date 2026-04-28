@@ -15,9 +15,9 @@
       </div>
 
       <div class="text-center mb-12">
-        <div class="inline-flex items-center gap-2 px-3 py-1 mb-8 rounded-full bg-primary-500/5 border border-primary-500/10 text-primary-500 dark:text-primary-400 text-xs font-bold tracking-tight">
-          <div class="w-1 h-1 rounded-full bg-primary-500"></div>
-          {{ t('auth.secure_access') }}
+        <div class="inline-flex items-center gap-2 px-3 py-1 mb-8 rounded-full bg-primary-500/15 border border-primary-500/30 text-primary-700 dark:text-primary-300 text-[10px] font-black tracking-[0.2em] transition-all hover:bg-primary-500/25">
+          <div class="w-1.5 h-1.5 rounded-full bg-primary-700 dark:bg-primary-400 animate-pulse"></div>
+          <span>{{ t('index.premium_monitoring') }}</span>
         </div>
         <h2 class="text-5xl font-black text-neutral-900 dark:text-white tracking-tighter mb-4">
           {{ t('auth.join_pulse') }}
