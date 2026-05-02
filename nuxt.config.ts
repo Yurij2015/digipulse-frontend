@@ -28,7 +28,6 @@ export default defineNuxtConfig({
   },
   experimental: {
     viewTransition: true,
-    payloadExtraction: false,
   },
   modules: [
     "@nuxt/ui",
