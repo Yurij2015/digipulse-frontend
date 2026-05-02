@@ -6,6 +6,9 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   app: {
     head: {
+      htmlAttrs: {
+        lang: "en",
+      },
       title: "DigiPulse - Premium Monitoring",
       meta: [
         {
@@ -18,8 +21,14 @@ export default defineNuxtConfig({
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:image", content: "/og-image-social.png" },
       ],
-      link: [{ rel: "icon", type: "image/svg+xml", href: "/favicon.svg" }],
+      link: [
+        { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      ],
     },
+  },
+  experimental: {
+    viewTransition: true,
+    payloadExtraction: false,
   },
   modules: [
     "@nuxt/ui",
@@ -58,6 +67,10 @@ export default defineNuxtConfig({
     },
   },
   icon: {
+    clientBundle: {
+      scan: true,
+      includeCustomCollections: true,
+    },
     serverBundle: {
       collections: ["heroicons"],
     },

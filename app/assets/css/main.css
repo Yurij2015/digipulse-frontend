@@ -38,7 +38,7 @@
   .premium-input input, 
   .premium-input select,
   .premium-input textarea {
-    @apply bg-transparent! border-0! ring-0! outline-none! text-neutral-900 dark:text-white font-medium placeholder:text-neutral-400 dark:placeholder:text-neutral-600;
+    @apply bg-transparent! border-0! ring-0! outline-none! text-neutral-900 dark:text-white font-medium placeholder:text-neutral-500 dark:placeholder:text-neutral-400;
   }
 
   .bg-pulse-gradient {

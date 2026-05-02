@@ -83,7 +83,7 @@ function applyConsent(values: { analytics: boolean, marketing: boolean, personal
     >
       <div class="group relative overflow-hidden rounded-3xl border border-white/10 bg-black/40 p-6 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.6)] backdrop-blur-3xl transition-all duration-500 hover:border-white/20">
         <!-- Premium Mesh Backgrounds -->
-        <div class="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-primary-500/10 blur-[80px] transition-all duration-700 group-hover:bg-primary-500/20"></div>
+        <div class="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-primary-500/10 blur-[80px] transition-opacity duration-700 group-hover:opacity-20"></div>
         <div class="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-blue-500/5 blur-[80px]"></div>
 
         <!-- Main Banner View -->
@@ -100,9 +100,9 @@ function applyConsent(values: { analytics: boolean, marketing: boolean, personal
               <h3 class="text-lg font-bold tracking-tight text-white">
                 {{ t('common.cookie.title') }}
               </h3>
-              <p class="mt-1 text-sm leading-relaxed text-gray-300/80">
+              <p class="mt-1 text-sm leading-relaxed text-gray-200">
                 {{ t('common.cookie.description') }}
-                <NuxtLink to="/privacy" class="ml-1 font-medium text-primary-400 underline-offset-4 hover:underline">
+                <NuxtLink to="/privacy" class="ml-1 font-bold text-primary-400 underline-offset-4 hover:underline">
                   {{ t('index.privacy_policy') }}
                 </NuxtLink>
               </p>
@@ -156,7 +156,7 @@ function applyConsent(values: { analytics: boolean, marketing: boolean, personal
 
           <div class="grid gap-3">
             <!-- Essential -->
-            <div class="flex items-center justify-between gap-4 rounded-2xl border border-white/5 bg-white/[0.03] p-4 transition-colors hover:bg-white/[0.05]">
+            <div class="flex items-center justify-between gap-4 rounded-2xl border border-white/5 bg-white/[0.03] p-4 transition-opacity hover:bg-white/5">
               <div class="flex-1">
                 <div class="flex items-center gap-2">
                   <span class="font-semibold text-white">{{ t('common.cookie.essential') }}</span>
@@ -168,7 +168,7 @@ function applyConsent(values: { analytics: boolean, marketing: boolean, personal
             </div>
 
             <!-- Analytics -->
-            <div class="flex items-center justify-between gap-4 rounded-2xl border border-white/5 bg-white/[0.03] p-4 transition-colors hover:bg-white/[0.05]">
+            <div class="flex items-center justify-between gap-4 rounded-2xl border border-white/5 bg-white/[0.03] p-4 transition-opacity hover:bg-white/5">
               <div class="flex-1">
                 <span class="font-semibold text-white">{{ t('common.cookie.analytics') }}</span>
                 <p class="mt-1 text-xs text-gray-400">{{ t('common.cookie.analytics_desc') }}</p>
@@ -177,7 +177,7 @@ function applyConsent(values: { analytics: boolean, marketing: boolean, personal
             </div>
 
             <!-- Marketing -->
-            <div class="flex items-center justify-between gap-4 rounded-2xl border border-white/5 bg-white/[0.03] p-4 transition-colors hover:bg-white/[0.05]">
+            <div class="flex items-center justify-between gap-4 rounded-2xl border border-white/5 bg-white/[0.03] p-4 transition-opacity hover:bg-white/5">
               <div class="flex-1">
                 <span class="font-semibold text-white">{{ t('common.cookie.marketing') }}</span>
                 <p class="mt-1 text-xs text-gray-400">{{ t('common.cookie.marketing_desc') }}</p>
