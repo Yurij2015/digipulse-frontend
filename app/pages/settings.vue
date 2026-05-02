@@ -218,7 +218,7 @@
         </div>
 
         <!-- Notifications Section -->
-        <div class="mt-12 mb-20">
+        <div class="mt-12">
           <h2 class="text-xl font-black text-neutral-900 dark:text-white mb-6 px-2 flex items-center gap-3">
             <UIcon name="i-heroicons-bell-alert" class="text-primary-500" />
             {{ t('profile.notifications') }}
@@ -275,6 +275,36 @@
           </div>
         </div>
 
+        <!-- Danger Zone Section -->
+        <div class="mt-12 mb-24">
+          <h2 class="text-xl font-black text-neutral-900 dark:text-white mb-6 px-2 flex items-center gap-3">
+            <UIcon name="i-heroicons-exclamation-triangle" class="text-rose-500" />
+            {{ t('profile.danger_zone') }}
+          </h2>
+          
+          <div class="glass-card p-8 rounded-3xl border-rose-200/50 dark:border-rose-500/10 bg-rose-500/5 relative overflow-hidden group">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+              <div class="max-w-md">
+                <h3 class="text-lg font-black text-neutral-900 dark:text-white mb-1">
+                  {{ t('profile.delete_account') }}
+                </h3>
+                <p class="text-sm text-neutral-500 font-medium">
+                  Once you delete your account, there is no going back. Please be certain.
+                </p>
+              </div>
+              <UButton
+                color="error"
+                variant="soft"
+                size="xl"
+                class="rounded-2xl font-black px-8 py-4 shadow-lg shadow-rose-500/10 hover:bg-rose-500 hover:text-white transition-all duration-300"
+                @click="isDeleteModalOpen = true"
+              >
+                {{ t('profile.delete_account') }}
+              </UButton>
+            </div>
+          </div>
+        </div>
+
         <!-- Disconnect Confirmation Modal -->
         <UModal v-model:open="isDisconnectModalOpen">
           <template #content>
@@ -317,6 +347,49 @@
             </UCard>
           </template>
         </UModal>
+
+        <!-- Delete Account Confirmation Modal -->
+        <UModal v-model:open="isDeleteModalOpen">
+          <template #content>
+            <UCard class="glass-card border-neutral-200/50! dark:border-white/10! overflow-hidden relative shadow-2xl">
+              <div class="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-rose-600 to-rose-700"></div>
+              
+              <div class="flex items-center gap-4 mb-6">
+                <div class="p-3 rounded-2xl bg-rose-600/10 text-rose-600 border border-rose-600/20">
+                  <UIcon name="i-heroicons-trash" class="text-2xl" />
+                </div>
+                <h3 class="text-xl font-black text-neutral-900 dark:text-white">
+                  {{ t('profile.delete_account_confirm_title') }}
+                </h3>
+              </div>
+              
+              <p class="text-neutral-500 font-medium leading-relaxed mb-8">
+                {{ t('profile.delete_account_confirm') }}
+              </p>
+              
+              <div class="flex justify-end gap-3">
+                <UButton
+                  size="lg"
+                  variant="subtle"
+                  color="neutral"
+                  class="rounded-xl font-bold px-6"
+                  @click="isDeleteModalOpen = false"
+                >
+                  {{ t('common.cancel') }}
+                </UButton>
+                <UButton
+                  size="lg"
+                  color="error"
+                  class="rounded-xl font-black px-6 shadow-lg shadow-rose-600/20"
+                  :loading="isDeletingAccount"
+                  @click="confirmDeleteAccount"
+                >
+                  {{ t('profile.delete_account') }}
+                </UButton>
+              </div>
+            </UCard>
+          </template>
+        </UModal>
       </div>
     </main>
   </div>
@@ -331,6 +404,8 @@ const isTelegramConnecting = ref(false);
 const isTelegramDisconnecting = ref(false);
 const isDisconnectModalOpen = ref(false);
 const isUpdatingSettings = ref(false);
+const isDeleteModalOpen = ref(false);
+const isDeletingAccount = ref(false);
 
 const notifyEmail = ref(true);
 const notifyTelegram = ref(true);
@@ -355,7 +430,7 @@ const passwordForm = ref({
 // Verification States
 const isResendingVerification = ref(false);
 
-const { user, token, fetchUser } = useAuth();
+const { user, token, fetchUser, logout: authLogout } = useAuth();
 const config = useRuntimeConfig();
 const toast = useToast();
 
@@ -596,6 +671,45 @@ const confirmDisconnect = async () => {
     isDisconnectModalOpen.value = false;
   }
 };
+
+const confirmDeleteAccount = async () => {
+  if (isDeletingAccount.value) return;
+  isDeletingAccount.value = true;
+
+  try {
+    await $fetch(`${config.public.apiBase}/api/profile`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+        'X-Frontend-Key': config.public.frontendKey as string,
+        Accept: 'application/json',
+      }
+    });
+
+    toast.add({
+      title: 'Account Deleted',
+      description: 'Your account has been permanently removed. Farewell!',
+      icon: 'i-heroicons-trash',
+      color: 'success'
+    });
+
+    // Logout and redirect to home
+    authLogout();
+    navigateTo(localePath('/'));
+  } catch (error: any) {
+    console.error('Delete account error:', error);
+    toast.add({
+      title: 'Error',
+      description: error.data?.message || 'Failed to delete account. Please contact support.',
+      icon: 'i-heroicons-x-circle',
+      color: 'error'
+    });
+  } finally {
+    isDeletingAccount.value = false;
+    isDeleteModalOpen.value = false;
+  }
+};
+
 const resendVerification = async () => {
   if (isResendingVerification.value) return;
   isResendingVerification.value = true;
