@@ -256,7 +256,21 @@
     "cancel": "Cancel",
     "confirm": "Confirm",
     "save": "Save",
-    "status": "Status"
+    "status": "Status",
+    "cookie": {
+      "title": "Privacy Preference",
+      "description": "We use cookies to improve your experience. By clicking 'Accept All', you agree to our use of analytics and marketing tools.",
+      "accept": "Accept All",
+      "decline": "Reject All",
+      "settings": "Settings",
+      "save": "Save Preferences",
+      "essential": "Necessary",
+      "essential_desc": "Required for the website to function properly.",
+      "analytics": "Analytics",
+      "analytics_desc": "Helps us understand how visitors interact with the site.",
+      "marketing": "Marketing",
+      "marketing_desc": "Used to deliver relevant advertisements."
+    }
   },
   "privacy": {
     "title": "Privacy Policy",

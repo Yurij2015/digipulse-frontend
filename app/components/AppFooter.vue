@@ -1,3 +1,19 @@
+<script setup lang="ts">
+const localePath = useLocalePath()
+const isCookieConsentVisible = useState('cookie-consent-visible')
+const consentStatus = useState('cookie-consent-status')
+
+const openCookieSettings = () => {
+  isCookieConsentVisible.value = true
+}
+
+const statusClasses = computed(() => {
+  if (consentStatus.value === 'all') return 'text-green-500 hover:text-green-600 dark:text-green-400 dark:hover:text-green-300'
+  if (consentStatus.value === 'partial') return 'text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300'
+  return 'text-neutral-500 hover:text-primary-500 dark:text-neutral-500 dark:hover:text-primary-400'
+})
+</script>
+
 <template>
   <footer class="mt-12 w-full border-t border-neutral-100 dark:border-neutral-900 pt-12 flex flex-col md:flex-row items-center justify-between gap-6">
     <div class="flex items-center gap-3">
@@ -29,14 +45,20 @@
           {{ $t('index.terms_of_service') }}
         </NuxtLink>
       </div>
-      <p class="text-xs text-neutral-600 dark:text-neutral-400 font-medium text-center md:text-right">
-        {{ $t('index.footer_rights') }}
-      </p>
+      <div class="flex items-center gap-4">
+        <p class="text-xs text-neutral-600 dark:text-neutral-400 font-medium text-center md:text-right">
+          {{ $t('index.footer_rights') }}
+        </p>
+        <button 
+          class="flex items-center gap-1.5 transition-all duration-300"
+          :class="statusClasses"
+          @click="openCookieSettings"
+          :title="$t('common.cookie.settings')"
+        >
+          <UIcon name="i-heroicons-finger-print" class="h-4 w-4" />
+        </button>
+      </div>
     </div>
   </footer>
 </template>
-
-<script setup lang="ts">
-const localePath = useLocalePath()
-</script>
 
