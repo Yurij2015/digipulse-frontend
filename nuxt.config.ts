@@ -27,6 +27,7 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
     "@pinia/nuxt",
     "@nuxtjs/turnstile",
+    "nuxt-gtag",
   ],
   features: {
     inlineStyles: true,
@@ -77,4 +78,7 @@ export default defineNuxtConfig({
       secretKey: "",
     },
   },
+  gtag: {
+    id: ""
+  }
 });
