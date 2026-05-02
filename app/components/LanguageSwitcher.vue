@@ -2,10 +2,10 @@
   <div class="relative z-50">
     <button
       @click="open = !open"
-      class="flex items-center gap-2 group hover:bg-neutral-100 dark:hover:bg-white/5 transition-all px-3 py-1.5 rounded-lg select-none cursor-pointer"
+      class="flex items-center gap-2 group hover:bg-neutral-100 dark:hover:bg-white/5 transition-colors px-3 py-1.5 rounded-lg select-none cursor-pointer"
     >
-      <UIcon name="i-heroicons-globe-alt" class="text-lg text-neutral-500 group-hover:text-primary-500 transition-colors" />
-      <span class="font-normal uppercase tracking-[0.05em] text-lg text-neutral-500 group-hover:text-primary-500 transition-colors">{{ locale }}</span>
+      <UIcon name="i-heroicons-globe-alt" class="text-lg text-neutral-500 dark:text-neutral-400 group-hover:text-primary-500 transition-colors" />
+      <span class="font-normal uppercase tracking-[0.05em] text-lg text-neutral-500 dark:text-neutral-400 group-hover:text-primary-500 transition-colors">{{ locale }}</span>
       <UIcon 
         name="i-heroicons-chevron-down-20-solid" 
         class="text-xs opacity-30 shrink-0 transition-transform duration-150" 

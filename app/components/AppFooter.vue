@@ -10,7 +10,7 @@ const openCookieSettings = () => {
 const statusClasses = computed(() => {
   if (consentStatus.value === 'all') return 'text-green-500 hover:text-green-600 dark:text-green-400 dark:hover:text-green-300'
   if (consentStatus.value === 'partial') return 'text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300'
-  return 'text-neutral-500 hover:text-primary-500 dark:text-neutral-500 dark:hover:text-primary-400'
+  return 'text-neutral-500 hover:text-primary-500 dark:text-neutral-400 dark:hover:text-primary-400'
 })
 </script>
 
@@ -38,19 +38,19 @@ const statusClasses = computed(() => {
     </div>
     <div class="flex flex-col md:flex-row items-center gap-4 md:gap-8 w-full md:w-auto">
       <div class="flex items-center gap-6">
-        <NuxtLink :to="localePath('/privacy')" class="text-xs text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200 transition-colors font-medium">
+        <NuxtLink :to="localePath('/privacy')" class="text-xs text-neutral-600 hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100 transition-colors font-medium">
           {{ $t('index.privacy_policy') }}
         </NuxtLink>
-        <NuxtLink :to="localePath('/terms')" class="text-xs text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200 transition-colors font-medium">
+        <NuxtLink :to="localePath('/terms')" class="text-xs text-neutral-600 hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100 transition-colors font-medium">
           {{ $t('index.terms_of_service') }}
         </NuxtLink>
       </div>
       <div class="flex items-center gap-4">
-        <p class="text-xs text-neutral-600 dark:text-neutral-400 font-medium text-center md:text-right">
+        <p class="text-xs text-neutral-600 dark:text-neutral-300 font-medium text-center md:text-right">
           {{ $t('index.footer_rights') }}
         </p>
         <button 
-          class="flex items-center gap-1.5 transition-all duration-300"
+          class="flex items-center gap-1.5 transition-colors duration-300"
           :class="statusClasses"
           @click="openCookieSettings"
           :title="$t('common.cookie.settings')"

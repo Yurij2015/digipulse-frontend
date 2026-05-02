@@ -5,20 +5,12 @@ export default defineNuxtPlugin(() => {
   const config = useRuntimeConfig()
   const token = useCookie('auth-token')
 
-  if (!config.public.pusherAppKey) {
-    return {
-      provide: {
-        echo: null
-      }
-    }
-  }
+  let echo: Echo<'pusher'> | null = null
 
-  // @ts-ignore
-  if (process.client) {
-    // @ts-ignore
-    window.Pusher = Pusher
+  if (config.public.pusherAppKey && import.meta.client) {
+    (window as any).Pusher = Pusher
 
-    const echo = new Echo({
+    echo = new Echo<'pusher'>({
       broadcaster: 'pusher',
       key: config.public.pusherAppKey,
       cluster: config.public.pusherAppCluster,
@@ -28,15 +20,15 @@ export default defineNuxtPlugin(() => {
         headers: {
           Authorization: `Bearer ${token.value}`,
           'X-Frontend-Key': config.public.frontendKey,
-          'Accept': 'application/json'
+          Accept: 'application/json'
         }
       }
     })
+  }
 
-    return {
-      provide: {
-        echo
-      }
+  return {
+    provide: {
+      echo
     }
   }
 })

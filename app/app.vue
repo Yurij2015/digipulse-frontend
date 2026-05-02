@@ -53,9 +53,9 @@ watch(() => sitesStore.loading, (loading) => {
   <UApp :toaster="{ position: 'top-center', duration: 3000 }">
     <!-- Custom Progress Bar -->
     <div 
-      class="fixed top-0 left-0 h-0.5 z-10002 transition-all duration-300 ease-out"
+      class="fixed top-0 left-0 w-full h-0.5 z-10002 transition-[transform,opacity] duration-300 ease-out origin-left"
       :style="{ 
-        width: `${progress}%`, 
+        transform: `scaleX(${progress / 100})`, 
         opacity: isVisible ? 1 : 0,
         background: 'linear-gradient(to right, #ec4899, #8b5cf6, #06b6d4)',
       }"

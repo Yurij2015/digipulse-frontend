@@ -3,18 +3,18 @@
     <!-- Sophisticated Mesh Background Layer -->
     <div class="absolute inset-0 z-0 pointer-events-none opacity-60 dark:opacity-80 overflow-hidden">
       <!-- Pink Pulse -->
-      <div class="absolute top-[5%] left-[5%] w-[50%] h-[50%] bg-primary-500/30 animate-pulse-slow blur-[100px] rounded-full will-change-opacity"></div>
+      <div class="absolute top-[5%] left-[5%] w-[50%] h-[50%] bg-primary-500/30 blur-[100px] rounded-full will-change-transform" style="animation: pulse 4s cubic-bezier(0.4,0,0.6,1) infinite"></div>
       <!-- Cyan Pulse -->
-      <div class="absolute bottom-[5%] right-[5%] w-[50%] h-[50%] bg-accent-500/25 animate-pulse-slow blur-[100px] rounded-full delay-1000 will-change-opacity"></div>
+      <div class="absolute bottom-[5%] right-[5%] w-[50%] h-[50%] bg-accent-500/25 blur-[100px] rounded-full will-change-transform" style="animation: pulse 4s cubic-bezier(0.4,0,0.6,1) infinite 1s"></div>
       <!-- Violet/Indigo Pulse for depth -->
-      <div class="absolute top-[20%] right-[10%] w-[40%] h-[40%] bg-indigo-500/20 animate-pulse-slow blur-[80px] rounded-full delay-2000 will-change-opacity"></div>
+      <div class="absolute top-[20%] right-[10%] w-[40%] h-[40%] bg-indigo-500/20 blur-[80px] rounded-full will-change-transform" style="animation: pulse 4s cubic-bezier(0.4,0,0.6,1) infinite 2s"></div>
     </div>
 
     <!-- Header Actions are now global in app.vue -->
 
     <div class="relative z-10 w-full max-w-5xl text-center flex flex-col items-center">
       <!-- Sophisticated Badge -->
-      <div class="inline-flex items-center gap-2 px-3 py-1 mb-12 rounded-full bg-primary-500/15 border border-primary-500/30 text-primary-700 dark:text-primary-300 text-[10px] font-black tracking-[0.2em] transition-all hover:bg-primary-500/25">
+      <div class="inline-flex items-center gap-2 px-3 py-1 mb-12 rounded-full bg-primary-500/15 border border-primary-500/30 text-primary-700 dark:text-primary-300 text-[10px] font-black tracking-[0.2em]">
         <div class="w-1.5 h-1.5 rounded-full bg-primary-700 dark:bg-primary-400 animate-pulse"></div>
         <span>{{ $t('index.premium_monitoring') }}</span>
       </div>
@@ -33,7 +33,7 @@
         <UButton
           :to="localePath('/auth/register')"
           size="xl"
-          class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:scale-105 active:scale-[0.98] transition-all duration-300 px-12 py-5 font-black rounded-xl shadow-2xl shimmer-effect border-0"
+          class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:scale-105 active:scale-[0.98] transition-transform duration-300 px-12 py-5 font-black rounded-xl shadow-2xl shimmer-effect border-0"
         >
           {{ $t('index.get_started') }}
         </UButton>
@@ -43,7 +43,7 @@
           size="xl"
           variant="ghost"
           color="neutral"
-          class="px-12 py-5 border border-neutral-200 dark:border-white/10 hover:bg-neutral-100 dark:hover:bg-white/5 transition-all font-bold rounded-xl"
+          class="px-12 py-5 border border-neutral-200 dark:border-white/10 font-bold rounded-xl"
         >
           {{ $t('index.login') }}
         </UButton>
@@ -52,9 +52,9 @@
       <!-- Features Grid -->
       <div class="mt-20 md:mt-32 grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
         <div v-for="(feat, i) in features" :key="i" 
-             class="glass-card p-10 rounded-2xl flex flex-col items-start text-left group hover:-translate-y-1 hover:border-primary-500/30 transition-all cursor-default">
-          <div class="w-12 h-12 rounded-xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center mb-8 group-hover:bg-primary-500/10 transition-colors">
-            <UIcon :name="feat.icon" class="text-2xl text-neutral-600 dark:text-neutral-400 group-hover:text-primary-500 transition-colors" />
+             class="glass-card p-10 rounded-2xl flex flex-col items-start text-left group hover:-translate-y-1 transition-transform cursor-default">
+          <div class="w-12 h-12 rounded-xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center mb-8">
+            <UIcon :name="feat.icon" class="text-2xl text-neutral-600 dark:text-neutral-300" />
           </div>
           <h2 class="text-xl font-black mb-4 text-neutral-900 dark:text-white tracking-tight">{{ feat.title }}</h2>
           <p class="text-neutral-600 dark:text-neutral-300 text-sm leading-[1.6] font-medium">{{ feat.desc }}</p>
@@ -71,13 +71,13 @@
           <div class="relative z-10 flex flex-col items-center">
             <div class="w-16 h-16 rounded-full bg-primary-500 text-white flex items-center justify-center text-xl font-black mb-6 shadow-xl shadow-primary-500/20">1</div>
             <h3 class="text-lg font-bold mb-3 text-neutral-900 dark:text-white">{{ $t('index.step1_title') }}</h3>
-            <p class="text-neutral-500 dark:text-neutral-400 text-sm px-4">{{ $t('index.step1_desc') }}</p>
+            <p class="text-neutral-600 dark:text-neutral-300 text-sm px-4">{{ $t('index.step1_desc') }}</p>
           </div>
           
           <div class="relative z-10 flex flex-col items-center">
             <div class="w-16 h-16 rounded-full bg-primary-500 text-white flex items-center justify-center text-xl font-black mb-6 shadow-xl shadow-primary-500/20">2</div>
             <h3 class="text-lg font-bold mb-3 text-neutral-900 dark:text-white">{{ $t('index.step2_title') }}</h3>
-            <p class="text-neutral-500 dark:text-neutral-400 text-sm px-4">{{ $t('index.step2_desc') }}</p>
+            <p class="text-neutral-600 dark:text-neutral-300 text-sm px-4">{{ $t('index.step2_desc') }}</p>
           </div>
           
           <div class="relative z-10 flex flex-col items-center">
@@ -99,7 +99,7 @@
         <UButton
           :to="localePath('/auth/register')"
           size="xl"
-          class="bg-primary-500 hover:bg-primary-600 text-white hover:scale-105 active:scale-[0.98] transition-all px-10 py-4 font-black rounded-xl shadow-xl shadow-primary-500/20"
+          class="bg-primary-600 hover:bg-primary-700 text-white hover:scale-105 active:scale-[0.98] transition-transform px-10 py-4 font-black rounded-xl shadow-xl shadow-primary-500/20"
         >
           {{ $t('index.get_started') }}
         </UButton>

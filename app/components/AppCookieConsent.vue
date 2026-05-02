@@ -81,7 +81,7 @@ function applyConsent(values: { analytics: boolean, marketing: boolean, personal
       v-if="isVisible"
       class="fixed bottom-6 left-6 right-6 z-[100] md:left-auto md:max-w-xl"
     >
-      <div class="group relative overflow-hidden rounded-3xl border border-white/10 bg-black/40 p-6 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.6)] backdrop-blur-3xl transition-all duration-500 hover:border-white/20">
+      <div class="group relative overflow-hidden rounded-3xl border border-white/10 bg-black/40 p-6 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.6)] backdrop-blur-3xl transition-[transform,opacity,box-shadow] duration-500 hover:border-white/20">
         <!-- Premium Mesh Backgrounds -->
         <div class="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-primary-500/10 blur-[80px] transition-opacity duration-700 group-hover:opacity-20"></div>
         <div class="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-blue-500/5 blur-[80px]"></div>
