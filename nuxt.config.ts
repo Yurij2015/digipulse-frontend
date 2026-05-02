@@ -92,6 +92,8 @@ export default defineNuxtConfig({
           wait_for_update: 500,
         },
       ],
+      ["set", "url_passthrough", true],
+      ["set", "ads_data_redaction", true],
     ],
   },
 });
