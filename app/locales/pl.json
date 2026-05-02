@@ -255,7 +255,21 @@
     "cancel": "Anuluj",
     "confirm": "Potwierdź",
     "save": "Zapisz",
-    "status": "Status"
+    "status": "Status",
+    "cookie": {
+      "title": "Preferencje prywatności",
+      "description": "Używamy plików cookie, aby poprawić Twoje wrażenia. Klikając „Akceptuj wszystko”, zgadzasz się na korzystanie z narzędzi analitycznych i marketingowych.",
+      "accept": "Akceptuj wszystko",
+      "decline": "Odrzuć wszystko",
+      "settings": "Ustawienia",
+      "save": "Zapisz preferencje",
+      "essential": "Niezbędne",
+      "essential_desc": "Wymagane do prawidłowego funkcjonowania strony.",
+      "analytics": "Analityka",
+      "analytics_desc": "Pomagają nam zrozumieć, jak użytkownicy korzystają ze strony.",
+      "marketing": "Marketing",
+      "marketing_desc": "Używane do wyświetlania dopasowanych reklam."
+    }
   },
   "privacy": {
     "title": "Polityka prywatności",

@@ -65,5 +65,6 @@ watch(() => sitesStore.loading, (loading) => {
     <main id="main-content" role="main">
       <NuxtPage />
     </main>
+    <AppCookieConsent />
   </UApp>
 </template>
