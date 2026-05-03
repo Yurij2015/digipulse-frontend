@@ -179,6 +179,9 @@
     <!-- Site Form Modal -->
     <SiteFormModal v-model:open="isSiteModalOpen" :site-id="editingSiteId" :site-data="selectedSite" @success="refreshSites" />
 
+    <!-- Limit Reached Modal -->
+    <SiteLimitModal v-model:open="isLimitModalOpen" />
+
   </div>
 </template>
 
@@ -191,7 +194,7 @@ import { useSitesStore } from '~/stores/sites';
 const { t } = useI18n();
 const localePath = useLocalePath();
 const config = useRuntimeConfig();
-const { token } = useAuth();
+const { token, user } = useAuth();
 const sitesStore = useSitesStore();
 
 // --- State ---
@@ -199,6 +202,7 @@ const search = ref('');
 const sites = computed(() => sitesStore.sites || []);
 const isLoading = computed(() => sitesStore.loading);
 const isDeleteModalOpen = ref(false);
+const isLimitModalOpen = ref(false);
 const isDeleting = ref(false);
 const siteToDelete = ref<any>(null);
 const isSiteModalOpen = ref(false);
@@ -236,6 +240,10 @@ const refreshSites = async () => {
 
 
 function openAddModal() {
+  if (!user.value?.is_admin && sites.value.length >= 3) {
+    isLimitModalOpen.value = true;
+    return;
+  }
   editingSiteId.value = null;
   selectedSite.value = null;
   isSiteModalOpen.value = true;

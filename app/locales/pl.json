@@ -329,5 +329,13 @@
     "changes_desc": "Zastrzegamy sobie prawo do zmiany tych warunków w dowolnym momencie. Kontynuując korzystanie z usługi po takich zmianach, akceptujesz nowe warunki.",
     "contact": "Skontaktuj się z nami",
     "contact_desc": "Jeśli masz pytania dotyczące tych Warunków, skontaktuj się z nami pod adresem: admin{'@'}digispace.pro"
+  },
+  "quota": {
+    "limit_reached": "Osiągnięto limit",
+    "limit_description": "Możesz dodać maksymalnie 3 strony.",
+    "free_tier_title": "Osiągnięto limit darmowego planu",
+    "free_tier_description": "Obecnie korzystasz z darmowego planu, który pozwala na monitorowanie do 3 stron internetowych. Aby dodać більше, skontaktuj się z naszym zespołem wsparcia, aby zaktualizować plan.",
+    "maybe_later": "Może później",
+    "contact_support": "Kontakt z pomocą"
   }
 }

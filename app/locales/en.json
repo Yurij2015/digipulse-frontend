@@ -334,5 +334,13 @@
     "changes_desc": "We reserve the right to modify these terms at any time. By continuing to access or use our service after those revisions become effective, you agree to be bound by the revised terms.",
     "contact": "Contact Us",
     "contact_desc": "If you have any questions about these Terms, please contact us at: admin{'@'}digispace.pro"
+  },
+  "quota": {
+    "limit_reached": "Limit Reached",
+    "limit_description": "You can only add up to 3 sites.",
+    "free_tier_title": "Free Tier Limit Reached",
+    "free_tier_description": "You are currently using the free tier which allows monitoring up to 3 websites. To add more, please contact our support team to upgrade your plan.",
+    "maybe_later": "Maybe Later",
+    "contact_support": "Contact Support"
   }
 }
