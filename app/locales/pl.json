@@ -193,11 +193,28 @@
     "title": "Historia",
     "subtitle": "Tygodniowa wydajność monitorowania i incydenty przestojów.",
     "no_data_title": "Brak danych",
-    "no_data_desc": "Brak rekordów monitorowania dla tego tygodnia.",
+    "no_data_desc": "Brak rekordів monitorowania dla tego tygodnia.",
     "prev_week": "Poprzedni tydzień",
     "next_week": "Następny tydzień",
-    "incidents": "Incydenty przestojów",
-    "view_history": "Zobacz historię"
+    "view_history": "Zobacz historię",
+    "tabs": {
+      "incidents": "Incydenty przestojów",
+      "recent": "Ostatnie wyniki"
+    },
+    "recent": {
+      "type": "Typ sprawdzenia",
+      "status": "Status",
+      "time": "Czas odpowiedzi",
+      "details": "Szczegóły",
+      "no_results": "Brak ostatnich wyników dla tego typu.",
+      "last_3_checks": "Ostatnie 3 sprawdzenia"
+    },
+    "incidents": {
+      "title": "Incydenty przestojów",
+      "time": "Czas",
+      "error": "Komunikat o błędzie",
+      "no_incidents": "W tym tygodniu nie odnotowano incydentów przestojів."
+    }
   },
   "profile": {
     "title": "Profil użytkownika",
