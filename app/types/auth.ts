@@ -9,6 +9,7 @@ export interface User {
   updated_at: string;
   telegram_chat_id: string | null;
   google_id: string | null;
+  is_admin?: boolean;
 }
 
 export interface AuthResponse {

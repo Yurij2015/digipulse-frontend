@@ -246,8 +246,11 @@
         </template>
       </UModal>
 
-      <!-- Site Form Modal -->
-      <SiteFormModal v-model:open="isSiteModalOpen" :site-id="editingSiteId" :site-data="selectedSite" @success="loadSites" />
+    <!-- Site Form Modal -->
+    <SiteFormModal v-model:open="isSiteModalOpen" :site-id="editingSiteId" :site-data="selectedSite" @success="loadSites" />
+
+    <!-- Limit Reached Modal -->
+    <SiteLimitModal v-model:open="isLimitModalOpen" />
 
     </main>
   </div>
@@ -265,7 +268,7 @@ const { t, locale } = useI18n();
 const toast = useToast();
 const localePath = useLocalePath();
 const config = useRuntimeConfig();
-const { token } = useAuth();
+const { token, user } = useAuth();
 const sitesStore = useSitesStore();
 
 const websites = computed(() => sitesStore.sites);
@@ -275,6 +278,7 @@ const fetchError = computed(() => sitesStore.error);
 const searchQuery = ref('');
 const filterStatus = ref('');
 const isDeleteModalOpen = ref(false);
+const isLimitModalOpen = ref(false);
 const isDeleting = ref(false);
 const siteToDelete = ref<any>(null);
 
@@ -340,6 +344,10 @@ function handleRefresh() {
 }
 
 function openAddModal() {
+  if (!user.value?.is_admin && websites.value.length >= 3) {
+    isLimitModalOpen.value = true;
+    return;
+  }
   editingSiteId.value = null;
   selectedSite.value = null;
   isSiteModalOpen.value = true;
