@@ -196,8 +196,25 @@
     "no_data_desc": "There are no monitoring records for this week.",
     "prev_week": "Previous Week",
     "next_week": "Next Week",
-    "incidents": "Downtime Incidents",
-    "view_history": "View History"
+    "view_history": "View History",
+    "tabs": {
+      "incidents": "Downtime Incidents",
+      "recent": "Recent Results"
+    },
+    "recent": {
+      "type": "Check Type",
+      "status": "Status",
+      "time": "Response Time",
+      "details": "Details",
+      "no_results": "No recent results for this check type.",
+      "last_3_checks": "Last 3 checks"
+    },
+    "incidents": {
+      "title": "Downtime Incidents",
+      "time": "Time",
+      "error": "Error Message",
+      "no_incidents": "No downtime incidents recorded for this week."
+    }
   },
   "profile": {
     "title": "User Profile",

@@ -59,27 +59,120 @@
 
 
       
-      <!-- Incidents list -->
-      <div v-if="incidents.length > 0 && !pending" class="glass-card rounded-2xl border border-neutral-200/50 dark:border-white/10 overflow-hidden shadow-sm">
-        <div class="bg-red-500/10 border-b border-red-500/20 p-4 flex items-center gap-2">
-          <UIcon name="i-heroicons-exclamation-triangle" class="text-error text-xl" />
-          <h3 class="text-lg font-black text-red-900 dark:text-red-400">Downtime Incidents</h3>
-          <UBadge color="error" variant="subtle" size="sm" class="ml-2 font-black rounded-lg">{{ incidents.length }}</UBadge>
-        </div>
-        
-        <div class="divide-y divide-neutral-100 dark:divide-white/5">
-          <div v-for="inc in incidents" :key="inc.checked_at" class="flex items-start gap-4 p-4 lg:p-6 hover:bg-neutral-50 dark:hover:bg-white/2 transition-colors">
-            <div class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400 flex items-center justify-center shrink-0">
-              <UIcon name="i-heroicons-x-mark" class="text-xl" />
-            </div>
-            <div class="flex-1">
-              <div class="font-bold text-neutral-900 dark:text-white text-lg mb-1">{{ formatDateTime(inc.checked_at) }}</div>
-              <div class="text-sm font-medium text-neutral-600 dark:text-neutral-400 font-mono bg-neutral-100 dark:bg-neutral-900 p-2 rounded-lg border border-neutral-200 dark:border-neutral-800">
-                {{ inc.error_message }}
+      <!-- Detailed History Tabs -->
+      <div v-if="!pending" class="mt-12">
+        <UTabs :items="tabs" class="w-full">
+          <template #incidents>
+            <div class="glass-card rounded-2xl border border-neutral-200/50 dark:border-white/10 overflow-hidden shadow-sm mt-4">
+              <div class="bg-red-500/10 border-b border-red-500/20 p-4 flex items-center gap-2">
+                <UIcon name="i-heroicons-exclamation-triangle" class="text-error text-xl" />
+                <h3 class="text-lg font-black text-red-900 dark:text-red-400">{{ t('history.incidents.title') }}</h3>
+                <UBadge color="error" variant="subtle" size="sm" class="ml-2 font-black rounded-lg">{{ incidents.length }}</UBadge>
+              </div>
+              
+              <div v-if="incidents.length > 0" class="divide-y divide-neutral-100 dark:divide-white/5">
+                <div v-for="inc in incidents" :key="inc.checked_at" class="flex items-start gap-4 p-4 lg:p-6 hover:bg-neutral-50 dark:hover:bg-white/2 transition-colors">
+                  <div class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400 flex items-center justify-center shrink-0">
+                    <UIcon name="i-heroicons-x-mark" class="text-xl" />
+                  </div>
+                  <div class="flex-1">
+                    <div class="font-bold text-neutral-900 dark:text-white text-lg mb-1">{{ formatDateTime(inc.checked_at) }}</div>
+                    <div class="text-sm font-medium text-neutral-600 dark:text-neutral-400 font-mono bg-neutral-100 dark:bg-neutral-900 p-2 rounded-lg border border-neutral-200 dark:border-neutral-800">
+                      {{ inc.error_message }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div v-else class="p-12 text-center">
+                <UIcon name="i-heroicons-check-circle" class="text-5xl text-emerald-500/30 mb-4" />
+                <p class="text-neutral-500 font-medium">{{ t('history.incidents.no_incidents') }}</p>
               </div>
             </div>
-          </div>
-        </div>
+          </template>
+
+          <template #recent>
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-4">
+              <div v-for="item in historyData?.latest_results" :key="item.config_id" class="glass-card rounded-2xl border border-neutral-200/50 dark:border-white/10 overflow-hidden shadow-sm h-full flex flex-col transition-all hover:shadow-md hover:border-primary-500/30">
+                <div class="bg-neutral-50 dark:bg-white/5 border-b border-neutral-200/50 dark:border-white/10 p-4 flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <UIcon :name="getConfigIcon(item.type_slug)" class="text-primary-500 text-xl" />
+                    <h3 class="font-black text-neutral-900 dark:text-white uppercase tracking-wider text-sm">{{ item.type_name }}</h3>
+                  </div>
+                  <UBadge :color="item.result.status === 'up' ? 'success' : 'error'" variant="subtle" size="sm" class="font-black rounded-lg uppercase text-[9px]">{{ item.result.status }}</UBadge>
+                </div>
+                
+                <div class="p-4 flex-1 space-y-4">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[11px] font-bold text-neutral-500">{{ formatDateTime(item.result.checked_at) }}</span>
+                    <span class="text-sm font-black text-neutral-900 dark:text-white">{{ item.result.response_time_ms }}ms</span>
+                  </div>
+
+                  <!-- SSL Specific Info -->
+                  <div v-if="item.type_slug === 'ssl' && item.result.status === 'up'" class="bg-primary-500/5 border border-primary-500/10 rounded-xl p-3 space-y-2">
+                    <div class="flex items-center gap-2 mb-1">
+                      <UIcon name="i-heroicons-shield-check" class="text-primary-500" />
+                      <span class="text-[10px] font-black uppercase text-primary-600 dark:text-primary-400">Certificate Details</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-[10px]">
+                      <div>
+                        <div class="text-neutral-400 uppercase font-bold text-[8px] mb-0.5">Issuer</div>
+                        <div class="font-bold text-neutral-900 dark:text-white truncate">{{ item.result.metadata?.issuer || 'N/A' }}</div>
+                      </div>
+                      <div>
+                        <div class="text-neutral-400 uppercase font-bold text-[8px] mb-0.5">Expires At</div>
+                        <div class="font-bold text-neutral-900 dark:text-white">{{ item.result.metadata?.expires_at ? format(parseISO(item.result.metadata.expires_at), 'MMM d, yyyy') : 'N/A' }}</div>
+                      </div>
+                    </div>
+                    <div class="mt-2 flex items-center justify-between">
+                      <span class="text-[10px] font-bold text-neutral-500">Validity</span>
+                      <UBadge :color="item.result.metadata?.days_remaining > 14 ? 'success' : 'warning'" variant="subtle" size="sm" class="font-black rounded-lg text-[9px]">
+                        {{ item.result.metadata?.days_remaining }} days left
+                      </UBadge>
+                    </div>
+                  </div>
+
+                  <div v-if="item.result.status === 'down'" class="text-[10px] text-red-500 font-medium bg-red-50 dark:bg-red-500/10 p-2 rounded-lg border border-red-500/20">
+                    {{ item.result.error_message }}
+                  </div>
+
+                  <!-- Server Metadata -->
+                  <div v-if="item.result.metadata?.ip" class="pt-3 border-t border-neutral-100 dark:border-white/5 space-y-1.5">
+                    <div class="flex items-center justify-between text-[10px]">
+                      <div class="flex items-center gap-1.5 text-neutral-400 font-bold uppercase tracking-wider">
+                        <UIcon name="i-heroicons-computer-desktop" class="w-3 h-3" />
+                        IP
+                      </div>
+                      <span class="font-mono font-bold text-neutral-700 dark:text-neutral-300">{{ item.result.metadata.ip }}</span>
+                    </div>
+                    
+                    <div v-if="item.result.metadata?.country" class="flex items-center justify-between text-[10px]">
+                      <div class="flex items-center gap-1.5 text-neutral-400 font-bold uppercase tracking-wider">
+                        <UIcon name="i-heroicons-map-pin" class="w-3 h-3" />
+                        Location
+                      </div>
+                      <span class="font-bold text-neutral-700 dark:text-neutral-300">
+                        {{ item.result.metadata.country }}{{ item.result.metadata.city ? `, ${item.result.metadata.city}` : '' }}
+                      </span>
+                    </div>
+
+                    <div v-if="item.result.metadata?.isp" class="flex items-center justify-between text-[10px]">
+                      <div class="flex items-center gap-1.5 text-neutral-400 font-bold uppercase tracking-wider">
+                        <UIcon name="i-heroicons-building-office" class="w-3 h-3" />
+                        Provider
+                      </div>
+                      <span class="font-bold text-neutral-700 dark:text-neutral-300 truncate max-w-[140px]" :title="item.result.metadata.isp">
+                        {{ item.result.metadata.isp }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-if="!historyData?.latest_results?.length" class="p-12 text-center glass-card rounded-2xl border border-neutral-200/50 dark:border-white/10 mt-4">
+               <p class="text-neutral-500">{{ t('history.recent.no_results') }}</p>
+            </div>
+          </template>
+        </UTabs>
       </div>
     </main>
   </div>
@@ -111,11 +204,13 @@ const getWeekFromQuery = () => {
   const weekQuery = route.query.week as string;
   if (weekQuery && /^\d{4}-W\d{2}$/.test(weekQuery)) {
     const [year, week] = weekQuery.split('-W').map(Number);
-    const date = new Date(year, 0, 1 + (week - 1) * 7);
-    // Adjust to Monday of that week
-    const day = date.getDay();
-    const diff = date.getDate() - day + (day === 0 ? -6 : 1);
-    return new Date(date.setDate(diff));
+    if (!isNaN(year) && !isNaN(week)) {
+      const date = new Date(year, 0, 1 + (week - 1) * 7);
+      // Adjust to Monday of that week
+      const day = date.getDay();
+      const diff = date.getDate() - day + (day === 0 ? -6 : 1);
+      return new Date(date.setDate(diff));
+    }
   }
   return new Date();
 };
@@ -164,9 +259,34 @@ function updateUrlQuery() {
   });
 }
 
+const { t } = useI18n();
+
 const site = ref<any>(null);
-const historyData = ref<{ stats: any[], incidents: any[] } | null>(null);
+const historyData = ref<{ stats: any[], incidents: any[], latest_results?: any[] } | null>(null);
 const pending = ref(false);
+
+const getConfigIcon = (slug: string) => {
+  switch (slug) {
+    case 'http': return 'i-heroicons-globe-alt';
+    case 'ping': return 'i-heroicons-signal';
+    case 'ssl': return 'i-heroicons-shield-check';
+    case 'dns': return 'i-heroicons-server-stack';
+    default: return 'i-heroicons-cpu-chip';
+  }
+};
+
+const tabs = computed(() => [
+  {
+    label: t('history.tabs.incidents'),
+    slot: 'incidents',
+    icon: 'i-heroicons-exclamation-triangle'
+  },
+  {
+    label: t('history.tabs.recent'),
+    slot: 'recent',
+    icon: 'i-heroicons-clock'
+  }
+]);
 
 const fetchData = async () => {
     pending.value = true;
@@ -190,17 +310,17 @@ const fetchData = async () => {
        
        // Handle multiple possible response shapes
        if (!rawHist) {
-         historyData.value = { stats: [], incidents: [] };
+         historyData.value = { stats: [], incidents: [], latest_results: [] };
        } else if (rawHist.data?.stats) {
          historyData.value = rawHist.data;
        } else if (rawHist.stats) {
          historyData.value = rawHist;
        } else {
-         historyData.value = { stats: [], incidents: [] };
+         historyData.value = { stats: [], incidents: [], latest_results: [] };
        }
     } catch(err) {
        console.error("Failed to fetch data:", err);
-       historyData.value = { stats: [], incidents: [] };
+       historyData.value = { stats: [], incidents: [], latest_results: [] };
     } finally {
        pending.value = false;
     }
