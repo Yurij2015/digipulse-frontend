@@ -168,9 +168,14 @@
             </div>
           </div>
 
-          <!-- Stats Grid -->
-          <div class="grid grid-cols-2 gap-4 py-4 border-y border-neutral-100 dark:border-white/5 mb-4">
-            <div class="flex flex-col gap-1 border-r border-neutral-100 dark:border-white/5">
+          <!-- Stats Grid with Sparklines -->
+          <div class="grid grid-cols-2 gap-4 py-4 border-y border-neutral-100 dark:border-white/5 mb-4 relative overflow-hidden group/stats">
+            <!-- Background Sparkline for visual depth -->
+            <div class="absolute inset-x-0 bottom-0 opacity-40 group-hover/stats:opacity-70 pointer-events-none px-1 transition-opacity duration-500 h-12">
+               <Sparkline :data="website.response_time_history" :color="getResponseTimeColorHex(website.responseTime)" />
+            </div>
+
+            <div class="flex flex-col gap-1 border-r border-neutral-100 dark:border-white/5 relative z-10">
               <span class="text-[10px] uppercase text-neutral-400 font-bold tracking-widest flex items-center gap-1">
                 <UIcon name="i-heroicons-bolt" class="w-3 h-3" />
                 {{ t('dashboard.response_time') }}
@@ -179,7 +184,7 @@
                 {{ website.responseTime }}<span class="text-[10px] font-semibold opacity-50 mb-0.5">ms</span>
               </div>
             </div>
-            <div class="flex flex-col gap-1 pl-4">
+            <div class="flex flex-col gap-1 pl-4 relative z-10">
               <span class="text-[10px] uppercase text-neutral-400 font-bold tracking-widest flex items-center gap-1">
                 <UIcon name="i-heroicons-chart-bar-square" class="w-3 h-3" />
                 {{ t('dashboard.uptime_30d') }}
@@ -403,6 +408,13 @@ function getResponseTimeColor(time: number) {
   if (time > 500) return 'text-red-500';
   if (time > 200) return 'text-yellow-500';
   return 'text-green-600 dark:text-green-400';
+}
+
+function getResponseTimeColorHex(time: number) {
+  if (time === 0) return '#a3a3a3'; // neutral-400
+  if (time > 500) return '#ef4444'; // red-500
+  if (time > 200) return '#eab308'; // yellow-500
+  return '#10b981'; // emerald-500
 }
 
 function getBadgeIcon(slug: string) {

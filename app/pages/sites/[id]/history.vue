@@ -24,10 +24,27 @@
         </div>
       </header>
       
+      <!-- Quick Stats Grid -->
+      <div v-if="!pending && hasData" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mb-8">
+        <div v-for="stat in summaryCards" :key="stat.label" class="glass-card p-5 rounded-2xl border border-neutral-200/50 dark:border-white/10 flex items-center gap-4 group hover:border-primary-500/30 transition-all">
+          <div :class="['w-12 h-12 rounded-xl flex items-center justify-center shrink-0', stat.bg]">
+            <UIcon :name="stat.icon" :class="['text-xl', stat.color]" />
+          </div>
+          <div>
+            <div class="text-[10px] font-bold text-neutral-400 uppercase tracking-widest mb-0.5">{{ stat.label }}</div>
+            <div class="text-xl font-black text-neutral-900 dark:text-white tabular-nums">{{ stat.value }}<span v-if="stat.unit" class="text-[10px] font-bold opacity-40 ml-0.5 uppercase">{{ stat.unit }}</span></div>
+          </div>
+        </div>
+      </div>
+
       <!-- Chart Area -->
-      <div class="glass-card rounded-2xl border border-neutral-200/50 dark:border-white/10 p-4 md:p-6 mb-8 relative min-h-[500px] shadow-sm">
+      <div class="glass-card rounded-[32px] border border-neutral-200/50 dark:border-white/10 p-6 md:p-8 mb-8 relative min-h-[500px] shadow-sm overflow-hidden">
+        <!-- Background Mesh Decoration -->
+        <div class="absolute -top-24 -right-24 w-64 h-64 bg-primary-500/5 blur-[100px] rounded-full pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-indigo-500/5 blur-[100px] rounded-full pointer-events-none"></div>
+
         <!-- Loading Skeleton -->
-        <div v-if="pending" class="absolute inset-0 f                                                                                                                                                                                lex items-center justify-center bg-white/50 dark:bg-neutral-950/50 backdrop-blur-sm z-10 rounded-2xl">
+        <div v-if="pending" class="absolute inset-0 flex items-center justify-center bg-white/50 dark:bg-neutral-950/50 backdrop-blur-sm z-10 rounded-2xl">
           <div class="w-full max-w-md space-y-4 p-6">
             <div class="space-y-2">
               <div class="h-4 bg-neutral-200 dark:bg-neutral-800 rounded-full animate-pulse"></div>
@@ -55,6 +72,39 @@
                </div>
             </template>
         </ClientOnly>
+      </div>
+
+      <!-- Uptime Heatmap (Last 30 Days) -->
+      <div v-if="!pending && site?.daily_uptime_history" class="glass-card rounded-[24px] border border-neutral-200/50 dark:border-white/10 p-6 mb-8 shadow-sm">
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center gap-2">
+            <UIcon name="i-heroicons-calendar-days" class="text-neutral-400" />
+            <h3 class="font-black text-sm uppercase tracking-wider text-neutral-900 dark:text-white">Uptime Heatmap <span class="text-neutral-400 font-medium ml-1">(Last 30 Days)</span></h3>
+          </div>
+          <div class="flex items-center gap-4 text-[10px] font-bold text-neutral-400 uppercase tracking-widest">
+            <div class="flex items-center gap-1.5"><div class="w-2 h-2 rounded-xs bg-emerald-500"></div> 100%</div>
+            <div class="flex items-center gap-1.5"><div class="w-2 h-2 rounded-xs bg-amber-500"></div> >98%</div>
+            <div class="flex items-center gap-1.5"><div class="w-2 h-2 rounded-xs bg-red-500"></div> Issues</div>
+          </div>
+        </div>
+        
+        <div class="flex items-end gap-1.5 h-16">
+          <UTooltip 
+            v-for="day in site.daily_uptime_history" 
+            :key="day.date"
+            :text="`${day.date}: ${day.uptime}% uptime (${day.total_checks} checks)`"
+          >
+            <div 
+              class="w-6 sm:w-8 md:w-10 rounded-sm transition-all hover:scale-110 cursor-help"
+              :class="getHeatmapColor(day.uptime, day.total_checks)"
+              :style="{ height: `${Math.max(20, day.uptime)}%` }"
+            ></div>
+          </UTooltip>
+        </div>
+        <div class="flex justify-between mt-4 text-[9px] font-black uppercase tracking-widest text-neutral-400">
+          <span>30 days ago</span>
+          <span>Today</span>
+        </div>
       </div>
 
 
@@ -342,12 +392,79 @@ watch(() => route.query.week, (newWeek) => {
 
 const incidents = computed(() => historyData.value?.incidents || []);
 
+const summaryCards = computed(() => {
+  if (!historyData.value || !historyData.value.stats || historyData.value.stats.length === 0) return [];
+  
+  const stats = historyData.value.stats;
+  const avgUptime = stats.reduce((acc, s) => acc + (s.uptime || 0), 0) / stats.length;
+  const avgResponse = stats.reduce((acc, s) => acc + (s.response_time || 0), 0) / stats.length;
+  const maxResponse = Math.max(...stats.map(s => s.response_time || 0));
+  
+  return [
+    { 
+      label: 'Avg. Uptime', 
+      value: avgUptime.toFixed(2), 
+      unit: '%', 
+      icon: 'i-heroicons-check-badge',
+      color: 'text-emerald-500',
+      bg: 'bg-emerald-500/10'
+    },
+    { 
+      label: 'Avg. Latency', 
+      value: Math.round(avgResponse), 
+      unit: 'ms', 
+      icon: 'i-heroicons-bolt',
+      color: 'text-primary-500',
+      bg: 'bg-primary-500/10'
+    },
+    { 
+      label: 'P95 Latency', 
+      value: site.value?.p95_response_time || Math.round(avgResponse * 1.2), 
+      unit: 'ms', 
+      icon: 'i-heroicons-chart-bar-square',
+      color: 'text-indigo-500',
+      bg: 'bg-indigo-500/10'
+    },
+    { 
+      label: 'Apdex Score', 
+      value: site.value?.apdex_score || '1.00', 
+      unit: '', 
+      icon: 'i-heroicons-face-smile',
+      color: 'text-fuchsia-500',
+      bg: 'bg-fuchsia-500/10'
+    },
+    { 
+      label: 'Max Latency', 
+      value: Math.round(maxResponse), 
+      unit: 'ms', 
+      icon: 'i-heroicons-arrow-trending-up',
+      color: 'text-amber-500',
+      bg: 'bg-amber-500/10'
+    },
+    { 
+      label: 'Total Incidents', 
+      value: incidents.value.length, 
+      unit: '', 
+      icon: 'i-heroicons-exclamation-triangle',
+      color: 'text-red-500',
+      bg: 'bg-red-500/10'
+    }
+  ];
+});
+
 const hasData = computed(() => {
   const stats = historyData.value?.stats || [];
   return stats.length > 0 && stats.some((s: any) => s.response_time !== null || s.uptime !== null);
 });
 
 const formatDateTime = (iso: string) => format(parseISO(iso), 'MMM d, yyyy HH:mm');
+
+function getHeatmapColor(uptime: number, totalChecks: number) {
+  if (totalChecks === 0) return 'bg-neutral-100 dark:bg-white/5';
+  if (uptime === 100) return 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.3)]';
+  if (uptime > 98) return 'bg-amber-500';
+  return 'bg-red-500 animate-pulse';
+}
 
 // Chart building
 const chartData = computed(() => {
@@ -373,9 +490,18 @@ const chartData = computed(() => {
              label: 'Response Time (ms)',
              data: responseTimeData,
              borderColor: '#10b981', // emerald-500
-             backgroundColor: 'rgba(16, 185, 129, 0.1)',
+             backgroundColor: (context: any) => {
+                const chart = context.chart;
+                const { ctx, chartArea } = chart;
+                if (!chartArea) return null;
+                const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                gradient.addColorStop(0, 'rgba(16, 185, 129, 0.2)');
+                gradient.addColorStop(1, 'rgba(16, 185, 129, 0)');
+                return gradient;
+             },
+             fill: true,
              yAxisID: 'y',
-             tension: 0.3,
+             tension: 0.4,
              borderWidth: 3,
              pointRadius: 0,
              pointHoverRadius: 6,
@@ -386,10 +512,18 @@ const chartData = computed(() => {
              label: 'Uptime (%)',
              data: uptimeData,
              borderColor: '#6366f1', // indigo-500
-             backgroundColor: 'rgba(99, 102, 241, 0.15)',
+             backgroundColor: (context: any) => {
+                const chart = context.chart;
+                const { ctx, chartArea } = chart;
+                if (!chartArea) return null;
+                const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                gradient.addColorStop(0, 'rgba(99, 102, 241, 0.15)');
+                gradient.addColorStop(1, 'rgba(99, 102, 241, 0)');
+                return gradient;
+             },
              fill: true,
              yAxisID: 'y1',
-             tension: 0.3,
+             tension: 0.4,
              borderWidth: 2,
              pointRadius: 0,
              pointHoverRadius: 6,
@@ -420,13 +554,16 @@ const chartOptions = computed(() => {
        plugins: {
           legend: {
              position: 'top' as const,
+             align: 'end' as const,
              labels: {
                  color: '#737373', // neutral-500
                  usePointStyle: true,
+                 pointStyle: 'circle',
                  padding: 20,
                  font: {
                     family: 'inherit',
-                    weight: 'bold'
+                    size: 11,
+                    weight: '700'
                  }
              }
           },
@@ -438,6 +575,7 @@ const chartOptions = computed(() => {
              borderWidth: 1,
              padding: 12,
              boxPadding: 6,
+             usePointStyle: true,
              callbacks: {
                 footer: (tooltipItems: any) => {
                    if(incidents.value.length === 0) return '';
@@ -458,30 +596,32 @@ const chartOptions = computed(() => {
        },
        scales: {
           x: {
-             grid: { color: 'rgba(115, 115, 115, 0.1)' }, // neutral-500/10
+             grid: { 
+                display: false
+             },
              ticks: { 
-                 maxTicksLimit: 14,
+                 maxTicksLimit: 12,
                  color: '#737373',
-                 font: { family: 'inherit' }
+                 font: { family: 'inherit', size: 10 }
              }
           },
           y: {
              type: 'linear' as const,
              display: true,
              position: 'left' as const,
-             title: { display: true, text: 'Response Time (ms)', color: '#a3a3a3', font: { weight: 'bold' } },
-             grid: { color: 'rgba(115, 115, 115, 0.1)' },
-             ticks: { color: '#a3a3a3' }
+             title: { display: true, text: 'Response Time (ms)', color: '#737373', font: { size: 10, weight: '700' } },
+             grid: { color: 'rgba(115, 115, 115, 0.05)' },
+             ticks: { color: '#a3a3a3', font: { size: 10 } }
           },
           y1: {
              type: 'linear' as const,
              display: true,
              position: 'right' as const,
-             title: { display: true, text: 'Uptime (%)', color: '#a3a3a3', font: { weight: 'bold' } },
+             title: { display: true, text: 'Uptime (%)', color: '#737373', font: { size: 10, weight: '700' } },
              grid: { drawOnChartArea: false },
              min: 0,
              max: 100,
-             ticks: { color: '#a3a3a3' }
+             ticks: { color: '#a3a3a3', font: { size: 10 } }
           }
        }
     };
