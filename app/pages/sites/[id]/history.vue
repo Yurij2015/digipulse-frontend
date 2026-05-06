@@ -419,8 +419,8 @@ const summaryCards = computed(() => {
     },
     { 
       label: 'P95 Latency', 
-      value: site.value?.p95_response_time || Math.round(avgResponse * 1.2), 
-      unit: 'ms', 
+      value: site.value?.p95_response_time ?? '—', 
+      unit: site.value?.p95_response_time ? 'ms' : '', 
       icon: 'i-heroicons-chart-bar-square',
       color: 'text-indigo-500',
       bg: 'bg-indigo-500/10'

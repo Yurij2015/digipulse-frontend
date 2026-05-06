@@ -234,7 +234,7 @@
         <template #body>
           <div class="p-2">
             <p class="text-sm text-neutral-500">
-              Сайт: <strong class="text-neutral-900 dark:text-white">{{ siteToDelete?.name }}</strong>
+              {{ $t('sites.confirm_delete_name') }}: <strong class="text-neutral-900 dark:text-white">{{ siteToDelete?.name }}</strong>
             </p>
           </div>
         </template>

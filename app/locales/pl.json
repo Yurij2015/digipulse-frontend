@@ -184,6 +184,7 @@
       "delete": "Usuń"
     },
     "confirm_delete": "Potwierdź usunięcie",
+    "confirm_delete_name": "Strona",
     "delete_question": "Czy na pewno chcesz usunąć tę stronę? Tej operacji nie można cofnąć.",
     "deleted_success": "Strona została pomyślnie usunięta.",
     "card_no_monitoring": "Monitoring nieaktywny. Skonfiguruj opcje, aby śledzić.",

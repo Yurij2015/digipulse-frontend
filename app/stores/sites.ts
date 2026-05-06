@@ -43,11 +43,12 @@ export const useSitesStore = defineStore('sites', () => {
         if (site.is_active) {
           if (!hasAnyCheckResult) {
             status = 'Pending';
+          } else if (configs.some((c: any) => c.last_status === 'down')) {
+            status = 'Offline';
+          } else if (configs.some((c: any) => c.last_status === 'slow' || c.last_status === 'Warning')) {
+            status = 'Warning';
           } else {
             status = 'Online';
-            if (configs.some((c: any) => c.last_status === 'Warning')) {
-              status = 'Warning';
-            }
           }
         }
         
