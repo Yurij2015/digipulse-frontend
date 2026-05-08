@@ -58,7 +58,7 @@
       </div>
 
       <!-- Websites Cards -->
-      <BaseLoader :show="isDeleting" />
+      <BaseLoader :show="showSitesLoader || isDeleting" />
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div 
           v-for="website in filteredWebsites" 
@@ -262,7 +262,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useI18n, useLocalePath } from '#i18n';
 import { useAuth, useRuntimeConfig } from '#imports';
 import { useSitesStore } from '~/stores/sites';
@@ -326,6 +326,10 @@ const filteredWebsites = computed(() => {
   });
 });
 
+const showSitesLoader = computed(() => {
+  return isLoading.value && websites.value.length === 0;
+});
+
 // --- Async Logic ---
 async function loadSites() {
   await sitesStore.fetchSites();
@@ -337,12 +341,6 @@ watch(token, (newToken) => {
     sitesStore.fetchSites();
   }
 }, { immediate: true });
-
-onMounted(() => {
-  if (token.value) {
-    sitesStore.fetchSites();
-  }
-});
 // Refresh after action
 function handleRefresh() {
   loadSites();

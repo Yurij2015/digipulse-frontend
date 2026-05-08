@@ -1,6 +1,7 @@
 <template>
   <div class="flex flex-col lg:flex-row min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white transition-colors duration-500 mesh-bg">
     <AppSidebar />
+    <BaseLoader :show="showSitesLoader || isDeleting" />
 
     <!-- Main Content -->
     <main class="flex-1 p-6 lg:p-12 overflow-y-auto lg:ml-72 h-screen">
@@ -224,6 +225,10 @@ const filteredRows = computed(() => {
     return site.name.toLowerCase().includes(search.value.toLowerCase()) || 
            site.url.toLowerCase().includes(search.value.toLowerCase());
   });
+});
+
+const showSitesLoader = computed(() => {
+  return isLoading.value && sites.value.length === 0;
 });
 
 // Initial load
