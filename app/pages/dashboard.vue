@@ -27,7 +27,9 @@
           </div>
           <div class="flex flex-col">
             <div class="text-neutral-400 text-[10px] font-bold uppercase tracking-widest mb-1">{{ stat.label }}</div>
-            <div class="text-3xl font-semibold text-neutral-900 dark:text-white leading-none tabular-nums group-hover:scale-105 transition-transform origin-left">{{ stat.value }}</div>
+            <div class="text-3xl font-semibold text-neutral-900 dark:text-white leading-none tabular-nums group-hover:scale-105 transition-transform origin-left">
+              <AnimatedNumber :value="stat.value" :precision="0" :durationMs="600" />
+            </div>
           </div>
         </div>
       </div>
@@ -76,7 +78,7 @@
                   v-if="website.url"
                   :href="website.url" 
                   target="_blank" 
-                  class="text-neutral-500 text-[11px] font-medium hover:text-primary-500 transition-colors flex items-center gap-1 max-w-full min-w-0"
+                  class="text-neutral-500 text-[11px] font-medium hover:text-primary-500 transition-colors flex items-center gap-1 max-w-full min-w-0 cursor-pointer"
                 >
                   <UIcon name="i-heroicons-globe-alt" class="w-3.5 h-3.5" />
                   <span class="truncate">{{ website.url.replace(/^https?:\/\//, '') }}</span>
@@ -162,7 +164,9 @@
               <UIcon name="i-heroicons-signal" class="w-3.5 h-3.5" :class="website.ping_info.status === 'up' ? 'text-emerald-500' : 'text-red-500'" />
               <span class="text-neutral-500 dark:text-neutral-400">
                 {{ t('dashboard.ping') }}: 
-                <span v-if="website.ping_info.status === 'up'" class="font-bold text-neutral-900 dark:text-white">{{ website.ping_info.latency }}ms</span>
+                <span v-if="website.ping_info.status === 'up'" class="font-bold text-neutral-900 dark:text-white">
+                  <AnimatedNumber :value="website.ping_info.latency" :precision="0" :durationMs="600" />ms
+                </span>
                 <span v-else class="font-bold text-red-500 uppercase text-[9px]">{{ t('dashboard.offline') }} / Timeout</span>
               </span>
             </div>
@@ -181,7 +185,8 @@
                 {{ t('dashboard.response_time') }}
               </span>
               <div class="text-xl font-semibold tabular-nums flex items-end gap-1" :class="getResponseTimeColor(website.responseTime)">
-                {{ website.responseTime }}<span class="text-[10px] font-semibold opacity-50 mb-0.5">ms</span>
+                <AnimatedNumber :value="website.responseTime" :precision="0" :durationMs="600" />
+                <span class="text-[10px] font-semibold opacity-50 mb-0.5">ms</span>
               </div>
             </div>
             <div class="flex flex-col gap-1 pl-4 relative z-10">
@@ -190,7 +195,8 @@
                 {{ t('dashboard.uptime_30d') }}
               </span>
               <div class="text-xl font-semibold text-neutral-900 dark:text-white tabular-nums flex items-end gap-0.5">
-                {{ website.uptime }}<span class="text-[10px] font-semibold opacity-50 mb-0.5">%</span>
+                <AnimatedNumber :value="website.uptime" :precision="null" :durationMs="600" />
+                <span class="text-[10px] font-semibold opacity-50 mb-0.5">%</span>
               </div>
             </div>
           </div>
@@ -204,7 +210,7 @@
                 icon="i-heroicons-chart-bar" 
                 variant="ghost" 
                 color="primary" 
-                class="hover:bg-primary-500/10" 
+                class="hover:bg-primary-500/10 cursor-pointer" 
                 square 
                 :to="localePath(`/sites/${website.id}/history`)"
               />
@@ -212,7 +218,7 @@
                 icon="i-heroicons-pencil" 
                 variant="ghost" 
                 color="neutral" 
-                class="hover:bg-neutral-100 dark:hover:bg-white/5" 
+                class="hover:bg-neutral-100 dark:hover:bg-white/5 cursor-pointer" 
                 square 
                 @click="openEditModal(website)"
               />
@@ -220,7 +226,7 @@
                 icon="i-heroicons-trash" 
                 variant="ghost" 
                 color="error" 
-                class="hover:bg-red-500/10" 
+                class="hover:bg-red-500/10 cursor-pointer" 
                 square 
                 @click="confirmDelete(website)"
               />
@@ -262,7 +268,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onUnmounted, onMounted } from 'vue';
 import { useI18n, useLocalePath } from '#i18n';
 import { useAuth, useRuntimeConfig } from '#imports';
 import { useSitesStore } from '~/stores/sites';
@@ -274,7 +280,11 @@ const toast = useToast();
 const localePath = useLocalePath();
 const config = useRuntimeConfig();
 const { token, user } = useAuth();
+const { $echo } = useNuxtApp() as any;
 const sitesStore = useSitesStore();
+const realtimeDebugEnabled = import.meta.client && localStorage.getItem('debug:realtime') === '1';
+const nowTick = ref(Date.now());
+let relativeTimeTimer: ReturnType<typeof setInterval> | null = null;
 
 const websites = computed(() => sitesStore.sites);
 const isLoading = computed(() => sitesStore.loading);
@@ -341,6 +351,66 @@ watch(token, (newToken) => {
     sitesStore.fetchSites();
   }
 }, { immediate: true });
+
+watch(() => user.value?.id, (newUserId, oldUserId) => {
+  if (!$echo) {
+    if (realtimeDebugEnabled) {
+      console.warn('[realtime][dashboard] Echo instance is unavailable');
+    }
+    return;
+  }
+
+  if (oldUserId) {
+    if (realtimeDebugEnabled) {
+      console.info('[realtime][dashboard] Unsubscribing from user channel', { userId: oldUserId });
+    }
+    $echo.private(`App.Models.User.${oldUserId}`).stopListening('.site.status.updated');
+  }
+
+  if (!newUserId) {
+    if (realtimeDebugEnabled) {
+      console.warn('[realtime][dashboard] userId is empty, subscription skipped');
+    }
+    return;
+  }
+
+  if (realtimeDebugEnabled) {
+    console.info('[realtime][dashboard] Subscribing to user channel', { userId: newUserId });
+  }
+
+  $echo.private(`App.Models.User.${newUserId}`)
+    .listen('.site.status.updated', (payload: any) => {
+      if (realtimeDebugEnabled) {
+        console.info('[realtime][dashboard] Received .site.status.updated event', payload);
+      }
+      const siteId = Number(payload?.site_id);
+      if (!Number.isFinite(siteId) || siteId <= 0) {
+        return;
+      }
+      sitesStore.syncSitesFromRealtimeSignal(siteId);
+    });
+}, { immediate: true });
+
+onUnmounted(() => {
+  if (user.value?.id && $echo) {
+    if (realtimeDebugEnabled) {
+      console.info('[realtime][dashboard] Cleanup subscription', { userId: user.value.id });
+    }
+    $echo.private(`App.Models.User.${user.value.id}`).stopListening('.site.status.updated');
+  }
+
+  if (relativeTimeTimer) {
+    clearInterval(relativeTimeTimer);
+    relativeTimeTimer = null;
+  }
+});
+
+onMounted(() => {
+  // Keep "checked X ago" labels fresh even when no realtime event arrives.
+  relativeTimeTimer = setInterval(() => {
+    nowTick.value = Date.now();
+  }, 60_000);
+});
 // Refresh after action
 function handleRefresh() {
   loadSites();
@@ -440,6 +510,9 @@ function getBadgeClass(slug: string) {
 const locales = { uk, pl, en: enUS };
 
 function formatCheckTime(dateStr: string) {
+  // Reactive dependency for periodic re-render of relative timestamps.
+  nowTick.value;
+
   if (!dateStr || dateStr === 'Never') return t('dashboard.never');
   
   try {

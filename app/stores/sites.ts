@@ -12,6 +12,40 @@ export const useSitesStore = defineStore('sites', () => {
   const lastFetched = ref<number | null>(null);
 
   const CACHE_TTL = 30000; // 30 seconds cache
+  const REALTIME_SYNC_COOLDOWN = 5000;
+  const lastRealtimeSyncAtBySite = ref<Record<number, number>>({});
+  const realtimeSyncTimeouts = new Map<number, ReturnType<typeof setTimeout>>();
+  const realtimeSyncInFlightBySite = ref<Record<number, boolean>>({});
+
+  const resolveSiteStatus = (site: any) => {
+    let status = 'Offline';
+    const configs = site.configurations || site.checks || [];
+    const hasAnyCheckResult = configs.some((c: any) => c.last_checked_at || c.last_status);
+
+    if (site.is_active) {
+      if (!hasAnyCheckResult) {
+        status = 'Pending';
+      } else if (configs.some((c: any) => c.last_status === 'down')) {
+        status = 'Offline';
+      } else if (configs.some((c: any) => c.last_status === 'slow' || c.last_status === 'Warning')) {
+        status = 'Warning';
+      } else {
+        status = 'Online';
+      }
+    }
+
+    return status;
+  };
+
+  const normalizeSite = (site: any) => {
+    return {
+      ...site,
+      status: resolveSiteStatus(site),
+      lastCheck: site.last_checked_at || site.last_check || 'Never',
+      responseTime: site.responseTime || site.response_time || 0,
+      uptime: site.uptime || 0
+    };
+  };
 
   const fetchSites = async (force = false) => {
     if (!token.value) return;
@@ -35,31 +69,7 @@ export const useSitesStore = defineStore('sites', () => {
       
       const dataArray = Array.isArray(data) ? data : (data?.data || []);
       
-      sites.value = dataArray.map((site: any) => {
-        let status = 'Offline';
-        const configs = site.configurations || site.checks || [];
-        const hasAnyCheckResult = configs.some((c: any) => c.last_checked_at || c.last_status);
-        
-        if (site.is_active) {
-          if (!hasAnyCheckResult) {
-            status = 'Pending';
-          } else if (configs.some((c: any) => c.last_status === 'down')) {
-            status = 'Offline';
-          } else if (configs.some((c: any) => c.last_status === 'slow' || c.last_status === 'Warning')) {
-            status = 'Warning';
-          } else {
-            status = 'Online';
-          }
-        }
-        
-        return {
-          ...site,
-          status,
-          lastCheck: site.last_checked_at || site.last_check || 'Never',
-          responseTime: site.responseTime || site.response_time || 0,
-          uptime: site.uptime || 0
-        };
-      });
+      sites.value = dataArray.map((site: any) => normalizeSite(site));
       
       lastFetched.value = Date.now();
     } catch (err: any) {
@@ -68,6 +78,111 @@ export const useSitesStore = defineStore('sites', () => {
     } finally {
       loading.value = false;
     }
+  };
+
+  const fetchSiteById = async (siteId: number) => {
+    if (!token.value) return;
+
+    const data = await $fetch<any>(`${config.public.apiBase}/api/sites/${siteId}`, {
+      headers: {
+        'Accept': 'application/json',
+        'X-Frontend-Key': config.public.frontendKey as string,
+        'Authorization': `Bearer ${token.value}`
+      }
+    });
+
+    const siteData = data?.data || data;
+    if (!siteData || !siteData.id) {
+      return;
+    }
+
+    const normalized = normalizeSite(siteData);
+    const existingSiteIndex = sites.value.findIndex((site: any) => Number(site.id) === Number(siteId));
+
+    if (existingSiteIndex === -1) {
+      sites.value.unshift(normalized);
+    } else {
+      sites.value[existingSiteIndex] = normalized;
+    }
+
+    lastFetched.value = Date.now();
+  };
+
+  const scheduleRealtimeSiteSync = (siteId: number) => {
+    if (!token.value || !siteId) {
+      return;
+    }
+
+    if (realtimeSyncInFlightBySite.value[siteId]) {
+      return;
+    }
+
+    const elapsed = Date.now() - (lastRealtimeSyncAtBySite.value[siteId] || 0);
+    const delay = Math.max(0, REALTIME_SYNC_COOLDOWN - elapsed);
+
+    const existingTimeout = realtimeSyncTimeouts.get(siteId);
+    if (existingTimeout) {
+      clearTimeout(existingTimeout);
+    }
+
+    const timeout = setTimeout(async () => {
+      realtimeSyncInFlightBySite.value[siteId] = true;
+      try {
+        await fetchSiteById(siteId);
+        lastRealtimeSyncAtBySite.value[siteId] = Date.now();
+      } catch (err: any) {
+        console.error(`Store: Failed to sync site ${siteId} from realtime signal:`, err);
+      } finally {
+        realtimeSyncInFlightBySite.value[siteId] = false;
+        realtimeSyncTimeouts.delete(siteId);
+      }
+    }, delay);
+
+    realtimeSyncTimeouts.set(siteId, timeout);
+  };
+
+  const applyRealtimeStatusUpdate = (payload: {
+    site_id: number;
+    configuration_id: number;
+    status: string;
+    response_time_ms?: number | null;
+    checked_at: string;
+  }) => {
+    const siteIndex = sites.value.findIndex((s: any) => Number(s.id) === Number(payload.site_id));
+    if (siteIndex === -1) return;
+
+    const site = sites.value[siteIndex];
+    const configurations = site.configurations || site.checks || [];
+    const configIndex = configurations.findIndex((c: any) => Number(c.id) === Number(payload.configuration_id));
+
+    if (configIndex !== -1) {
+      configurations[configIndex] = {
+        ...configurations[configIndex],
+        last_status: payload.status,
+        last_checked_at: payload.checked_at
+      };
+    }
+
+    const updatedSite = {
+      ...site,
+      configurations,
+      last_checked_at: payload.checked_at,
+      lastCheck: payload.checked_at,
+      status: resolveSiteStatus({ ...site, configurations })
+    } as any;
+
+    if (typeof payload.response_time_ms === 'number') {
+      updatedSite.response_time = payload.response_time_ms;
+      updatedSite.responseTime = payload.response_time_ms;
+    }
+
+    sites.value[siteIndex] = updatedSite;
+    lastFetched.value = Date.now();
+    scheduleRealtimeSiteSync(payload.site_id);
+  };
+
+  const syncSitesFromRealtimeSignal = (siteId: number) => {
+    scheduleRealtimeSiteSync(siteId);
   };
 
   const getSiteById = (id: number | string) => {
@@ -79,6 +194,10 @@ export const useSitesStore = defineStore('sites', () => {
     loading.value = false;
     error.value = null;
     lastFetched.value = null;
+    realtimeSyncTimeouts.forEach((timeout) => clearTimeout(timeout));
+    realtimeSyncTimeouts.clear();
+    lastRealtimeSyncAtBySite.value = {};
+    realtimeSyncInFlightBySite.value = {};
   };
 
   return {
@@ -87,6 +206,8 @@ export const useSitesStore = defineStore('sites', () => {
     error,
     lastFetched,
     fetchSites,
+    applyRealtimeStatusUpdate,
+    syncSitesFromRealtimeSignal,
     getSiteById,
     clearSites
   };

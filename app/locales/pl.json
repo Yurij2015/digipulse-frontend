@@ -355,5 +355,9 @@
     "free_tier_description": "Obecnie korzystasz z darmowego planu, który pozwala na monitorowanie do 3 stron internetowych. Aby dodać більше, skontaktuj się z naszym zespołem wsparcia, aby zaktualizować plan.",
     "maybe_later": "Może później",
     "contact_support": "Kontakt z pomocą"
+  },
+  "loader": {
+    "brand": "DigiPulse",
+    "initializing_secure_connection": "Ładowanie danych..."
   }
 }

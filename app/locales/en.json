@@ -360,5 +360,9 @@
     "free_tier_description": "You are currently using the free tier which allows monitoring up to 3 websites. To add more, please contact our support team to upgrade your plan.",
     "maybe_later": "Maybe Later",
     "contact_support": "Contact Support"
+  },
+  "loader": {
+    "brand": "DigiPulse",
+    "initializing_secure_connection": "Loading data..."
   }
 }

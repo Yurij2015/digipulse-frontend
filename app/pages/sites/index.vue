@@ -187,7 +187,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { useI18n, useLocalePath } from '#i18n';
 import { useAuth, useRuntimeConfig } from '#imports';
 import { useSitesStore } from '~/stores/sites';
@@ -196,7 +196,9 @@ const { t } = useI18n();
 const localePath = useLocalePath();
 const config = useRuntimeConfig();
 const { token, user } = useAuth();
+const { $echo } = useNuxtApp() as any;
 const sitesStore = useSitesStore();
+const realtimeDebugEnabled = import.meta.client && localStorage.getItem('debug:realtime') === '1';
 
 // --- State ---
 const search = ref('');
@@ -236,6 +238,54 @@ onMounted(async () => {
     if (token.value) {
         await sitesStore.fetchSites();
     }
+});
+
+watch(() => user.value?.id, (newUserId, oldUserId) => {
+  if (!$echo) {
+    if (realtimeDebugEnabled) {
+      console.warn('[realtime][sites] Echo instance is unavailable');
+    }
+    return;
+  }
+
+  if (oldUserId) {
+    if (realtimeDebugEnabled) {
+      console.info('[realtime][sites] Unsubscribing from user channel', { userId: oldUserId });
+    }
+    $echo.private(`App.Models.User.${oldUserId}`).stopListening('.site.status.updated');
+  }
+
+  if (!newUserId) {
+    if (realtimeDebugEnabled) {
+      console.warn('[realtime][sites] userId is empty, subscription skipped');
+    }
+    return;
+  }
+
+  if (realtimeDebugEnabled) {
+    console.info('[realtime][sites] Subscribing to user channel', { userId: newUserId });
+  }
+
+  $echo.private(`App.Models.User.${newUserId}`)
+    .listen('.site.status.updated', (payload: any) => {
+      if (realtimeDebugEnabled) {
+        console.info('[realtime][sites] Received .site.status.updated event', payload);
+      }
+      const siteId = Number(payload?.site_id);
+      if (!Number.isFinite(siteId) || siteId <= 0) {
+        return;
+      }
+      sitesStore.syncSitesFromRealtimeSignal(siteId);
+    });
+}, { immediate: true });
+
+onUnmounted(() => {
+  if (user.value?.id && $echo) {
+    if (realtimeDebugEnabled) {
+      console.info('[realtime][sites] Cleanup subscription', { userId: user.value.id });
+    }
+    $echo.private(`App.Models.User.${user.value.id}`).stopListening('.site.status.updated');
+  }
 });
 
 // Refresh function
