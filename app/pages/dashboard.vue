@@ -66,9 +66,9 @@
           class="group p-6 rounded-2xl bg-white dark:bg-white/5 border border-neutral-200 dark:border-white/10 hover:border-primary-500/50 hover:shadow-xl transition-all duration-300 flex flex-col relative"
           :class="{ 'opacity-70 border-dashed border-neutral-300 dark:border-white/5 bg-neutral-50/50 dark:bg-neutral-900/10 grayscale-[0.3]': !(website.configurations?.length || website.checks?.length) }"
         >
-          <div class="flex justify-between items-start mb-6">
-            <div class="flex flex-col gap-1">
-              <h3 class="text-lg font-semibold text-neutral-900 dark:text-white group-hover:text-primary-600 transition-colors truncate max-w-45">
+          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-6">
+            <div class="flex flex-col gap-1 min-w-0 flex-1">
+              <h3 class="text-lg font-semibold text-neutral-900 dark:text-white group-hover:text-primary-600 transition-colors truncate">
                 {{ website.name || 'Unnamed Node' }}
               </h3>
               <div class="flex items-center gap-1.5 flex-wrap">
@@ -76,10 +76,10 @@
                   v-if="website.url"
                   :href="website.url" 
                   target="_blank" 
-                  class="text-neutral-500 text-[11px] font-medium hover:text-primary-500 transition-colors flex items-center gap-1"
+                  class="text-neutral-500 text-[11px] font-medium hover:text-primary-500 transition-colors flex items-center gap-1 max-w-full min-w-0"
                 >
                   <UIcon name="i-heroicons-globe-alt" class="w-3.5 h-3.5" />
-                  {{ website.url.replace(/^https?:\/\//, '') }}
+                  <span class="truncate">{{ website.url.replace(/^https?:\/\//, '') }}</span>
                 </a>
                 <span v-else class="text-neutral-400 text-[11px] italic font-normal">No URL</span>
                 
@@ -95,7 +95,7 @@
             <div :class="[
               'px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase flex items-center gap-2 border transition-all duration-300',
               getStatusClasses(website.status)
-            ]">
+            ]" class="shrink-0 self-start">
               <div v-if="website.status === 'Online'" class="w-1.5 h-1.5 rounded-full bg-current pulse-neon shadow-[0_0_8px_rgba(34,197,94,0.5)]"></div>
               <div v-else-if="website.status === 'Offline'" class="w-1.5 h-1.5 rounded-full bg-current opacity-70"></div>
               <div v-else-if="website.status === 'Pending'" class="w-1.5 h-1.5 rounded-full bg-neutral-400 shadow-[0_0_4px_rgba(163,163,163,0.5)]"></div>
