@@ -83,7 +83,7 @@
           <UFormField :label="t('auth.email')" name="email" class="premium-label">
             <UInput 
               v-model="state.email" 
-              type="email" 
+              :type="REGISTER_FIELD_TYPES.email" 
               icon="i-heroicons-envelope" 
               :placeholder="t('auth.email_placeholder')"
               size="xl"
@@ -98,7 +98,7 @@
           <UFormField :label="t('auth.password')" name="password" class="premium-label">
             <UInput 
               v-model="state.password" 
-              :type="showPassword ? 'text' : 'password'" 
+              :type="showPassword ? 'text' : REGISTER_FIELD_TYPES.password" 
               icon="i-heroicons-lock-closed" 
               :placeholder="t('auth.password_placeholder')"
               size="xl"
@@ -126,7 +126,7 @@
           <UFormField :label="t('auth.confirm_password')" name="confirmPassword" class="premium-label">
             <UInput 
               v-model="state.confirmPassword" 
-              :type="showPassword ? 'text' : 'password'" 
+              :type="showPassword ? 'text' : REGISTER_FIELD_TYPES.confirmPassword" 
               icon="i-heroicons-lock-closed-solid" 
               :placeholder="t('auth.password_placeholder')"
               size="xl"
@@ -201,10 +201,10 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { object, string, ref as yupRef } from 'yup';
 import { useI18n, useLocalePath } from '#i18n';
 import { useRouter, useAuth, useToast, useRuntimeConfig, useColorMode, useRoute } from '#imports';
 import type { AuthResponse } from '~/types/auth';
+import { buildRegisterSchema, REGISTER_FIELD_TYPES } from '~/utils/auth-forms';
 
 definePageMeta({
   middleware: 'guest'
@@ -239,14 +239,7 @@ const state = ref({
   confirmPassword: '',
 });
 
-const schema = object({
-  email: string().email(t('auth.invalid_email')).required(t('auth.email_required')),
-  name: string().required(t('auth.username_required')),
-  first_name: string().required(t('auth.first_name_required')),
-  last_name: string().required(t('auth.last_name_required')),
-  password: string().min(6, t('auth.password_min')).required(t('auth.password_required')),
-  confirmPassword: string().oneOf([yupRef('password')], t('auth.passwords_mismatch')).required(t('auth.passwords_mismatch')),
-});
+const schema = buildRegisterSchema(t);
 
 const handleGoogleLogin = () => {
   window.location.href = `${config.public.apiBase}/auth/redirect`;

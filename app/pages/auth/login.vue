@@ -40,7 +40,7 @@
           <UFormField :label="t('auth.email')" name="email" class="premium-label">
             <UInput 
               v-model="state.email" 
-              type="email" 
+              :type="LOGIN_FIELD_TYPES.email" 
               icon="i-heroicons-envelope" 
               :placeholder="t('auth.email_placeholder')"
               size="xl"
@@ -55,7 +55,7 @@
           <UFormField :label="t('auth.password')" name="password" class="premium-label">
             <UInput 
               v-model="state.password" 
-              :type="showPassword ? 'text' : 'password'" 
+              :type="showPassword ? 'text' : LOGIN_FIELD_TYPES.password" 
               icon="i-heroicons-lock-closed" 
               :placeholder="t('auth.password_placeholder')"
               size="xl"
@@ -154,10 +154,10 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { object, string } from 'yup';
 import { useI18n, useLocalePath } from '#i18n';
 import { useRouter, useAuth, useToast, useRuntimeConfig, useColorMode, useRoute } from '#imports';
 import type { AuthResponse } from '~/types/auth';
+import { buildLoginSchema, LOGIN_FIELD_TYPES } from '~/utils/auth-forms';
 
 definePageMeta({
   middleware: 'guest'
@@ -188,10 +188,7 @@ const state = ref({
   password: '',
 });
 
-const schema = object({
-  email: string().email(t('auth.invalid_email')).required(t('auth.email_required')),
-  password: string().required(t('auth.password_required')),
-});
+const schema = buildLoginSchema(t);
 
 const handleGoogleLogin = () => {
   window.location.href = `${config.public.apiBase}/auth/redirect`;
