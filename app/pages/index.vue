@@ -121,6 +121,7 @@ definePageMeta({
 const { t } = useI18n();
 const localePath = useLocalePath();
 const url = useRequestURL();
+const config = useRuntimeConfig();
 
 useSeoMeta({
   title: () => t('index.seo_title'),
@@ -128,9 +129,43 @@ useSeoMeta({
   description: () => t('index.seo_description'),
   ogDescription: () => t('index.seo_description'),
   ogUrl: () => url.href,
+  ogType: 'website',
   ogImage: () => `${url.origin}/og-image-social.png`,
+  twitterCard: 'summary_large_image',
+  twitterTitle: () => t('index.seo_title'),
+  twitterDescription: () => t('index.seo_description'),
   twitterImage: () => `${url.origin}/og-image-social.png`,
 })
+
+const origin = computed(() => (config.public.siteUrl as string) || url.origin)
+
+useHead(computed(() => ({
+  link: [{ rel: 'canonical', href: url.href }],
+  script: [{
+    type: 'application/ld+json',
+    innerHTML: JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'Organization',
+          '@id': `${origin.value}/#organization`,
+          name: 'DigiPulse',
+          url: origin.value,
+          logo: { '@type': 'ImageObject', url: `${origin.value}/logo.svg` },
+        },
+        {
+          '@type': 'WebSite',
+          '@id': `${origin.value}/#website`,
+          url: origin.value,
+          name: 'DigiPulse',
+          description: t('index.seo_description'),
+          publisher: { '@id': `${origin.value}/#organization` },
+          inLanguage: ['en', 'uk', 'pl'],
+        },
+      ],
+    }),
+  }],
+})))
 
 const features = computed(() => [
   { icon: 'i-heroicons-clock', title: t('index.feat1_title'), desc: t('index.feat1_desc') },

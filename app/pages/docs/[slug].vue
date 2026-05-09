@@ -3,6 +3,7 @@ const { t } = useI18n()
 const localePath = useLocalePath()
 const config = useRuntimeConfig()
 const route = useRoute()
+const url = useRequestURL()
 
 const slug = route.params.slug as string
 
@@ -26,9 +27,16 @@ useSeoMeta({
   description: () => category.value?.description ?? t('docs.subtitle'),
   ogTitle: () => category.value?.name ?? t('docs.title'),
   ogDescription: () => category.value?.description ?? t('docs.subtitle'),
-  ogImage: '/og-image-social.png',
+  ogUrl: () => url.href,
+  ogImage: () => `${url.origin}/og-image-social.png`,
   ogType: 'website',
   twitterCard: 'summary_large_image',
+  twitterTitle: () => category.value?.name ?? t('docs.title'),
+  twitterDescription: () => category.value?.description ?? t('docs.subtitle'),
+  twitterImage: () => `${url.origin}/og-image-social.png`,
+})
+useHead({
+  link: [{ rel: 'canonical', href: () => `${config.public.siteUrl || url.origin}/docs/${slug}` }],
 })
 
 const articles = computed(() => category.value?.articles ?? [])

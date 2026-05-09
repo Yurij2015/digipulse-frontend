@@ -2,15 +2,23 @@
 const { t } = useI18n()
 const localePath = useLocalePath()
 const config = useRuntimeConfig()
+const url = useRequestURL()
 
 useSeoMeta({
   title: `${t('docs.title')} — DigiPulse`,
   description: t('docs.subtitle'),
   ogTitle: t('docs.title'),
   ogDescription: t('docs.subtitle'),
-  ogImage: '/og-image-social.png',
+  ogUrl: () => url.href,
+  ogImage: () => `${url.origin}/og-image-social.png`,
   ogType: 'website',
   twitterCard: 'summary_large_image',
+  twitterTitle: t('docs.title'),
+  twitterDescription: t('docs.subtitle'),
+  twitterImage: () => `${url.origin}/og-image-social.png`,
+})
+useHead({
+  link: [{ rel: 'canonical', href: () => `${config.public.siteUrl || url.origin}/docs` }],
 })
 
 const { data, pending, error } = await useAsyncData('kb-categories', () =>

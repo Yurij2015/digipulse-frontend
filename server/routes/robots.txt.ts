@@ -2,7 +2,7 @@ import { defineEventHandler, setHeader } from 'h3'
 
 export default defineEventHandler((event) => {
   const config = useRuntimeConfig()
-  const siteUrl = config.public.siteUrl || 'https://digipulse.app'
+  const siteUrl = config.public.siteUrl || 'https://pulse.digispace.pro'
 
   setHeader(event, 'Content-Type', 'text/plain')
 
