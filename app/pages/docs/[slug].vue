@@ -23,7 +23,12 @@ useSeoMeta({
   title: () => category.value
     ? `${category.value.name} — ${t('docs.title')} — DigiPulse`
     : `${t('docs.title')} — DigiPulse`,
-  description: () => category.value?.description ?? t('docs.subtitle')
+  description: () => category.value?.description ?? t('docs.subtitle'),
+  ogTitle: () => category.value?.name ?? t('docs.title'),
+  ogDescription: () => category.value?.description ?? t('docs.subtitle'),
+  ogImage: '/og-image-social.png',
+  ogType: 'website',
+  twitterCard: 'summary_large_image',
 })
 
 const articles = computed(() => category.value?.articles ?? [])

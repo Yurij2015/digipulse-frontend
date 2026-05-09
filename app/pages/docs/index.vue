@@ -5,7 +5,12 @@ const config = useRuntimeConfig()
 
 useSeoMeta({
   title: `${t('docs.title')} — DigiPulse`,
-  description: t('docs.subtitle')
+  description: t('docs.subtitle'),
+  ogTitle: t('docs.title'),
+  ogDescription: t('docs.subtitle'),
+  ogImage: '/og-image-social.png',
+  ogType: 'website',
+  twitterCard: 'summary_large_image',
 })
 
 const { data, pending, error } = await useAsyncData('kb-categories', () =>

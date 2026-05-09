@@ -19,12 +19,50 @@ const article = computed(() => {
   return raw.data ?? raw
 })
 
+const siteUrl = config.public.siteUrl as string
+
 useSeoMeta({
   title: () => article.value
     ? `${article.value.title} — ${t('docs.title')} — DigiPulse`
     : `${t('docs.title')} — DigiPulse`,
-  description: () => article.value?.excerpt ?? t('docs.subtitle')
+  description: () => article.value?.excerpt ?? t('docs.subtitle'),
+  ogTitle: () => article.value?.title ?? t('docs.title'),
+  ogDescription: () => article.value?.excerpt ?? t('docs.subtitle'),
+  ogImage: () => article.value?.image ?? '/og-image-social.png',
+  ogType: 'article',
+  twitterCard: 'summary_large_image',
+  twitterTitle: () => article.value?.title ?? t('docs.title'),
+  twitterDescription: () => article.value?.excerpt ?? t('docs.subtitle'),
+  twitterImage: () => article.value?.image ?? '/og-image-social.png',
 })
+
+useHead(computed(() => ({
+  script: article.value ? [{
+    type: 'application/ld+json',
+    innerHTML: JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: article.value.title,
+      description: article.value.excerpt ?? '',
+      image: article.value.image ? `${siteUrl}${article.value.image}` : `${siteUrl}/og-image-social.png`,
+      datePublished: article.value.created_at,
+      dateModified: article.value.updated_at ?? article.value.created_at,
+      publisher: {
+        '@type': 'Organization',
+        name: 'DigiPulse',
+        logo: { '@type': 'ImageObject', url: `${siteUrl}/favicon.svg` }
+      },
+      breadcrumb: {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: t('docs.title'), item: `${siteUrl}/docs` },
+          ...(article.value.category ? [{ '@type': 'ListItem', position: 2, name: article.value.category.name, item: `${siteUrl}/docs/${article.value.category.slug}` }] : []),
+          { '@type': 'ListItem', position: article.value.category ? 3 : 2, name: article.value.title },
+        ]
+      }
+    })
+  }] : []
+})))
 
 const backTo = computed(() =>
   article.value?.category?.slug
