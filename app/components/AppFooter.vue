@@ -38,7 +38,7 @@ const statusClasses = computed(() => {
     </div>
     <div class="flex flex-col md:flex-row items-center gap-4 md:gap-8 w-full md:w-auto">
       <div class="flex items-center gap-6">
-        <NuxtLink :to="localePath('/docs')" class="text-xs text-neutral-600 hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100 transition-colors font-medium">
+        <NuxtLink :to="localePath('/knowledge-base')" class="text-xs text-neutral-600 hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100 transition-colors font-medium">
           {{ $t('docs.title') }}
         </NuxtLink>
         <NuxtLink :to="localePath('/privacy')" class="text-xs text-neutral-600 hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100 transition-colors font-medium">

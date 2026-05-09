@@ -22,7 +22,7 @@ const userInitials = computed(() => {
 const links = computed(() => [
   { label: t('dashboard.title'), icon: 'i-heroicons-home', to: localePath('/dashboard') },
   { label: t('sites.title'), icon: 'i-heroicons-globe-alt', to: localePath('/sites') },
-  { label: t('docs.title'), icon: 'i-heroicons-book-open', to: localePath('/docs') },
+  { label: t('docs.title'), icon: 'i-heroicons-book-open', to: localePath('/knowledge-base') },
   { label: t('dashboard.settings'), icon: 'i-heroicons-cog-6-tooth', to: localePath('/settings') }
 ]);
 

@@ -16,7 +16,7 @@ export default defineEventHandler(async () => {
 
     for (const cat of categories) {
       urls.push({
-        loc: `/docs/${cat.slug}`,
+        loc: `/knowledge-base/${cat.slug}`,
         changefreq: 'weekly',
         priority: 0.7,
       })
@@ -28,7 +28,7 @@ export default defineEventHandler(async () => {
 
         for (const article of articles) {
           urls.push({
-            loc: `/docs/articles/${article.slug}`,
+            loc: `/knowledge-base/articles/${article.slug}`,
             lastmod: article.updated_at ?? article.created_at,
             changefreq: 'monthly',
             priority: 0.8,

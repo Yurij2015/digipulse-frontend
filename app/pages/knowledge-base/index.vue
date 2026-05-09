@@ -81,7 +81,7 @@ function categoryIcon(icon?: string) {
         <NuxtLink
           v-for="cat in list"
           :key="cat.slug"
-          :to="localePath(`/docs/${cat.slug}`)"
+          :to="localePath(`/knowledge-base/${cat.slug}`)"
           class="group relative overflow-hidden rounded-2xl border border-neutral-200/60 dark:border-white/8 bg-white dark:bg-neutral-900 p-6 transition-all duration-300 hover:border-primary-500/30 hover:shadow-xl hover:shadow-primary-500/5 hover:-translate-y-0.5 cursor-pointer"
         >
           <div class="absolute -right-8 -top-8 h-28 w-28 rounded-full bg-primary-500/5 blur-2xl group-hover:bg-primary-500/10 transition-colors duration-300" />

@@ -71,8 +71,8 @@ useHead(computed(() => ({
 
 const backTo = computed(() =>
   article.value?.category?.slug
-    ? localePath(`/docs/${article.value.category.slug}`)
-    : localePath('/docs')
+    ? localePath(`/knowledge-base/${article.value.category.slug}`)
+    : localePath('/knowledge-base')
 )
 
 const backLabel = computed(() =>
@@ -115,11 +115,11 @@ const backLabel = computed(() =>
       <template v-else-if="article">
         <!-- Breadcrumb -->
         <div v-if="article.category" class="mb-5 flex items-center gap-2 text-[12px] text-neutral-400 font-medium">
-          <NuxtLink :to="localePath('/docs')" class="hover:text-primary-500 transition-colors">
+          <NuxtLink :to="localePath('/knowledge-base')" class="hover:text-primary-500 transition-colors">
             {{ t('docs.title') }}
           </NuxtLink>
           <UIcon name="i-heroicons-chevron-right" class="text-xs" />
-          <NuxtLink :to="localePath(`/docs/${article.category.slug}`)" class="hover:text-primary-500 transition-colors">
+          <NuxtLink :to="localePath(`/knowledge-base/${article.category.slug}`)" class="hover:text-primary-500 transition-colors">
             {{ article.category.name }}
           </NuxtLink>
         </div>

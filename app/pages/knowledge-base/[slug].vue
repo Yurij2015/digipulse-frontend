@@ -52,7 +52,7 @@ const articles = computed(() => category.value?.articles ?? [])
     <div class="relative z-10 w-full max-w-4xl">
       <!-- Back -->
       <UButton
-        :to="localePath('/docs')"
+        :to="localePath('/knowledge-base')"
         variant="ghost"
         color="neutral"
         icon="i-heroicons-arrow-left"
@@ -96,7 +96,7 @@ const articles = computed(() => category.value?.articles ?? [])
           <NuxtLink
             v-for="article in articles"
             :key="article.slug"
-            :to="localePath(`/docs/articles/${article.slug}`)"
+            :to="localePath(`/knowledge-base/articles/${article.slug}`)"
             class="group flex items-center justify-between gap-4 rounded-2xl border border-neutral-200/60 dark:border-white/8 bg-white dark:bg-neutral-900 p-5 transition-all duration-200 hover:border-primary-500/30 hover:shadow-lg hover:shadow-primary-500/5 cursor-pointer"
           >
             <div class="flex items-start gap-4 min-w-0">

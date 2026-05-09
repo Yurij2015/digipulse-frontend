@@ -98,12 +98,12 @@ export default defineNuxtConfig({
     ],
   },
   routeRules: {
-    '/docs': { swr: 3600 },
-    '/docs/**': { swr: 3600 },
-    '/uk/docs': { swr: 3600 },
-    '/uk/docs/**': { swr: 3600 },
-    '/pl/docs': { swr: 3600 },
-    '/pl/docs/**': { swr: 3600 },
+    '/knowledge-base': { swr: 3600 },
+    '/knowledge-base/**': { swr: 3600 },
+    '/uk/knowledge-base': { swr: 3600 },
+    '/uk/knowledge-base/**': { swr: 3600 },
+    '/pl/knowledge-base': { swr: 3600 },
+    '/pl/knowledge-base/**': { swr: 3600 },
   },
   icon: {
     clientBundle: {
