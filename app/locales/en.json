@@ -433,6 +433,7 @@
   },
   "docs": {
     "title": "Knowledge Base",
+    "badge": "DOCUMENTATION",
     "subtitle": "Explore guides and documentation for all DigiPulse features.",
     "articles": "articles",
     "back_to_docs": "Back to Knowledge Base",

@@ -433,6 +433,7 @@
   },
   "docs": {
     "title": "Baza wiedzy",
+    "badge": "DOKUMENTACJA",
     "subtitle": "Przewodniki i dokumentacja wszystkich funkcji DigiPulse.",
     "articles": "artykułów",
     "back_to_docs": "Powrót do bazy wiedzy",
