@@ -230,6 +230,7 @@
     "telegram_connect": "Підключити Telegram",
     "telegram_reconnect": "Перепідключити Telegram",
     "telegram_disconnect": "Відключити Telegram",
+    "telegram_disconnect_confirm_title": "Відключити Telegram?",
     "telegram_disconnect_confirm": "Ви впевнені, що хочете відключити Telegram? Ви більше не отримуватимете сповіщення через цей канал.",
     "danger_zone": "Небезпечна зона",
     "delete_account": "Видалити акаунт",
