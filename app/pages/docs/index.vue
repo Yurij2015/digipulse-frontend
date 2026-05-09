@@ -11,8 +11,9 @@ useSeoMeta({
 const { data, pending, error } = await useAsyncData('kb-categories', () =>
   $fetch<any>(`${config.public.apiBase}/api/knowledge-base/categories`, {
     headers: { 'X-Frontend-Key': config.public.frontendKey as string }
-  })
-)
+  }), {
+  getCachedData: (key, nuxtApp) => nuxtApp.payload.data[key] ?? nuxtApp.static.data[key]
+})
 
 const list = computed(() => {
   const raw = data.value

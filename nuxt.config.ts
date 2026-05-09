@@ -65,6 +65,14 @@ export default defineNuxtConfig({
       gzip: true,
     },
   },
+  routeRules: {
+    '/docs': { swr: 3600 },
+    '/docs/**': { swr: 3600 },
+    '/uk/docs': { swr: 3600 },
+    '/uk/docs/**': { swr: 3600 },
+    '/pl/docs': { swr: 3600 },
+    '/pl/docs/**': { swr: 3600 },
+  },
   icon: {
     clientBundle: {
       scan: true,

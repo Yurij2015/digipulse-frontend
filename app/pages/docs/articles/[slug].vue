@@ -9,8 +9,9 @@ const slug = route.params.slug as string
 const { data, pending, error } = await useAsyncData(`kb-article-${slug}`, () =>
   $fetch<any>(`${config.public.apiBase}/api/knowledge-base/articles/${slug}`, {
     headers: { 'X-Frontend-Key': config.public.frontendKey as string }
-  })
-)
+  }), {
+  getCachedData: (key, nuxtApp) => nuxtApp.payload.data[key] ?? nuxtApp.static.data[key]
+})
 
 const article = computed(() => {
   const raw = data.value
