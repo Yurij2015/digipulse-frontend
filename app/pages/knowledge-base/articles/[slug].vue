@@ -1,11 +1,17 @@
 <script setup lang="ts">
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const config = useRuntimeConfig()
 const route = useRoute()
 const url = useRequestURL()
 
 const slug = route.params.slug as string
+
+function lt(field: any): string {
+  if (!field) return ''
+  if (typeof field === 'string') return field
+  return field[locale.value] ?? field['en'] ?? (Object.values(field)[0] as string) ?? ''
+}
 
 const { data, pending, error } = await useAsyncData(`kb-article-${slug}`, () =>
   $fetch<any>(`${config.public.apiBase}/api/knowledge-base/articles/${slug}`, {
@@ -22,23 +28,33 @@ const article = computed(() => {
 
 const siteUrl = computed(() => (config.public.siteUrl as string) || url.origin)
 
+const articleTitle = computed(() => lt(article.value?.meta?.title) || lt(article.value?.title))
+const articleDescription = computed(() => lt(article.value?.meta?.description) || lt(article.value?.excerpt))
+const articleImage = computed(() =>
+  article.value?.meta?.og_image
+    ? `${siteUrl.value}${article.value.meta.og_image}`
+    : article.value?.cover_image
+      ? `${siteUrl.value}${article.value.cover_image}`
+      : `${url.origin}/og-image-social.png`
+)
+
 useSeoMeta({
-  title: () => article.value
-    ? `${article.value.title} — ${t('docs.title')} — DigiPulse`
+  title: () => articleTitle.value
+    ? `${articleTitle.value} — ${t('docs.title')} — DigiPulse`
     : `${t('docs.title')} — DigiPulse`,
-  description: () => article.value?.excerpt ?? t('docs.subtitle'),
-  ogTitle: () => article.value?.title ?? t('docs.title'),
-  ogDescription: () => article.value?.excerpt ?? t('docs.subtitle'),
+  description: () => articleDescription.value || t('docs.subtitle'),
+  ogTitle: () => articleTitle.value || t('docs.title'),
+  ogDescription: () => articleDescription.value || t('docs.subtitle'),
   ogUrl: () => url.href,
-  ogImage: () => article.value?.image ? `${siteUrl.value}${article.value.image}` : `${url.origin}/og-image-social.png`,
+  ogImage: () => articleImage.value,
   ogType: 'article',
   twitterCard: 'summary_large_image',
-  twitterTitle: () => article.value?.title ?? t('docs.title'),
-  twitterDescription: () => article.value?.excerpt ?? t('docs.subtitle'),
-  twitterImage: () => article.value?.image ? `${siteUrl.value}${article.value.image}` : `${url.origin}/og-image-social.png`,
+  twitterTitle: () => articleTitle.value || t('docs.title'),
+  twitterDescription: () => articleDescription.value || t('docs.subtitle'),
+  twitterImage: () => articleImage.value,
 })
 useHead({
-  link: [{ rel: 'canonical', href: () => `${siteUrl.value}/docs/articles/${slug}` }],
+  link: [{ rel: 'canonical', href: () => `${siteUrl.value}/knowledge-base/articles/${slug}` }],
 })
 
 useHead(computed(() => ({
@@ -47,11 +63,11 @@ useHead(computed(() => ({
     innerHTML: JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'Article',
-      headline: article.value.title,
-      description: article.value.excerpt ?? '',
-      image: article.value.image ? `${siteUrl.value}${article.value.image}` : `${siteUrl.value}/og-image-social.png`,
-      datePublished: article.value.created_at,
-      dateModified: article.value.updated_at ?? article.value.created_at,
+      headline: lt(article.value.title),
+      description: lt(article.value.excerpt) ?? '',
+      image: articleImage.value,
+      datePublished: article.value.published_at,
+      dateModified: article.value.updated_at ?? article.value.published_at,
       publisher: {
         '@type': 'Organization',
         name: 'DigiPulse',
@@ -60,9 +76,9 @@ useHead(computed(() => ({
       breadcrumb: {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: t('docs.title'), item: `${siteUrl.value}/docs` },
-          ...(article.value.category ? [{ '@type': 'ListItem', position: 2, name: article.value.category.name, item: `${siteUrl.value}/docs/${article.value.category.slug}` }] : []),
-          { '@type': 'ListItem', position: article.value.category ? 3 : 2, name: article.value.title },
+          { '@type': 'ListItem', position: 1, name: t('docs.title'), item: `${siteUrl.value}/knowledge-base` },
+          ...(article.value.category ? [{ '@type': 'ListItem', position: 2, name: lt(article.value.category.name), item: `${siteUrl.value}/knowledge-base/${article.value.category.slug}` }] : []),
+          { '@type': 'ListItem', position: article.value.category ? 3 : 2, name: lt(article.value.title) },
         ]
       }
     })
@@ -76,7 +92,7 @@ const backTo = computed(() =>
 )
 
 const backLabel = computed(() =>
-  article.value?.category?.name ?? t('docs.back_to_docs')
+  article.value?.category?.name ? lt(article.value.category.name) : t('docs.back_to_docs')
 )
 </script>
 
@@ -120,13 +136,13 @@ const backLabel = computed(() =>
           </NuxtLink>
           <UIcon name="i-heroicons-chevron-right" class="text-xs" />
           <NuxtLink :to="localePath(`/knowledge-base/${article.category.slug}`)" class="hover:text-primary-500 transition-colors">
-            {{ article.category.name }}
+            {{ lt(article.category.name) }}
           </NuxtLink>
         </div>
 
         <!-- Title -->
         <h1 class="text-3xl md:text-4xl font-black text-neutral-900 dark:text-white tracking-tight leading-tight mb-10">
-          {{ article.title }}
+          {{ lt(article.title) }}
         </h1>
 
         <!-- Article card -->

@@ -18,7 +18,7 @@ useSeoMeta({
   twitterImage: () => `${url.origin}/og-image-social.png`,
 })
 useHead({
-  link: [{ rel: 'canonical', href: () => `${config.public.siteUrl || url.origin}/docs` }],
+  link: [{ rel: 'canonical', href: () => `${config.public.siteUrl || url.origin}/knowledge-base` }],
 })
 
 const { data, pending, error } = await useAsyncData('kb-categories', () =>

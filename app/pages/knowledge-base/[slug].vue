@@ -1,11 +1,17 @@
 <script setup lang="ts">
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const config = useRuntimeConfig()
 const route = useRoute()
 const url = useRequestURL()
 
 const slug = route.params.slug as string
+
+function lt(field: any): string {
+  if (!field) return ''
+  if (typeof field === 'string') return field
+  return field[locale.value] ?? field['en'] ?? (Object.values(field)[0] as string) ?? ''
+}
 
 const { data, pending, error } = await useAsyncData(`kb-category-${slug}`, () =>
   $fetch<any>(`${config.public.apiBase}/api/knowledge-base/categories/${slug}`, {
@@ -36,7 +42,7 @@ useSeoMeta({
   twitterImage: () => `${url.origin}/og-image-social.png`,
 })
 useHead({
-  link: [{ rel: 'canonical', href: () => `${config.public.siteUrl || url.origin}/docs/${slug}` }],
+  link: [{ rel: 'canonical', href: () => `${config.public.siteUrl || url.origin}/knowledge-base/${slug}` }],
 })
 
 const articles = computed(() => category.value?.articles ?? [])
@@ -105,10 +111,10 @@ const articles = computed(() => category.value?.articles ?? [])
               </div>
               <div class="min-w-0">
                 <div class="font-bold text-neutral-900 dark:text-white text-[14px] leading-snug group-hover:text-primary-500 transition-colors">
-                  {{ article.title }}
+                  {{ lt(article.title) }}
                 </div>
                 <p v-if="article.excerpt" class="mt-1 text-[12px] text-neutral-500 line-clamp-2 leading-relaxed">
-                  {{ article.excerpt }}
+                  {{ lt(article.excerpt) }}
                 </p>
               </div>
             </div>
