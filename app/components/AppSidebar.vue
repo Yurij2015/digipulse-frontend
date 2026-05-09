@@ -98,6 +98,8 @@ async function handleLogout() {
           </div>
         </NuxtLink>
 
+        <ClientOnly><BetaBanner /></ClientOnly>
+
         <div class="flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-neutral-50 dark:bg-white/5">
           <LanguageSwitcher />
           <ThemeSwitcher />
@@ -112,14 +114,14 @@ async function handleLogout() {
           <UIcon name="i-heroicons-question-mark-circle" class="text-xl" />
           <span class="text-[13px] tracking-tight">{{ t('support.title') }}</span>
         </UButton>
-        <UButton 
-          icon="i-heroicons-arrow-left-on-rectangle" 
-          color="neutral" 
-          variant="ghost" 
-          :label="t('dashboard.sign_out')" 
-          block 
+        <UButton
+          icon="i-heroicons-arrow-left-on-rectangle"
+          color="neutral"
+          variant="ghost"
+          :label="t('dashboard.sign_out')"
+          block
           @click="handleLogout"
-          class="justify-start gap-3 text-neutral-500 font-bold py-2.5 hover:text-error cursor-pointer" 
+          class="justify-start gap-3 text-neutral-500 font-bold py-2.5 hover:text-error cursor-pointer"
         />
       </div>
     </aside>

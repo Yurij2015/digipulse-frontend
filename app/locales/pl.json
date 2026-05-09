@@ -271,6 +271,7 @@
   },
   "common": {
     "cancel": "Anuluj",
+    "close": "Zamknij",
     "confirm": "Potwierdź",
     "save": "Zapisz",
     "status": "Status",
@@ -359,5 +360,9 @@
   "loader": {
     "brand": "DigiPulse",
     "initializing_secure_connection": "Ładowanie danych..."
+  },
+  "beta": {
+    "message": "DigiPulse jest w wersji beta. Pomóż nam się rozwijać, dzieląc się swoją opinią.",
+    "cta": "Podziel się opinią"
   }
 }

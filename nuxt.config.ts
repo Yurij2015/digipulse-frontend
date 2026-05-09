@@ -85,6 +85,7 @@ export default defineNuxtConfig({
       },
       pusherAppKey: "",
       pusherAppCluster: "eu",
+      showBetaBanner: true,
     },
     turnstile: {
       secretKey: "",
