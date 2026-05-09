@@ -430,5 +430,14 @@
   "beta": {
     "message": "DigiPulse is in beta. Help us improve by sharing your experience.",
     "cta": "Share feedback"
+  },
+  "docs": {
+    "title": "Knowledge Base",
+    "subtitle": "Explore guides and documentation for all DigiPulse features.",
+    "articles": "articles",
+    "back_to_docs": "Back to Knowledge Base",
+    "no_categories": "No categories available yet.",
+    "no_articles": "No articles in this category yet.",
+    "load_error": "Failed to load content. Please try again later."
   }
 }

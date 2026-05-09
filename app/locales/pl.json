@@ -430,5 +430,14 @@
   "beta": {
     "message": "DigiPulse jest w wersji beta. Pomóż nam się rozwijać, dzieląc się swoją opinią.",
     "cta": "Podziel się opinią"
+  },
+  "docs": {
+    "title": "Baza wiedzy",
+    "subtitle": "Przewodniki i dokumentacja wszystkich funkcji DigiPulse.",
+    "articles": "artykułów",
+    "back_to_docs": "Powrót do bazy wiedzy",
+    "no_categories": "Brak dostępnych kategorii.",
+    "no_articles": "Brak artykułów w tej kategorii.",
+    "load_error": "Nie udało się załadować treści. Spróbuj ponownie później."
   }
 }

@@ -22,6 +22,7 @@ const userInitials = computed(() => {
 const links = computed(() => [
   { label: t('dashboard.title'), icon: 'i-heroicons-home', to: localePath('/dashboard') },
   { label: t('sites.title'), icon: 'i-heroicons-globe-alt', to: localePath('/sites') },
+  { label: t('docs.title'), icon: 'i-heroicons-book-open', to: localePath('/docs') },
   { label: t('dashboard.settings'), icon: 'i-heroicons-cog-6-tooth', to: localePath('/settings') }
 ]);
 
@@ -72,10 +73,10 @@ async function handleLogout() {
         <UButton
           v-for="link in links" :key="link.to"
           :to="link.to"
-          :variant="route.path === link.to ? 'soft' : 'ghost'"
-          :color="route.path === link.to ? 'primary' : 'neutral'"
+          :variant="route.path.startsWith(link.to) ? 'soft' : 'ghost'"
+          :color="route.path.startsWith(link.to) ? 'primary' : 'neutral'"
           class="w-full justify-start gap-4 font-bold py-3 px-5 rounded-lg transition-all transform active:scale-95 cursor-pointer"
-          :class="route.path === link.to ? 'shadow-sm bg-primary-100/10 dark:bg-primary-500/10 ring-1 ring-primary-500/20' : 'text-neutral-500'"
+          :class="route.path.startsWith(link.to) ? 'shadow-sm bg-primary-100/10 dark:bg-primary-500/10 ring-1 ring-primary-500/20' : 'text-neutral-500'"
         >
           <UIcon :name="link.icon" class="text-xl" />
           <span class="text-[13px] tracking-tight">{{ link.label }}</span>
