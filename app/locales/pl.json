@@ -215,6 +215,25 @@
       "time": "Czas",
       "error": "Komunikat o błędzie",
       "no_incidents": "W tym tygodniu nie odnotowano incydentów przestojів."
+    },
+    "heatmap_title": "Mapa ciepła dostępności",
+    "heatmap_last_30_days": "Ostatnie 30 dni",
+    "heatmap_issues": "Problemy",
+    "heatmap_tooltip": "{date}: {uptime}% dostępności ({checks} sprawdzeń)",
+    "days_ago": "30 dni temu",
+    "today": "Dzisiaj",
+    "stats": {
+      "avg_uptime": "Śr. dostępność",
+      "avg_latency": "Śr. opóźnienie",
+      "p95_latency": "P95 opóźnienie",
+      "apdex_score": "Apdex",
+      "max_latency": "Maks. opóźnienie",
+      "total_incidents": "Łącznie incydentów"
+    },
+    "chart": {
+      "response_time": "Czas odpowiedzi (ms)",
+      "uptime": "Dostępność (%)",
+      "incidents": "Incydenty"
     }
   },
   "profile": {

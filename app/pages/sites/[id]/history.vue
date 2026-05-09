@@ -7,8 +7,8 @@
         <div class="flex items-center gap-4">
           <UButton :to="localePath('/sites')" variant="ghost" color="neutral" icon="i-heroicons-arrow-left" class="hover:bg-neutral-200 dark:hover:bg-white/5 font-bold p-3 cursor-pointer" />
           <div>
-            <h1 class="text-4xl font-black tracking-tight"><span class="text-primary-500">{{ site?.name || 'Site' }}</span> History</h1>
-            <p class="text-neutral-500 font-medium">Weekly monitoring performance and downtime incidents.</p>
+            <h1 class="text-4xl font-black tracking-tight"><span class="text-primary-500">{{ site?.name || 'Site' }}</span> {{ t('history.title') }}</h1>
+            <p class="text-neutral-500 font-medium">{{ t('history.subtitle') }}</p>
           </div>
         </div>
 
@@ -79,12 +79,12 @@
         <div class="flex items-center justify-between mb-6">
           <div class="flex items-center gap-2">
             <UIcon name="i-heroicons-calendar-days" class="text-neutral-400" />
-            <h3 class="font-black text-sm uppercase tracking-wider text-neutral-900 dark:text-white">Uptime Heatmap <span class="text-neutral-400 font-medium ml-1">(Last 30 Days)</span></h3>
+            <h3 class="font-black text-sm uppercase tracking-wider text-neutral-900 dark:text-white">{{ t('history.heatmap_title') }} <span class="text-neutral-400 font-medium ml-1">({{ t('history.heatmap_last_30_days') }})</span></h3>
           </div>
           <div class="flex items-center gap-4 text-[10px] font-bold text-neutral-400 uppercase tracking-widest">
             <div class="flex items-center gap-1.5"><div class="w-2 h-2 rounded-xs bg-emerald-500"></div> 100%</div>
             <div class="flex items-center gap-1.5"><div class="w-2 h-2 rounded-xs bg-amber-500"></div> >98%</div>
-            <div class="flex items-center gap-1.5"><div class="w-2 h-2 rounded-xs bg-red-500"></div> Issues</div>
+            <div class="flex items-center gap-1.5"><div class="w-2 h-2 rounded-xs bg-red-500"></div> {{ t('history.heatmap_issues') }}</div>
           </div>
         </div>
         
@@ -92,7 +92,7 @@
           <UTooltip 
             v-for="day in site.daily_uptime_history" 
             :key="day.date"
-            :text="`${day.date}: ${day.uptime}% uptime (${day.total_checks} checks)`"
+            :text="t('history.heatmap_tooltip', { date: day.date, uptime: day.uptime, checks: day.total_checks })"
           >
             <div 
               class="w-6 sm:w-8 md:w-10 rounded-sm transition-all hover:scale-110 cursor-help"
@@ -102,8 +102,8 @@
           </UTooltip>
         </div>
         <div class="flex justify-between mt-4 text-[9px] font-black uppercase tracking-widest text-neutral-400">
-          <span>30 days ago</span>
-          <span>Today</span>
+          <span>{{ t('history.days_ago') }}</span>
+          <span>{{ t('history.today') }}</span>
         </div>
       </div>
 
@@ -401,50 +401,50 @@ const summaryCards = computed(() => {
   const maxResponse = Math.max(...stats.map(s => s.response_time || 0));
   
   return [
-    { 
-      label: 'Avg. Uptime', 
-      value: avgUptime.toFixed(2), 
-      unit: '%', 
+    {
+      label: t('history.stats.avg_uptime'),
+      value: avgUptime.toFixed(2),
+      unit: '%',
       icon: 'i-heroicons-check-badge',
       color: 'text-emerald-500',
       bg: 'bg-emerald-500/10'
     },
-    { 
-      label: 'Avg. Latency', 
-      value: Math.round(avgResponse), 
-      unit: 'ms', 
+    {
+      label: t('history.stats.avg_latency'),
+      value: Math.round(avgResponse),
+      unit: 'ms',
       icon: 'i-heroicons-bolt',
       color: 'text-primary-500',
       bg: 'bg-primary-500/10'
     },
-    { 
-      label: 'P95 Latency', 
-      value: site.value?.p95_response_time ?? '—', 
-      unit: site.value?.p95_response_time ? 'ms' : '', 
+    {
+      label: t('history.stats.p95_latency'),
+      value: site.value?.p95_response_time ?? '—',
+      unit: site.value?.p95_response_time ? 'ms' : '',
       icon: 'i-heroicons-chart-bar-square',
       color: 'text-indigo-500',
       bg: 'bg-indigo-500/10'
     },
-    { 
-      label: 'Apdex Score', 
-      value: site.value?.apdex_score || '1.00', 
-      unit: '', 
+    {
+      label: t('history.stats.apdex_score'),
+      value: site.value?.apdex_score || '1.00',
+      unit: '',
       icon: 'i-heroicons-face-smile',
       color: 'text-fuchsia-500',
       bg: 'bg-fuchsia-500/10'
     },
-    { 
-      label: 'Max Latency', 
-      value: Math.round(maxResponse), 
-      unit: 'ms', 
+    {
+      label: t('history.stats.max_latency'),
+      value: Math.round(maxResponse),
+      unit: 'ms',
       icon: 'i-heroicons-arrow-trending-up',
       color: 'text-amber-500',
       bg: 'bg-amber-500/10'
     },
-    { 
-      label: 'Total Incidents', 
-      value: incidents.value.length, 
-      unit: '', 
+    {
+      label: t('history.stats.total_incidents'),
+      value: incidents.value.length,
+      unit: '',
       icon: 'i-heroicons-exclamation-triangle',
       color: 'text-red-500',
       bg: 'bg-red-500/10'
@@ -487,7 +487,7 @@ const chartData = computed(() => {
        labels,
        datasets: [
           {
-             label: 'Response Time (ms)',
+             label: t('history.chart.response_time'),
              data: responseTimeData,
              borderColor: '#10b981', // emerald-500
              backgroundColor: (context: any) => {
@@ -509,7 +509,7 @@ const chartData = computed(() => {
              spanGaps: true
           },
           {
-             label: 'Uptime (%)',
+             label: t('history.chart.uptime'),
              data: uptimeData,
              borderColor: '#6366f1', // indigo-500
              backgroundColor: (context: any) => {
@@ -530,7 +530,7 @@ const chartData = computed(() => {
              spanGaps: true
           },
           {
-             label: 'Incidents',
+             label: t('history.chart.incidents'),
              data: incidentPoints,
              borderColor: '#ef4444', // red-500
              backgroundColor: '#ef4444',

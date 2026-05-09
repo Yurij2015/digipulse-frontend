@@ -215,6 +215,25 @@
       "time": "Час",
       "error": "Повідомлення про помилку",
       "no_incidents": "За цей тиждень інцидентів не зафіксовано."
+    },
+    "heatmap_title": "Теплова карта аптайму",
+    "heatmap_last_30_days": "Останні 30 днів",
+    "heatmap_issues": "Проблеми",
+    "heatmap_tooltip": "{date}: {uptime}% аптайму ({checks} перевірок)",
+    "days_ago": "30 днів тому",
+    "today": "Сьогодні",
+    "stats": {
+      "avg_uptime": "Сер. аптайм",
+      "avg_latency": "Сер. затримка",
+      "p95_latency": "P95 затримка",
+      "apdex_score": "Apdex",
+      "max_latency": "Макс. затримка",
+      "total_incidents": "Всього інцидентів"
+    },
+    "chart": {
+      "response_time": "Час відповіді (мс)",
+      "uptime": "Аптайм (%)",
+      "incidents": "Інциденти"
     }
   },
   "profile": {

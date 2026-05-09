@@ -215,6 +215,25 @@
       "time": "Time",
       "error": "Error Message",
       "no_incidents": "No downtime incidents recorded for this week."
+    },
+    "heatmap_title": "Uptime Heatmap",
+    "heatmap_last_30_days": "Last 30 Days",
+    "heatmap_issues": "Issues",
+    "heatmap_tooltip": "{date}: {uptime}% uptime ({checks} checks)",
+    "days_ago": "30 days ago",
+    "today": "Today",
+    "stats": {
+      "avg_uptime": "Avg. Uptime",
+      "avg_latency": "Avg. Latency",
+      "p95_latency": "P95 Latency",
+      "apdex_score": "Apdex Score",
+      "max_latency": "Max Latency",
+      "total_incidents": "Total Incidents"
+    },
+    "chart": {
+      "response_time": "Response Time (ms)",
+      "uptime": "Uptime (%)",
+      "incidents": "Incidents"
     }
   },
   "profile": {
