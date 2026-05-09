@@ -148,7 +148,7 @@
         <div class="mt-12">
           <h2 class="text-xl font-black text-neutral-900 dark:text-white mb-6 px-2 flex items-center gap-3">
             <UIcon name="i-heroicons-cpu-chip" class="text-primary-500" />
-            Integrations
+            {{ t('profile.integrations') }}
           </h2>
           
           <div class="glass-card p-8 rounded-3xl border-neutral-200/50 dark:border-white/5 relative overflow-hidden group">
@@ -289,7 +289,7 @@
                   {{ t('profile.delete_account') }}
                 </h3>
                 <p class="text-sm text-neutral-500 font-medium">
-                  Once you delete your account, there is no going back. Please be certain.
+                  {{ t('profile.delete_account_warning') }}
                 </p>
               </div>
               <UButton
@@ -478,16 +478,16 @@ const onUpdateProfile = async () => {
     await fetchUser();
     isEditing.value = false;
     toast.add({
-      title: 'Success',
-      description: 'Profile updated successfully.',
+      title: t('common.success'),
+      description: t('profile.profile_updated'),
       icon: 'i-heroicons-check-circle',
       color: 'success'
     });
   } catch (error: any) {
     console.error('Update profile error:', error);
     toast.add({
-      title: 'Error',
-      description: error.data?.message || 'Failed to update profile.',
+      title: t('common.error'),
+      description: error.data?.message || t('common.error'),
       icon: 'i-heroicons-x-circle',
       color: 'error'
     });
@@ -516,16 +516,16 @@ const updateNotificationSettings = async () => {
     
     await fetchUser();
     toast.add({
-      title: 'Success',
-      description: 'Notification preferences saved.',
+      title: t('common.success'),
+      description: t('profile.profile_updated'),
       icon: 'i-heroicons-check-circle',
       color: 'success'
     });
   } catch (error: any) {
     console.error('Update settings error:', error);
     toast.add({
-      title: 'Error',
-      description: 'Failed to update notification settings.',
+      title: t('common.error'),
+      description: t('common.error'),
       icon: 'i-heroicons-x-circle',
       color: 'error'
     });
@@ -561,16 +561,16 @@ const onChangePassword = async () => {
     };
 
     toast.add({
-      title: 'Success',
-      description: 'Password changed successfully.',
+      title: t('common.success'),
+      description: t('profile.password_changed'),
       icon: 'i-heroicons-check-circle',
       color: 'success'
     });
   } catch (error: any) {
     console.error('Change password error:', error);
     toast.add({
-      title: 'Error',
-      description: error.data?.message || 'Failed to change password.',
+      title: t('common.error'),
+      description: error.data?.message || t('common.error'),
       icon: 'i-heroicons-x-circle',
       color: 'error'
     });
@@ -611,8 +611,8 @@ const connectTelegram = async () => {
     if (response.url) {
       window.open(response.url, '_blank');
       toast.add({
-        title: 'Telegram Bot',
-        description: 'Please complete the connection in your Telegram app.',
+        title: t('profile.telegram_bot'),
+        description: t('profile.telegram_connect_pending'),
         icon: 'i-heroicons-paper-airplane',
         color: 'info'
       });
@@ -620,8 +620,8 @@ const connectTelegram = async () => {
   } catch (error) {
     console.error('Failed to get Telegram link:', error);
     toast.add({
-      title: 'Connection Error',
-      description: 'Failed to generate Telegram connection link.',
+      title: t('common.error'),
+      description: t('profile.telegram_connect_error'),
       icon: 'i-heroicons-x-circle',
       color: 'error'
     });
@@ -652,8 +652,8 @@ const confirmDisconnect = async () => {
     await fetchUser();
 
     toast.add({
-      title: 'Telegram Disconnected',
-      description: 'Telegram notifications have been successfully unlinked.',
+      title: t('profile.telegram_disconnected_title'),
+      description: t('profile.telegram_disconnected_success'),
       icon: 'i-heroicons-check-circle',
       color: 'success'
     });
@@ -661,8 +661,8 @@ const confirmDisconnect = async () => {
   } catch (error) {
     console.error('Failed to disconnect Telegram:', error);
     toast.add({
-      title: 'Error',
-      description: 'Failed to disconnect Telegram notifications. Please try again.',
+      title: t('common.error'),
+      description: t('profile.telegram_disconnect_error'),
       icon: 'i-heroicons-x-circle',
       color: 'error'
     });
@@ -687,8 +687,8 @@ const confirmDeleteAccount = async () => {
     });
 
     toast.add({
-      title: 'Account Deleted',
-      description: 'Your account has been permanently removed. Farewell!',
+      title: t('profile.account_deleted_title'),
+      description: t('profile.account_deleted_desc'),
       icon: 'i-heroicons-trash',
       color: 'success'
     });
@@ -699,8 +699,8 @@ const confirmDeleteAccount = async () => {
   } catch (error: any) {
     console.error('Delete account error:', error);
     toast.add({
-      title: 'Error',
-      description: error.data?.message || 'Failed to delete account. Please contact support.',
+      title: t('common.error'),
+      description: error.data?.message || t('common.error'),
       icon: 'i-heroicons-x-circle',
       color: 'error'
     });
@@ -733,8 +733,8 @@ const resendVerification = async () => {
   } catch (error: any) {
     console.error('Resend verification error:', error);
     toast.add({
-      title: 'Error',
-      description: error.data?.message || 'Failed to resend verification email.',
+      title: t('common.error'),
+      description: error.data?.message || t('profile.verify_email_resend_error'),
       icon: 'i-heroicons-x-circle',
       color: 'error'
     });

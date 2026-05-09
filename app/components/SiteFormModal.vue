@@ -205,7 +205,7 @@ async function onSubmit() {
 </script>
 
 <template>
-  <UModal v-model:open="isOpen" :title="isEdit ? 'Edit Node' : t('add_website.title')" :description="isEdit ? 'Update your infrastructure monitoring configuration.' : t('add_website.subtitle')">
+  <UModal v-model:open="isOpen" :title="isEdit ? t('add_website.edit_title') : t('add_website.title')" :description="isEdit ? t('add_website.edit_subtitle') : t('add_website.subtitle')">
     <BaseLoader :show="loading" />
     <template #body>
       <div v-if="pageLoading" class="p-10 text-center">
@@ -240,7 +240,7 @@ async function onSubmit() {
 
         <!-- Monitoring Checks -->
         <div v-if="checkTypes.length > 0" class="flex flex-col gap-3">
-          <div class="text-[10px] font-black uppercase tracking-widest text-neutral-400">Monitoring configuration</div>
+          <div class="text-[10px] font-black uppercase tracking-widest text-neutral-400">{{ t('add_website.monitoring_config') }}</div>
           <div v-for="type in checkTypes" :key="type.id" class="p-3 rounded-xl border border-neutral-100 dark:border-white/5 bg-neutral-50/50 dark:bg-white/2">
             <div class="flex items-center justify-between gap-3">
               <div class="flex items-center gap-3">
@@ -258,8 +258,8 @@ async function onSubmit() {
             </div>
             
             <div v-if="state.selectedChecks[type.id]?.enabled && type.slug === 'keyword_search'" class="mt-3 pt-3 border-t border-neutral-100 dark:border-white/5">
-              <UFormField label="Keyword" size="sm">
-                <UInput v-if="state.selectedChecks[type.id]" v-model="state.selectedChecks[type.id]!.params.keyword" placeholder="e.g. 'Out of stock'" class="w-full" />
+              <UFormField :label="t('add_website.keyword_label')" size="sm">
+                <UInput v-if="state.selectedChecks[type.id]" v-model="state.selectedChecks[type.id]!.params.keyword" :placeholder="t('add_website.keyword_placeholder')" class="w-full" />
               </UFormField>
             </div>
           </div>
@@ -273,9 +273,9 @@ async function onSubmit() {
 
     <template #footer>
       <div class="flex justify-end gap-3 w-full">
-        <UButton color="neutral" variant="ghost" @click="isOpen = false" class="cursor-pointer">Cancel</UButton>
+        <UButton color="neutral" variant="ghost" @click="isOpen = false" class="cursor-pointer">{{ t('common.cancel') }}</UButton>
         <UButton color="primary" :loading="loading" @click="onSubmit" class="cursor-pointer">
-          {{ isEdit ? 'Save Changes' : t('add_website.submit') }}
+          {{ isEdit ? t('add_website.save_changes') : t('add_website.submit') }}
         </UButton>
       </div>
     </template>

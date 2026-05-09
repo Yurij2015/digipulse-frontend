@@ -3,8 +3,8 @@
     <div class="w-full max-w-xl relative z-10">
       <div class="mb-12 text-center">
         <UButton :to="localePath('/sites')" variant="ghost" color="neutral" icon="i-heroicons-arrow-left" :label="t('add_website.back')" class="mb-8 hover:bg-neutral-200 dark:hover:bg-white/5 font-bold" />
-        <h1 class="text-5xl font-black text-neutral-900 dark:text-white tracking-tight mb-4">Edit Node</h1>
-        <p class="text-neutral-500 font-medium">Update your infrastructure monitoring configuration.</p>
+        <h1 class="text-5xl font-black text-neutral-900 dark:text-white tracking-tight mb-4">{{ t('add_website.edit_title') }}</h1>
+        <p class="text-neutral-500 font-medium">{{ t('add_website.edit_subtitle') }}</p>
       </div>
 
       <UCard class="glass-card rounded-2xl border-neutral-200/50 dark:border-white/10 ring-0 p-6 shadow-2xl relative">
@@ -57,7 +57,7 @@
 
             <!-- Dynamic Monitoring Checks Section -->
             <div v-if="checkTypes.length > 0" class="flex flex-col gap-4 mt-2">
-              <div class="text-[10px] font-black uppercase tracking-widest text-neutral-400 mb-1">Monitoring Configuration</div>
+              <div class="text-[10px] font-black uppercase tracking-widest text-neutral-400 mb-1">{{ t('add_website.monitoring_config') }}</div>
               <div v-for="type in (checkTypes as CheckType[])" :key="type.id" class="glass-card p-4 rounded-xl border-neutral-200/50 dark:border-white/5 group hover:border-primary-500/20 transition-all">
                 <div class="flex items-center justify-between gap-4">
                   <div class="flex items-center gap-3">
@@ -74,10 +74,10 @@
 
                 <!-- Parameters for specific check types -->
                 <div v-if="state.selectedChecks[type.id]?.enabled && type.slug === 'keyword_search'" class="mt-2 pt-2 border-t border-neutral-100 dark:border-white/5">
-                  <UFormField label="Keyword to search for" class="premium-label">
-                    <UInput 
-                      v-model="state.selectedChecks[type.id].params.keyword" 
-                      placeholder="e.g.: 'Product sold out'" 
+                  <UFormField :label="t('add_website.keyword_label')" class="premium-label">
+                    <UInput
+                      v-model="state.selectedChecks[type.id].params.keyword"
+                      :placeholder="t('add_website.keyword_placeholder')"
                       size="lg"
                       variant="none"
                       class="bg-neutral-50 dark:bg-white/2 rounded-lg"
@@ -96,7 +96,7 @@
             :loading="loading"
             class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-black py-5 rounded-xl shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all border-0 shimmer-effect"
           >
-            Save Changes
+            {{ t('add_website.save_changes') }}
           </UButton>
         </UForm>
       </UCard>

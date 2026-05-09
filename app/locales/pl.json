@@ -74,7 +74,11 @@
     "never": "Nigdy",
     "network_latency": "Opóźnienie sieci",
     "ping": "Ping",
-    "offline": "Offline"
+    "offline": "Offline",
+    "unnamed_node": "Bez nazwy",
+    "no_url": "Brak URL",
+    "ssl_days": "SSL: {days} dni pozostało",
+    "timeout": "Przekroczenie czasu"
   },
   "add_website": {
     "back": "Powrót do panelu",
@@ -103,6 +107,12 @@
     "url_invalid": "Wprowadź prawidłowy adres URL",
     "url_required": "Adres URL jest wymagany",
     "url_unique": "Ta strona została już dodana. Jeśli to Twoja strona i masz problemy z jej dodaniem, skontaktuj się ze wsparciem: admin{'@'}digispace.pro",
+    "monitoring_config": "Konfiguracja monitorowania",
+    "keyword_label": "Słowo kluczowe do wyszukania",
+    "keyword_placeholder": "np.: 'Produkt wyprzedany'",
+    "edit_title": "Edytuj węzeł",
+    "edit_subtitle": "Zaktualizuj konfigurację monitorowania infrastruktury.",
+    "save_changes": "Zapisz zmiany",
     "no_checks_warning": "Monitorowanie jest obecnie nieaktywne. Wybierz co najmniej jedną opcję, aby rozpocząć śledzenie tego węzła."
   },
   "support": {
@@ -181,14 +191,20 @@
       "status": "Status",
       "actions": "Działania",
       "edit": "Edytuj",
-      "delete": "Usuń"
+      "delete": "Usuń",
+      "infrastructure": "Infrastruktura",
+      "monitors": "Monitory"
     },
     "confirm_delete": "Potwierdź usunięcie",
     "confirm_delete_name": "Strona",
     "delete_question": "Czy na pewno chcesz usunąć tę stronę? Tej operacji nie można cofnąć.",
     "deleted_success": "Strona została pomyślnie usunięta.",
     "card_no_monitoring": "Monitoring nieaktywny. Skonfiguruj opcje, aby śledzić.",
-    "table_no_monitoring": "Brak aktywnych sprawdzeń"
+    "table_no_monitoring": "Brak aktywnych sprawdzeń",
+    "pending_check": "Oczekiwanie na sprawdzenie...",
+    "empty_title": "Nie znaleziono węzłów",
+    "empty_desc": "Dodaj pierwszy zasób infrastruktury do monitorowania.",
+    "ssl_days": "SSL: {days} dni"
   },
   "history": {
     "title": "Historia",
@@ -276,7 +292,17 @@
     "security": "Bezpieczeństwo",
     "verified": "Zweryfikowany",
     "not_verified": "Niezweryfikowany",
-    "verify_now": "Zweryfikuj teraz"
+    "verify_now": "Zweryfikuj teraz",
+    "integrations": "Integracje",
+    "delete_account_warning": "Po usunięciu konta nie ma możliwości przywrócenia. Upewnij się w swojej decyzji.",
+    "telegram_bot": "Telegram Bot",
+    "telegram_connect_pending": "Dokończ połączenie w aplikacji Telegram.",
+    "telegram_connect_error": "Nie udało się wygenerować linku połączenia z Telegramem.",
+    "telegram_disconnected_title": "Telegram odłączony",
+    "telegram_disconnect_error": "Nie udało się odłączyć Telegrama. Spróbuj ponownie.",
+    "account_deleted_title": "Konto usunięte",
+    "account_deleted_desc": "Twoje konto zostało trwale usunięte.",
+    "verify_email_resend_error": "Nie udało się ponownie wysłać e-maila weryfikacyjnego."
   },
   "forgot_password": {
     "title": "Resetowanie hasła",
@@ -296,6 +322,9 @@
   "common": {
     "cancel": "Anuluj",
     "close": "Zamknij",
+    "required": "Wymagane",
+    "success": "Sukces",
+    "error": "Błąd",
     "confirm": "Potwierdź",
     "save": "Zapisz",
     "status": "Status",

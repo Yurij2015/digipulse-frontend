@@ -50,10 +50,10 @@
             v-model="filterStatus" 
             class="w-full h-full pl-5 pr-10 rounded-xl border border-neutral-200 dark:border-white/10 bg-white dark:bg-white/5 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none appearance-none cursor-pointer text-sm font-medium"
           >
-            <option value="">All Statuses</option>
-            <option value="Online">Online Only</option>
-            <option value="Offline">Offline Only</option>
-            <option value="Warning">Warning Only</option>
+            <option value="">{{ t('dashboard.all_statuses') }}</option>
+            <option value="Online">{{ t('dashboard.online_only') }}</option>
+            <option value="Offline">{{ t('dashboard.offline_only') }}</option>
+            <option value="Warning">{{ t('dashboard.warning_only') }}</option>
           </select>
           <UIcon name="i-heroicons-funnel" class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-400" />
         </div>
@@ -71,7 +71,7 @@
           <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-6">
             <div class="flex flex-col gap-1 min-w-0 flex-1">
               <h3 class="text-lg font-semibold text-neutral-900 dark:text-white group-hover:text-primary-600 transition-colors truncate">
-                {{ website.name || 'Unnamed Node' }}
+                {{ website.name || t('dashboard.unnamed_node') }}
               </h3>
               <div class="flex items-center gap-1.5 flex-wrap">
                 <a 
@@ -83,7 +83,7 @@
                   <UIcon name="i-heroicons-globe-alt" class="w-3.5 h-3.5" />
                   <span class="truncate">{{ website.url.replace(/^https?:\/\//, '') }}</span>
                 </a>
-                <span v-else class="text-neutral-400 text-[11px] italic font-normal">No URL</span>
+                <span v-else class="text-neutral-400 text-[11px] italic font-normal">{{ t('dashboard.no_url') }}</span>
                 
                 <span class="text-neutral-300 dark:text-neutral-700">·</span>
                 <button 
@@ -155,7 +155,7 @@
                 class="w-4 h-4"
               />
               <span :class="website.ssl_info.days_remaining < 7 ? 'text-red-500' : 'text-emerald-500'">
-                SSL: {{ website.ssl_info.days_remaining }} days remaining
+                {{ t('dashboard.ssl_days', { days: website.ssl_info.days_remaining }) }}
               </span>
             </div>
 
@@ -167,7 +167,7 @@
                 <span v-if="website.ping_info.status === 'up'" class="font-bold text-neutral-900 dark:text-white">
                   <AnimatedNumber :value="website.ping_info.latency" :precision="0" :durationMs="600" />ms
                 </span>
-                <span v-else class="font-bold text-red-500 uppercase text-[9px]">{{ t('dashboard.offline') }} / Timeout</span>
+                <span v-else class="font-bold text-red-500 uppercase text-[9px]">{{ t('dashboard.offline') }} / {{ t('dashboard.timeout') }}</span>
               </span>
             </div>
           </div>
@@ -248,7 +248,7 @@
         <template #footer>
           <div class="flex justify-end gap-3 w-full">
             <UButton color="neutral" variant="ghost" @click="isDeleteModalOpen = false">
-              Cancel
+              {{ t('common.cancel') }}
             </UButton>
             <UButton color="error" :loading="isDeleting" @click="handleDelete">
               {{ $t('sites.table.delete') }}

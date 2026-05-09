@@ -160,7 +160,7 @@ function applyConsent(values: { analytics: boolean, marketing: boolean, personal
               <div class="flex-1">
                 <div class="flex items-center gap-2">
                   <span class="font-semibold text-white">{{ t('common.cookie.essential') }}</span>
-                  <UBadge size="xs" variant="soft" color="neutral" class="bg-white/10 text-[10px] uppercase tracking-wider">Required</UBadge>
+                  <UBadge size="xs" variant="soft" color="neutral" class="bg-white/10 text-[10px] uppercase tracking-wider">{{ t('common.required') }}</UBadge>
                 </div>
                 <p class="mt-1 text-xs text-gray-400">{{ t('common.cookie.essential_desc') }}</p>
               </div>

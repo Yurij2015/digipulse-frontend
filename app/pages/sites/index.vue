@@ -81,7 +81,7 @@
               </div>
 
               <div v-if="!row.original.server_info && !row.original.ssl_info && !row.original.ping_info" class="text-[10px] text-neutral-400 font-medium italic">
-                Pending check...
+                {{ t('sites.pending_check') }}
               </div>
             </div>
           </template>
@@ -149,8 +149,8 @@
           <div class="w-20 h-20 rounded-3xl bg-neutral-50 dark:bg-white/2 flex items-center justify-center text-neutral-300 dark:text-neutral-700 mx-auto mb-6">
             <UIcon name="i-heroicons-circle-stack" class="text-4xl" />
           </div>
-          <h3 class="text-xl font-black text-neutral-900 dark:text-white mb-2">No nodes found</h3>
-          <p class="text-neutral-500 max-w-xs mx-auto">Get started by adding your first infrastructure resource.</p>
+          <h3 class="text-xl font-black text-neutral-900 dark:text-white mb-2">{{ t('sites.empty_title') }}</h3>
+          <p class="text-neutral-500 max-w-xs mx-auto">{{ t('sites.empty_desc') }}</p>
         </div>
       </div>
     </main>
@@ -160,7 +160,7 @@
       <template #body>
         <div class="p-2">
           <p class="text-sm text-neutral-500">
-            Сайт: <strong class="text-neutral-900 dark:text-white">{{ siteToDelete?.name }}</strong>
+            {{ t('sites.confirm_delete_name') }}: <strong class="text-neutral-900 dark:text-white">{{ siteToDelete?.name }}</strong>
           </p>
         </div>
       </template>
@@ -168,7 +168,7 @@
       <template #footer>
         <div class="flex justify-end gap-3 w-full">
           <UButton color="neutral" variant="ghost" @click="isDeleteModalOpen = false" class="cursor-pointer">
-            Cancel
+            {{ t('common.cancel') }}
           </UButton>
           <UButton color="error" :loading="isDeleting" @click="handleDelete" class="cursor-pointer">
             {{ t('sites.table.delete') }}
@@ -215,9 +215,9 @@ const selectedSite = ref<any>(null);
 const columns = computed(() => [
   { accessorKey: 'name', header: t('sites.table.name') },
   { accessorKey: 'url', header: t('sites.table.url') },
-  { accessorKey: 'server', header: 'Infrastructure' },
+  { accessorKey: 'server', header: t('sites.table.infrastructure') },
   { accessorKey: 'status', header: t('sites.table.status') },
-  { accessorKey: 'monitoring', header: 'Monitors' },
+  { accessorKey: 'monitoring', header: t('sites.table.monitors') },
   { id: 'actions', header: t('sites.table.actions') }
 ]);
 
