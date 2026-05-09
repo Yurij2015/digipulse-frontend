@@ -8,20 +8,23 @@ definePageMeta({ middleware: 'auth' })
 
 const slug = route.params.slug as string
 
-const { data, pending, error } = await useAsyncData(`kb-article-${slug}`, () =>
-  $fetch<any>(`${config.public.apiBase}/api/knowledge-base/articles/${slug}`, {
-    headers: { 'X-Frontend-Key': config.public.frontendKey as string }
-  })
-)
+const article = ref<any>(null)
+const pending = ref(true)
+const error = ref(false)
 
-const article = computed(() => {
-  const raw = data.value
-  if (!raw) return null
-  return raw.data ?? raw
-})
+useSeoMeta({ title: `${t('docs.title')} — DigiPulse` })
 
-useSeoMeta({
-  title: () => article.value ? `${article.value.title} — ${t('docs.title')} — DigiPulse` : 'DigiPulse'
+onMounted(async () => {
+  try {
+    const res = await $fetch<any>(`${config.public.apiBase}/api/knowledge-base/articles/${slug}`, {
+      headers: { 'X-Frontend-Key': config.public.frontendKey as string }
+    })
+    article.value = res.data ?? res
+  } catch {
+    error.value = true
+  } finally {
+    pending.value = false
+  }
 })
 
 const backTo = computed(() =>

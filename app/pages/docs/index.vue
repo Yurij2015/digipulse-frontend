@@ -5,19 +5,26 @@ const config = useRuntimeConfig()
 
 definePageMeta({ middleware: 'auth' })
 
-useSeoMeta({ title: () => `${t('docs.title')} — DigiPulse` })
+useSeoMeta({ title: `${t('docs.title')} — DigiPulse` })
 
-const { data: categories, pending, error } = await useAsyncData('kb-categories', () =>
-  $fetch<any>(`${config.public.apiBase}/api/knowledge-base/categories`, {
-    headers: { 'X-Frontend-Key': config.public.frontendKey as string }
-  })
-)
+const categories = ref<any[]>([])
+const pending = ref(true)
+const error = ref(false)
 
-const list = computed(() => {
-  const raw = categories.value
-  if (!raw) return []
-  return Array.isArray(raw) ? raw : (raw.data || [])
+onMounted(async () => {
+  try {
+    const res = await $fetch<any>(`${config.public.apiBase}/api/knowledge-base/categories`, {
+      headers: { 'X-Frontend-Key': config.public.frontendKey as string }
+    })
+    categories.value = Array.isArray(res) ? res : (res.data || [])
+  } catch {
+    error.value = true
+  } finally {
+    pending.value = false
+  }
 })
+
+const list = computed(() => categories.value)
 
 function categoryIcon(icon?: string) {
   if (!icon) return 'i-heroicons-book-open'
