@@ -126,8 +126,8 @@ onMounted(() => {
   
   if (!state.value.token) {
     toast.add({
-      title: 'Invalid Link',
-      description: 'Reset token is missing from URL',
+      title: t('reset_password.invalid_link_title'),
+      description: t('reset_password.invalid_link_desc'),
       color: 'error'
     });
   }
@@ -169,8 +169,8 @@ async function onSubmit() {
     });
   } catch (error: any) {
     toast.add({
-      title: 'Error',
-      description: error.data?.message || 'Failed to reset password',
+      title: t('common.error'),
+      description: error.data?.message || t('reset_password.error_desc'),
       color: 'error'
     });
     turnstileToken.value = '';

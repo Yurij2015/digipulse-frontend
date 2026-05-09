@@ -72,7 +72,7 @@
             class="font-black text-primary-500 hover:text-primary-400 decoration-none hover:underline underline-offset-4 cursor-pointer"
             @click="isSuccess = false"
           >
-            {{ $t('forgot_password.send_link') }} ще раз
+            {{ $t('forgot_password.send_again') }}
           </UButton>
         </div>
 
@@ -140,8 +140,8 @@ async function onSubmit() {
     });
   } catch (error: any) {
     toast.add({
-      title: 'Error',
-      description: error.data?.message || 'Failed to send reset link',
+      title: t('common.error'),
+      description: error.data?.message || t('forgot_password.error_desc'),
       color: 'error'
     });
     turnstileToken.value = '';

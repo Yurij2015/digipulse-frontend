@@ -90,7 +90,7 @@ async function handleLogout() {
           </div>
           <div class="flex-1 min-w-0">
             <div class="text-sm font-black text-neutral-900 dark:text-white truncate uppercase tracking-tight">
-              {{ user?.name || 'User' }}
+              {{ user?.name || t('common.user') }}
             </div>
             <div class="text-[11px] font-medium text-neutral-500 truncate">
               {{ user?.email }}

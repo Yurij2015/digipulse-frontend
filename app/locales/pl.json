@@ -41,6 +41,10 @@
       "no_token": "Nie znaleziono tokenu. Spróbuj zalogować się ponownie.",
       "auth_failed": "Błąd uwierzytelniania. Skontaktuj się z pomocą techniczną."
     },
+    "error_title": "Błąd autoryzacji",
+    "connection_error_title": "Błąd połączenia",
+    "error_invalid_response": "Serwer zwrócił nieprawidłową strukturę danych",
+    "error_connection": "Nie udało się połączyć z serwerem",
     "verify_email": {
       "title": "Weryfikacja e-mail",
       "subtitle": "Proszę czekać, weryfikujemy Twój adres e-mail.",
@@ -117,6 +121,9 @@
   },
   "support": {
     "title": "Centrum wsparcia",
+    "ticket_id": "Zgłoszenie #{id}",
+    "you": "Ty",
+    "agent": "Agent wsparcia",
     "subtitle": "Jak możemy pomóc?",
     "description": "Masz pytanie lub problem techniczny? Nasz zespół jest tutaj, aby pomóc Ci w pełni wykorzystać DigiPulse.",
     "subject": "Temat",
@@ -308,16 +315,21 @@
     "title": "Resetowanie hasła",
     "subtitle": "Wprowadź swój e-mail, а wyślemy Ci link do zmiany hasła.",
     "send_link": "Wyślij link",
+    "send_again": "Wyślij ponownie",
     "back_to_login": "Powrót do logowania",
     "success_title": "E-mail wysłany",
-    "success_desc": "Sprawdź swoją skrzynkę odbiorczą, aby uzyskać instrukcje."
+    "success_desc": "Sprawdź swoją skrzynkę odbiorczą, aby uzyskać instrukcje.",
+    "error_desc": "Nie udało się wysłać linku do resetowania hasła"
   },
   "reset_password": {
     "title": "Nowe hasło",
     "subtitle": "Ustaw nowe hasło dla swojego konta.",
     "submit": "Zaktualizuj hasło",
     "success_title": "Hasło zmienione",
-    "success_desc": "Możesz teraz zalogować się z nowym hasłem."
+    "success_desc": "Możesz teraz zalogować się z nowym hasłem.",
+    "invalid_link_title": "Nieprawidłowy link",
+    "invalid_link_desc": "Token resetowania brakuje w URL",
+    "error_desc": "Nie udało się zresetować hasła"
   },
   "common": {
     "cancel": "Anuluj",
@@ -325,6 +337,7 @@
     "required": "Wymagane",
     "success": "Sukces",
     "error": "Błąd",
+    "user": "Użytkownik",
     "confirm": "Potwierdź",
     "save": "Zapisz",
     "status": "Status",

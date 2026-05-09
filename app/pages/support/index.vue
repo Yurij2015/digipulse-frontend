@@ -416,7 +416,7 @@ const getPriorityColor = (priority: string) => {
                           {{ $t(`support.status_${activeTicket.status}`) }}
                         </UBadge>
                         <span class="text-xs text-neutral-500 font-medium">
-                          Ticket #{{ activeTicket.id }} • {{ new Date(activeTicket.created_at).toLocaleString() }}
+                          {{ t('support.ticket_id', { id: activeTicket.id }) }} • {{ new Date(activeTicket.created_at).toLocaleString() }}
                         </span>
                       </div>
                     </div>
@@ -429,7 +429,7 @@ const getPriorityColor = (priority: string) => {
                     <div class="max-w-[85%] bg-primary-50 dark:bg-primary-900/20 border border-primary-100 dark:border-primary-800/30 p-4 rounded-2xl rounded-tr-none">
                       <div class="flex items-center justify-end gap-2 mb-2">
                         <span class="text-[10px] text-neutral-400 font-medium">{{ new Date(activeTicket.created_at).toLocaleTimeString() }}</span>
-                        <span class="text-xs font-bold text-primary-600 dark:text-primary-400">{{ user?.name || 'You' }}</span>
+                        <span class="text-xs font-bold text-primary-600 dark:text-primary-400">{{ user?.name || t('support.you') }}</span>
                       </div>
                       <p class="whitespace-pre-wrap text-sm leading-relaxed">{{ activeTicket.message }}</p>
                     </div>
@@ -454,12 +454,12 @@ const getPriorityColor = (priority: string) => {
                         <div class="flex items-center gap-2 mb-2" :class="msg.is_admin_reply ? 'justify-start' : 'justify-end'">
                           <template v-if="msg.is_admin_reply">
                             <UIcon name="i-heroicons-shield-check" class="text-primary-500 w-4 h-4" />
-                            <span class="text-xs font-bold text-neutral-700 dark:text-neutral-300">Support Agent</span>
+                            <span class="text-xs font-bold text-neutral-700 dark:text-neutral-300">{{ t('support.agent') }}</span>
                             <span class="text-[10px] text-neutral-400 font-medium">{{ new Date(msg.created_at).toLocaleTimeString() }}</span>
                           </template>
                           <template v-else>
                             <span class="text-[10px] text-neutral-400 font-medium">{{ new Date(msg.created_at).toLocaleTimeString() }}</span>
-                            <span class="text-xs font-bold text-primary-600 dark:text-primary-400">{{ user?.name || 'You' }}</span>
+                            <span class="text-xs font-bold text-primary-600 dark:text-primary-400">{{ user?.name || t('support.you') }}</span>
                           </template>
                         </div>
                         <p class="whitespace-pre-wrap text-sm leading-relaxed">{{ msg.message }}</p>

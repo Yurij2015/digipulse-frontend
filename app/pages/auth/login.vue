@@ -217,8 +217,8 @@ async function onSubmit() {
       await router.push(localePath('/dashboard'));
     } else {
       toast.add({
-        title: 'Auth Error',
-        description: 'Server returned invalid data structure',
+        title: t('auth.error_title'),
+        description: t('auth.error_invalid_response'),
         color: 'error'
       });
       token.value = '';
@@ -226,8 +226,8 @@ async function onSubmit() {
   } catch (error: any) {
     console.error('Submit Error:', error);
     toast.add({
-      title: 'Connection Error',
-      description: error.data?.message || 'Failed to connect to server',
+      title: t('auth.connection_error_title'),
+      description: error.data?.message || t('auth.error_connection'),
       color: 'error'
     });
     token.value = '';

@@ -41,6 +41,10 @@
       "no_token": "Token not found. Please try logging in again.",
       "auth_failed": "Authentication failed. Please contact support."
     },
+    "error_title": "Auth Error",
+    "connection_error_title": "Connection Error",
+    "error_invalid_response": "Server returned invalid data structure",
+    "error_connection": "Failed to connect to server",
     "verify_email": {
       "title": "Verify Email",
       "subtitle": "Please wait while we verify your email address.",
@@ -117,6 +121,9 @@
   },
   "support": {
     "title": "Support Center",
+    "ticket_id": "Ticket #{id}",
+    "you": "You",
+    "agent": "Support Agent",
     "subtitle": "How can we help you?",
     "description": "Have a question or technical issue? Our team is here to help you get the most out of DigiPulse.",
     "subject": "Subject",
@@ -308,16 +315,21 @@
     "title": "Reset Password",
     "subtitle": "Enter your email and we'll send you a link to reset your password.",
     "send_link": "Send Reset Link",
+    "send_again": "Send again",
     "back_to_login": "Back to Login",
     "success_title": "Email Sent",
-    "success_desc": "Please check your inbox for instructions."
+    "success_desc": "Please check your inbox for instructions.",
+    "error_desc": "Failed to send reset link"
   },
   "reset_password": {
     "title": "New Password",
     "subtitle": "Set a new password for your account.",
     "submit": "Update Password",
     "success_title": "Password Reset",
-    "success_desc": "Your password has been updated. You can now log in with your new credentials."
+    "success_desc": "Your password has been updated. You can now log in with your new credentials.",
+    "invalid_link_title": "Invalid Link",
+    "invalid_link_desc": "Reset token is missing from URL",
+    "error_desc": "Failed to reset password"
   },
   "common": {
     "cancel": "Cancel",
@@ -325,6 +337,7 @@
     "required": "Required",
     "success": "Success",
     "error": "Error",
+    "user": "User",
     "confirm": "Confirm",
     "save": "Save",
     "status": "Status",
