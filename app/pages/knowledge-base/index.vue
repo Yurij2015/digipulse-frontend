@@ -5,6 +5,7 @@ const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const config = useRuntimeConfig()
 const url = useRequestURL()
+const apiBase = useApiBase()
 
 function lt(field: unknown): string {
   return resolveLocaleString(field, locale.value)
@@ -29,7 +30,7 @@ useHead({
 
 const { data, pending, error } = await useAsyncData(
   'kb-categories-v2',
-  () => $fetch<any>(`${config.public.apiBase}/api/knowledge-base/categories`, {
+  () => $fetch<any>(`${apiBase}/api/knowledge-base/categories`, {
     headers: { 'X-Frontend-Key': config.public.frontendKey as string },
   }),
   {

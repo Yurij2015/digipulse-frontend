@@ -2,7 +2,7 @@ import { defineEventHandler } from 'h3'
 
 export default defineEventHandler(async () => {
   const config = useRuntimeConfig()
-  const base = config.public.apiBase
+  const base = (config.apiBase as string) || config.public.apiBase
   const key = config.public.frontendKey as string
   const headers = { 'X-Frontend-Key': key }
 

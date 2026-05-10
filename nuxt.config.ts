@@ -120,6 +120,8 @@ export default defineNuxtConfig({
     },
   },
   runtimeConfig: {
+    // Server-only internal API base (overridden by NUXT_API_BASE env var)
+    apiBase: "",
     public: {
       apiBase: "http://localhost",
       frontendKey: "",

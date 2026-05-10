@@ -7,6 +7,7 @@ const localePath = useLocalePath()
 const config = useRuntimeConfig()
 const route = useRoute()
 const url = useRequestURL()
+const apiBase = useApiBase()
 
 const slug = route.params.slug as string
 
@@ -16,7 +17,7 @@ function lt(field: unknown): string {
 
 const { data, pending, error } = await useAsyncData(
   `kb-article-${slug}`,
-  () => $fetch<any>(`${config.public.apiBase}/api/knowledge-base/articles/${slug}`, {
+  () => $fetch<any>(`${apiBase}/api/knowledge-base/articles/${slug}`, {
     headers: { 'X-Frontend-Key': config.public.frontendKey as string },
   }),
   {
