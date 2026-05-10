@@ -65,6 +65,19 @@ export default defineNuxtConfig({
       brotli: true,
       gzip: true,
     },
+    /**
+     * Dev: memory cache driver avoids ENOTDIR when KB index + dynamic child routes share a path prefix
+     * (filesystem payload keys). @see https://github.com/nitrojs/nitro/issues/4142
+     *
+     * No `routeRules.swr` on KB: Nitro SWR stores a cached *rendered response* (HTML). A full page load can
+     * hit that cache until revalidation, so the document may not match the latest deploy/client bundle for
+     * a while. KB pages are cheap to render; skipping route SWR avoids that mismatch on refresh.
+     */
+    devStorage: {
+      cache: {
+        driver: "memory",
+      },
+    },
   },
   sitemap: {
     siteUrl: process.env.NUXT_PUBLIC_SITE_URL,
@@ -96,14 +109,6 @@ export default defineNuxtConfig({
       '/pl/add-website',
       '/pl/auth/**',
     ],
-  },
-  routeRules: {
-    '/knowledge-base': { swr: 3600 },
-    '/knowledge-base/**': { swr: 3600 },
-    '/uk/knowledge-base': { swr: 3600 },
-    '/uk/knowledge-base/**': { swr: 3600 },
-    '/pl/knowledge-base': { swr: 3600 },
-    '/pl/knowledge-base/**': { swr: 3600 },
   },
   icon: {
     clientBundle: {

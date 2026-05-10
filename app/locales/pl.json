@@ -433,12 +433,16 @@
   },
   "docs": {
     "title": "Baza wiedzy",
-    "badge": "DOKUMENTACJA",
+    "badge": "ARTYKUŁY",
     "subtitle": "Przewodniki dotyczące monitorowania stron, infrastruktury serwerów, optymalizacji technicznej, SSL, DNS, dostępności i pokrewnych tematów.",
     "articles": "artykułów",
     "back_to_docs": "Powrót do bazy wiedzy",
     "no_categories": "Brak dostępnych kategorii.",
     "no_articles": "Brak artykułów w tej kategorii.",
-    "load_error": "Nie udało się załadować treści. Spróbuj ponownie później."
+    "load_error": "Nie udało się załadować treści. Spróbuj ponownie później.",
+    "published_on": "Opublikowano",
+    "display_as": "Widok",
+    "view_cards": "Karty",
+    "view_list": "Lista"
   }
 }

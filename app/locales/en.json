@@ -433,12 +433,16 @@
   },
   "docs": {
     "title": "Knowledge Base",
-    "badge": "DOCUMENTATION",
+    "badge": "ARTICLES",
     "subtitle": "Guides on website monitoring, server infrastructure, technical optimization, SSL, DNS, uptime, and related topics.",
     "articles": "articles",
     "back_to_docs": "Back to Knowledge Base",
     "no_categories": "No categories available yet.",
     "no_articles": "No articles in this category yet.",
-    "load_error": "Failed to load content. Please try again later."
+    "load_error": "Failed to load content. Please try again later.",
+    "published_on": "Published",
+    "display_as": "View as",
+    "view_cards": "Cards",
+    "view_list": "List"
   }
 }

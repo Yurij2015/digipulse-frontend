@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { resolveKnowledgeBaseArticleHtml } from '~/utils/knowledge-base-content'
+import { resolveLocaleString } from '~/utils/locale-field'
+
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const config = useRuntimeConfig()
@@ -7,18 +10,19 @@ const url = useRequestURL()
 
 const slug = route.params.slug as string
 
-function lt(field: any): string {
-  if (!field) return ''
-  if (typeof field === 'string') return field
-  return field[locale.value] ?? field['en'] ?? (Object.values(field)[0] as string) ?? ''
+function lt(field: unknown): string {
+  return resolveLocaleString(field, locale.value)
 }
 
-const { data, pending, error } = await useAsyncData(`kb-article-${slug}`, () =>
-  $fetch<any>(`${config.public.apiBase}/api/knowledge-base/articles/${slug}`, {
-    headers: { 'X-Frontend-Key': config.public.frontendKey as string }
-  }), {
-  getCachedData: (key, nuxtApp) => nuxtApp.payload.data[key] ?? nuxtApp.static.data[key]
-})
+const { data, pending, error } = await useAsyncData(
+  `kb-article-${slug}`,
+  () => $fetch<any>(`${config.public.apiBase}/api/knowledge-base/articles/${slug}`, {
+    headers: { 'X-Frontend-Key': config.public.frontendKey as string },
+  }),
+  {
+    getCachedData: (key, nuxtApp, ctx) => kbGetCachedAsyncData(key, nuxtApp, ctx),
+  },
+)
 
 const article = computed(() => {
   const raw = data.value
@@ -37,6 +41,35 @@ const articleImage = computed(() =>
       ? `${siteUrl.value}${article.value.cover_image}`
       : `${url.origin}/og-image-social.png`
 )
+
+const articleBodyHtml = computed((): string => {
+  const html = resolveKnowledgeBaseArticleHtml(article.value?.content, locale.value)
+  return typeof html === 'string' ? html : ''
+})
+
+const publishLocaleTag = computed(() => {
+  if (locale.value === 'uk') {
+    return 'uk-UA'
+  }
+  if (locale.value === 'pl') {
+    return 'pl-PL'
+  }
+  return 'en-US'
+})
+
+const publishedFormatted = computed((): string | null => {
+  const at = article.value?.published_at
+  if (!at) {
+    return null
+  }
+  try {
+    return new Intl.DateTimeFormat(publishLocaleTag.value, { dateStyle: 'long' }).format(new Date(at))
+  } catch {
+    return null
+  }
+})
+
+const articleLead = computed(() => lt(article.value?.excerpt))
 
 useSeoMeta({
   title: () => articleTitle.value
@@ -98,6 +131,7 @@ const backLabel = computed(() =>
 
 <template>
   <div class="relative min-h-screen bg-white dark:bg-neutral-950 mesh-bg flex flex-col pt-20 md:pt-32 pb-24 items-center px-6 md:px-8 overflow-hidden">
+    <BaseLoader :show="pending" />
     <div class="absolute inset-0 z-0 pointer-events-none opacity-40 dark:opacity-60">
       <div class="absolute top-[5%] left-[5%] w-[50%] h-[50%] bg-primary-500/30 blur-[100px] rounded-full animate-pulse"></div>
       <div class="absolute bottom-[5%] right-[5%] w-[40%] h-[40%] bg-indigo-500/20 blur-[100px] rounded-full animate-pulse" style="animation-delay:1s"></div>
@@ -115,20 +149,12 @@ const backLabel = computed(() =>
         {{ backLabel }}
       </UButton>
 
-      <!-- Loading -->
-      <div v-if="pending" class="space-y-4">
-        <div class="h-10 w-3/4 rounded-xl bg-neutral-100 dark:bg-white/5 animate-pulse" />
-        <div class="h-4 w-32 rounded-lg bg-neutral-100 dark:bg-white/5 animate-pulse" />
-        <div class="mt-8 space-y-3">
-          <div v-for="i in 8" :key="i" class="h-4 rounded-lg bg-neutral-100 dark:bg-white/5 animate-pulse" :class="i % 4 === 0 ? 'w-2/3' : 'w-full'" />
-        </div>
-      </div>
-
       <!-- Error -->
-      <UAlert v-else-if="error" color="error" variant="subtle" icon="i-heroicons-exclamation-triangle"
+      <UAlert v-if="error" color="error" variant="subtle" icon="i-heroicons-exclamation-triangle"
         :title="t('common.error')" :description="t('docs.load_error')" />
 
       <template v-else-if="article">
+        <div :key="`${locale}-${slug}`" class="contents">
         <!-- Breadcrumb -->
         <div v-if="article.category" class="mb-5 flex items-center gap-2 text-[12px] text-neutral-400 font-medium">
           <NuxtLink :to="localePath('/knowledge-base')" class="hover:text-primary-500 transition-colors">
@@ -140,26 +166,33 @@ const backLabel = computed(() =>
           </NuxtLink>
         </div>
 
-        <!-- Title -->
-        <h1 class="text-3xl md:text-4xl font-black text-neutral-900 dark:text-white tracking-tight leading-tight mb-10">
-          {{ lt(article.title) }}
-        </h1>
-
-        <!-- Article card -->
-        <div class="rounded-2xl border border-neutral-200/60 dark:border-white/8 bg-white dark:bg-neutral-900 p-8 md:p-10">
+        <!-- Title & meta -->
+        <header class="mb-8 md:mb-10">
+          <h1 class="text-3xl sm:text-4xl md:text-[2.75rem] font-black text-neutral-900 dark:text-white tracking-tight leading-[1.1] text-balance">
+            {{ lt(article.title) }}
+          </h1>
+          <p
+            v-if="articleLead"
+            class="mt-5 text-lg md:text-xl text-neutral-500 dark:text-neutral-400 font-medium leading-relaxed max-w-2xl text-pretty"
+          >
+            {{ articleLead }}
+          </p>
           <div
-            class="prose prose-neutral dark:prose-invert max-w-none
-              prose-headings:font-black prose-headings:tracking-tight
-              prose-h2:text-xl prose-h3:text-base
-              prose-p:text-neutral-600 dark:prose-p:text-neutral-400 prose-p:leading-relaxed
-              prose-a:text-primary-500 prose-a:no-underline hover:prose-a:underline
-              prose-code:bg-neutral-100 dark:prose-code:bg-white/8 prose-code:rounded prose-code:px-1.5 prose-code:py-0.5 prose-code:text-[13px] prose-code:font-mono prose-code:before:content-none prose-code:after:content-none
-              prose-pre:bg-neutral-950 dark:prose-pre:bg-black/40 prose-pre:rounded-xl prose-pre:border prose-pre:border-neutral-200/60 dark:prose-pre:border-white/8
-              prose-blockquote:border-primary-500/40 prose-blockquote:text-neutral-500
-              prose-strong:text-neutral-900 dark:prose-strong:text-white
-              prose-hr:border-neutral-200 dark:prose-hr:border-white/8"
-            v-html="article.content"
+            v-if="publishedFormatted"
+            class="mt-6 flex items-center gap-2 text-sm text-neutral-400 dark:text-neutral-500"
+          >
+            <UIcon name="i-heroicons-calendar-days" class="size-4 shrink-0 text-primary-500/80" />
+            <span>{{ t('docs.published_on') }} <time :datetime="article.published_at">{{ publishedFormatted }}</time></span>
+          </div>
+        </header>
+
+        <!-- Article body -->
+        <div class="kb-article-shell p-6 sm:p-8 md:p-10 lg:p-12">
+          <div
+            class="kb-article-prose"
+            v-html="articleBodyHtml"
           />
+        </div>
         </div>
       </template>
     </div>

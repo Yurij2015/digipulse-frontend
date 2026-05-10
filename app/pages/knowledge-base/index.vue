@@ -1,8 +1,14 @@
 <script setup lang="ts">
-const { t } = useI18n()
+import { resolveLocaleString } from '~/utils/locale-field'
+
+const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const config = useRuntimeConfig()
 const url = useRequestURL()
+
+function lt(field: unknown): string {
+  return resolveLocaleString(field, locale.value)
+}
 
 useSeoMeta({
   title: `${t('docs.title')} — DigiPulse`,
@@ -21,17 +27,27 @@ useHead({
   link: [{ rel: 'canonical', href: () => `${config.public.siteUrl || url.origin}/knowledge-base` }],
 })
 
-const { data, pending, error } = await useAsyncData('kb-categories', () =>
-  $fetch<any>(`${config.public.apiBase}/api/knowledge-base/categories`, {
-    headers: { 'X-Frontend-Key': config.public.frontendKey as string }
-  }), {
-  getCachedData: (key, nuxtApp) => nuxtApp.payload.data[key] ?? nuxtApp.static.data[key]
-})
+const { data, pending, error } = await useAsyncData(
+  'kb-categories-v2',
+  () => $fetch<any>(`${config.public.apiBase}/api/knowledge-base/categories`, {
+    headers: { 'X-Frontend-Key': config.public.frontendKey as string },
+  }),
+  {
+    getCachedData: (key, nuxtApp, ctx) => kbGetCachedAsyncData(key, nuxtApp, ctx),
+  },
+)
 
 const list = computed(() => {
   const raw = data.value
   if (!raw) return []
   return Array.isArray(raw) ? raw : (raw.data || [])
+})
+
+const categoriesLayout = useCookie<'grid' | 'list'>('kb-categories-layout', {
+  default: () => 'grid',
+  watch: true,
+  sameSite: 'lax',
+  maxAge: 60 * 60 * 24 * 365,
 })
 
 function categoryIcon(icon?: string) {
@@ -43,12 +59,13 @@ function categoryIcon(icon?: string) {
 
 <template>
   <div class="relative min-h-screen bg-white dark:bg-neutral-950 mesh-bg flex flex-col pt-20 md:pt-32 pb-24 items-center px-6 md:px-8 overflow-hidden">
+    <BaseLoader :show="pending" />
     <div class="absolute inset-0 z-0 pointer-events-none opacity-40 dark:opacity-60">
       <div class="absolute top-[5%] left-[5%] w-[50%] h-[50%] bg-primary-500/30 blur-[100px] rounded-full animate-pulse"></div>
       <div class="absolute bottom-[5%] right-[5%] w-[40%] h-[40%] bg-indigo-500/20 blur-[100px] rounded-full animate-pulse" style="animation-delay:1s"></div>
     </div>
 
-    <div class="relative z-10 w-full max-w-5xl">
+    <div class="relative z-10 mx-auto w-full min-w-0 max-w-5xl self-stretch">
       <!-- Header -->
       <div class="mb-12">
         <div class="inline-flex items-center gap-2 px-3 py-1 mb-6 rounded-full bg-primary-500/10 border border-primary-500/20 text-primary-500 dark:text-primary-400 text-[10px] font-black tracking-[0.2em]">
@@ -58,7 +75,42 @@ function categoryIcon(icon?: string) {
         <h1 class="text-4xl md:text-6xl font-black text-neutral-900 dark:text-white tracking-tight leading-tight mb-4">
           {{ t('docs.title') }}
         </h1>
-        <p class="text-neutral-500 font-medium text-lg max-w-xl">{{ t('docs.subtitle') }}</p>
+        <p class="w-full max-w-none text-neutral-500 font-medium text-lg text-pretty leading-relaxed">
+          {{ t('docs.subtitle') }}
+        </p>
+
+        <div
+          v-if="list.length && !pending && !error"
+          class="mt-8 flex flex-wrap items-center gap-3"
+          role="group"
+          :aria-label="t('docs.display_as')"
+        >
+          <span class="text-xs font-bold uppercase tracking-wider text-neutral-400">{{ t('docs.display_as') }}</span>
+          <div class="inline-flex rounded-xl border border-neutral-200/70 dark:border-white/10 bg-white/50 dark:bg-neutral-900/50 p-0.5 backdrop-blur-sm">
+            <button
+              type="button"
+              class="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-bold transition-colors"
+              :class="categoriesLayout === 'grid'
+                ? 'bg-primary-500/15 text-primary-600 dark:text-primary-400'
+                : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'"
+              @click="categoriesLayout = 'grid'"
+            >
+              <UIcon name="i-heroicons-squares-2x2" class="size-4" />
+              {{ t('docs.view_cards') }}
+            </button>
+            <button
+              type="button"
+              class="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-bold transition-colors"
+              :class="categoriesLayout === 'list'
+                ? 'bg-primary-500/15 text-primary-600 dark:text-primary-400'
+                : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'"
+              @click="categoriesLayout = 'list'"
+            >
+              <UIcon name="i-heroicons-list-bullet" class="size-4" />
+              {{ t('docs.view_list') }}
+            </button>
+          </div>
+        </div>
       </div>
 
       <!-- Loading -->
@@ -76,8 +128,8 @@ function categoryIcon(icon?: string) {
         <p class="font-medium">{{ t('docs.no_categories') }}</p>
       </div>
 
-      <!-- Categories grid -->
-      <div v-else class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <!-- Categories: cards -->
+      <div v-else-if="categoriesLayout === 'grid'" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <NuxtLink
           v-for="cat in list"
           :key="cat.slug"
@@ -91,11 +143,11 @@ function categoryIcon(icon?: string) {
           </div>
 
           <div class="font-black text-neutral-900 dark:text-white text-[15px] tracking-tight leading-snug">
-            {{ cat.name }}
+            {{ lt(cat.name) }}
           </div>
 
           <p v-if="cat.description" class="mt-1.5 text-[12px] text-neutral-500 leading-relaxed line-clamp-2">
-            {{ cat.description }}
+            {{ lt(cat.description) }}
           </p>
 
           <div class="mt-4 flex items-center justify-between">
@@ -104,6 +156,32 @@ function categoryIcon(icon?: string) {
             </span>
             <UIcon name="i-heroicons-arrow-right" class="text-neutral-400 group-hover:text-primary-500 group-hover:translate-x-0.5 transition-all text-sm" />
           </div>
+        </NuxtLink>
+      </div>
+
+      <!-- Categories: list -->
+      <div v-else class="flex flex-col gap-3">
+        <NuxtLink
+          v-for="cat in list"
+          :key="cat.slug"
+          :to="localePath(`/knowledge-base/${cat.slug}`)"
+          class="group flex items-center gap-4 rounded-2xl border border-neutral-200/60 dark:border-white/8 bg-white dark:bg-neutral-900 px-4 py-4 sm:px-5 transition-all duration-300 hover:border-primary-500/30 hover:shadow-lg hover:shadow-primary-500/5"
+        >
+          <div class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary-500/10 text-primary-500 group-hover:bg-primary-500/20 transition-colors">
+            <UIcon :name="categoryIcon(cat.icon)" class="text-xl" />
+          </div>
+          <div class="min-w-0 flex-1">
+            <div class="font-black text-neutral-900 dark:text-white text-[15px] tracking-tight leading-snug">
+              {{ lt(cat.name) }}
+            </div>
+            <p v-if="cat.description" class="mt-0.5 text-[12px] text-neutral-500 leading-relaxed line-clamp-1">
+              {{ lt(cat.description) }}
+            </p>
+          </div>
+          <span class="hidden shrink-0 text-[11px] font-bold text-neutral-400 uppercase tracking-wider sm:inline">
+            {{ cat.articles_count ?? 0 }} {{ t('docs.articles') }}
+          </span>
+          <UIcon name="i-heroicons-arrow-right" class="size-5 shrink-0 text-neutral-400 group-hover:text-primary-500 group-hover:translate-x-0.5 transition-all" />
         </NuxtLink>
       </div>
     </div>

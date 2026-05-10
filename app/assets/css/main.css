@@ -80,6 +80,107 @@
     );
     animation: shimmer 3s infinite;
   }
+
+  /** Knowledge Base article reading column */
+  .kb-article-shell {
+    @apply relative overflow-visible rounded-2xl border-0 shadow-2xl shadow-primary-500/5;
+    @apply bg-white/40 dark:bg-neutral-900/40 backdrop-blur-xl;
+    @apply ring-1 ring-neutral-200/55 dark:ring-white/10;
+  }
+
+  .kb-article-shell::before {
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    top: -1px;
+    left: 2rem;
+    right: 2rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-primary-500) 45%, transparent), transparent);
+  }
+
+  /**
+   * Rich HTML from TipTap — styled without @tailwindcss/typography so `prose` is not required in @apply.
+   */
+  .kb-article-prose {
+    @apply w-full max-w-2xl mx-auto text-[1.0625rem] leading-[1.8] text-neutral-600 dark:text-neutral-400;
+  }
+
+  .kb-article-prose :where(p) {
+    @apply mb-5 leading-[1.85];
+  }
+
+  .kb-article-prose :where(h2) {
+    @apply mt-11 mb-5 pb-3 font-black tracking-tight text-neutral-900 dark:text-white;
+    @apply border-b border-neutral-200/75 dark:border-white/12 text-[1.35rem] md:text-[1.5rem];
+  }
+
+  .kb-article-prose :where(h3) {
+    @apply mt-9 mb-3 font-black tracking-tight text-neutral-900 dark:text-white text-base md:text-lg;
+  }
+
+  .kb-article-prose :where(h4) {
+    @apply mt-7 mb-2 font-bold text-neutral-900 dark:text-white;
+  }
+
+  .kb-article-prose :where(a) {
+    @apply font-semibold text-primary-600 dark:text-primary-400 underline underline-offset-4 decoration-primary-500/35;
+  }
+
+  .kb-article-prose :where(a:hover) {
+    text-decoration-color: color-mix(in srgb, var(--color-primary-500) 70%, transparent);
+  }
+
+  .kb-article-prose :where(strong) {
+    @apply font-bold text-neutral-900 dark:text-white;
+  }
+
+  .kb-article-prose :where(ul, ol) {
+    @apply my-4 pl-6;
+  }
+
+  .kb-article-prose :where(ul) {
+    list-style-type: disc;
+  }
+
+  .kb-article-prose :where(ol) {
+    list-style-type: decimal;
+  }
+
+  .kb-article-prose :where(li) {
+    @apply my-1.5 marker:text-primary-500/80;
+  }
+
+  .kb-article-prose :where(blockquote) {
+    @apply my-6 border-l-4 border-primary-500/50 py-1 px-4 rounded-r-xl not-italic text-neutral-600 dark:text-neutral-400;
+    background-color: color-mix(in srgb, var(--color-primary-500) 6%, transparent);
+  }
+
+  .dark .kb-article-prose :where(blockquote) {
+    background-color: color-mix(in srgb, var(--color-primary-500) 10%, transparent);
+  }
+
+  .kb-article-prose :where(:not(pre) > code) {
+    @apply text-[0.9em] font-mono font-medium text-primary-700 dark:text-primary-300;
+    @apply bg-neutral-100/90 dark:bg-white/10 rounded-md px-1.5 py-0.5;
+  }
+
+  .kb-article-prose :where(pre) {
+    @apply my-6 rounded-xl border border-neutral-200/70 dark:border-white/10 p-4 overflow-x-auto shadow-inner;
+    @apply bg-neutral-950/95 dark:bg-black/50 text-neutral-100 text-sm;
+  }
+
+  .kb-article-prose :where(pre code) {
+    @apply bg-transparent p-0 text-inherit font-mono;
+  }
+
+  .kb-article-prose :where(hr) {
+    @apply my-10 border-0 border-t border-neutral-200/80 dark:border-white/12;
+  }
+
+  .kb-article-prose :where(img) {
+    @apply rounded-xl my-6 max-w-full h-auto;
+  }
 }
 
 @keyframes pulse-neon {
