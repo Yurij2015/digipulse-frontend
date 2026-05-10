@@ -30,12 +30,6 @@
 
       <div class="flex items-center gap-2 md:gap-6">
         <NuxtLink
-          :to="localePath('/knowledge-base')"
-          class="hidden md:block text-sm font-black uppercase tracking-widest text-neutral-500 hover:text-primary-500 transition-colors"
-        >
-          {{ $t('docs.title') }}
-        </NuxtLink>
-        <NuxtLink
           v-if="isAuthenticated"
           :to="localePath('/support')"
           class="hidden md:block text-sm font-black uppercase tracking-widest text-neutral-500 hover:text-primary-500 transition-colors"
