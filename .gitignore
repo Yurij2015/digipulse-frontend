@@ -23,3 +23,4 @@ logs
 .env.*
 !.env.example
 /backend.code-workspace
+.pnpm-store/
