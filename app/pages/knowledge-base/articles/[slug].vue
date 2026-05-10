@@ -138,7 +138,7 @@ const backLabel = computed(() =>
       <div class="absolute bottom-[5%] right-[5%] w-[40%] h-[40%] bg-indigo-500/20 blur-[100px] rounded-full animate-pulse" style="animation-delay:1s"></div>
     </div>
 
-    <div class="relative z-10 w-full max-w-3xl">
+    <div class="relative z-10 w-full max-w-3xl flex flex-col flex-1">
       <!-- Back -->
       <UButton
         :to="backTo"
@@ -187,6 +187,17 @@ const backLabel = computed(() =>
           </div>
         </header>
 
+        <!-- Cover image -->
+        <div v-if="article.cover_image" class="mb-8 md:mb-10 overflow-hidden rounded-2xl ring-1 ring-neutral-200/55 dark:ring-white/10">
+          <img
+            :src="article.cover_image"
+            :alt="lt(article.title)"
+            class="w-full h-auto object-cover"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+
         <!-- Article body -->
         <div class="kb-article-shell p-6 sm:p-8 md:p-10 lg:p-12">
           <div
@@ -196,6 +207,7 @@ const backLabel = computed(() =>
         </div>
         </div>
       </template>
+      <div class="mt-auto"><AppFooter /></div>
     </div>
   </div>
 </template>

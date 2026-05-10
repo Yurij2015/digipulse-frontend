@@ -67,7 +67,7 @@ const articlesLayout = useCookie<'grid' | 'list'>('kb-articles-layout', {
       <div class="absolute bottom-[5%] right-[5%] w-[40%] h-[40%] bg-indigo-500/20 blur-[100px] rounded-full animate-pulse" style="animation-delay:1s"></div>
     </div>
 
-    <div class="relative z-10 mx-auto w-full min-w-0 max-w-5xl self-stretch">
+    <div class="relative z-10 mx-auto w-full min-w-0 max-w-5xl self-stretch flex flex-col flex-1">
       <!-- Back -->
       <UButton
         :to="localePath('/knowledge-base')"
@@ -191,6 +191,7 @@ const articlesLayout = useCookie<'grid' | 'list'>('kb-articles-layout', {
         </div>
         </div>
       </template>
+      <div class="mt-auto"><AppFooter /></div>
     </div>
   </div>
 </template>

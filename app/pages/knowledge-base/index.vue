@@ -66,7 +66,7 @@ function categoryIcon(icon?: string) {
       <div class="absolute bottom-[5%] right-[5%] w-[40%] h-[40%] bg-indigo-500/20 blur-[100px] rounded-full animate-pulse" style="animation-delay:1s"></div>
     </div>
 
-    <div class="relative z-10 mx-auto w-full min-w-0 max-w-5xl self-stretch">
+    <div class="relative z-10 mx-auto w-full min-w-0 max-w-5xl self-stretch flex flex-col flex-1">
       <!-- Header -->
       <div class="mb-12">
         <div class="inline-flex items-center gap-2 px-3 py-1 mb-6 rounded-full bg-primary-500/10 border border-primary-500/20 text-primary-500 dark:text-primary-400 text-[10px] font-black tracking-[0.2em]">
@@ -185,6 +185,7 @@ function categoryIcon(icon?: string) {
           <UIcon name="i-heroicons-arrow-right" class="size-5 shrink-0 text-neutral-400 group-hover:text-primary-500 group-hover:translate-x-0.5 transition-all" />
         </NuxtLink>
       </div>
+      <div class="mt-auto"><AppFooter /></div>
     </div>
   </div>
 </template>

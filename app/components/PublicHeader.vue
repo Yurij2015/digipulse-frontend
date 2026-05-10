@@ -29,13 +29,20 @@
       </NuxtLink>
 
       <div class="flex items-center gap-2 md:gap-6">
-        <NuxtLink
-          v-if="isAuthenticated"
-          :to="localePath('/support')"
-          class="hidden md:block text-sm font-black uppercase tracking-widest text-neutral-500 hover:text-primary-500 transition-colors"
-        >
-          {{ $t('support.title') }}
-        </NuxtLink>
+        <template v-if="isAuthenticated">
+          <NuxtLink
+            :to="localePath('/dashboard')"
+            class="hidden md:block text-sm font-black uppercase tracking-widest text-neutral-500 hover:text-primary-500 transition-colors"
+          >
+            {{ $t('dashboard.title') }}
+          </NuxtLink>
+          <NuxtLink
+            :to="localePath('/support')"
+            class="hidden md:block text-sm font-black uppercase tracking-widest text-neutral-500 hover:text-primary-500 transition-colors"
+          >
+            {{ $t('support.title') }}
+          </NuxtLink>
+        </template>
         <div class="flex items-center gap-2 md:gap-4">
           <LanguageSwitcher side="top" />
           <ThemeSwitcher />
