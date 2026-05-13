@@ -17,30 +17,30 @@ export const useSitesStore = defineStore('sites', () => {
   const realtimeSyncTimeouts = new Map<number, ReturnType<typeof setTimeout>>();
   const realtimeSyncInFlightBySite = ref<Record<number, boolean>>({});
 
-  const resolveSiteStatus = (site: any) => {
-    let status = 'Offline';
+  const apiStatusToDisplay = (apiStatus: string | null | undefined): string => {
+    switch (apiStatus) {
+      case 'up': return 'Online'
+      case 'down': return 'Offline'
+      case 'pending': return 'Pending'
+      default: return 'Offline'
+    }
+  }
+
+  // Used only for optimistic realtime updates before the next API refetch
+  const deriveStatusFromConfigs = (site: any): string => {
     const configs = site.configurations || site.checks || [];
     const hasAnyCheckResult = configs.some((c: any) => c.last_checked_at || c.last_status);
-
-    if (site.is_active) {
-      if (!hasAnyCheckResult) {
-        status = 'Pending';
-      } else if (configs.some((c: any) => c.last_status === 'down')) {
-        status = 'Offline';
-      } else if (configs.some((c: any) => c.last_status === 'slow' || c.last_status === 'Warning')) {
-        status = 'Warning';
-      } else {
-        status = 'Online';
-      }
-    }
-
-    return status;
-  };
+    if (!site.is_active) return 'Offline'
+    if (!hasAnyCheckResult) return 'Pending'
+    if (configs.some((c: any) => c.last_status === 'down')) return 'Offline'
+    if (configs.some((c: any) => c.last_status === 'slow' || c.last_status === 'Warning')) return 'Warning'
+    return 'Online'
+  }
 
   const normalizeSite = (site: any) => {
     return {
       ...site,
-      status: resolveSiteStatus(site),
+      status: apiStatusToDisplay(site.status),
       lastCheck: site.last_checked_at || site.last_check || 'Never',
       responseTime: site.responseTime || site.response_time || 0,
       uptime: site.uptime || 0
@@ -168,7 +168,7 @@ export const useSitesStore = defineStore('sites', () => {
       configurations,
       last_checked_at: payload.checked_at,
       lastCheck: payload.checked_at,
-      status: resolveSiteStatus({ ...site, configurations })
+      status: deriveStatusFromConfigs({ ...site, configurations })
     } as any;
 
     if (typeof payload.response_time_ms === 'number') {
