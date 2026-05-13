@@ -5,7 +5,7 @@
     <main class="flex-1 p-6 lg:p-12 overflow-y-auto lg:ml-72 h-screen relative">
       <header class="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-12">
         <div class="flex items-center gap-4">
-          <UButton :to="localePath('/sites')" variant="ghost" color="neutral" icon="i-heroicons-arrow-left" class="hover:bg-neutral-200 dark:hover:bg-white/5 font-bold p-3 cursor-pointer" />
+          <UButton :to="backTo" variant="ghost" color="neutral" icon="i-heroicons-arrow-left" class="hover:bg-neutral-200 dark:hover:bg-white/5 font-bold p-3 cursor-pointer" />
           <div>
             <h1 class="text-4xl font-black tracking-tight"><span class="text-primary-500">{{ site?.name || 'Site' }}</span> {{ t('history.title') }}</h1>
             <p class="text-neutral-500 font-medium">{{ t('history.subtitle') }}</p>
@@ -141,82 +141,120 @@
           </template>
 
           <template #recent>
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-4">
-              <div v-for="item in historyData?.latest_results" :key="item.config_id" class="glass-card rounded-2xl border border-neutral-200/50 dark:border-white/10 overflow-hidden shadow-sm h-full flex flex-col transition-all hover:shadow-md hover:border-primary-500/30">
-                <div class="bg-neutral-50 dark:bg-white/5 border-b border-neutral-200/50 dark:border-white/10 p-4 flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <UIcon :name="getConfigIcon(item.type_slug)" class="text-primary-500 text-xl" />
-                    <h3 class="font-black text-neutral-900 dark:text-white uppercase tracking-wider text-sm">{{ item.type_name }}</h3>
-                  </div>
-                  <UBadge :color="item.result.status === 'up' ? 'success' : 'error'" variant="subtle" size="sm" class="font-black rounded-lg uppercase text-[9px]">{{ item.result.status }}</UBadge>
-                </div>
-                
-                <div class="p-4 flex-1 space-y-4">
-                  <div class="flex items-center justify-between">
-                    <span class="text-[11px] font-bold text-neutral-500">{{ formatDateTime(item.result.checked_at) }}</span>
-                    <span class="text-sm font-black text-neutral-900 dark:text-white">{{ item.result.response_time_ms }}ms</span>
-                  </div>
+            <div class="flex flex-col gap-6 mt-4">
 
-                  <!-- SSL Specific Info -->
-                  <div v-if="item.type_slug === 'ssl' && item.result.status === 'up'" class="bg-primary-500/5 border border-primary-500/10 rounded-xl p-3 space-y-2">
-                    <div class="flex items-center gap-2 mb-1">
-                      <UIcon name="i-heroicons-shield-check" class="text-primary-500" />
-                      <span class="text-[10px] font-black uppercase text-primary-600 dark:text-primary-400">Certificate Details</span>
+              <!-- SSL — full-width row -->
+              <div v-if="sslResult" class="glass-card rounded-2xl border border-neutral-200/50 dark:border-white/10 overflow-hidden shadow-sm transition-all hover:shadow-md hover:border-primary-500/30">
+                <div class="bg-neutral-50 dark:bg-white/5 border-b border-neutral-200/50 dark:border-white/10 px-5 py-3 flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <UIcon :name="getConfigIcon(sslResult.type_slug)" class="text-primary-500 text-xl" />
+                    <h3 class="font-black text-neutral-900 dark:text-white uppercase tracking-wider text-sm">{{ sslResult.type_name }}</h3>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span class="text-[11px] font-bold text-neutral-500">{{ formatDateTime(sslResult.result.checked_at) }}</span>
+                    <UBadge :color="sslResult.result.status === 'up' ? 'success' : 'error'" variant="subtle" size="sm" class="font-black rounded-lg uppercase text-[9px]">{{ sslResult.result.status }}</UBadge>
+                  </div>
+                </div>
+
+                <div class="px-5 py-4 flex flex-col gap-3">
+                  <!-- Up: certificate details + server metadata -->
+                  <div v-if="sslResult.result.status === 'up'" class="flex flex-wrap items-center gap-x-8 gap-y-3">
+                    <div>
+                      <div class="text-[9px] uppercase font-bold text-neutral-400 mb-0.5">Issuer</div>
+                      <div class="text-[12px] font-bold text-neutral-700 dark:text-neutral-300">{{ sslResult.result.metadata?.issuer || '—' }}</div>
                     </div>
-                    <div class="grid grid-cols-2 gap-2 text-[10px]">
-                      <div>
-                        <div class="text-neutral-400 uppercase font-bold text-[8px] mb-0.5">Issuer</div>
-                        <div class="font-bold text-neutral-900 dark:text-white truncate">{{ item.result.metadata?.issuer || 'N/A' }}</div>
-                      </div>
-                      <div>
-                        <div class="text-neutral-400 uppercase font-bold text-[8px] mb-0.5">Expires At</div>
-                        <div class="font-bold text-neutral-900 dark:text-white">{{ item.result.metadata?.expires_at ? format(parseISO(item.result.metadata.expires_at), 'MMM d, yyyy') : 'N/A' }}</div>
+                    <div>
+                      <div class="text-[9px] uppercase font-bold text-neutral-400 mb-0.5">Expires</div>
+                      <div class="text-[12px] font-bold text-neutral-700 dark:text-neutral-300">
+                        {{ sslResult.result.metadata?.expires_at ? format(parseISO(sslResult.result.metadata.expires_at), 'MMM d, yyyy') : '—' }}
                       </div>
                     </div>
-                    <div class="mt-2 flex items-center justify-between">
-                      <span class="text-[10px] font-bold text-neutral-500">Validity</span>
-                      <UBadge :color="item.result.metadata?.days_remaining > 14 ? 'success' : 'warning'" variant="subtle" size="sm" class="font-black rounded-lg text-[9px]">
-                        {{ item.result.metadata?.days_remaining }} days left
+                    <div>
+                      <div class="text-[9px] uppercase font-bold text-neutral-400 mb-0.5">Validity</div>
+                      <UBadge :color="sslResult.result.metadata?.days_remaining > 14 ? 'success' : 'warning'" variant="subtle" size="sm" class="font-black rounded-lg text-[9px]">
+                        {{ sslResult.result.metadata?.days_remaining }} days left
                       </UBadge>
                     </div>
+                    <template v-if="sslResult.result.metadata?.ip">
+                      <div>
+                        <div class="text-[9px] uppercase font-bold text-neutral-400 mb-0.5">IP</div>
+                        <div class="text-[12px] font-mono font-bold text-neutral-700 dark:text-neutral-300">{{ sslResult.result.metadata.ip }}</div>
+                      </div>
+                      <div v-if="sslResult.result.metadata?.country">
+                        <div class="text-[9px] uppercase font-bold text-neutral-400 mb-0.5">Location</div>
+                        <div class="text-[12px] font-bold text-neutral-700 dark:text-neutral-300">
+                          {{ sslResult.result.metadata.country }}{{ sslResult.result.metadata.city ? `, ${sslResult.result.metadata.city}` : '' }}
+                        </div>
+                      </div>
+                      <div v-if="sslResult.result.metadata?.isp">
+                        <div class="text-[9px] uppercase font-bold text-neutral-400 mb-0.5">Provider</div>
+                        <div class="text-[12px] font-bold text-neutral-700 dark:text-neutral-300">{{ sslResult.result.metadata.isp }}</div>
+                      </div>
+                    </template>
+                    <div v-if="sslResult.result.response_time_ms != null" class="ml-auto">
+                      <div class="text-[9px] uppercase font-bold text-neutral-400 mb-0.5">Response</div>
+                      <div class="text-[12px] font-black text-neutral-900 dark:text-white">{{ sslResult.result.response_time_ms }}ms</div>
+                    </div>
+                  </div>
+                  <!-- Down: error message -->
+                  <div v-else class="text-[10px] text-red-500 font-medium bg-red-50 dark:bg-red-500/10 p-2 rounded-lg border border-red-500/20">
+                    {{ sslResult.result.error_message }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Other checks — responsive grid -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div v-for="item in nonSslResults" :key="item.config_id" class="glass-card rounded-2xl border border-neutral-200/50 dark:border-white/10 overflow-hidden shadow-sm h-full flex flex-col transition-all hover:shadow-md hover:border-primary-500/30">
+                  <div class="bg-neutral-50 dark:bg-white/5 border-b border-neutral-200/50 dark:border-white/10 p-4 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                      <UIcon :name="getConfigIcon(item.type_slug)" class="text-primary-500 text-xl" />
+                      <h3 class="font-black text-neutral-900 dark:text-white uppercase tracking-wider text-sm">{{ item.type_name }}</h3>
+                    </div>
+                    <UBadge :color="item.result.status === 'up' ? 'success' : 'error'" variant="subtle" size="sm" class="font-black rounded-lg uppercase text-[9px]">{{ item.result.status }}</UBadge>
                   </div>
 
-                  <div v-if="item.result.status === 'down'" class="text-[10px] text-red-500 font-medium bg-red-50 dark:bg-red-500/10 p-2 rounded-lg border border-red-500/20">
-                    {{ item.result.error_message }}
-                  </div>
-
-                  <!-- Server Metadata -->
-                  <div v-if="item.result.metadata?.ip" class="pt-3 border-t border-neutral-100 dark:border-white/5 space-y-1.5">
-                    <div class="flex items-center justify-between text-[10px]">
-                      <div class="flex items-center gap-1.5 text-neutral-400 font-bold uppercase tracking-wider">
-                        <UIcon name="i-heroicons-computer-desktop" class="w-3 h-3" />
-                        IP
-                      </div>
-                      <span class="font-mono font-bold text-neutral-700 dark:text-neutral-300">{{ item.result.metadata.ip }}</span>
-                    </div>
-                    
-                    <div v-if="item.result.metadata?.country" class="flex items-center justify-between text-[10px]">
-                      <div class="flex items-center gap-1.5 text-neutral-400 font-bold uppercase tracking-wider">
-                        <UIcon name="i-heroicons-map-pin" class="w-3 h-3" />
-                        Location
-                      </div>
-                      <span class="font-bold text-neutral-700 dark:text-neutral-300">
-                        {{ item.result.metadata.country }}{{ item.result.metadata.city ? `, ${item.result.metadata.city}` : '' }}
-                      </span>
+                  <div class="p-4 flex-1 flex flex-col gap-3">
+                    <div class="flex items-center justify-between">
+                      <span class="text-[11px] font-bold text-neutral-500">{{ formatDateTime(item.result.checked_at) }}</span>
+                      <span v-if="item.result.response_time_ms != null" class="text-sm font-black text-neutral-900 dark:text-white">{{ item.result.response_time_ms }}ms</span>
                     </div>
 
-                    <div v-if="item.result.metadata?.isp" class="flex items-center justify-between text-[10px]">
-                      <div class="flex items-center gap-1.5 text-neutral-400 font-bold uppercase tracking-wider">
-                        <UIcon name="i-heroicons-building-office" class="w-3 h-3" />
-                        Provider
+                    <div v-if="item.result.status === 'down'" class="text-[10px] text-red-500 font-medium bg-red-50 dark:bg-red-500/10 p-2 rounded-lg border border-red-500/20">
+                      {{ item.result.error_message }}
+                    </div>
+
+                    <div v-if="item.result.metadata?.ip" class="pt-3 border-t border-neutral-100 dark:border-white/5 space-y-1.5">
+                      <div class="flex items-center justify-between text-[10px]">
+                        <div class="flex items-center gap-1.5 text-neutral-400 font-bold uppercase tracking-wider">
+                          <UIcon name="i-heroicons-computer-desktop" class="w-3 h-3" />
+                          IP
+                        </div>
+                        <span class="font-mono font-bold text-neutral-700 dark:text-neutral-300">{{ item.result.metadata.ip }}</span>
                       </div>
-                      <span class="font-bold text-neutral-700 dark:text-neutral-300 truncate max-w-[140px]" :title="item.result.metadata.isp">
-                        {{ item.result.metadata.isp }}
-                      </span>
+                      <div v-if="item.result.metadata?.country" class="flex items-center justify-between text-[10px]">
+                        <div class="flex items-center gap-1.5 text-neutral-400 font-bold uppercase tracking-wider">
+                          <UIcon name="i-heroicons-map-pin" class="w-3 h-3" />
+                          Location
+                        </div>
+                        <span class="font-bold text-neutral-700 dark:text-neutral-300">
+                          {{ item.result.metadata.country }}{{ item.result.metadata.city ? `, ${item.result.metadata.city}` : '' }}
+                        </span>
+                      </div>
+                      <div v-if="item.result.metadata?.isp" class="flex items-center justify-between text-[10px]">
+                        <div class="flex items-center gap-1.5 text-neutral-400 font-bold uppercase tracking-wider">
+                          <UIcon name="i-heroicons-building-office" class="w-3 h-3" />
+                          Provider
+                        </div>
+                        <span class="font-bold text-neutral-700 dark:text-neutral-300 truncate max-w-[140px]" :title="item.result.metadata.isp">
+                          {{ item.result.metadata.isp }}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+
             </div>
             <div v-if="!historyData?.latest_results?.length" class="p-12 text-center glass-card rounded-2xl border border-neutral-200/50 dark:border-white/10 mt-4">
                <p class="text-neutral-500">{{ t('history.recent.no_results') }}</p>
@@ -248,6 +286,12 @@ const { token } = useAuth();
 const sitesStore = useSitesStore();
 const localePath = useLocalePath();
 const siteId = route.params.id;
+
+const backTo = computed(() => {
+  const prev = import.meta.client ? window.history.state?.back as string | undefined : undefined
+  if (prev?.includes('/dashboard')) return localePath('/dashboard')
+  return localePath('/sites')
+})
 
 // Initialize current date from URL query or default to today
 const getWeekFromQuery = () => {
@@ -327,14 +371,14 @@ const getConfigIcon = (slug: string) => {
 
 const tabs = computed(() => [
   {
-    label: t('history.tabs.incidents'),
-    slot: 'incidents',
-    icon: 'i-heroicons-exclamation-triangle'
-  },
-  {
     label: t('history.tabs.recent'),
     slot: 'recent',
     icon: 'i-heroicons-clock'
+  },
+  {
+    label: t('history.tabs.incidents'),
+    slot: 'incidents',
+    icon: 'i-heroicons-exclamation-triangle'
   }
 ]);
 
@@ -391,6 +435,9 @@ watch(() => route.query.week, (newWeek) => {
 }, { immediate: false });
 
 const incidents = computed(() => historyData.value?.incidents || []);
+
+const sslResult = computed(() => historyData.value?.latest_results?.find((r: any) => r.type_slug === 'ssl') ?? null);
+const nonSslResults = computed(() => historyData.value?.latest_results?.filter((r: any) => r.type_slug !== 'ssl') ?? []);
 
 const summaryCards = computed(() => {
   if (!historyData.value || !historyData.value.stats || historyData.value.stats.length === 0) return [];

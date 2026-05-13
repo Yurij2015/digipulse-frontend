@@ -184,7 +184,7 @@
                 <UIcon name="i-heroicons-bolt" class="w-3 h-3" />
                 {{ t('dashboard.response_time') }}
               </span>
-              <div class="text-xl font-semibold tabular-nums flex items-end gap-1" :class="getResponseTimeColor(website.responseTime)">
+              <div v-if="website.responseTime != null" class="text-xl font-semibold tabular-nums flex items-end gap-1" :class="getResponseTimeColor(website.responseTime)">
                 <AnimatedNumber :value="website.responseTime" :precision="0" :durationMs="600" />
                 <span class="text-[10px] font-semibold opacity-50 mb-0.5">ms</span>
               </div>
@@ -311,8 +311,8 @@ const statusOptions = [
 
 const summaryStats = computed(() => [
   { label: t('dashboard.total_nodes'), value: websites.value.length, icon: 'i-heroicons-server-stack' },
-  { label: t('dashboard.active_nodes'), value: websites.value.filter((s: any) => s.status === 'Online').length, icon: 'i-heroicons-check-circle' },
-  { label: t('dashboard.issues_detected'), value: websites.value.filter((s: any) => s.status !== 'Online').length, icon: 'i-heroicons-exclamation-triangle' },
+  { label: t('dashboard.active_nodes'), value: websites.value.filter((s: any) => s.status === 'Online' || s.status === 'Pending').length, icon: 'i-heroicons-check-circle' },
+  { label: t('dashboard.issues_detected'), value: websites.value.filter((s: any) => s.status === 'Offline' || s.status === 'Warning').length, icon: 'i-heroicons-exclamation-triangle' },
 ]);
 
 const filteredWebsites = computed(() => {
