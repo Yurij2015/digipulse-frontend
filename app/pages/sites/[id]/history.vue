@@ -369,18 +369,23 @@ const getConfigIcon = (slug: string) => {
   }
 };
 
-const tabs = computed(() => [
-  {
-    label: t('history.tabs.recent'),
-    slot: 'recent',
-    icon: 'i-heroicons-clock'
-  },
-  {
-    label: t('history.tabs.incidents'),
-    slot: 'incidents',
-    icon: 'i-heroicons-exclamation-triangle'
+const tabs = computed(() => {
+  const items = [
+    {
+      label: t('history.tabs.recent'),
+      slot: 'recent',
+      icon: 'i-heroicons-clock'
+    }
+  ]
+  if (incidents.value.length > 0) {
+    items.push({
+      label: t('history.tabs.incidents'),
+      slot: 'incidents',
+      icon: 'i-heroicons-exclamation-triangle'
+    })
   }
-]);
+  return items
+});
 
 const fetchData = async () => {
     pending.value = true;
