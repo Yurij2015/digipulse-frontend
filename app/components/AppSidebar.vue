@@ -99,6 +99,7 @@ async function handleLogout() {
           </div>
         </NuxtLink>
 
+        <ClientOnly><EmailVerificationBanner /></ClientOnly>
         <ClientOnly><BetaBanner /></ClientOnly>
 
         <div class="flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-neutral-50 dark:bg-white/5">

@@ -53,7 +53,12 @@
       "error_title": "Weryfikacja nieudana",
       "error_desc": "Link weryfikacyjny jest nieprawidłowy lub wygasł.",
       "verifying": "WERYFIKACJA",
-      "back_to_login": "Przejdź do logowania"
+      "back_to_login": "Przejdź do logowania",
+      "verify_banner": "Potwierdź email, aby rozpocząć monitoring.",
+      "resend": "Wyślij ponownie",
+      "resend_sent": "Email wysłany!",
+      "resend_wait": "Poczekaj przed ponownym wysłaniem",
+      "verify_email_blocked": "Najpierw potwierdź email"
     }
   },
   "dashboard": {

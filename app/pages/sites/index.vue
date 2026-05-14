@@ -189,13 +189,14 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { useI18n, useLocalePath } from '#i18n';
-import { useAuth, useRuntimeConfig } from '#imports';
+import { useAuth, useRuntimeConfig, useToast } from '#imports';
 import { useSitesStore } from '~/stores/sites';
 
 const { t } = useI18n();
 const localePath = useLocalePath();
 const config = useRuntimeConfig();
 const { token, user } = useAuth();
+const toast = useToast();
 const { $echo } = useNuxtApp() as any;
 const sitesStore = useSitesStore();
 const realtimeDebugEnabled = import.meta.client && localStorage.getItem('debug:realtime') === '1';
@@ -295,6 +296,10 @@ const refreshSites = async () => {
 
 
 function openAddModal() {
+  if (user.value && !user.value.is_verified) {
+    toast.add({ title: t('auth.verify_email.verify_email_blocked'), color: 'warning' });
+    return;
+  }
   if (!user.value?.is_admin && sites.value.length >= 3) {
     isLimitModalOpen.value = true;
     return;

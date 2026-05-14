@@ -5,6 +5,7 @@ export interface User {
   first_name: string;
   last_name: string;
   email_verified_at: string | null;
+  is_verified: boolean;
   created_at: string;
   updated_at: string;
   telegram_chat_id: string | null;

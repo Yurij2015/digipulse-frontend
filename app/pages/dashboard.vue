@@ -417,6 +417,10 @@ function handleRefresh() {
 }
 
 function openAddModal() {
+  if (user.value && !user.value.is_verified) {
+    toast.add({ title: t('auth.verify_email.verify_email_blocked'), color: 'warning' });
+    return;
+  }
   if (!user.value?.is_admin && websites.value.length >= 3) {
     isLimitModalOpen.value = true;
     return;

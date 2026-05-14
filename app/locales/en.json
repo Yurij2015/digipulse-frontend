@@ -53,7 +53,12 @@
       "error_title": "Verification Failed",
       "error_desc": "The verification link is invalid or has expired.",
       "verifying": "VERIFYING",
-      "back_to_login": "Go to Login"
+      "back_to_login": "Go to Login",
+      "verify_banner": "Confirm your email to start monitoring.",
+      "resend": "Resend",
+      "resend_sent": "Email sent!",
+      "resend_wait": "Please wait before resending",
+      "verify_email_blocked": "Please verify your email first"
     }
   },
   "dashboard": {
