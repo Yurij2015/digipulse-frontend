@@ -59,6 +59,9 @@ jobs:
           printf 'NUXT_PUBLIC_SHOW_BETA_BANNER=%s\n' "${NUXT_PUBLIC_SHOW_BETA_BANNER}" >> .env
           echo ".env created"
 
+      - name: Run Tests
+        run: pnpm run test
+
       - name: Build project
         run: pnpm run build
 
