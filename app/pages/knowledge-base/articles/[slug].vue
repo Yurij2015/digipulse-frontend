@@ -35,12 +35,15 @@ const siteUrl = computed(() => (config.public.siteUrl as string) || url.origin)
 
 const articleTitle = computed(() => lt(article.value?.meta?.title) || lt(article.value?.title))
 const articleDescription = computed(() => lt(article.value?.meta?.description) || lt(article.value?.excerpt))
+function resolveImageUrl(path: string | null | undefined): string | null {
+  if (!path) return null
+  return path.startsWith('http') ? path : `${siteUrl.value}${path}`
+}
+
 const articleImage = computed(() =>
-  article.value?.meta?.og_image
-    ? `${siteUrl.value}${article.value.meta.og_image}`
-    : article.value?.cover_image
-      ? `${siteUrl.value}${article.value.cover_image}`
-      : `${url.origin}/og-image-social.png`
+  resolveImageUrl(article.value?.meta?.og_image)
+  ?? resolveImageUrl(article.value?.cover_image)
+  ?? `${url.origin}/og-image-social.png`
 )
 
 const articleBodyHtml = computed((): string => {
