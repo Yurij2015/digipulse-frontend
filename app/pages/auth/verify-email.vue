@@ -32,14 +32,14 @@
             {{ status === 'success' ? t('auth.verify_email.success_desc') : t('auth.verify_email.error_desc') }}
           </p>
 
-          <UButton 
-            block 
-            size="xl" 
+          <UButton
+            block
+            size="xl"
             color="primary"
             class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-black py-4 rounded-xl shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all border-0"
-            :to="localePath('/auth/login')"
+            :to="status === 'success' ? localePath('/dashboard') : localePath('/auth/login')"
           >
-            {{ t('auth.verify_email.back_to_login') }}
+            {{ status === 'success' ? t('dashboard.title') : t('auth.verify_email.back_to_login') }}
           </UButton>
         </div>
       </UCard>
@@ -51,6 +51,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { useI18n, useLocalePath } from '#i18n';
 import { useRoute, useRuntimeConfig, useToast } from '#imports';
+import { useAuth } from '#imports';
 
 const { t } = useI18n();
 const localePath = useLocalePath();
@@ -58,6 +59,7 @@ const route = useRoute();
 const config = useRuntimeConfig();
 const toast = useToast();
 
+const { fetchUser } = useAuth();
 const loading = ref(true);
 const status = ref<'success' | 'error' | null>(null);
 
@@ -67,7 +69,7 @@ const subtitle = computed(() => {
 });
 
 onMounted(async () => {
-  const { id, hash, signature } = route.query;
+  const { id, hash, expires, signature } = route.query;
 
   if (!id || !hash || !signature) {
     status.value = 'error';
@@ -86,10 +88,12 @@ onMounted(async () => {
       body: {
         id: Number(id),
         hash: hash as string,
+        ...(expires ? { expires: Number(expires) } : {}),
         signature: signature as string
       }
     });
 
+    await fetchUser();
     status.value = 'success';
   } catch (error: any) {
     console.error('Verification Error:', error);

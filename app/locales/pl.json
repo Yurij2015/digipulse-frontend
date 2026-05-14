@@ -262,7 +262,9 @@
       "response_time": "Czas odpowiedzi (ms)",
       "uptime": "Dostępność (%)",
       "incidents": "Incydenty"
-    }
+    },
+    "disabled": "Wyłączono",
+    "no_data": "Brak danych"
   },
   "profile": {
     "title": "Profil użytkownika",
