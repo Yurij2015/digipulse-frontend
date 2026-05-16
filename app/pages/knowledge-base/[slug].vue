@@ -16,7 +16,7 @@ function lt(field: unknown): string {
 
 const { data, pending, error } = await useAsyncData(
   `kb-category-v2-${slug}`,
-  () => $fetch<any>(`${apiBase}/api/knowledge-base/categories/${slug}`, {
+  () => $fetch<any>(`${apiBase}/api/v1/knowledge-base/categories/${slug}`, {
     headers: { 'X-Frontend-Key': config.public.frontendKey as string },
   }),
   {

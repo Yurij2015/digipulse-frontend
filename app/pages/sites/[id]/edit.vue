@@ -160,7 +160,7 @@ async function fetchData() {
   pageLoading.value = true;
   try {
     const { $fetch } = useNuxtApp();
-    const typesResponse = await ($fetch as any)(`${config.public.apiBase}/api/check-types`, {
+    const typesResponse = await ($fetch as any)(`${config.public.apiBase}/api/v1/check-types`, {
       headers: {
         'Accept': 'application/json',
         'X-Frontend-Key': config.public.frontendKey as string,
@@ -174,7 +174,7 @@ async function fetchData() {
       state.value.selectedChecks[type.id] = { enabled: false, params: {} };
     });
 
-    const siteResponse = await ($fetch as any)(`${config.public.apiBase}/api/sites/${siteId}`, {
+    const siteResponse = await ($fetch as any)(`${config.public.apiBase}/api/v1/sites/${siteId}`, {
       headers: {
         'Accept': 'application/json',
         'X-Frontend-Key': config.public.frontendKey as string,
@@ -221,7 +221,7 @@ async function onSubmit() {
         params: item.params
       }));
 
-    await ($fetch as any)(`${config.public.apiBase}/api/sites/${siteId}`, {
+    await ($fetch as any)(`${config.public.apiBase}/api/v1/sites/${siteId}`, {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',

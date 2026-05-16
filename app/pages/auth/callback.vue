@@ -45,7 +45,7 @@ onMounted(async () => {
 
     // If no user data in URL, fetch it from backend
     if (!user) {
-      const response = await $fetch<any>(`${config.public.apiBase}/api/me`, {
+      const response = await $fetch<any>(`${config.public.apiBase}/api/v1/me`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'X-Frontend-Key': config.public.frontendKey as string

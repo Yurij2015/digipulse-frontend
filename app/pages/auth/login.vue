@@ -198,7 +198,7 @@ async function onSubmit() {
   loading.value = true;
   
   try {
-    const response = await $fetch<AuthResponse>(`${config.public.apiBase}/api/login`, {
+    const response = await $fetch<AuthResponse>(`${config.public.apiBase}/api/v1/login`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

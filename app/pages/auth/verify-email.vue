@@ -78,7 +78,7 @@ onMounted(async () => {
   }
 
   try {
-    await $fetch(`${config.public.apiBase}/api/email/verify`, {
+    await $fetch(`${config.public.apiBase}/api/v1/email/verify`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

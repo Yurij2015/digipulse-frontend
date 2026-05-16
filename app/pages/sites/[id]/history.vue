@@ -405,10 +405,10 @@ const fetchData = async () => {
     pending.value = true;
     try {
         const [siteRes, histRes] = await Promise.all([
-          !site.value ? (sitesStore.sites.find((s: any) => String(s.id) === String(siteId)) ? Promise.resolve({ data: sitesStore.sites.find((s: any) => String(s.id) === String(siteId)) }) : $fetch<any>(`${config.public.apiBase}/api/sites/${siteId}`, {
+          !site.value ? (sitesStore.sites.find((s: any) => String(s.id) === String(siteId)) ? Promise.resolve({ data: sitesStore.sites.find((s: any) => String(s.id) === String(siteId)) }) : $fetch<any>(`${config.public.apiBase}/api/v1/sites/${siteId}`, {
              headers: { 'Accept': 'application/json', 'X-Frontend-Key': config.public.frontendKey as string, 'Authorization': `Bearer ${token.value}` }
           })) : Promise.resolve({ data: site.value }),
-          $fetch<any>(`${config.public.apiBase}/api/sites/${siteId}/history`, {
+          $fetch<any>(`${config.public.apiBase}/api/v1/sites/${siteId}/history`, {
              params: { 
                week: weekParam.value
              },

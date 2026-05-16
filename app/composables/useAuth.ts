@@ -1,6 +1,7 @@
 import type { User, AuthResponse } from '~/types/auth';
 import { computed, useCookie, useRuntimeConfig } from '#imports';
 import { useSitesStore } from '~/stores/sites';
+import { useProjectsStore } from '~/stores/projects';
 
 export const useAuth = () => {
   // В Nuxt useCookie вже є реактивним станом.
@@ -31,9 +32,12 @@ export const useAuth = () => {
     token.value = null;
     user.value = null;
     
-    // Breaking circular dependency by calling store only when needed
+    // Breaking circular dependency by calling stores only when needed
     const sitesStore = useSitesStore();
     sitesStore.clearSites();
+
+    const projectsStore = useProjectsStore();
+    projectsStore.clearProjects();
   };
 
   const isAuthenticated = computed(() => !!token.value);
@@ -43,7 +47,7 @@ export const useAuth = () => {
     if (!token.value) return;
 
     try {
-      const response = await $fetch<{ user: User }>(`${config.public.apiBase}/api/me`, {
+      const response = await $fetch<{ user: User }>(`${config.public.apiBase}/api/v1/me`, {
         headers: {
           Authorization: `Bearer ${token.value}`,
           'X-Frontend-Key': config.public.frontendKey as string,

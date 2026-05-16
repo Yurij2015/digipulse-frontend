@@ -1,0 +1,17 @@
+[
+    {
+        "_comment": "Do not commit deployment-config.json. Set GitHub Actions Variables instead:",
+        "required_variables": [
+            "DEPLOY_SERVER_NAME",
+            "DEPLOY_SERVER_IP",
+            "DEPLOY_SERVER_PORT",
+            "DEPLOY_SERVER_USERNAME",
+            "DEPLOY_SERVER_PATH"
+        ],
+        "name": "digi-pulse-frontend",
+        "ip": "YOUR_SERVER_IP",
+        "port": "2229",
+        "username": "YOUR_SSH_USER",
+        "path": "/home/yurii/digi-pulse-frontend"
+    }
+]

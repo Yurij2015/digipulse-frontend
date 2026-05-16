@@ -47,11 +47,11 @@ export const useSitesStore = defineStore('sites', () => {
     };
   };
 
-  const fetchSites = async (force = false) => {
+  const fetchSites = async (force = false, projectId?: number | null) => {
     if (!token.value) return;
     
-    // Use cache if not forced and within TTL
-    if (!force && lastFetched.value && (Date.now() - lastFetched.value < CACHE_TTL) && sites.value.length > 0) {
+    // Use cache if not forced and within TTL (only when no project filter or same filter)
+    if (!force && lastFetched.value && (Date.now() - lastFetched.value < CACHE_TTL) && sites.value.length > 0 && !projectId) {
       return;
     }
 
@@ -59,7 +59,14 @@ export const useSitesStore = defineStore('sites', () => {
     error.value = null;
     
     try {
-      const data = await $fetch<any>(`${config.public.apiBase}/api/sites`, {
+      const params = new URLSearchParams();
+      if (projectId) {
+        params.set('project_id', String(projectId));
+      }
+      const queryString = params.toString();
+      const url = `${config.public.apiBase}/api/v1/sites${queryString ? `?${queryString}` : ''}`;
+
+      const data = await $fetch<any>(url, {
         headers: {
           'Accept': 'application/json',
           'X-Frontend-Key': config.public.frontendKey as string,
@@ -83,7 +90,7 @@ export const useSitesStore = defineStore('sites', () => {
   const fetchSiteById = async (siteId: number) => {
     if (!token.value) return;
 
-    const data = await $fetch<any>(`${config.public.apiBase}/api/sites/${siteId}`, {
+    const data = await $fetch<any>(`${config.public.apiBase}/api/v1/sites/${siteId}`, {
       headers: {
         'Accept': 'application/json',
         'X-Frontend-Key': config.public.frontendKey as string,

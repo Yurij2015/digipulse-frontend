@@ -30,7 +30,7 @@ useHead({
 
 const { data, pending, error } = await useAsyncData(
   'kb-categories-v2',
-  () => $fetch<any>(`${apiBase}/api/knowledge-base/categories`, {
+  () => $fetch<any>(`${apiBase}/api/v1/knowledge-base/categories`, {
     headers: { 'X-Frontend-Key': config.public.frontendKey as string },
   }),
   {

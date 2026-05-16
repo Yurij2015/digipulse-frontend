@@ -21,6 +21,7 @@ const userInitials = computed(() => {
 
 const links = computed(() => [
   { label: t('dashboard.title'), icon: 'i-heroicons-home', to: localePath('/dashboard') },
+  { label: t('projects.title'), icon: 'i-heroicons-folder', to: localePath('/projects') },
   { label: t('sites.title'), icon: 'i-heroicons-globe-alt', to: localePath('/sites') },
   { label: t('docs.title'), icon: 'i-heroicons-book-open', to: localePath('/knowledge-base') },
   { label: t('dashboard.settings'), icon: 'i-heroicons-cog-6-tooth', to: localePath('/settings') }
@@ -28,7 +29,7 @@ const links = computed(() => [
 
 async function handleLogout() {
   try {
-    await $fetch(`${config.public.apiBase}/api/logout`, {
+    await $fetch(`${config.public.apiBase}/api/v1/logout`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

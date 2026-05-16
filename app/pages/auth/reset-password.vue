@@ -145,7 +145,7 @@ async function onSubmit() {
 
   loading.value = true;
   try {
-    await $fetch(`${config.public.apiBase}/api/reset-password`, {
+    await $fetch(`${config.public.apiBase}/api/v1/reset-password`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

@@ -25,7 +25,7 @@ export default defineNuxtPlugin(() => {
       key: config.public.pusherAppKey,
       cluster: config.public.pusherAppCluster,
       forceTLS: true,
-      authEndpoint: `${config.public.apiBase}/api/broadcasting/auth`,
+      authEndpoint: `${config.public.apiBase}/api/v1/broadcasting/auth`,
       auth: {
         headers: {
           Authorization: `Bearer ${token.value}`,

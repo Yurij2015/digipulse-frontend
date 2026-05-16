@@ -18,7 +18,7 @@ async function resend() {
 
   sending.value = true
   try {
-    await $fetch(`${config.public.apiBase}/api/email/verification-notification`, {
+    await $fetch(`${config.public.apiBase}/api/v1/email/verification-notification`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',

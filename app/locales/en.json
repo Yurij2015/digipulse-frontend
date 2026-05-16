@@ -122,7 +122,23 @@
     "keyword_placeholder": "e.g.: 'Product sold out'",
     "edit_title": "Edit Node",
     "edit_subtitle": "Update your infrastructure monitoring configuration.",
-    "save_changes": "Save Changes"
+    "save_changes": "Save Changes",
+    "project_selection": "Project"
+  },
+  "projects": {
+    "title": "Projects",
+    "subtitle": "Group your sites into projects for better organization.",
+    "add_project": "Add Project",
+    "no_projects": "No projects yet.",
+    "select_project": "Select Project",
+    "no_project": "No Project",
+    "name": "Project Name",
+    "description": "Description",
+    "sites_count": "{count} sites",
+    "delete_confirm": "Delete Project?",
+    "delete_desc": "Are you sure you want to delete this project? Sites within this project will be unassigned but not deleted.",
+    "edit_project": "Edit Project",
+    "view_sites": "View Sites"
   },
   "support": {
     "title": "Support Center",

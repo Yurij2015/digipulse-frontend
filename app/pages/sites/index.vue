@@ -9,6 +9,13 @@
         <div>
           <h1 class="text-4xl font-black text-neutral-900 dark:text-white mb-3">{{ t('sites.title') }}</h1>
           <p class="text-neutral-500 font-medium">{{ t('sites.subtitle') }}</p>
+          <div v-if="projectFilter" class="mt-3 flex items-center gap-2">
+            <UBadge variant="subtle" color="primary" class="font-bold text-xs px-3 py-1 rounded-lg">
+              <UIcon name="i-heroicons-folder" class="mr-1" />
+              {{ activeProjectName || `Project #${projectFilter}` }}
+            </UBadge>
+            <UButton size="xs" variant="ghost" color="neutral" icon="i-heroicons-x-mark" :to="localePath('/sites')" class="cursor-pointer" />
+          </div>
         </div>
         <UButton size="xl" icon="i-heroicons-plus-circle" class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold px-8 rounded-xl hover:scale-105 transition-transform cursor-pointer" @click="openAddModal">
           {{ t('sites.add_node') }}
@@ -28,7 +35,7 @@
           />
         </div>
 
-        <UTable :data="filteredRows" :columns="columns" class="w-full">
+        <UTable v-if="filteredRows.length > 0" :data="filteredRows" :columns="columns" class="w-full">
           <!-- Name Column -->
           <template #name-cell="{ row }">
             <div class="flex items-center gap-3">
@@ -144,13 +151,19 @@
           </template>
         </UTable>
 
-        <!-- Empty State -->
-        <div v-if="filteredRows.length === 0" class="p-20 text-center">
-          <div class="w-20 h-20 rounded-3xl bg-neutral-50 dark:bg-white/2 flex items-center justify-center text-neutral-300 dark:text-neutral-700 mx-auto mb-6">
-            <UIcon name="i-heroicons-circle-stack" class="text-4xl" />
+        <!-- Empty State with Skeleton -->
+        <div v-if="filteredRows.length === 0" class="relative">
+          <TableSkeleton :rows="4" :columns="5" :actions="3" />
+          <div v-if="sitesStore.lastFetched !== null" class="absolute inset-0 flex flex-col items-center justify-center bg-white/20 dark:bg-neutral-950/20 backdrop-blur-[1px]">
+            <div class="w-20 h-20 rounded-3xl bg-neutral-50 dark:bg-white/5 flex items-center justify-center text-neutral-300 dark:text-neutral-700 mx-auto mb-6">
+              <UIcon name="i-heroicons-circle-stack" class="text-4xl" />
+            </div>
+            <h3 class="text-xl font-black text-neutral-900 dark:text-white mb-2">{{ t('sites.empty_title') }}</h3>
+            <p class="text-neutral-500 max-w-xs mx-auto text-center mb-6">{{ t('sites.empty_desc') }}</p>
+            <UButton icon="i-heroicons-plus-circle" class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold px-6 rounded-xl hover:scale-105 transition-transform cursor-pointer" @click="openAddModal">
+              {{ t('sites.add_node') }}
+            </UButton>
           </div>
-          <h3 class="text-xl font-black text-neutral-900 dark:text-white mb-2">{{ t('sites.empty_title') }}</h3>
-          <p class="text-neutral-500 max-w-xs mx-auto">{{ t('sites.empty_desc') }}</p>
         </div>
       </div>
     </main>
@@ -189,16 +202,19 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { useI18n, useLocalePath } from '#i18n';
-import { useAuth, useRuntimeConfig, useToast } from '#imports';
+import { useAuth, useRuntimeConfig, useToast, useRoute } from '#imports';
 import { useSitesStore } from '~/stores/sites';
+import { useProjectsStore } from '~/stores/projects';
 
 const { t } = useI18n();
 const localePath = useLocalePath();
 const config = useRuntimeConfig();
+const route = useRoute();
 const { token, user } = useAuth();
 const toast = useToast();
 const { $echo } = useNuxtApp() as any;
 const sitesStore = useSitesStore();
+const projectsStore = useProjectsStore();
 const realtimeDebugEnabled = import.meta.client && localStorage.getItem('debug:realtime') === '1';
 
 // --- State ---
@@ -213,6 +229,18 @@ const isSiteModalOpen = ref(false);
 const editingSiteId = ref<number | null>(null);
 const selectedSite = ref<any>(null);
 
+// Project filter from query param
+const projectFilter = computed(() => {
+  const val = route.query.project;
+  return val ? Number(val) : null;
+});
+
+const activeProjectName = computed(() => {
+  if (!projectFilter.value) return null;
+  const project = projectsStore.projects.find(p => p.id === projectFilter.value);
+  return project?.name || null;
+});
+
 const columns = computed(() => [
   { accessorKey: 'name', header: t('sites.table.name') },
   { accessorKey: 'url', header: t('sites.table.url') },
@@ -223,21 +251,36 @@ const columns = computed(() => [
 ]);
 
 const filteredRows = computed(() => {
-  if (!search.value) return sites.value;
-  return sites.value.filter((site) => {
-    return site.name.toLowerCase().includes(search.value.toLowerCase()) || 
-           site.url.toLowerCase().includes(search.value.toLowerCase());
-  });
+  let result = sites.value;
+
+  // Search text filter only — project filtering is done server-side
+  if (search.value) {
+    const q = search.value.toLowerCase();
+    result = result.filter((site) => {
+      return site.name.toLowerCase().includes(q) || 
+             site.url.toLowerCase().includes(q);
+    });
+  }
+
+  return result;
 });
 
 const showSitesLoader = computed(() => {
-  return isLoading.value && sites.value.length === 0;
+  return (isLoading.value && sites.value.length === 0) || sitesStore.lastFetched === null;
 });
 
 // Initial load
 onMounted(async () => {
     if (token.value) {
-        await sitesStore.fetchSites();
+        await sitesStore.fetchSites(true, projectFilter.value);
+        projectsStore.fetchProjects();
+    }
+});
+
+// Re-fetch when project filter changes (e.g. clearing the filter)
+watch(projectFilter, async (newProjectId) => {
+    if (token.value) {
+        await sitesStore.fetchSites(true, newProjectId);
     }
 });
 
@@ -291,7 +334,7 @@ onUnmounted(() => {
 
 // Refresh function
 const refreshSites = async () => {
-    await sitesStore.fetchSites(true);
+    await sitesStore.fetchSites(true, projectFilter.value);
 };
 
 
@@ -325,7 +368,7 @@ async function handleDelete() {
   
   isDeleting.value = true;
   try {
-    await $fetch(`${config.public.apiBase}/api/sites/${siteToDelete.value.id}`, {
+    await $fetch(`${config.public.apiBase}/api/v1/sites/${siteToDelete.value.id}`, {
       method: 'DELETE',
       headers: {
         'Accept': 'application/json',

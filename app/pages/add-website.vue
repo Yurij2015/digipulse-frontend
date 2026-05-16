@@ -154,7 +154,7 @@ const intervalOptions = computed(() => [
 
 onMounted(async () => {
   try {
-    const response = await $fetch<{ data: CheckType[] }>(`${config.public.apiBase}/api/check-types`, {
+    const response = await $fetch<{ data: CheckType[] }>(`${config.public.apiBase}/api/v1/check-types`, {
       headers: {
         'Accept': 'application/json',
         'X-Frontend-Key': config.public.frontendKey as string,
@@ -190,7 +190,7 @@ async function onSubmit() {
         params: val.params
       }));
 
-    await $fetch(`${config.public.apiBase}/api/sites`, {
+    await $fetch(`${config.public.apiBase}/api/v1/sites`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

@@ -465,7 +465,7 @@ const onUpdateProfile = async () => {
   isUpdatingProfile.value = true;
 
   try {
-    await $fetch(`${config.public.apiBase}/api/profile`, {
+    await $fetch(`${config.public.apiBase}/api/v1/profile`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token.value}`,
@@ -501,7 +501,7 @@ const updateNotificationSettings = async () => {
   isUpdatingSettings.value = true;
   
   try {
-    await $fetch(`${config.public.apiBase}/api/profile`, {
+    await $fetch(`${config.public.apiBase}/api/v1/profile`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token.value}`,
@@ -544,7 +544,7 @@ const onChangePassword = async () => {
   isChangingPassword.value = true;
 
   try {
-    await $fetch(`${config.public.apiBase}/api/profile/password`, {
+    await $fetch(`${config.public.apiBase}/api/v1/profile/password`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token.value}`,
@@ -600,7 +600,7 @@ const connectTelegram = async () => {
   try {
     isTelegramConnecting.value = true;
     
-    const response = await $fetch<{ url: string }>(`${config.public.apiBase}/api/telegram/connect`, {
+    const response = await $fetch<{ url: string }>(`${config.public.apiBase}/api/v1/telegram/connect`, {
       headers: {
         Authorization: `Bearer ${token.value}`,
         'X-Frontend-Key': config.public.frontendKey as string,
@@ -639,7 +639,7 @@ const confirmDisconnect = async () => {
 
   isTelegramDisconnecting.value = true;
   try {
-    await $fetch(`${config.public.apiBase}/api/telegram/disconnect`, {
+    await $fetch(`${config.public.apiBase}/api/v1/telegram/disconnect`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token.value}`,
@@ -648,7 +648,7 @@ const confirmDisconnect = async () => {
       }
     });
     
-    // Update local user state from Single Source of Truth (/api/me)
+    // Update local user state from Single Source of Truth (/api/v1/me)
     await fetchUser();
 
     toast.add({
@@ -677,7 +677,7 @@ const confirmDeleteAccount = async () => {
   isDeletingAccount.value = true;
 
   try {
-    await $fetch(`${config.public.apiBase}/api/profile`, {
+    await $fetch(`${config.public.apiBase}/api/v1/profile`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token.value}`,
@@ -715,7 +715,7 @@ const resendVerification = async () => {
   isResendingVerification.value = true;
 
   try {
-    await $fetch(`${config.public.apiBase}/api/email/verification-notification`, {
+    await $fetch(`${config.public.apiBase}/api/v1/email/verification-notification`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token.value}`,

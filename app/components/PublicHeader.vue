@@ -61,6 +61,6 @@ const localePath = useLocalePath()
 const { isAuthenticated } = useAuth()
 
 const show = computed(() => {
-  return !route.path.match(/^\/(?:uk|pl)?\/?(?:dashboard|sites|settings|support)/)
+  return !route.path.match(/^\/(?:uk|pl)?\/?(?:dashboard|sites|settings|support|projects)/)
 })
 </script>

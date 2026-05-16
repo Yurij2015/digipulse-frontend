@@ -34,7 +34,7 @@ const priorities = [
 const fetchTickets = async () => {
   ticketsLoading.value = true
   try {
-    const data = await $fetch(`${config.public.apiBase}/api/support/tickets`, {
+    const data = await $fetch(`${config.public.apiBase}/api/v1/support/tickets`, {
       headers: {
         'X-Frontend-Key': config.public.frontendKey,
         'Authorization': `Bearer ${token.value}`
@@ -57,7 +57,7 @@ const fetchTickets = async () => {
 const fetchMessages = async (ticketId: number) => {
   messagesLoading.value = true
   try {
-    const data = await $fetch(`${config.public.apiBase}/api/support/tickets/${ticketId}`, {
+    const data = await $fetch(`${config.public.apiBase}/api/v1/support/tickets/${ticketId}`, {
       headers: {
         'X-Frontend-Key': config.public.frontendKey,
         'Authorization': `Bearer ${token.value}`
@@ -81,7 +81,7 @@ const selectTicket = (ticket: any) => {
 const onSubmit = async () => {
   loading.value = true
   try {
-    const response = await $fetch(`${config.public.apiBase}/api/support/tickets`, {
+    const response = await $fetch(`${config.public.apiBase}/api/v1/support/tickets`, {
       method: 'POST',
       body: {
         ...state,
@@ -122,7 +122,7 @@ const sendReply = async () => {
   
   isSendingReply.value = true
   try {
-    const data = await $fetch(`${config.public.apiBase}/api/support/tickets/${activeTicket.value.id}/reply`, {
+    const data = await $fetch(`${config.public.apiBase}/api/v1/support/tickets/${activeTicket.value.id}/reply`, {
       method: 'POST',
       body: { message: replyMessage.value },
       headers: {

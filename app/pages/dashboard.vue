@@ -105,6 +105,14 @@
               {{ website.status }}
             </div>
           </div>
+          
+          <!-- Project Badge -->
+          <div v-if="website.project" class="mb-4">
+            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-primary-500/10 text-primary-500 text-[10px] font-black uppercase tracking-wider border border-primary-500/20">
+              <UIcon name="i-heroicons-folder" class="w-3 h-3" />
+              {{ website.project.name }}
+            </span>
+          </div>
           <!-- Monitoring Badges Section -->
           <div v-if="(website.configurations?.length || website.checks?.length)" class="flex flex-wrap gap-1.5 mb-6 min-h-5.5">
             <UBadge 
@@ -446,7 +454,7 @@ async function handleDelete() {
   
   isDeleting.value = true;
   try {
-    await $fetch(`${config.public.apiBase}/api/sites/${siteToDelete.value.id}`, {
+    await $fetch(`${config.public.apiBase}/api/v1/sites/${siteToDelete.value.id}`, {
       method: 'DELETE',
       headers: {
         'Accept': 'application/json',

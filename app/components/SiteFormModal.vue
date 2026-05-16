@@ -3,6 +3,9 @@ import { ref, computed, watch } from 'vue';
 import { object, string } from 'yup';
 import { useI18n } from '#i18n';
 import { useAuth, useRuntimeConfig } from '#imports';
+import { useProjectsStore } from '~/stores/projects';
+
+const projectsStore = useProjectsStore();
 
 const props = defineProps<{
   siteId?: number | null;
@@ -32,8 +35,12 @@ const state = ref({
   name: '',
   url: '',
   interval: 300,
+  project_id: null as number | null,
   selectedChecks: {} as Record<number, { enabled: boolean; params: any }>
 });
+
+const isCreatingNewProject = ref(false);
+const newProjectName = ref('');
 
 const intervalOptions = computed(() => [
   { label: t('add_website.freq_60s'), value: 60 },
@@ -61,7 +68,7 @@ async function fetchData() {
   
   try {
     // 1. Fetch check types (always needed)
-    const typesResponse = await $fetch<any>(`${config.public.apiBase}/api/check-types`, {
+    const typesResponse = await $fetch<any>(`${config.public.apiBase}/api/v1/check-types`, {
       headers: {
         'Accept': 'application/json',
         'X-Frontend-Key': config.public.frontendKey as string,
@@ -71,12 +78,18 @@ async function fetchData() {
     
     const typesData = Array.isArray(typesResponse) ? typesResponse : (typesResponse?.data || []);
     checkTypes.value = typesData.filter((c: any) => c.is_active);
+
+    // Fetch projects
+    await projectsStore.fetchProjects();
     
     // Reset state before populating
+    isCreatingNewProject.value = false;
+    newProjectName.value = '';
     state.value = {
       name: '',
       url: '',
       interval: 300,
+      project_id: null,
       selectedChecks: {}
     };
     
@@ -92,7 +105,7 @@ async function fetchData() {
       // If we don't have enough data (like checks missing in the list object), try fetching
       if (!site || !site.checks) {
         try {
-          const siteResponse = await $fetch<any>(`${config.public.apiBase}/api/sites/${props.siteId}`, {
+          const siteResponse = await $fetch<any>(`${config.public.apiBase}/api/v1/sites/${props.siteId}`, {
             headers: {
               'Accept': 'application/json',
               'X-Frontend-Key': config.public.frontendKey as string,
@@ -110,6 +123,7 @@ async function fetchData() {
         state.value.name = site.name || '';
         state.value.url = site.url || '';
         state.value.interval = Number(site.update_interval || site.interval || 300);
+        state.value.project_id = site.project_id || null;
 
         // Support both backend formats: 'configurations' and 'checks'
         const configs = site.configurations || site.checks;
@@ -161,6 +175,19 @@ async function onSubmit() {
   formErrors.value = {};
   
   try {
+    if (isCreatingNewProject.value && newProjectName.value) {
+      try {
+        const newProject = await projectsStore.createProject(newProjectName.value);
+        if (newProject?.id) {
+          state.value.project_id = newProject.id;
+        }
+      } catch (e) {
+        console.error('Failed to create project inline:', e);
+        // Continue if it failed? Or stop? Better stop and show error.
+        return;
+      }
+    }
+
     const checks = Object.entries(state.value.selectedChecks)
       .filter(([_, val]) => val.enabled)
       .map(([id, val]) => ({
@@ -170,8 +197,8 @@ async function onSubmit() {
 
 
     const url = isEdit.value 
-      ? `${config.public.apiBase}/api/sites/${props.siteId}`
-      : `${config.public.apiBase}/api/sites`;
+      ? `${config.public.apiBase}/api/v1/sites/${props.siteId}`
+      : `${config.public.apiBase}/api/v1/sites`;
       
     await $fetch(url, {
       method: isEdit.value ? 'PUT' : 'POST',
@@ -184,6 +211,7 @@ async function onSubmit() {
         name: state.value.name,
         url: state.value.url,
         update_interval: state.value.interval,
+        project_id: state.value.project_id,
         checks
       }
     });
@@ -220,6 +248,36 @@ async function onSubmit() {
         <UFormField :label="t('add_website.endpoint_url')" name="url">
           <UInput v-model="state.url" :placeholder="t('add_website.endpoint_url_placeholder')" icon="i-heroicons-globe-alt" class="w-full" />
           <div v-if="formErrors.url" class="text-xs text-error mt-1" v-html="formErrors.url[0].replace('admin@digispace.pro', `<a href='mailto:admin@digispace.pro?subject=DigiPulse Support' class='underline font-bold'>admin@digispace.pro</a>`)"></div>
+        </UFormField>
+
+        <UFormField name="project_id">
+          <template #label>
+            <div class="flex items-center justify-between w-full">
+              <span>{{ t('add_website.project_selection') }}</span>
+              <UButton 
+                variant="ghost" 
+                size="xs" 
+                color="primary" 
+                class="px-1 h-5 text-[10px] cursor-pointer"
+                @click="isCreatingNewProject = !isCreatingNewProject"
+              >
+                {{ isCreatingNewProject ? t('common.cancel') : `+ ${t('projects.add_project')}` }}
+              </UButton>
+            </div>
+          </template>
+          
+          <div v-if="isCreatingNewProject" class="flex flex-col gap-2">
+            <UInput v-model="newProjectName" :placeholder="t('projects.name')" class="w-full" />
+            <p class="text-[9px] text-neutral-400 italic">{{ t('projects.subtitle') }}</p>
+          </div>
+          <USelectMenu
+            v-else
+            v-model="state.project_id"
+            :items="[{ label: t('projects.no_project'), value: null }, ...(projectsStore.projects || []).map(p => ({ label: p.name, value: p.id }))]"
+            value-key="value"
+            :placeholder="t('projects.no_project')"
+            class="w-full"
+          />
         </UFormField>
 
         <UFormField :label="t('add_website.frequency')" name="interval">

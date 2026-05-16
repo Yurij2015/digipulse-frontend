@@ -24,3 +24,5 @@ logs
 !.env.example
 /backend.code-workspace
 .pnpm-store/
+
+deployment-config.json

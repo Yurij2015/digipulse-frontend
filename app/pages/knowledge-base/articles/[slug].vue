@@ -17,7 +17,7 @@ function lt(field: unknown): string {
 
 const { data, pending, error } = await useAsyncData(
   `kb-article-${slug}`,
-  () => $fetch<any>(`${apiBase}/api/knowledge-base/articles/${slug}`, {
+  () => $fetch<any>(`${apiBase}/api/v1/knowledge-base/articles/${slug}`, {
     headers: { 'X-Frontend-Key': config.public.frontendKey as string },
   }),
   {

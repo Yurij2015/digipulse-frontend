@@ -119,7 +119,7 @@ const schema = object({
 async function onSubmit() {
   loading.value = true;
   try {
-    const response = await $fetch(`${config.public.apiBase}/api/forgot-password`, {
+    const response = await $fetch(`${config.public.apiBase}/api/v1/forgot-password`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

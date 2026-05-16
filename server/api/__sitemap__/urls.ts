@@ -9,7 +9,7 @@ export default defineEventHandler(async () => {
   const urls: { loc: string; lastmod?: string; changefreq?: string; priority?: number }[] = []
 
   try {
-    const categoriesRes = await $fetch<any>(`${base}/api/knowledge-base/categories`, { headers })
+    const categoriesRes = await $fetch<any>(`${base}/api/v1/knowledge-base/categories`, { headers })
     const categories: any[] = Array.isArray(categoriesRes)
       ? categoriesRes
       : (categoriesRes?.data ?? [])
@@ -22,7 +22,7 @@ export default defineEventHandler(async () => {
       })
 
       try {
-        const catRes = await $fetch<any>(`${base}/api/knowledge-base/categories/${cat.slug}`, { headers })
+        const catRes = await $fetch<any>(`${base}/api/v1/knowledge-base/categories/${cat.slug}`, { headers })
         const catData = catRes?.data ?? catRes
         const articles: any[] = catData?.articles ?? []
 

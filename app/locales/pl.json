@@ -122,7 +122,23 @@
     "edit_title": "Edytuj węzeł",
     "edit_subtitle": "Zaktualizuj konfigurację monitorowania infrastruktury.",
     "save_changes": "Zapisz zmiany",
-    "no_checks_warning": "Monitorowanie jest obecnie nieaktywne. Wybierz co najmniej jedną opcję, aby rozpocząć śledzenie tego węzła."
+    "no_checks_warning": "Monitorowanie jest obecnie nieaktywne. Wybierz co najmniej jedną opcję, aby rozpocząć śledzenie tego węzła.",
+    "project_selection": "Projekt"
+  },
+  "projects": {
+    "title": "Projekty",
+    "subtitle": "Grupuj swoje strony w projekty dla lepszej organizacji.",
+    "add_project": "Dodaj projekt",
+    "no_projects": "Brak projektów.",
+    "select_project": "Wybierz projekt",
+    "no_project": "Bez projektu",
+    "name": "Nazwa projektu",
+    "description": "Opis",
+    "sites_count": "{count} stron",
+    "delete_confirm": "Usunąć projekt?",
+    "delete_desc": "Czy na pewno chcesz usunąć ten projekt? Strony w tym projekcie zostaną odpięte, ale nie zostaną usunięte.",
+    "edit_project": "Edytuj projekt",
+    "view_sites": "Zobacz strony"
   },
   "support": {
     "title": "Centrum wsparcia",
