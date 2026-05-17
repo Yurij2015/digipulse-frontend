@@ -12,7 +12,12 @@
         <p class="text-neutral-500 font-medium">{{ t('profile.subtitle') }}</p>
       </header>
 
-      <div class="max-w-3xl">
+      <div class="w-full">
+        <!-- Two-column grid: left = Profile + Security, right = Integrations + MCP + Notifications -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+
+        <!-- Left column -->
+        <div class="space-y-12">
         <div class="glass-card p-10 rounded-3xl border-neutral-200/50 dark:border-white/5 relative overflow-hidden">
           <div class="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-primary-500 to-purple-500"></div>
           
@@ -112,40 +117,94 @@
         </div>
 
         <!-- Security Section -->
-        <div class="mt-12">
+        <div>
           <h2 class="text-xl font-black text-neutral-900 dark:text-white mb-6 px-2 flex items-center gap-3">
             <UIcon name="i-heroicons-shield-check" class="text-primary-500" />
             {{ t('profile.security') }}
           </h2>
-          
+
           <div class="glass-card p-10 rounded-3xl border-neutral-200/50 dark:border-white/5 relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-indigo-500 to-primary-500/20 opacity-50"></div>
-            
-            <UForm :state="passwordForm" class="space-y-6 max-w-md" @submit="onChangePassword">
-              <UFormField :label="t('profile.current_password')" name="current_password">
-                <UInput v-model="passwordForm.current_password" type="password" icon="i-heroicons-lock-closed" class="rounded-xl" />
-              </UFormField>
-              
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <UFormField :label="t('profile.new_password')" name="password">
-                  <UInput v-model="passwordForm.password" type="password" icon="i-heroicons-key" class="rounded-xl" />
-                </UFormField>
-                <UFormField :label="t('profile.confirm_new_password')" name="password_confirmation">
-                  <UInput v-model="passwordForm.password_confirmation" type="password" icon="i-heroicons-check-badge" class="rounded-xl" />
-                </UFormField>
+
+            <UForm :state="passwordForm" @submit="onChangePassword">
+              <div class="grid grid-cols-3 gap-4 mb-6">
+                <UInput v-model="passwordForm.current_password" type="password" icon="i-heroicons-lock-closed" size="lg" :placeholder="t('profile.current_password')" class="w-full" :ui="{ base: 'rounded-2xl' }" />
+                <UInput v-model="passwordForm.password" type="password" icon="i-heroicons-key" size="lg" :placeholder="t('profile.new_password')" class="w-full" :ui="{ base: 'rounded-2xl' }" />
+                <UInput v-model="passwordForm.password_confirmation" type="password" icon="i-heroicons-check-badge" size="lg" :placeholder="t('profile.confirm_new_password')" class="w-full" :ui="{ base: 'rounded-2xl' }" />
               </div>
-              
-              <div class="pt-4">
-                <UButton type="submit" color="primary" class="rounded-xl font-black px-10 shadow-lg shadow-primary-500/10" :loading="isChangingPassword">
-                  {{ t('profile.change_password') }}
-                </UButton>
-              </div>
+
+              <UButton type="submit" color="primary" class="rounded-xl font-black px-10 shadow-lg shadow-primary-500/10" :loading="isChangingPassword">
+                {{ t('profile.change_password') }}
+              </UButton>
             </UForm>
           </div>
         </div>
 
+        <!-- Notifications Section -->
+        <div>
+          <h2 class="text-xl font-black text-neutral-900 dark:text-white mb-6 px-2 flex items-center gap-3">
+            <UIcon name="i-heroicons-bell-alert" class="text-primary-500" />
+            {{ t('profile.notifications') }}
+          </h2>
+
+          <div class="glass-card p-8 rounded-3xl border-neutral-200/50 dark:border-white/5 relative overflow-hidden group">
+            <div class="space-y-6">
+              <div class="flex items-center justify-between p-4 rounded-2xl bg-neutral-50 dark:bg-white/2 border border-neutral-100 dark:border-white/5 group/item transition-all hover:border-primary-500/20">
+                <div class="flex items-center gap-4">
+                  <div class="flex items-center justify-center p-3 rounded-xl bg-primary-500/10 text-primary-500 group-hover/item:scale-110 transition-transform">
+                    <UIcon name="i-heroicons-envelope" class="text-xl" />
+                  </div>
+                  <div>
+                    <h3 class="font-bold text-neutral-900 dark:text-white">{{ t('profile.notify_email') }}</h3>
+                    <p class="text-xs text-neutral-500">{{ t('profile.notify_email_desc') }}</p>
+                  </div>
+                </div>
+                <USwitch
+                  v-model="notifyEmail"
+                  color="primary"
+                  :loading="isUpdatingSettings"
+                  @update:model-value="updateNotificationSettings"
+                />
+              </div>
+
+              <div class="flex items-center justify-between p-4 rounded-2xl bg-neutral-50 dark:bg-white/2 border border-neutral-100 dark:border-white/5 group/item transition-all hover:border-sky-500/20">
+                <div class="flex items-center gap-4">
+                  <div class="flex items-center justify-center p-3 rounded-xl bg-sky-500/10 text-sky-500 group-hover/item:scale-110 transition-transform">
+                    <UIcon name="i-heroicons-paper-airplane" class="text-xl" />
+                  </div>
+                  <div>
+                    <h3 class="font-bold text-neutral-900 dark:text-white">{{ t('profile.notify_telegram') }}</h3>
+                    <p class="text-xs text-neutral-500">{{ t('profile.notify_telegram_desc') }}</p>
+                  </div>
+                </div>
+                <USwitch
+                  v-model="notifyTelegram"
+                  color="primary"
+                  :loading="isUpdatingSettings"
+                  :disabled="!(user as any)?.telegram_chat_id"
+                  @update:model-value="updateNotificationSettings"
+                />
+              </div>
+
+              <div v-if="!(user as any)?.telegram_chat_id" class="flex items-center gap-2 px-4 py-3 rounded-xl bg-amber-500/5 border border-amber-500/10">
+                <UIcon name="i-heroicons-information-circle" class="text-amber-500 text-lg" />
+                <p class="text-[11px] text-amber-600 dark:text-amber-400 font-medium">
+                  {{ t('profile.telegram_required_for_notify') }}
+                </p>
+              </div>
+            </div>
+
+            <div class="absolute -bottom-12 -left-12 w-32 h-32 bg-primary-500/5 blur-3xl rounded-full"></div>
+          </div>
+        </div>
+
+        </div><!-- /left column -->
+
+        <!-- Right column -->
+        <div class="space-y-12">
+
         <!-- Integrations Section -->
-        <div class="mt-12">
+        <div>
           <h2 class="text-xl font-black text-neutral-900 dark:text-white mb-6 px-2 flex items-center gap-3">
             <UIcon name="i-heroicons-cpu-chip" class="text-primary-500" />
             {{ t('profile.integrations') }}
@@ -217,63 +276,110 @@
           </div>
         </div>
 
-        <!-- Notifications Section -->
-        <div class="mt-12">
+        <!-- Tokens Section -->
+        <div>
           <h2 class="text-xl font-black text-neutral-900 dark:text-white mb-6 px-2 flex items-center gap-3">
-            <UIcon name="i-heroicons-bell-alert" class="text-primary-500" />
-            {{ t('profile.notifications') }}
+            <UIcon name="i-heroicons-command-line" class="text-primary-500" />
+            {{ t('profile.mcp_tokens.title') }}
           </h2>
-          
-          <div class="glass-card p-8 rounded-3xl border-neutral-200/50 dark:border-white/5 relative overflow-hidden group">
-            <div class="space-y-6">
-              <div class="flex items-center justify-between p-4 rounded-2xl bg-neutral-50 dark:bg-white/2 border border-neutral-100 dark:border-white/5 group/item transition-all hover:border-primary-500/20">
-                <div class="flex items-center gap-4">
-                  <div class="flex items-center justify-center p-3 rounded-xl bg-primary-500/10 text-primary-500 group-hover/item:scale-110 transition-transform">
-                    <UIcon name="i-heroicons-envelope" class="text-xl" />
-                  </div>
-                  <div>
-                    <h3 class="font-bold text-neutral-900 dark:text-white">{{ t('profile.notify_email') }}</h3>
-                    <p class="text-xs text-neutral-500">{{ t('profile.notify_email_desc') }}</p>
-                  </div>
-                </div>
-                <USwitch
-                  v-model="notifyEmail"
-                  color="primary"
-                  :loading="isUpdatingSettings"
-                  @update:model-value="updateNotificationSettings"
-                />
-              </div>
 
-              <div class="flex items-center justify-between p-4 rounded-2xl bg-neutral-50 dark:bg-white/2 border border-neutral-100 dark:border-white/5 group/item transition-all hover:border-sky-500/20">
+          <div class="glass-card p-8 rounded-3xl border-neutral-200/50 dark:border-white/5 relative overflow-hidden">
+            <div class="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-8">
+              <p class="text-sm text-neutral-500 font-medium leading-relaxed max-w-md">
+                {{ t('profile.mcp_tokens.description') }}
+              </p>
+              <UButton
+                icon="i-heroicons-plus"
+                color="primary"
+                class="rounded-xl font-black shrink-0"
+                @click="isCreateTokenModalOpen = true"
+              >
+                {{ t('profile.mcp_tokens.create') }}
+              </UButton>
+            </div>
+
+            <div v-if="tokensLoading" class="flex justify-center py-8">
+              <UIcon name="i-heroicons-arrow-path" class="text-2xl text-neutral-400 animate-spin" />
+            </div>
+
+            <p v-else-if="mcpTokens.length === 0" class="text-center py-8 text-neutral-400 font-medium text-sm">
+              {{ t('profile.mcp_tokens.no_tokens') }}
+            </p>
+
+            <div v-else class="space-y-3">
+              <div
+                v-for="mcpToken in mcpTokens"
+                :key="mcpToken.id"
+                class="flex items-center justify-between p-4 rounded-2xl bg-neutral-50 dark:bg-white/2 border border-neutral-100 dark:border-white/5 group/item transition-all hover:border-primary-500/20"
+              >
                 <div class="flex items-center gap-4">
-                  <div class="flex items-center justify-center p-3 rounded-xl bg-sky-500/10 text-sky-500 group-hover/item:scale-110 transition-transform">
-                    <UIcon name="i-heroicons-paper-airplane" class="text-xl" />
+                  <div class="flex items-center justify-center p-3 rounded-xl bg-primary-500/10 text-primary-500">
+                    <UIcon name="i-heroicons-key" class="text-xl" />
                   </div>
                   <div>
-                    <h3 class="font-bold text-neutral-900 dark:text-white">{{ t('profile.notify_telegram') }}</h3>
-                    <p class="text-xs text-neutral-500">{{ t('profile.notify_telegram_desc') }}</p>
+                    <h3 class="font-bold text-neutral-900 dark:text-white">{{ mcpToken.name }}</h3>
+                    <div class="flex flex-wrap items-center gap-2 mt-0.5">
+                      <span class="text-xs text-neutral-400">{{ formatTokenDate(mcpToken.created_at) }}</span>
+                      <span class="text-xs text-neutral-300 dark:text-neutral-600">·</span>
+                      <span class="text-xs text-neutral-400">
+                        {{ t('profile.mcp_tokens.last_used') }}:
+                        {{ mcpToken.last_used_at ? formatTokenDate(mcpToken.last_used_at) : t('profile.mcp_tokens.never') }}
+                      </span>
+                    </div>
                   </div>
                 </div>
-                <USwitch
-                  v-model="notifyTelegram"
-                  color="primary"
-                  :loading="isUpdatingSettings"
-                  :disabled="!(user as any)?.telegram_chat_id"
-                  @update:model-value="updateNotificationSettings"
-                />
-              </div>
-              
-              <div v-if="!(user as any)?.telegram_chat_id" class="flex items-center gap-2 px-4 py-3 rounded-xl bg-amber-500/5 border border-amber-500/10">
-                <UIcon name="i-heroicons-information-circle" class="text-amber-500 text-lg" />
-                <p class="text-[11px] text-amber-600 dark:text-amber-400 font-medium">
-                  {{ t('profile.telegram_required_for_notify') }}
-                </p>
+                <UButton
+                  size="sm"
+                  variant="ghost"
+                  color="error"
+                  class="rounded-xl font-bold"
+                  @click="openRevokeConfirm(mcpToken)"
+                >
+                  {{ t('profile.mcp_tokens.revoke') }}
+                </UButton>
               </div>
             </div>
-            
+
             <div class="absolute -bottom-12 -left-12 w-32 h-32 bg-primary-500/5 blur-3xl rounded-full"></div>
           </div>
         </div>
+
+        <!-- MCP Config Example Section -->
+        <div>
+          <h2 class="text-xl font-black text-neutral-900 dark:text-white mb-6 px-2 flex items-center gap-3">
+            <UIcon name="i-heroicons-code-bracket" class="text-primary-500" />
+            {{ t('profile.mcp_tokens.mcp_config_label') }}
+          </h2>
+          <div class="glass-card p-8 rounded-3xl border-neutral-200/50 dark:border-white/5 relative overflow-hidden">
+            <p class="text-sm text-neutral-500 font-medium mb-4">
+              {{ t('profile.mcp_tokens.mcp_config_hint') }}
+            </p>
+
+            <pre class="rounded-xl bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/10 p-4 text-xs font-mono text-neutral-600 dark:text-neutral-300 overflow-x-auto">{{ mcpConfigExample }}</pre>
+
+            <div class="mt-6">
+              <div class="text-[10px] font-black uppercase tracking-widest text-neutral-400 mb-3">
+                {{ t('profile.mcp_tokens.mcp_config_agents') }}
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <a
+                  v-for="agent in mcpAgents"
+                  :key="agent.name"
+                  :href="agent.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/10 text-xs font-bold text-neutral-600 dark:text-neutral-300 hover:border-primary-500/40 hover:text-primary-500 transition-colors"
+                >
+                  <UIcon name="i-heroicons-arrow-top-right-on-square" class="text-[10px]" />
+                  {{ agent.name }}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        </div><!-- /right column -->
+        </div><!-- /grid -->
 
         <!-- Danger Zone Section -->
         <div class="mt-12 mb-24">
@@ -304,6 +410,164 @@
             </div>
           </div>
         </div>
+
+        <!-- Create Token Modal -->
+        <UModal v-model:open="isCreateTokenModalOpen" @update:open="onCreateModalClose">
+          <template #content>
+            <UCard class="glass-card border-neutral-200/50! dark:border-white/10! overflow-hidden relative shadow-2xl">
+              <div class="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-primary-500 to-purple-500"></div>
+
+              <div class="flex items-center gap-4 mb-6">
+                <div class="p-3 rounded-2xl bg-primary-500/10 text-primary-500 border border-primary-500/20">
+                  <UIcon name="i-heroicons-key" class="text-2xl" />
+                </div>
+                <h3 class="text-xl font-black text-neutral-900 dark:text-white">
+                  {{ newMcpUrl ? t('profile.mcp_tokens.created') : t('profile.mcp_tokens.create') }}
+                </h3>
+              </div>
+
+              <!-- Success state: show mcp_url -->
+              <template v-if="newMcpUrl">
+                <div class="flex items-start gap-2 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 mb-5">
+                  <UIcon name="i-heroicons-exclamation-triangle" class="text-amber-500 text-lg shrink-0 mt-0.5" />
+                  <p class="text-sm text-amber-600 dark:text-amber-400 font-medium">
+                    {{ t('profile.mcp_tokens.url_once_warning') }}
+                  </p>
+                </div>
+
+                <div class="mb-2 text-[10px] font-black uppercase tracking-widest text-neutral-400">
+                  {{ t('profile.mcp_tokens.url_label') }}
+                </div>
+                <div class="flex items-center gap-2">
+                  <UInput
+                    :model-value="newMcpUrl"
+                    readonly
+                    class="rounded-xl flex-1 font-mono text-xs"
+                    @click="($event.target as HTMLInputElement).select()"
+                  />
+                  <UButton
+                    :icon="mcpUrlCopied ? 'i-heroicons-check' : 'i-heroicons-clipboard-document'"
+                    :color="mcpUrlCopied ? 'success' : 'primary'"
+                    variant="subtle"
+                    class="rounded-xl font-bold shrink-0"
+                    @click="copyMcpUrl"
+                  >
+                    {{ mcpUrlCopied ? t('profile.mcp_tokens.copied') : '' }}
+                  </UButton>
+                </div>
+
+                <div class="mt-6">
+                  <div class="flex items-center justify-between mb-2">
+                    <div class="text-[10px] font-black uppercase tracking-widest text-neutral-400">
+                      {{ t('profile.mcp_tokens.mcp_config_label') }}
+                    </div>
+                    <UButton
+                      size="xs"
+                      :icon="mcpConfigCopied ? 'i-heroicons-check' : 'i-heroicons-clipboard-document'"
+                      :color="mcpConfigCopied ? 'success' : 'neutral'"
+                      variant="subtle"
+                      class="rounded-lg font-bold"
+                      @click="copyMcpConfig"
+                    >
+                      {{ mcpConfigCopied ? t('profile.mcp_tokens.mcp_config_copied') : t('profile.mcp_tokens.copy') }}
+                    </UButton>
+                  </div>
+                  <pre class="rounded-xl bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/10 p-4 text-xs font-mono text-neutral-700 dark:text-neutral-300 overflow-x-auto">{{ mcpConfigJson }}</pre>
+                </div>
+
+                <div class="flex justify-end mt-6">
+                  <UButton
+                    size="lg"
+                    color="primary"
+                    class="rounded-xl font-black px-8"
+                    @click="isCreateTokenModalOpen = false"
+                  >
+                    {{ t('common.close') }}
+                  </UButton>
+                </div>
+              </template>
+
+              <!-- Form state -->
+              <template v-else>
+                <UForm :state="createTokenForm" class="space-y-5" @submit="onCreateToken">
+                  <UFormField :label="t('profile.mcp_tokens.token_name')" name="name">
+                    <UInput
+                      v-model="createTokenForm.name"
+                      :placeholder="t('profile.mcp_tokens.token_name_placeholder')"
+                      maxlength="64"
+                      icon="i-heroicons-tag"
+                      class="rounded-xl"
+                    />
+                  </UFormField>
+
+                  <div class="flex justify-end gap-3 pt-2">
+                    <UButton
+                      size="lg"
+                      variant="subtle"
+                      color="neutral"
+                      class="rounded-xl font-bold px-6"
+                      @click="isCreateTokenModalOpen = false"
+                    >
+                      {{ t('common.cancel') }}
+                    </UButton>
+                    <UButton
+                      type="submit"
+                      size="lg"
+                      color="primary"
+                      class="rounded-xl font-black px-6 shadow-lg shadow-primary-500/20"
+                      :loading="isCreatingToken"
+                    >
+                      {{ t('profile.mcp_tokens.create') }}
+                    </UButton>
+                  </div>
+                </UForm>
+              </template>
+            </UCard>
+          </template>
+        </UModal>
+
+        <!-- Revoke Token Confirmation Modal -->
+        <UModal v-model:open="isRevokeModalOpen">
+          <template #content>
+            <UCard class="glass-card border-neutral-200/50! dark:border-white/10! overflow-hidden relative shadow-2xl">
+              <div class="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-rose-500 to-rose-600"></div>
+
+              <div class="flex items-center gap-4 mb-6">
+                <div class="p-3 rounded-2xl bg-rose-500/10 text-rose-600 border border-rose-500/20">
+                  <UIcon name="i-heroicons-exclamation-triangle" class="text-2xl" />
+                </div>
+                <h3 class="text-xl font-black text-neutral-900 dark:text-white">
+                  {{ t('profile.mcp_tokens.revoke_confirm_title') }}
+                </h3>
+              </div>
+
+              <p class="text-neutral-500 font-medium leading-relaxed mb-8">
+                {{ t('profile.mcp_tokens.revoke_confirm') }}
+              </p>
+
+              <div class="flex justify-end gap-3">
+                <UButton
+                  size="lg"
+                  variant="subtle"
+                  color="neutral"
+                  class="rounded-xl font-bold px-6"
+                  @click="isRevokeModalOpen = false"
+                >
+                  {{ t('common.cancel') }}
+                </UButton>
+                <UButton
+                  size="lg"
+                  color="error"
+                  class="rounded-xl font-black px-6 shadow-lg shadow-rose-500/20"
+                  :loading="isRevokingToken"
+                  @click="confirmRevoke"
+                >
+                  {{ t('profile.mcp_tokens.revoke') }}
+                </UButton>
+              </div>
+            </UCard>
+          </template>
+        </UModal>
 
         <!-- Disconnect Confirmation Modal -->
         <UModal v-model:open="isDisconnectModalOpen">
@@ -397,9 +661,131 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue';
-const { t } = useI18n();
+import { formatDistanceToNow } from 'date-fns';
+import { uk, pl, enUS } from 'date-fns/locale';
+import type { Token } from '~/composables/useTokens';
+
+const { t, locale } = useI18n();
 
 const localePath = useLocalePath();
+
+// MCP Tokens
+const { tokens: mcpTokens, loading: tokensLoading, fetchTokens, createToken, revokeToken } = useTokens();
+const isCreateTokenModalOpen = ref(false);
+const isRevokeModalOpen = ref(false);
+const isCreatingToken = ref(false);
+const isRevokingToken = ref(false);
+const newMcpUrl = ref<string | null>(null);
+const mcpUrlCopied = ref(false);
+const mcpConfigCopied = ref(false);
+const tokenToRevoke = ref<Token | null>(null);
+const createTokenForm = ref({ name: '' });
+
+const mcpAgents = [
+  { name: 'Claude Desktop', url: 'https://modelcontextprotocol.io/quickstart/user' },
+  { name: 'Cursor', url: 'https://docs.cursor.com/context/model-context-protocol' },
+  { name: 'Windsurf', url: 'https://docs.codeium.com/windsurf/mcp' },
+  { name: 'VS Code', url: 'https://code.visualstudio.com/docs/copilot/chat/mcp-servers' },
+  { name: 'Zed', url: 'https://zed.dev/docs/assistant/model-context-protocol' },
+  { name: 'Cline', url: 'https://docs.cline.bot/mcp-servers/mcp-quickstart' },
+];
+
+const mcpConfigExample = JSON.stringify({
+  digipulse: {
+    type: 'streamableHttp',
+    url: 'https://api.digispace.pro/mcp',
+    headers: { Authorization: 'Bearer YOUR_TOKEN' }
+  }
+}, null, 2);
+
+const mcpConfigJson = computed(() => {
+  if (!newMcpUrl.value) return '';
+  const url = new URL(newMcpUrl.value);
+  const plainToken = url.searchParams.get('token') ?? '';
+  const baseUrl = `${url.origin}${url.pathname}`;
+  return JSON.stringify({
+    digipulse: {
+      type: 'streamableHttp',
+      url: baseUrl,
+      headers: { Authorization: `Bearer ${plainToken}` }
+    }
+  }, null, 2);
+});
+
+const dateLocales = { uk, pl, en: enUS };
+
+const formatTokenDate = (dateStr: string) => {
+  try {
+    return formatDistanceToNow(new Date(dateStr), {
+      addSuffix: true,
+      locale: dateLocales[locale.value as keyof typeof dateLocales] || enUS
+    });
+  } catch {
+    return dateStr;
+  }
+};
+
+const onCreateToken = async () => {
+  if (!createTokenForm.value.name.trim()) {
+    toast.add({ title: t('profile.mcp_tokens.name_required'), icon: 'i-heroicons-x-circle', color: 'error' });
+    return;
+  }
+  isCreatingToken.value = true;
+  try {
+    const response = await createToken(createTokenForm.value.name.trim());
+    newMcpUrl.value = response.mcp_url;
+    createTokenForm.value.name = '';
+  } catch (error: any) {
+    toast.add({ title: t('common.error'), description: error.data?.message || t('common.error'), icon: 'i-heroicons-x-circle', color: 'error' });
+  } finally {
+    isCreatingToken.value = false;
+  }
+};
+
+const copyMcpUrl = async () => {
+  if (!newMcpUrl.value) return;
+  await navigator.clipboard.writeText(newMcpUrl.value);
+  mcpUrlCopied.value = true;
+  setTimeout(() => { mcpUrlCopied.value = false; }, 2000);
+};
+
+const copyMcpConfig = async () => {
+  if (!mcpConfigJson.value) return;
+  await navigator.clipboard.writeText(mcpConfigJson.value);
+  mcpConfigCopied.value = true;
+  setTimeout(() => { mcpConfigCopied.value = false; }, 2000);
+};
+
+const onCreateModalClose = (open: boolean) => {
+  if (!open) {
+    if (newMcpUrl.value) fetchTokens();
+    newMcpUrl.value = null;
+    mcpUrlCopied.value = false;
+    mcpConfigCopied.value = false;
+    createTokenForm.value.name = '';
+  }
+};
+
+const openRevokeConfirm = (mcpToken: Token) => {
+  tokenToRevoke.value = mcpToken;
+  isRevokeModalOpen.value = true;
+};
+
+const confirmRevoke = async () => {
+  if (!tokenToRevoke.value) return;
+  isRevokingToken.value = true;
+  try {
+    await revokeToken(tokenToRevoke.value.id);
+    toast.add({ title: t('profile.mcp_tokens.revoked'), icon: 'i-heroicons-check-circle', color: 'success' });
+    isRevokeModalOpen.value = false;
+    tokenToRevoke.value = null;
+  } catch (error: any) {
+    toast.add({ title: t('common.error'), description: error.data?.message || t('common.error'), icon: 'i-heroicons-x-circle', color: 'error' });
+  } finally {
+    isRevokingToken.value = false;
+  }
+};
+
 const isTelegramConnecting = ref(false);
 const isTelegramDisconnecting = ref(false);
 const isDisconnectModalOpen = ref(false);
@@ -436,6 +822,7 @@ const toast = useToast();
 
 onMounted(async () => {
   await fetchUser();
+  await fetchTokens();
 });
 
 watch(user, (val) => {
