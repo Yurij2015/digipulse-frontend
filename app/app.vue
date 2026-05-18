@@ -36,15 +36,17 @@ watch(() => sitesStore.loading, (loading) => {
       clearInterval(timer)
       timer = null
     }
-    
-    // Smoothly finish
-    progress.value = 100
-    finishTimeout = setTimeout(() => {
-      isVisible.value = false
-      setTimeout(() => { 
-        if (!sitesStore.loading) progress.value = 0 
-      }, 400)
-    }, 300)
+
+    // Only animate finish if the bar was actually shown
+    if (isVisible.value) {
+      progress.value = 100
+      finishTimeout = setTimeout(() => {
+        isVisible.value = false
+        setTimeout(() => {
+          if (!sitesStore.loading) progress.value = 0
+        }, 400)
+      }, 300)
+    }
   }
 }, { immediate: true })
 </script>
@@ -52,16 +54,14 @@ watch(() => sitesStore.loading, (loading) => {
 <template>
   <UApp :toaster="{ position: 'top-center', duration: 3000 }">
     <!-- Custom Progress Bar -->
-    <ClientOnly>
-      <div
-        class="fixed top-0 left-0 w-full h-0.5 z-10002 transition-[transform,opacity] duration-300 ease-out origin-left"
-        :style="{
-          transform: `scaleX(${progress / 100})`,
-          opacity: isVisible ? 1 : 0,
-          background: 'linear-gradient(to right, #ec4899, #8b5cf6, #06b6d4)',
-        }"
-      ></div>
-    </ClientOnly>
+    <div
+      class="fixed top-0 left-0 w-full h-0.5 z-10002 transition-[transform,opacity] duration-300 ease-out origin-left"
+      :style="{
+        transform: `scaleX(${progress / 100})`,
+        opacity: isVisible ? 1 : 0,
+        background: 'linear-gradient(to right, #ec4899, #8b5cf6, #06b6d4)',
+      }"
+    ></div>
     <PublicHeader />
     <NuxtRouteAnnouncer />
     <main id="main-content" role="main">

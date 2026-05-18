@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col lg:flex-row min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white transition-colors duration-500 mesh-bg">
+  <div class="flex flex-col lg:flex-row min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white mesh-bg">
     <AppSidebar />
 
     <!-- Main Content -->
@@ -149,9 +149,9 @@
 
           <div class="glass-card p-8 rounded-3xl border-neutral-200/50 dark:border-white/5 relative overflow-hidden group">
             <div class="space-y-6">
-              <div class="flex items-center justify-between p-4 rounded-2xl bg-neutral-50 dark:bg-white/2 border border-neutral-100 dark:border-white/5 group/item transition-all hover:border-primary-500/20">
+              <div class="flex items-center justify-between p-4 rounded-2xl bg-neutral-50 dark:bg-white/2 border border-transparent border-neutral-100 dark:border-white/5 group/item transition-colors hover:border-primary-500/20 will-change-transform">
                 <div class="flex items-center gap-4">
-                  <div class="flex items-center justify-center p-3 rounded-xl bg-primary-500/10 text-primary-500 group-hover/item:scale-110 transition-transform">
+                  <div class="flex items-center justify-center p-3 rounded-xl bg-primary-500/10 text-primary-500 group-hover/item:scale-110 transition-transform will-change-transform">
                     <UIcon name="i-heroicons-envelope" class="text-xl" />
                   </div>
                   <div>
@@ -167,9 +167,9 @@
                 />
               </div>
 
-              <div class="flex items-center justify-between p-4 rounded-2xl bg-neutral-50 dark:bg-white/2 border border-neutral-100 dark:border-white/5 group/item transition-all hover:border-sky-500/20">
+              <div class="flex items-center justify-between p-4 rounded-2xl bg-neutral-50 dark:bg-white/2 border border-neutral-100 dark:border-white/5 group/item transition-colors hover:border-sky-500/20">
                 <div class="flex items-center gap-4">
-                  <div class="flex items-center justify-center p-3 rounded-xl bg-sky-500/10 text-sky-500 group-hover/item:scale-110 transition-transform">
+                  <div class="flex items-center justify-center p-3 rounded-xl bg-sky-500/10 text-sky-500 group-hover/item:scale-110 transition-transform will-change-transform">
                     <UIcon name="i-heroicons-paper-airplane" class="text-xl" />
                   </div>
                   <div>
@@ -194,7 +194,7 @@
               </div>
             </div>
 
-            <div class="absolute -bottom-12 -left-12 w-32 h-32 bg-primary-500/5 blur-3xl rounded-full"></div>
+            <div class="absolute bottom-0 left-0 w-32 h-32 bg-primary-500/5 blur-3xl rounded-full pointer-events-none"></div>
           </div>
         </div>
 
@@ -209,11 +209,11 @@
             <UIcon name="i-heroicons-cpu-chip" class="text-primary-500" />
             {{ t('profile.integrations') }}
           </h2>
-          
+
           <div class="glass-card p-8 rounded-3xl border-neutral-200/50 dark:border-white/5 relative overflow-hidden group">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-8">
               <div class="flex items-start gap-5">
-                <div class="flex items-center justify-center p-4 rounded-2xl bg-[#0088cc]/10 text-[#0088cc] border border-[#0088cc]/20 shadow-inner group-hover:scale-110 transition-transform">
+                <div class="flex items-center justify-center p-4 rounded-2xl bg-[#0088cc]/10 text-[#0088cc] border border-[#0088cc]/20 shadow-inner group-hover:scale-110 transition-transform will-change-transform">
                   <UIcon name="i-heroicons-paper-airplane" class="text-2xl -rotate-45 translate-x-0.5" />
                 </div>
                 <div class="max-w-md">
@@ -229,7 +229,7 @@
               <div class="flex items-center gap-4">
                 <div v-if="(user as any)?.telegram_chat_id" class="flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-emerald-500/5 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/15 backdrop-blur-md text-[10px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/5">
                   <div class="relative flex h-2 w-2">
-                    <div class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-40"></div>
+                    <div class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-40 will-change-transform"></div>
                     <div class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
                   </div>
                   {{ t('profile.telegram_connected') }}
@@ -238,38 +238,38 @@
                   v-if="!(user as any)?.telegram_chat_id"
                   size="xl"
                   variant="ghost"
-                  class="group relative overflow-hidden px-8 py-5 rounded-3xl border border-neutral-200 dark:border-white/10 hover:border-sky-500/30 hover:bg-sky-500/5 transition-all duration-500"
+                  class="group relative overflow-hidden px-8 py-5 rounded-3xl border border-neutral-200 dark:border-white/10 hover:border-sky-500/30 hover:bg-sky-500/5 transition-colors duration-500"
                   :loading="isTelegramConnecting"
                   @click="connectTelegram"
                 >
                   <div class="flex items-center gap-4">
-                    <div class="flex items-center justify-center p-2.5 rounded-2xl bg-sky-500/10 text-sky-500 group-hover:bg-sky-500 group-hover:text-white transition-all duration-500 shadow-lg shadow-sky-500/5">
+                    <div class="flex items-center justify-center p-2.5 rounded-2xl bg-sky-500/10 text-sky-500 group-hover:bg-sky-500 group-hover:text-white transition-colors duration-500 shadow-lg shadow-sky-500/5">
                       <UIcon name="i-heroicons-paper-airplane" class="text-xl" />
                     </div>
                     <span class="text-base font-black text-neutral-900 dark:text-white">
                       {{ t('profile.telegram_connect') }}
                     </span>
                   </div>
-                  <div class="absolute -bottom-12 -right-12 w-24 h-24 bg-sky-500/10 blur-3xl group-hover:bg-sky-500/20 transition-all duration-700"></div>
+                  <div class="absolute -bottom-12 -right-12 w-24 h-24 bg-sky-500/10 blur-3xl group-hover:bg-sky-500/20 transition-colors duration-700"></div>
                 </UButton>
 
                 <UButton
                   v-else
                   size="xl"
                   variant="ghost"
-                  class="group relative overflow-hidden px-8 py-5 rounded-3xl border border-neutral-200 dark:border-white/10 hover:border-rose-500/30 hover:bg-rose-500/5 transition-all duration-500"
+                  class="group relative overflow-hidden px-8 py-5 rounded-3xl border border-neutral-200 dark:border-white/10 hover:border-rose-500/30 hover:bg-rose-500/5 transition-colors duration-500"
                   :loading="isTelegramDisconnecting"
                   @click="disconnectTelegram"
                 >
                   <div class="flex items-center gap-4">
-                    <div class="flex items-center justify-center p-2.5 rounded-2xl bg-rose-500/10 text-rose-500 group-hover:bg-rose-500 group-hover:text-white transition-all duration-500 shadow-lg shadow-rose-500/5">
+                    <div class="flex items-center justify-center p-2.5 rounded-2xl bg-rose-500/10 text-rose-500 group-hover:bg-rose-500 group-hover:text-white transition-colors duration-500 shadow-lg shadow-rose-500/5">
                       <UIcon name="i-heroicons-trash" class="text-xl" />
                     </div>
                     <span class="text-base font-black text-neutral-900 dark:text-white">
                       {{ t('profile.telegram_disconnect') }}
                     </span>
                   </div>
-                  <div class="absolute -bottom-12 -right-12 w-24 h-24 bg-rose-500/10 blur-3xl group-hover:bg-rose-500/20 transition-all duration-700"></div>
+                  <div class="absolute -bottom-12 -right-12 w-24 h-24 bg-rose-500/10 blur-3xl group-hover:bg-rose-500/20 transition-colors duration-700"></div>
                 </UButton>
               </div>
             </div>
@@ -310,7 +310,7 @@
               <div
                 v-for="mcpToken in mcpTokens"
                 :key="mcpToken.id"
-                class="flex items-center justify-between p-4 rounded-2xl bg-neutral-50 dark:bg-white/2 border border-neutral-100 dark:border-white/5 group/item transition-all hover:border-primary-500/20"
+                class="flex items-center justify-between p-4 rounded-2xl bg-neutral-50 dark:bg-white/2 border border-neutral-100 dark:border-white/5 group/item transition-colors hover:border-primary-500/20 will-change-transform"
               >
                 <div class="flex items-center gap-4">
                   <div class="flex items-center justify-center p-3 rounded-xl bg-primary-500/10 text-primary-500">
@@ -340,7 +340,7 @@
               </div>
             </div>
 
-            <div class="absolute -bottom-12 -left-12 w-32 h-32 bg-primary-500/5 blur-3xl rounded-full"></div>
+            <div class="absolute bottom-0 left-0 w-32 h-32 bg-primary-500/5 blur-3xl rounded-full pointer-events-none"></div>
           </div>
         </div>
 
@@ -387,7 +387,7 @@
             <UIcon name="i-heroicons-exclamation-triangle" class="text-rose-500" />
             {{ t('profile.danger_zone') }}
           </h2>
-          
+
           <div class="glass-card p-8 rounded-3xl border-rose-200/50 dark:border-rose-500/10 bg-rose-500/5 relative overflow-hidden group">
             <div class="flex flex-col md:flex-row items-center justify-between gap-6">
               <div class="max-w-md">
@@ -412,9 +412,9 @@
         </div>
 
         <!-- Create Token Modal -->
-        <UModal v-model:open="isCreateTokenModalOpen" @update:open="onCreateModalClose">
+        <UModal v-model:open="isCreateTokenModalOpen">
           <template #content>
-            <UCard class="glass-card border-neutral-200/50! dark:border-white/10! overflow-hidden relative shadow-2xl">
+            <UCard variant="soft" class="glass-card border-neutral-200/50! dark:border-white/10! overflow-hidden relative shadow-2xl">
               <div class="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-primary-500 to-purple-500"></div>
 
               <div class="flex items-center gap-4 mb-6">
@@ -529,7 +529,7 @@
         <!-- Revoke Token Confirmation Modal -->
         <UModal v-model:open="isRevokeModalOpen">
           <template #content>
-            <UCard class="glass-card border-neutral-200/50! dark:border-white/10! overflow-hidden relative shadow-2xl">
+            <UCard variant="soft" class="glass-card border-neutral-200/50! dark:border-white/10! overflow-hidden relative shadow-2xl">
               <div class="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-rose-500 to-rose-600"></div>
 
               <div class="flex items-center gap-4 mb-6">
@@ -572,11 +572,11 @@
         <!-- Disconnect Confirmation Modal -->
         <UModal v-model:open="isDisconnectModalOpen">
           <template #content>
-            <UCard class="glass-card border-neutral-200/50! dark:border-white/10! overflow-hidden relative shadow-2xl">
+            <UCard variant="soft" class="glass-card border-neutral-200/50! dark:border-white/10! overflow-hidden relative shadow-2xl">
               <div class="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-rose-500 to-rose-600"></div>
-              
+
               <div class="flex items-center gap-4 mb-6">
-                <div class="p-3 rounded-2xl bg-rose-500/10 text-rose-600 border border-rose-500/20">
+                <div class="p-3 rounded-2xl bg-rose-500/10 відеtext-rose-600 border border-rose-500/20">
                   <UIcon name="i-heroicons-exclamation-triangle" class="text-2xl" />
                 </div>
                 <h3 class="text-xl font-black text-neutral-900 dark:text-white">
@@ -615,7 +615,7 @@
         <!-- Delete Account Confirmation Modal -->
         <UModal v-model:open="isDeleteModalOpen">
           <template #content>
-            <UCard class="glass-card border-neutral-200/50! dark:border-white/10! overflow-hidden relative shadow-2xl">
+            <UCard variant="soft" class="glass-card border-neutral-200/50! dark:border-white/10! overflow-hidden relative shadow-2xl">
               <div class="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-rose-600 to-rose-700"></div>
               
               <div class="flex items-center gap-4 mb-6">
@@ -660,7 +660,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref, onMounted, watch } from 'vue';
 import { formatDistanceToNow } from 'date-fns';
 import { uk, pl, enUS } from 'date-fns/locale';
 import type { Token } from '~/composables/useTokens';
@@ -756,7 +756,7 @@ const copyMcpConfig = async () => {
   setTimeout(() => { mcpConfigCopied.value = false; }, 2000);
 };
 
-const onCreateModalClose = (open: boolean) => {
+watch(isCreateTokenModalOpen, (open) => {
   if (!open) {
     if (newMcpUrl.value) fetchTokens();
     newMcpUrl.value = null;
@@ -764,7 +764,7 @@ const onCreateModalClose = (open: boolean) => {
     mcpConfigCopied.value = false;
     createTokenForm.value.name = '';
   }
-};
+});
 
 const openRevokeConfirm = (mcpToken: Token) => {
   tokenToRevoke.value = mcpToken;
