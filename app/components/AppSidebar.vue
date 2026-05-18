@@ -23,7 +23,6 @@ const links = computed(() => [
   { label: t('dashboard.title'), icon: 'i-heroicons-home', to: localePath('/dashboard') },
   { label: t('projects.title'), icon: 'i-heroicons-folder', to: localePath('/projects') },
   { label: t('sites.title'), icon: 'i-heroicons-globe-alt', to: localePath('/sites') },
-  { label: t('docs.title'), icon: 'i-heroicons-book-open', to: localePath('/knowledge-base') },
   { label: t('dashboard.settings'), icon: 'i-heroicons-cog-6-tooth', to: localePath('/settings') }
 ]);
 
@@ -108,15 +107,26 @@ async function handleLogout() {
           <ThemeSwitcher />
         </div>
 
-        <UButton
-          :to="localePath('/support')"
-          variant="ghost"
-          color="neutral"
-          class="w-full justify-start gap-3 font-bold py-2.5 px-4 rounded-lg transition-all text-neutral-500 hover:text-primary-500 cursor-pointer"
-        >
-          <UIcon name="i-heroicons-question-mark-circle" class="text-xl" />
-          <span class="text-[13px] tracking-tight">{{ t('support.title') }}</span>
-        </UButton>
+        <div class="space-y-1">
+          <UButton
+            :to="localePath('/knowledge-base')"
+            variant="ghost"
+            color="neutral"
+            class="w-full justify-start gap-3 font-bold py-2.5 px-4 rounded-lg transition-all text-neutral-500 hover:text-primary-500 cursor-pointer"
+          >
+            <UIcon name="i-heroicons-book-open" class="text-xl" />
+            <span class="text-[13px] tracking-tight">{{ t('docs.title') }}</span>
+          </UButton>
+          <UButton
+            :to="localePath('/support')"
+            variant="ghost"
+            color="neutral"
+            class="w-full justify-start gap-3 font-bold py-2.5 px-4 rounded-lg transition-all text-neutral-500 hover:text-primary-500 cursor-pointer"
+          >
+            <UIcon name="i-heroicons-question-mark-circle" class="text-xl" />
+            <span class="text-[13px] tracking-tight">{{ t('support.title') }}</span>
+          </UButton>
+        </div>
         <UButton
           icon="i-heroicons-arrow-left-on-rectangle"
           color="neutral"
