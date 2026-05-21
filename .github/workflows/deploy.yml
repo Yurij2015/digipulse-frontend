@@ -195,7 +195,7 @@ jobs:
           script: |
             # If current exists as a directory (common when docker creates volumes before deploy), remove it
             if [ -d "$ACTIVE_RELEASE_PATH" ] && [ ! -L "$ACTIVE_RELEASE_PATH" ]; then
-              rm -rf "$ACTIVE_RELEASE_PATH"
+              sudo rm -rf "$ACTIVE_RELEASE_PATH"
             fi
 
             ln -sfn "$RELEASE_PATH" "$ACTIVE_RELEASE_PATH"
