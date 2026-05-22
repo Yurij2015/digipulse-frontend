@@ -9,10 +9,12 @@ env:
 
 jobs:
   create-deployment-artifacts:
-    name: Create deployment artifacts
+    name: "${{ matrix.server.name }}: Create deployment artifacts"
     runs-on: ubuntu-latest
-    outputs:
-      DEPLOYMENT_MATRIX: ${{ steps.export-deployment-matrix.outputs.DEPLOYMENT_MATRIX }}
+    environment: ${{ matrix.server.environment }}
+    strategy:
+      matrix:
+        server: ${{ fromJson(vars.DEPLOYMENT_MATRIX) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -75,15 +77,9 @@ jobs:
       - name: Store artifact for distribution
         uses: actions/upload-artifact@v7
         with:
-          name: app-build
+          name: app-build-${{ matrix.server.name }}
           path: ${{ github.sha }}.tar.gz
           retention-days: 7
-
-      - name: Export deployment matrix
-        id: export-deployment-matrix
-        uses: ./.github/actions/export-deploy-matrix
-        with:
-          deployment_matrix: ${{ vars.DEPLOYMENT_MATRIX }}
 
   prepare-release-on-servers:
     name: "${{ matrix.server.name }}: Prepare release"
@@ -92,11 +88,11 @@ jobs:
     needs: create-deployment-artifacts
     strategy:
       matrix:
-        server: ${{ fromJson(needs.create-deployment-artifacts.outputs.DEPLOYMENT_MATRIX) }}
+        server: ${{ fromJson(vars.DEPLOYMENT_MATRIX) }}
     steps:
       - uses: actions/download-artifact@v7
         with:
-          name: app-build
+          name: app-build-${{ matrix.server.name }}
 
       - name: Bootstrap server directories
         uses: appleboy/ssh-action@v1.2.5
@@ -144,7 +140,7 @@ jobs:
     needs: [create-deployment-artifacts, prepare-release-on-servers]
     strategy:
       matrix:
-        server: ${{ fromJson(needs.create-deployment-artifacts.outputs.DEPLOYMENT_MATRIX) }}
+        server: ${{ fromJson(vars.DEPLOYMENT_MATRIX) }}
     steps:
       - name: Run before hooks
         uses: appleboy/ssh-action@v1.2.5
@@ -164,7 +160,6 @@ jobs:
               eval "${{ vars.DEPLOY_BEFORE_HOOKS }}"
             fi
 
-
   activate-release:
     name: "${{ matrix.server.name }}: Activate release"
     runs-on: ubuntu-latest
@@ -177,7 +172,7 @@ jobs:
       ]
     strategy:
       matrix:
-        server: ${{ fromJson(needs.create-deployment-artifacts.outputs.DEPLOYMENT_MATRIX) }}
+        server: ${{ fromJson(vars.DEPLOYMENT_MATRIX) }}
     steps:
       - name: Activate release
         uses: appleboy/ssh-action@v1.2.5
@@ -213,7 +208,7 @@ jobs:
       ]
     strategy:
       matrix:
-        server: ${{ fromJson(needs.create-deployment-artifacts.outputs.DEPLOYMENT_MATRIX) }}
+        server: ${{ fromJson(vars.DEPLOYMENT_MATRIX) }}
     steps:
       - uses: actions/checkout@v6
       - name: Run after deploy
@@ -256,7 +251,7 @@ jobs:
       ]
     strategy:
       matrix:
-        server: ${{ fromJson(needs.create-deployment-artifacts.outputs.DEPLOYMENT_MATRIX) }}
+        server: ${{ fromJson(vars.DEPLOYMENT_MATRIX) }}
     steps:
       - name: Clean old releases and artifacts
         uses: appleboy/ssh-action@v1.2.5
@@ -282,5 +277,5 @@ jobs:
       - name: Delete artifact
         uses: geekyeggo/delete-artifact@v6.0.0
         with:
-          name: app-build
+          name: app-build-*
           failOnError: false
