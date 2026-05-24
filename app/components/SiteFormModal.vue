@@ -97,7 +97,7 @@ async function fetchData() {
     };
     
     checkTypes.value.forEach(type => {
-      state.value.selectedChecks[type.id] = { enabled: false, params: {} };
+      state.value.selectedChecks[type.id] = { enabled: !isEdit.value, params: {} };
     });
 
     // 2. Populate data if editing
