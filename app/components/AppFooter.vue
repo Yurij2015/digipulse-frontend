@@ -1,11 +1,30 @@
 <script setup lang="ts">
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+
 const localePath = useLocalePath()
 const isCookieConsentVisible = useState('cookie-consent-visible')
 const consentStatus = useState('cookie-consent-status')
 
+const landingsOpen = ref(false)
+
 const openCookieSettings = () => {
   isCookieConsentVisible.value = true
 }
+
+const handleGlobalClick = (e: MouseEvent) => {
+  const target = e.target as HTMLElement;
+  if (target && !target.closest('.landings-dropdown')) {
+    landingsOpen.value = false;
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleGlobalClick);
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleGlobalClick);
+})
 
 const statusClasses = computed(() => {
   if (consentStatus.value === 'all') return 'text-green-500 hover:text-green-600 dark:text-green-400 dark:hover:text-green-300'
@@ -41,6 +60,44 @@ const statusClasses = computed(() => {
         <NuxtLink :to="localePath('/knowledge-base')" class="text-xs text-neutral-600 hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100 transition-colors font-medium">
           {{ $t('docs.title') }}
         </NuxtLink>
+        
+        <!-- Solutions/Landings Dropdown -->
+        <div class="relative landings-dropdown">
+          <button
+            @click="landingsOpen = !landingsOpen"
+            class="flex items-center gap-1 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors text-xs text-neutral-600 dark:text-neutral-300 font-medium select-none cursor-pointer"
+          >
+            <span>{{ $t('footer.landings_title') }}</span>
+            <UIcon 
+              name="i-heroicons-chevron-down-20-solid" 
+              class="text-xs opacity-50 shrink-0 transition-transform duration-150" 
+              :class="landingsOpen && 'rotate-180'"
+            />
+          </button>
+
+          <transition name="fade">
+            <div 
+              v-show="landingsOpen"
+              class="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 min-w-[180px] bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg shadow-lg z-50 overflow-hidden"
+            >
+              <NuxtLink
+                :to="localePath('/')"
+                class="w-full block px-4 py-2.5 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-colors text-xs text-neutral-700 dark:text-neutral-300 font-medium cursor-pointer"
+                @click="landingsOpen = false"
+              >
+                {{ $t('footer.landing_basic') }}
+              </NuxtLink>
+              <NuxtLink
+                :to="localePath('/b2b-site-monitoring')"
+                class="w-full block px-4 py-2.5 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-colors text-xs text-neutral-700 dark:text-neutral-300 font-medium cursor-pointer"
+                @click="landingsOpen = false"
+              >
+                {{ $t('footer.landing_b2b') }}
+              </NuxtLink>
+            </div>
+          </transition>
+        </div>
+
         <NuxtLink :to="localePath('/privacy')" class="text-xs text-neutral-600 hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100 transition-colors font-medium">
           {{ $t('index.privacy_policy') }}
         </NuxtLink>
@@ -64,4 +121,17 @@ const statusClasses = computed(() => {
     </div>
   </footer>
 </template>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 80ms ease, transform 80ms ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translate(-50%, 4px);
+}
+</style>
 

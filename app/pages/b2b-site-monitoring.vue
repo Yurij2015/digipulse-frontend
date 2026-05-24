@@ -13,21 +13,25 @@
       <!-- ─── HERO ─── -->
       <div class="inline-flex items-center gap-2 px-3 py-1 mb-12 rounded-full bg-primary-500/15 border border-primary-500/30 text-primary-700 dark:text-primary-300 text-[10px] font-black tracking-[0.2em]">
         <div class="w-1.5 h-1.5 rounded-full bg-primary-700 dark:bg-primary-400 animate-pulse"></div>
-        МОНІТОРИНГ 24/7 · БЕЗ КОДУ · ДО 6 САЙТІВ БЕЗКОШТОВНО
+        {{ $t('b2b.badge') }}
       </div>
 
       <h1 class="text-4xl sm:text-6xl md:text-8xl font-black tracking-tight mb-8 leading-[1.08] text-neutral-900 dark:text-white">
-        <span class="bg-linear-to-br from-primary-500 to-indigo-500 bg-clip-text text-transparent inline-block py-2">Ваша реклама працює.</span><br />
-        <span class="opacity-90 leading-tight">Сайт теж повинен.</span>
+        <span class="bg-linear-to-br from-primary-500 to-indigo-500 bg-clip-text text-transparent inline-block py-2">{{ $t('b2b.hero_title') }}</span><br />
+        <span class="opacity-90 leading-tight">{{ $t('b2b.hero_title_accent') }}</span>
       </h1>
 
-      <p class="text-xl text-neutral-600 dark:text-neutral-300 max-w-2xl mb-6 font-medium leading-relaxed">
-        DigiPulse щохвилини перевіряє ваш сайт і надсилає миттєве сповіщення в Telegram, якщо він стає недоступним, термін дії SSL-сертифіката добігає кінця або виникає загроза блокування домену.
-      </p>
+      <i18n-t keypath="b2b.hero_desc" tag="p" class="text-xl text-neutral-600 dark:text-neutral-300 max-w-2xl mb-6 font-medium leading-relaxed">
+        <template #bold>
+          <strong>{{ $t('b2b.hero_desc_bold') }}</strong>
+        </template>
+      </i18n-t>
 
-      <p class="text-sm text-neutral-500 dark:text-neutral-400 mb-12 font-medium">
-        ⚡ Налаштування займає всього <strong class="text-neutral-700 dark:text-neutral-200">2 хвилини</strong>. Без втручання в код та встановлення плагінів.
-      </p>
+      <i18n-t keypath="b2b.hero_trust" tag="p" class="text-sm text-neutral-500 dark:text-neutral-400 mb-12 font-medium">
+        <template #bold>
+          <strong class="text-neutral-700 dark:text-neutral-200">{{ $t('b2b.hero_trust_bold') }}</strong>
+        </template>
+      </i18n-t>
 
       <div class="flex flex-col sm:flex-row items-center justify-center gap-6 w-full px-6">
         <UButton
@@ -36,7 +40,7 @@
           size="xl"
           class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:scale-105 active:scale-[0.98] transition-transform duration-300 px-12 py-5 font-black rounded-xl shadow-2xl shimmer-effect border-0 cursor-pointer"
         >
-          Захистити сайт безкоштовно →
+          {{ $t('b2b.hero_cta') }}
         </UButton>
         <UButton
           id="hero-login-btn"
@@ -46,22 +50,22 @@
           color="neutral"
           class="px-12 py-5 border border-neutral-200 dark:border-white/10 font-bold rounded-xl cursor-pointer hover:bg-neutral-50 dark:hover:bg-white/5 transition-all duration-300"
         >
-          Увійти в акаунт
+          {{ $t('b2b.hero_cta_secondary') }}
         </UButton>
       </div>
 
       <div class="mt-10 flex flex-wrap items-center justify-center gap-8 text-sm text-neutral-400 dark:text-neutral-500 font-medium">
-        <span>✓ Без кредитної картки</span>
-        <span>✓ До 6 сайтів — безкоштовно назавжди</span>
-        <span>✓ Скасування у будь-який момент</span>
+        <span>{{ $t('b2b.hero_proof_1') }}</span>
+        <span>{{ $t('b2b.hero_proof_2') }}</span>
+        <span>{{ $t('b2b.hero_proof_3') }}</span>
       </div>
 
 
       <!-- ─── PAIN ─── -->
       <div class="mt-24 md:mt-40 w-full">
-        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-primary-500 mb-5">Чому це критично вже сьогодні</p>
+        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-primary-500 mb-5">{{ $t('b2b.pain_label') }}</p>
         <h2 class="text-4xl md:text-5xl font-black tracking-tight mb-16 text-neutral-900 dark:text-white leading-tight">
-          Рекламний бюджет списується.<br />А сайт лежить.
+          {{ $t('b2b.pain_title') }}<br />{{ $t('b2b.pain_title_2') }}
         </h2>
 
         <!-- Flow -->
@@ -79,17 +83,17 @@
           <div class="glass-card p-10 rounded-3xl flex flex-col items-start text-left relative overflow-hidden group hover:-translate-y-1 transition-all duration-300">
             <div class="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-red-500 to-amber-500 opacity-50"></div>
             <div class="w-12 h-12 rounded-xl bg-linear-to-br from-red-500/10 to-amber-500/10 border border-red-500/20 flex items-center justify-center mb-8 text-2xl group-hover:scale-110 transition-transform">💸</div>
-            <h3 class="text-xl font-black mb-4 text-neutral-900 dark:text-white tracking-tight">Злита рекламна кампанія</h3>
+            <h3 class="text-xl font-black mb-4 text-neutral-900 dark:text-white tracking-tight">{{ $t('b2b.pain_card1_title') }}</h3>
             <p class="text-neutral-600 dark:text-neutral-300 text-sm leading-[1.65] font-medium">
-              Ви запускаєте рекламу, трафік іде — але сайт раптом видає помилку 500 або просто не завантажується. Рекламні системи списують гроші за кожен клік, поки користувачі бачать порожню сторінку та одразу закривають її. Як результат — злитий бюджет, нуль продажів, а Google знижує ваші позиції в пошуку через високий показник відмов.
+              {{ $t('b2b.pain_card1_desc') }}
             </p>
           </div>
           <div class="glass-card p-10 rounded-3xl flex flex-col items-start text-left relative overflow-hidden group hover:-translate-y-1 transition-all duration-300">
             <div class="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-red-500 to-indigo-500 opacity-50"></div>
             <div class="w-12 h-12 rounded-xl bg-linear-to-br from-red-500/10 to-indigo-500/10 border border-red-500/20 flex items-center justify-center mb-8 text-2xl group-hover:scale-110 transition-transform">🔒</div>
-            <h3 class="text-xl font-black mb-4 text-neutral-900 dark:text-white tracking-tight">Прострочений SSL або домен</h3>
+            <h3 class="text-xl font-black mb-4 text-neutral-900 dark:text-white tracking-tight">{{ $t('b2b.pain_card2_title') }}</h3>
             <p class="text-neutral-600 dark:text-neutral-300 text-sm leading-[1.65] font-medium">
-              Браузер показує попередження про «Небезпечне з'єднання», і 95% користувачів миттєво закривають вкладку, побоюючись за свої дані. Термін дії SSL-сертифіката чи домену часто закінчується непомітно, без гучних попереджень від реєстратора. Один пропущений лист на пошті — і ваш бізнес втрачає адресу в інтернеті.
+              {{ $t('b2b.pain_card2_desc') }}
             </p>
           </div>
         </div>
@@ -99,7 +103,7 @@
       <!-- ─── HOW IT WORKS ─── -->
       <div class="mt-24 md:mt-48 w-full max-w-4xl text-center">
         <h2 class="text-4xl md:text-5xl font-black mb-16 text-neutral-900 dark:text-white tracking-tight">
-          Три кроки — і ваш сайт під охороною
+          {{ $t('b2b.how_title') }}
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
           <div class="hidden md:block absolute top-1/4 left-1/4 right-1/4 h-px bg-linear-to-r from-transparent via-neutral-200 dark:via-neutral-800 to-transparent z-0"></div>
@@ -122,14 +126,14 @@
 
         <div class="inline-flex items-center gap-2 px-3 py-1 mb-8 rounded-full bg-green-500/10 border border-green-500/20 text-green-700 dark:text-green-400 text-[10px] font-black tracking-[0.2em]">
           <div class="w-1.5 h-1.5 rounded-full bg-green-500"></div>
-          БЕЗКОШТОВНО ДО 6 САЙТІВ
+          {{ $t('b2b.offer_badge') }}
         </div>
 
         <h2 class="text-3xl md:text-5xl font-black mb-6 text-neutral-900 dark:text-white leading-tight">
-          До 6 сайтів —<br />назавжди безкоштовно
+          {{ $t('b2b.offer_title') }}<br />{{ $t('b2b.offer_title_2') }}
         </h2>
         <p class="text-neutral-600 dark:text-neutral-300 text-lg mb-10 max-w-xl mx-auto font-medium">
-          Ми не обмежуємо можливості тестовим періодом. Додайте до 6 проектів та використовуйте професійний моніторинг безкоштовно — без прив'язки картки та будь-яких прихованих умов.
+          {{ $t('b2b.offer_desc') }}
         </p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto mb-10 text-left">
@@ -146,9 +150,9 @@
           size="xl"
           class="bg-primary-600 hover:bg-primary-700 text-white hover:scale-105 active:scale-[0.98] transition-transform px-10 py-4 font-black rounded-xl shadow-xl shadow-primary-500/20 cursor-pointer border-0"
         >
-          Підключити сайт безкоштовно →
+          {{ $t('b2b.offer_cta') }}
         </UButton>
-        <p class="mt-4 text-xs text-neutral-400 dark:text-neutral-500 font-medium">Без кредитної картки. Більше 6 сайтів — доступні платні плани.</p>
+        <p class="mt-4 text-xs text-neutral-400 dark:text-neutral-500 font-medium">{{ $t('b2b.offer_note') }}</p>
       </div>
 
 
@@ -156,12 +160,12 @@
       <div class="mt-24 md:mt-48 w-full">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center text-left">
           <div>
-            <p class="text-[10px] font-black uppercase tracking-[0.2em] text-primary-500 mb-5">Для агенцій та веб-студій</p>
+            <p class="text-[10px] font-black uppercase tracking-[0.2em] text-primary-500 mb-5">{{ $t('b2b.agency_label') }}</p>
             <h2 class="text-3xl md:text-4xl font-black tracking-tight mb-6 text-neutral-900 dark:text-white leading-tight">
-              Від 7 до 60 сайтів —<br />одна панель керування
+              {{ $t('b2b.agency_title') }}<br />{{ $t('b2b.agency_title_2') }}
             </h2>
             <p class="text-neutral-600 dark:text-neutral-300 text-sm leading-[1.65] font-medium mb-8">
-              Вам більше не доведеться дізнаватися про проблеми від розгніваного клієнта пізно ввечері. Ви першими отримаєте сповіщення і зможете все виправити ще до того, як замовник помітить неполадку.
+              {{ $t('b2b.agency_desc') }}
             </p>
             <div class="space-y-3 mb-10">
               <div v-for="point in agencyPoints" :key="point" class="flex items-start gap-3 text-sm text-neutral-600 dark:text-neutral-300 font-medium">
@@ -175,10 +179,10 @@
               size="lg"
               class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-black px-8 py-3.5 rounded-xl hover:scale-105 transition-transform cursor-pointer border-0"
             >
-              Зареєструватись та подати запит
+              {{ $t('b2b.agency_cta') }}
             </UButton>
             <p class="mt-3 text-[11px] text-neutral-500 dark:text-neutral-400 font-medium leading-relaxed">
-              * Для створення запиту на розширений пакет необхідно створити безкоштовний акаунт.
+              {{ $t('b2b.agency_note') }}
             </p>
           </div>
 
@@ -196,10 +200,10 @@
             </div>
 
             <div class="flex items-center justify-between mb-6">
-              <span class="text-sm font-black text-neutral-900 dark:text-white">Панель агенції</span>
+              <span class="text-sm font-black text-neutral-900 dark:text-white">{{ $t('b2b.agency_panel_title') }}</span>
               <span class="text-[10px] px-3 py-1 bg-green-500/10 text-green-600 dark:text-green-400 font-black rounded-full border border-green-500/20 uppercase tracking-widest flex items-center gap-1.5">
                 <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-ping"></span>
-                Live
+                {{ $t('b2b.agency_panel_live') }}
               </span>
             </div>
 
@@ -227,7 +231,7 @@
             </div>
             
             <div class="mt-6 pt-5 border-t border-neutral-100 dark:border-white/5 text-center text-xs text-neutral-400 dark:text-neutral-500 font-bold">
-              ⚡ Звіт для клієнта в 1 клік
+              ⚡ {{ $t('b2b.agency_panel_report') }}
             </div>
           </div>
         </div>
@@ -237,7 +241,7 @@
       <!-- ─── FAQ ─── -->
       <div class="mt-24 md:mt-48 w-full max-w-3xl">
         <h2 class="text-4xl md:text-5xl font-black mb-16 text-neutral-900 dark:text-white tracking-tight text-center">
-          Відповіді на головні сумніви
+          {{ $t('b2b.faq_title') }}
         </h2>
         <div class="space-y-4 text-left">
           <div v-for="(item, i) in faq" :key="i" class="glass-card rounded-2xl overflow-hidden border border-neutral-200/50 dark:border-white/5 transition-all duration-300">
@@ -273,10 +277,10 @@
       <div class="mt-32 md:mt-56 w-full glass-card p-10 md:p-16 rounded-[40px] text-center max-w-4xl border border-primary-500/10 mb-20 relative overflow-hidden group">
         <div class="absolute -top-24 -right-24 w-48 h-48 bg-primary-500/10 blur-[60px] rounded-full"></div>
         <h2 class="text-3xl md:text-5xl font-black mb-6 text-neutral-900 dark:text-white leading-tight">
-          Дізнайтесь, що відбувається<br />з вашим сайтом прямо зараз
+          {{ $t('b2b.final_title') }}<br />{{ $t('b2b.final_title_2') }}
         </h2>
         <p class="text-neutral-600 dark:text-neutral-300 text-lg mb-10 max-w-xl mx-auto font-medium">
-          Підключіть до 6 сайтів безкоштовно за 2 хвилини. Статус, SSL, час відповіді, доступність — все в одній панелі.
+          {{ $t('b2b.final_desc') }}
         </p>
         <UButton
           id="final-cta-register-btn"
@@ -284,7 +288,7 @@
           size="xl"
           class="bg-primary-600 hover:bg-primary-700 text-white hover:scale-105 active:scale-[0.98] transition-transform px-10 py-4 font-black rounded-xl shadow-xl shadow-primary-500/20 cursor-pointer border-0"
         >
-          Почати безкоштовно →
+          {{ $t('b2b.final_cta') }}
         </UButton>
       </div>
 
@@ -294,17 +298,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useLocalePath } from '#imports';
+import { ref, computed } from 'vue';
+import { useLocalePath, useI18n } from '#imports';
 
+const { t, locale } = useI18n();
 const localePath = useLocalePath();
 const url = useRequestURL();
 
 useSeoMeta({
-  title: 'Моніторинг сайтів для бізнесу — DigiPulse',
-  ogTitle: 'Моніторинг сайтів для бізнесу — DigiPulse',
-  description: 'Захистіть рекламний бюджет від падінь сайту. DigiPulse щохвилини перевіряє сайт і сповіщає в Telegram. До 6 сайтів назавжди безкоштовно.',
-  ogDescription: 'Захистіть рекламний бюджет від падінь сайту. DigiPulse щохвилини перевіряє сайт і сповіщає в Telegram. До 6 сайтів назавжди безкоштовно.',
+  title: () => t('b2b.seo_title'),
+  ogTitle: () => t('b2b.seo_title'),
+  description: () => t('b2b.seo_desc'),
+  ogDescription: () => t('b2b.seo_desc'),
   ogUrl: url.href,
   ogType: 'website',
 });
@@ -318,13 +323,13 @@ function toggleFaq(i: number) {
   openFaq.value = openFaq.value === i ? null : i;
 }
 
-const painSteps = [
-  { emoji: '📣', text: 'Реклама в Instagram/Google активна' },
-  { emoji: '💸', text: 'Рекламний бюджет успішно списується' },
-  { emoji: '💥', text: 'Сайт раптово «падає» з помилкою 500' },
-  { emoji: '💔', text: 'Клієнти бачать помилку і розчаровуються' },
-  { emoji: '🏃', text: 'Вони йдуть до ваших конкурентів. Назавжди.' },
-];
+const painSteps = computed(() => [
+  { emoji: '📣', text: t('b2b.pain_step_1') },
+  { emoji: '💸', text: t('b2b.pain_step_2') },
+  { emoji: '💥', text: t('b2b.pain_step_3') },
+  { emoji: '💔', text: t('b2b.pain_step_4') },
+  { emoji: '🏃', text: t('b2b.pain_step_5') },
+]);
 
 function getPainStepClass(i: number) {
   const steps = [
@@ -342,65 +347,72 @@ function getPainStepClass(i: number) {
   return steps[i] || '';
 }
 
-const howItWorks = [
+const howItWorks = computed(() => [
   {
-    title: 'Додайте посилання на сайт',
-    desc: 'Просто вкажіть URL вашого сайту. Не потрібно змінювати код чи встановлювати плагіни. Ми автоматично налаштуємо моніторинг доступності, швидкості та SSL.',
+    title: t('b2b.how_step1_title'),
+    desc: t('b2b.how_step1_desc'),
   },
   {
-    title: 'Підключіть Telegram в один клік',
-    desc: 'Натисніть кнопку інтеграції та запустіть нашого бота командою /start. Сповіщення можна надсилати як у приватні повідомлення, так і в груповий чат команди.',
+    title: t('b2b.how_step2_title'),
+    desc: t('b2b.how_step2_desc'),
   },
   {
-    title: 'Будьте впевнені у доступності',
-    desc: 'Якщо сайт стане недоступним, ви дізнаєтеся про це вже за хвилину, а не через добу від розгніваного клієнта чи партнера.',
+    title: t('b2b.how_step3_title'),
+    desc: t('b2b.how_step3_desc'),
   },
-];
+]);
 
-const offerPoints = [
-  'Повноцінний моніторинг до 6 сайтів',
-  'Перевірка доступності щохвилини (1440 разів на добу)',
-  'Миттєві сповіщення в Telegram та на Email',
-  'Контроль термінів дії SSL-сертифікатів та доменів',
-  'Детальний аналіз швидкості та стабільності відповіді',
-  'Жодних прив\'язок картки чи автосписань без згоди',
-];
+const offerPoints = computed(() => [
+  t('b2b.offer_point_1'),
+  t('b2b.offer_point_2'),
+  t('b2b.offer_point_3'),
+  t('b2b.offer_point_4'),
+  t('b2b.offer_point_5'),
+  t('b2b.offer_point_6'),
+]);
 
-const agencyPoints = [
-  'Керування від 7 до 60 сайтами в єдиній консолі',
-  'Моніторинг статусів у реальному часі без перемикання вкладок',
-  'Готові звіти для замовників: uptime, інциденти та SSL',
-  'Реагування на інциденти до того, як про них дізнається клієнт',
-  'Додаткова цінність та обґрунтування абонплати за підтримку',
-];
+const agencyPoints = computed(() => [
+  t('b2b.agency_point_1'),
+  t('b2b.agency_point_2'),
+  t('b2b.agency_point_3'),
+  t('b2b.agency_point_4'),
+  t('b2b.agency_point_5'),
+]);
 
-const agencyMockSites = [
-  { name: 'shop-client.ua', online: true, ssl: '87 днів', ping: '124 ms', sslAlert: false, status: 'Online' },
-  { name: 'agency-portfolio.com', online: true, ssl: '12 днів ⚠️', ping: '180 ms', sslAlert: true, status: 'Online' },
-  { name: 'restaurant-lviv.ua', online: false, ssl: '45 днів', ping: '— ms', sslAlert: false, status: 'Offline' },
-  { name: 'realty-kyiv.com', online: true, ssl: '203 днів', ping: '98 ms', sslAlert: false, status: 'Online' },
-];
+const getDaysString = (count: number) => {
+  if (locale.value === 'uk') {
+    const mod10 = count % 10;
+    const mod100 = count % 100;
+    if (mod100 >= 11 && mod100 <= 14) {
+      return `${count} днів`;
+    }
+    if (mod10 === 1) {
+      return `${count} день`;
+    }
+    if (mod10 >= 2 && mod10 <= 4) {
+      return `${count} дні`;
+    }
+    return `${count} днів`;
+  }
+  if (locale.value === 'pl') {
+    if (count === 1) return `1 dzień`;
+    return `${count} dni`;
+  }
+  return `${count} days`;
+};
 
-const faq = [
-  {
-    q: 'Чи потрібно встановлювати плагіни або міняти код сайту?',
-    a: 'Ні. Наш моніторинг є повністю зовнішнім: система робить запити до вашого сайту так само, як це роблять звичайні користувачі. Жодних змін у коді чи додаткового навантаження на ваш сервер.',
-  },
-  {
-    q: 'А якщо впаде сам Telegram або я не отримаю повідомлення?',
-    a: 'Telegram — це наш основний канал сповіщень, але ми також дублюємо критичні повідомлення на вашу електронну пошту. Крім того, всі інциденти детально фіксуються в особистому кабінеті.',
-  },
-  {
-    q: 'Скільки це коштує понад 6 сайтів?',
-    a: 'Вартість платних тарифів для окремих проектів починається від $5 на місяць. Для веб-студій та агенцій на період бета-тестування діє спеціальний пакет від 7 до 60 сайтів, який наразі надається безкоштовно за індивідуальним запитом.',
-  },
-  {
-    q: 'У мене Shopify / Prom / Tilda — це теж працює?',
-    a: 'Абсолютно. Система перевіряє доступність безпосередньо за посиланням (URL), тому технологічний стек сайту не має значення. Моніторинг однаково ефективно працює для Shopify, WordPress, Prom, Tilda, Webflow чи кастомних рішень.',
-  },
-  {
-    q: 'Як швидко я дізнаюсь, що сайт впав?',
-    a: 'Перевірка доступності здійснюється щохвилини. Одразу після фіксації помилки сповіщення надсилається у вибраний канал за лічені секунди. Середній час реакції системи з моменту падіння сайту до отримання вами повідомлення становить менше 60 секунд.',
-  },
-];
+const agencyMockSites = computed(() => [
+  { name: 'shop-client.ua', online: true, ssl: getDaysString(87), ping: '124 ms', sslAlert: false, status: locale.value === 'uk' ? 'Онлайн' : 'Online' },
+  { name: 'agency-portfolio.com', online: true, ssl: getDaysString(12) + ' ⚠️', ping: '180 ms', sslAlert: true, status: locale.value === 'uk' ? 'Онлайн' : 'Online' },
+  { name: 'restaurant-lviv.ua', online: false, ssl: getDaysString(45), ping: '— ms', sslAlert: false, status: t('dashboard.offline') },
+  { name: 'realty-kyiv.com', online: true, ssl: getDaysString(203), ping: '98 ms', sslAlert: false, status: locale.value === 'uk' ? 'Онлайн' : 'Online' },
+]);
+
+const faq = computed(() => [
+  { q: t('b2b.faq_q1'), a: t('b2b.faq_a1') },
+  { q: t('b2b.faq_q2'), a: t('b2b.faq_a2') },
+  { q: t('b2b.faq_q3'), a: t('b2b.faq_a3') },
+  { q: t('b2b.faq_q4'), a: t('b2b.faq_a4') },
+  { q: t('b2b.faq_q5'), a: t('b2b.faq_a5') },
+]);
 </script>

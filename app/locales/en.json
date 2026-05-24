@@ -547,15 +547,16 @@
     "offer_cta": "Connect your site for free →",
     "offer_note": "No credit card. More than 6 sites — paid plans available.",
     "agency_label": "For agencies & web studios",
-    "agency_title": "50 client sites —",
+    "agency_title": "7 to 60 client sites —",
     "agency_title_2": "one dashboard",
     "agency_desc": "No more waiting for the client to notice their site is down and call you at 11pm. You know first. And you show up with a solution before they even open their email.",
-    "agency_point_1": "Add 20 to 50 client sites to one dashboard",
+    "agency_point_1": "Add 7 to 60 client sites to one dashboard",
     "agency_point_2": "Real-time status for every site — no switching tabs",
     "agency_point_3": "Automated reports for clients: uptime, incidents, SSL",
     "agency_point_4": "You get alerted before the client — and come with a solution",
     "agency_point_5": "Justifies your monthly maintenance retainer",
     "agency_cta": "Connect all client sites",
+    "agency_note": "* To create a request for an extended package, you need to create a free account.",
     "agency_panel_title": "Agency dashboard",
     "agency_panel_live": "Live",
     "agency_panel_report": "+ Client report in 1 click",
@@ -565,7 +566,7 @@
     "faq_q2": "What if Telegram goes down and I don't get an alert?",
     "faq_a2": "Telegram is the primary channel, but not the only one. We also send an email as a backup. The incident is also saved in the dashboard — you'll see it next time you log in.",
     "faq_q3": "How much does it cost for more than 6 sites?",
-    "faq_a3": "Paid plans start from $5/month. For agencies — from $19/month for up to 20 sites. No hidden fees, no auto-charges without notice.",
+    "faq_a3": "Paid plans start from $5/month. For agencies — from $19/month for a package of 7 to 60 sites. No hidden fees, no auto-charges without notice.",
     "faq_q4": "I use Shopify / Prom / Tilda — does this work?",
     "faq_a4": "Yes. We don't care what platform your site runs on — we check the URL, not the platform. Shopify, WordPress, Prom, Tilda, Webflow, custom server — all the same.",
     "faq_q5": "How quickly will I know my site is down?",
@@ -574,5 +575,10 @@
     "final_title_2": "with your site right now",
     "final_desc": "Connect up to 6 sites for free in 2 minutes. Status, SSL, response time, availability — all in one dashboard.",
     "final_cta": "Start for free →"
+  },
+  "footer": {
+    "landings_title": "Solutions",
+    "landing_basic": "Basic Monitoring",
+    "landing_b2b": "B2B Site Monitoring"
   }
 }

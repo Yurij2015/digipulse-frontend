@@ -547,15 +547,16 @@
     "offer_cta": "Podłącz stronę za darmo →",
     "offer_note": "Bez karty kredytowej. Powyżej 6 stron — dostępne płatne plany.",
     "agency_label": "Dla agencji i web studio",
-    "agency_title": "50 stron klientów —",
+    "agency_title": "Od 7 do 60 stron klientów —",
     "agency_title_2": "jeden panel zarządzania",
     "agency_desc": "Koniec czekania, aż klient sam zauważy, że jego strona nie działa i zadzwoni o 23:00. Ty wiesz pierwszy. I przychodzisz z rozwiązaniem, zanim on otworzy skrzynkę.",
-    "agency_point_1": "Dodaj od 20 do 50 stron klientów do jednego panelu",
+    "agency_point_1": "Dodaj od 7 do 60 stron klientów do jednego panelu",
     "agency_point_2": "Status każdej strony w czasie rzeczywistym — bez przełączania",
     "agency_point_3": "Automatyczne raporty dla klientów: uptime, incydenty, SSL",
     "agency_point_4": "Dostajesz alert przed klientem — i przychodzisz z rozwiązaniem",
     "agency_point_5": "Uzasadnia miesięczną opłatę za wsparcie techniczne",
     "agency_cta": "Podłącz wszystkie strony klientów",
+    "agency_note": "* Aby wysłać zapytanie o pakiet rozszerzony, musisz utworzyć darmowe konto.",
     "agency_panel_title": "Panel agencji",
     "agency_panel_live": "Na żywo",
     "agency_panel_report": "+ Raport dla klienta w 1 klik",
@@ -565,7 +566,7 @@
     "faq_q2": "A co jeśli Telegram przestanie działać?",
     "faq_a2": "Telegram to główny kanał, ale nie jedyny. Wysyłamy też email jako kopię zapasową. Incydent jest zapisywany w panelu — zobaczysz go przy następnym logowaniu.",
     "faq_q3": "Ile kosztuje powyżej 6 stron?",
-    "faq_a3": "Płatne plany od $5/miesiąc. Dla agencji — od $19/miesiąc za do 20 stron. Bez ukrytych opłat i automatycznych płatności bez ostrzeżenia.",
+    "faq_a3": "Płatne plany od $5/miesiąc. Dla agencji — od $19/miesiąc za pakiet od 7 do 60 stron. Bez ukrytych opłat i automatycznych płatności bez ostrzeżenia.",
     "faq_q4": "Mam Shopify / Tilda / własny serwer — czy to działa?",
     "faq_a4": "Tak. Nie obchodzi nas platforma — sprawdzamy URL, nie platformę. Shopify, WordPress, Tilda, Webflow, własny serwer — wszystko tak samo.",
     "faq_q5": "Jak szybko dowiem się, że strona nie działa?",
@@ -574,5 +575,10 @@
     "final_title_2": "z Twoją stroną teraz",
     "final_desc": "Podłącz do 6 stron za darmo w 2 minuty. Status, SSL, czas odpowiedzi, dostępność — wszystko w jednym panelu.",
     "final_cta": "Zacznij za darmo →"
+  },
+  "footer": {
+    "landings_title": "Rozwiązania",
+    "landing_basic": "Podstawowy monitoring",
+    "landing_b2b": "Monitoring dla B2B"
   }
 }
