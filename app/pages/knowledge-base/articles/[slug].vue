@@ -208,6 +208,11 @@ const backLabel = computed(() =>
             v-html="articleBodyHtml"
           />
         </div>
+
+        <!-- Share -->
+        <div class="mt-8 pt-8 border-t border-neutral-100 dark:border-white/5">
+          <ShareButtons :title="articleTitle" />
+        </div>
         </div>
       </template>
       <div class="mt-auto"><AppFooter /></div>
