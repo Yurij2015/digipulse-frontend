@@ -213,6 +213,7 @@ export const useSitesStore = defineStore('sites', () => {
     error,
     lastFetched,
     fetchSites,
+    fetchSiteById,
     applyRealtimeStatusUpdate,
     syncSitesFromRealtimeSignal,
     getSiteById,

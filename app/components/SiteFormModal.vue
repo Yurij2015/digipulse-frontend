@@ -13,7 +13,10 @@ const props = defineProps<{
   open: boolean;
 }>();
 
-const emit = defineEmits(['update:open', 'success']);
+const emit = defineEmits<{
+  'update:open': [value: boolean];
+  'success': [siteId?: number];
+}>();
 
 const { t } = useI18n();
 const config = useRuntimeConfig();
@@ -200,7 +203,7 @@ async function onSubmit() {
       ? `${config.public.apiBase}/api/v1/sites/${props.siteId}`
       : `${config.public.apiBase}/api/v1/sites`;
       
-    await $fetch(url, {
+    const response = await $fetch<any>(url, {
       method: isEdit.value ? 'PUT' : 'POST',
       headers: {
         'Accept': 'application/json',
@@ -216,7 +219,8 @@ async function onSubmit() {
       }
     });
 
-    emit('success');
+    const siteId = response?.data?.id ?? response?.id ?? props.siteId ?? undefined;
+    emit('success', siteId);
     isOpen.value = false;
   } catch (error: any) {
     if (error.status === 422) {
@@ -247,7 +251,7 @@ async function onSubmit() {
 
         <UFormField :label="t('add_website.endpoint_url')" name="url">
           <UInput v-model="state.url" :placeholder="t('add_website.endpoint_url_placeholder')" icon="i-heroicons-globe-alt" class="w-full" />
-          <div v-if="formErrors.url" class="text-xs text-error mt-1" v-html="formErrors.url[0].replace('admin@digispace.pro', `<a href='mailto:admin@digispace.pro?subject=DigiPulse Support' class='underline font-bold'>admin@digispace.pro</a>`)"></div>
+          <div v-if="formErrors.url" class="text-xs text-error mt-1" v-html="formErrors.url[0]?.replace('admin@digispace.pro', `<a href='mailto:admin@digispace.pro?subject=DigiPulse Support' class='underline font-bold'>admin@digispace.pro</a>`)"></div>
         </UFormField>
 
         <UFormField name="project_id">

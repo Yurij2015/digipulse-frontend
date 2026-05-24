@@ -190,7 +190,7 @@
     </UModal>
 
     <!-- Site Form Modal -->
-    <SiteFormModal v-model:open="isSiteModalOpen" :site-id="editingSiteId" :site-data="selectedSite" @success="refreshSites" />
+    <SiteFormModal v-model:open="isSiteModalOpen" :site-id="editingSiteId" :site-data="selectedSite" @success="handleSiteSuccess" />
 
     <!-- Limit Reached Modal -->
     <SiteLimitModal v-model:open="isLimitModalOpen" />
@@ -334,6 +334,14 @@ onUnmounted(() => {
 // Refresh function
 const refreshSites = async () => {
     await sitesStore.fetchSites(true, projectFilter.value);
+};
+
+const handleSiteSuccess = async (siteId?: number) => {
+    if (siteId) {
+        await sitesStore.fetchSiteById(siteId);
+    } else {
+        await refreshSites();
+    }
 };
 
 

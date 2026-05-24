@@ -266,7 +266,7 @@
       </UModal>
 
     <!-- Site Form Modal -->
-    <SiteFormModal v-model:open="isSiteModalOpen" :site-id="editingSiteId" :site-data="selectedSite" @success="loadSites" />
+    <SiteFormModal v-model:open="isSiteModalOpen" :site-id="editingSiteId" :site-data="selectedSite" @success="handleSiteSuccess" />
 
     <!-- Limit Reached Modal -->
     <SiteLimitModal v-model:open="isLimitModalOpen" />
@@ -350,7 +350,15 @@ const showSitesLoader = computed(() => {
 
 // --- Async Logic ---
 async function loadSites() {
-  await sitesStore.fetchSites();
+  await sitesStore.fetchSites(true);
+}
+
+async function handleSiteSuccess(siteId?: number) {
+  if (siteId) {
+    await sitesStore.fetchSiteById(siteId);
+  } else {
+    await sitesStore.fetchSites(true);
+  }
 }
 
 // Watch token to load data when it becomes available
