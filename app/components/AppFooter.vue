@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-
 const localePath = useLocalePath()
 const isCookieConsentVisible = useState('cookie-consent-visible')
 const consentStatus = useState('cookie-consent-status')
