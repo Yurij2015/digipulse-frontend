@@ -26,3 +26,4 @@ logs
 .pnpm-store/
 
 deployment-config.json
+.aider*

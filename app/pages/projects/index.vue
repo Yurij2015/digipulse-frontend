@@ -119,7 +119,7 @@ definePageMeta({
 <template>
   <div class="flex flex-col lg:flex-row min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white transition-colors duration-500 mesh-bg">
     <AppSidebar />
-    <BaseLoader :show="showProjectsLoader || isDeleting" />
+    <BaseLoader :show="isDeleting" />
 
     <!-- Main Content -->
     <main class="flex-1 p-6 lg:p-12 overflow-y-auto lg:ml-72 h-screen">
@@ -146,7 +146,9 @@ definePageMeta({
           />
         </div>
 
-        <UTable v-if="filteredRows.length > 0" :data="filteredRows" :columns="columns" class="w-full">
+        <TableSkeleton v-if="showProjectsLoader" :rows="3" :columns="4" :actions="3" />
+
+        <UTable v-else-if="filteredRows.length > 0" :data="filteredRows" :columns="columns" class="w-full">
           <!-- Name Column -->
           <template #name-cell="{ row }">
             <NuxtLink :to="localePath(`/sites?project=${row.original.id}`)" class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity">
@@ -207,19 +209,16 @@ definePageMeta({
           </template>
         </UTable>
 
-        <!-- Empty State with Skeleton -->
-        <div v-if="filteredRows.length === 0" class="relative">
-          <TableSkeleton :rows="3" :columns="4" :actions="3" />
-          <div v-if="projectsStore.lastFetched !== null" class="absolute inset-0 flex flex-col items-center justify-center bg-white/20 dark:bg-neutral-950/20 backdrop-blur-[1px]">
-            <div class="w-20 h-20 rounded-3xl bg-neutral-50 dark:bg-white/5 flex items-center justify-center text-neutral-300 dark:text-neutral-700 mx-auto mb-6">
-              <UIcon name="i-heroicons-folder-open" class="text-4xl" />
-            </div>
-            <h3 class="text-xl font-black text-neutral-900 dark:text-white mb-2">{{ t('projects.no_projects') }}</h3>
-            <p class="text-neutral-500 max-w-xs mx-auto text-center mb-6">{{ t('projects.subtitle') }}</p>
-            <UButton icon="i-heroicons-plus-circle" class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold px-6 rounded-xl hover:scale-105 transition-transform cursor-pointer" @click="openCreateModal">
-              {{ t('projects.add_project') }}
-            </UButton>
+        <!-- Empty State -->
+        <div v-else-if="filteredRows.length === 0" class="flex flex-col items-center justify-center py-24 px-6">
+          <div class="w-20 h-20 rounded-3xl bg-neutral-50 dark:bg-white/5 flex items-center justify-center text-neutral-300 dark:text-neutral-700 mb-6">
+            <UIcon name="i-heroicons-folder-open" class="text-4xl" />
           </div>
+          <h3 class="text-xl font-black text-neutral-900 dark:text-white mb-2">{{ t('projects.no_projects') }}</h3>
+          <p class="text-neutral-500 max-w-xs text-center mb-6">{{ t('projects.subtitle') }}</p>
+          <UButton icon="i-heroicons-plus-circle" class="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold px-6 rounded-xl hover:scale-105 transition-transform cursor-pointer" @click="openCreateModal">
+            {{ t('projects.add_project') }}
+          </UButton>
         </div>
       </div>
     </main>
