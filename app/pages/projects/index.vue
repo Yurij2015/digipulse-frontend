@@ -151,7 +151,7 @@ definePageMeta({
         <UTable v-else-if="filteredRows.length > 0" :data="filteredRows" :columns="columns" class="w-full">
           <!-- Name Column -->
           <template #name-cell="{ row }">
-            <NuxtLink :to="localePath(`/sites?project=${row.original.id}`)" class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity">
+            <NuxtLink :to="localePath({ path: '/sites', query: { project: row.original.id } })" class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity">
               <div class="w-8 h-8 rounded-lg bg-primary-500/10 flex items-center justify-center text-primary-500">
                 <UIcon name="i-heroicons-folder" />
               </div>
@@ -170,7 +170,7 @@ definePageMeta({
           <template #sites_count-cell="{ row }">
             <NuxtLink
               v-if="row.original.sites_count > 0"
-              :to="localePath(`/sites?project=${row.original.id}`)"
+              :to="localePath({ path: '/sites', query: { project: row.original.id } })"
               class="inline-block"
             >
               <UBadge variant="subtle" color="primary" class="font-bold text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-md border cursor-pointer hover:opacity-80 transition-opacity">
@@ -191,7 +191,7 @@ definePageMeta({
                 variant="ghost"
                 color="primary"
                 size="sm"
-                :to="localePath(`/sites?project=${row.original.id}`)"
+                :to="localePath({ path: '/sites', query: { project: row.original.id } })"
                 class="cursor-pointer"
                 :title="t('projects.view_sites')"
               />

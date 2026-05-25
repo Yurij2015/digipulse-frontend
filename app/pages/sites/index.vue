@@ -252,7 +252,16 @@ const columns = computed(() => [
 const filteredRows = computed(() => {
   let result = sites.value;
 
-  // Search text filter only — project filtering is done server-side
+  // Client-side project filter — ensures correct results even if the store
+  // contains stale all-sites data from a prior fetch (e.g., from dashboard).
+  if (projectFilter.value) {
+    result = result.filter((site) => {
+      const siteProjectId = site.project_id ?? site.project?.id;
+      return Number(siteProjectId) === projectFilter.value;
+    });
+  }
+
+  // Search text filter
   if (search.value) {
     const q = search.value.toLowerCase();
     result = result.filter((site) => {
@@ -268,20 +277,19 @@ const showSitesLoader = computed(() => {
   return (isLoading.value && sites.value.length === 0) || sitesStore.lastFetched === null;
 });
 
-// Initial load
-onMounted(async () => {
-    if (token.value) {
-        await sitesStore.fetchSites(true, projectFilter.value);
+// Fetch projects when token becomes available
+watch(token, (newToken) => {
+    if (newToken) {
         projectsStore.fetchProjects();
     }
-});
+}, { immediate: true });
 
-// Re-fetch when project filter changes (e.g. clearing the filter)
-watch(projectFilter, async (newProjectId) => {
-    if (token.value) {
-        await sitesStore.fetchSites(true, newProjectId);
+// Fetch sites when token becomes available or project filter changes
+watch([token, projectFilter], async ([newToken, newProjectId]) => {
+    if (newToken) {
+        await sitesStore.fetchSites(true, newProjectId as number | null);
     }
-});
+}, { immediate: true });
 
 watch(() => user.value?.id, (newUserId, oldUserId) => {
   if (!$echo) {
