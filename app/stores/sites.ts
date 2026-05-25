@@ -10,6 +10,7 @@ export const useSitesStore = defineStore('sites', () => {
   const loading = ref(false);
   const error = ref<string | null>(null);
   const lastFetched = ref<number | null>(null);
+  const lastProjectId = ref<number | null | undefined>(undefined); // undefined = never fetched
 
   const CACHE_TTL = 30000; // 30 seconds cache
   const REALTIME_SYNC_COOLDOWN = 5000;
@@ -49,9 +50,17 @@ export const useSitesStore = defineStore('sites', () => {
 
   const fetchSites = async (force = false, projectId?: number | null) => {
     if (!token.value) return;
-    
-    // Use cache if not forced and within TTL (only when no project filter or same filter)
-    if (!force && lastFetched.value && (Date.now() - lastFetched.value < CACHE_TTL) && sites.value.length > 0 && !projectId) {
+
+    // If the project filter context changed, clear stale data immediately
+    // so the wrong sites are never displayed while the new request is in-flight.
+    const filterChanged = lastProjectId.value !== undefined && lastProjectId.value !== (projectId ?? null);
+    if (filterChanged) {
+      sites.value = [];
+      lastFetched.value = null;
+    }
+
+    // Use cache if not forced and within TTL (only when no project filter changed)
+    if (!force && !filterChanged && lastFetched.value && (Date.now() - lastFetched.value < CACHE_TTL) && sites.value.length > 0) {
       return;
     }
 
@@ -77,8 +86,9 @@ export const useSitesStore = defineStore('sites', () => {
       const dataArray = Array.isArray(data) ? data : (data?.data || []);
       
       sites.value = dataArray.map((site: any) => normalizeSite(site));
-      
+
       lastFetched.value = Date.now();
+      lastProjectId.value = projectId ?? null;
     } catch (err: any) {
       console.error('Store: Failed to load sites:', err);
       error.value = err.message || 'Failed to load sites';
@@ -201,6 +211,7 @@ export const useSitesStore = defineStore('sites', () => {
     loading.value = false;
     error.value = null;
     lastFetched.value = null;
+    lastProjectId.value = undefined;
     realtimeSyncTimeouts.forEach((timeout) => clearTimeout(timeout));
     realtimeSyncTimeouts.clear();
     lastRealtimeSyncAtBySite.value = {};
