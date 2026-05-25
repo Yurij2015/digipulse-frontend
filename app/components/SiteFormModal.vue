@@ -38,12 +38,16 @@ const state = ref({
   name: '',
   url: '',
   interval: 300,
-  project_id: null as number | null,
+  project_id: undefined as number | undefined,
   selectedChecks: {} as Record<number, { enabled: boolean; params: any }>
 });
 
 const isCreatingNewProject = ref(false);
 const newProjectName = ref('');
+
+const projectItems = computed(() =>
+  (projectsStore.projects || []).map(p => ({ label: p.name, value: p.id }))
+);
 
 const intervalOptions = computed(() => [
   { label: t('add_website.freq_60s'), value: 60 },
@@ -92,7 +96,7 @@ async function fetchData() {
       name: '',
       url: '',
       interval: 300,
-      project_id: null,
+      project_id: undefined,
       selectedChecks: {}
     };
     
@@ -126,7 +130,7 @@ async function fetchData() {
         state.value.name = site.name || '';
         state.value.url = site.url || '';
         state.value.interval = Number(site.update_interval || site.interval || 300);
-        state.value.project_id = site.project_id || null;
+        state.value.project_id = site.project_id ?? undefined;
 
         // Support both backend formats: 'configurations' and 'checks'
         const configs = site.configurations || site.checks;
@@ -214,7 +218,7 @@ async function onSubmit() {
         name: state.value.name,
         url: state.value.url,
         update_interval: state.value.interval,
-        project_id: state.value.project_id,
+        project_id: state.value.project_id ?? null,
         checks
       }
     });
@@ -277,9 +281,11 @@ async function onSubmit() {
           <USelectMenu
             v-else
             v-model="state.project_id"
-            :items="[{ label: t('projects.no_project'), value: null }, ...(projectsStore.projects || []).map(p => ({ label: p.name, value: p.id }))]"
+            :items="projectItems"
             value-key="value"
             :placeholder="t('projects.no_project')"
+            :ui="{ content: 'z-[200]' }"
+            clear
             class="w-full"
           />
         </UFormField>
