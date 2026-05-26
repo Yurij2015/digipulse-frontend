@@ -134,12 +134,14 @@ export const useSitesStore = defineStore('sites', () => {
   };
 
   const recomputeStatusCounts = () => {
-    if (!paginationMeta.value || paginationMeta.value.currentPage !== 1) return;
-    statusCounts.value = {
-      total: paginationMeta.value.total,
-      active: sites.value.filter((s: any) => s.status === 'Online' || s.status === 'Pending').length,
-      issues: sites.value.filter((s: any) => s.status === 'Offline' || s.status === 'Warning').length,
-    };
+    // Only update total from pagination meta; active/issues come from fetchSiteStatusCounts
+    // which fetches a full dataset — computing them from a single page would give wrong counts.
+    if (paginationMeta.value) {
+      statusCounts.value = {
+        ...statusCounts.value,
+        total: paginationMeta.value.total,
+      };
+    }
   };
 
   const fetchSiteStatusCounts = async (force = false) => {
@@ -149,7 +151,7 @@ export const useSitesStore = defineStore('sites', () => {
     try {
       const params = new URLSearchParams();
       params.set('page', '1');
-      params.set('per_page', '50');
+      params.set('per_page', '500');
       const data = await $fetch<any>(`${config.public.apiBase}/api/v1/sites?${params.toString()}`, {
         headers: {
           'Accept': 'application/json',
