@@ -370,14 +370,21 @@ const showSitesLoader = computed(() => isLoading.value);
 
 // --- Async Logic ---
 async function loadSites() {
-  await sitesStore.fetchSites(true, undefined, currentPage.value, PER_PAGE);
+  await Promise.all([
+    sitesStore.fetchSites(true, undefined, currentPage.value, PER_PAGE),
+    sitesStore.fetchSiteStatusCounts(true),
+  ]);
 }
 
 async function handleSiteSuccess(siteId?: number) {
   if (siteId) {
     await sitesStore.fetchSiteById(siteId);
+    sitesStore.fetchSiteStatusCounts(true);
   } else {
-    await sitesStore.fetchSites(true, undefined, currentPage.value, PER_PAGE);
+    await Promise.all([
+      sitesStore.fetchSites(true, undefined, currentPage.value, PER_PAGE),
+      sitesStore.fetchSiteStatusCounts(true),
+    ]);
   }
 }
 
@@ -390,6 +397,7 @@ async function goToPage(page: number) {
 watch(token, (newToken) => {
   if (newToken && websites.value.length === 0) {
     sitesStore.fetchSites(false, undefined, currentPage.value, PER_PAGE);
+    sitesStore.fetchSiteStatusCounts();
   }
 }, { immediate: true });
 

@@ -25,6 +25,7 @@ export const useSitesStore = defineStore('sites', () => {
   const loading = ref(false);
   const error = ref<string | null>(null);
   const lastFetched = ref<number | null>(null);
+  const statusCountsFetchedAt = ref<number | null>(null);
   const lastProjectId = ref<number | null | undefined>(undefined); // undefined = never fetched
   const pageCache = new Map<string, PageCacheEntry>();
   const paginationMeta = ref<PaginationMeta | null>(null);
@@ -120,14 +121,6 @@ export const useSitesStore = defineStore('sites', () => {
         };
 
         pageCache.set(cacheKey, { sites: normalized, meta: paginationMeta.value, fetchedAt: Date.now() });
-
-        if (page === 1) {
-          statusCounts.value = {
-            total: data.meta.total,
-            active: normalized.filter((s: any) => s.status === 'Online' || s.status === 'Pending').length,
-            issues: normalized.filter((s: any) => s.status === 'Offline' || s.status === 'Warning').length,
-          };
-        }
       }
 
       lastFetched.value = Date.now();
@@ -147,6 +140,32 @@ export const useSitesStore = defineStore('sites', () => {
       active: sites.value.filter((s: any) => s.status === 'Online' || s.status === 'Pending').length,
       issues: sites.value.filter((s: any) => s.status === 'Offline' || s.status === 'Warning').length,
     };
+  };
+
+  const fetchSiteStatusCounts = async (force = false) => {
+    if (!token.value) return;
+    if (!force && statusCountsFetchedAt.value && (Date.now() - statusCountsFetchedAt.value < CACHE_TTL)) return;
+
+    try {
+      const params = new URLSearchParams();
+      params.set('page', '1');
+      params.set('per_page', '50');
+      const data = await $fetch<any>(`${config.public.apiBase}/api/v1/sites?${params.toString()}`, {
+        headers: {
+          'Accept': 'application/json',
+          'X-Frontend-Key': config.public.frontendKey as string,
+          'Authorization': `Bearer ${token.value}`
+        }
+      });
+      const dataArray = Array.isArray(data) ? data : (data?.data || []);
+      const normalized = dataArray.map((s: any) => normalizeSite(s));
+      statusCounts.value = {
+        total: data?.meta?.total ?? normalized.length,
+        active: normalized.filter((s: any) => s.status === 'Online' || s.status === 'Pending').length,
+        issues: normalized.filter((s: any) => s.status === 'Offline' || s.status === 'Warning').length,
+      };
+      statusCountsFetchedAt.value = Date.now();
+    } catch {}
   };
 
   const fetchSiteById = async (siteId: number) => {
@@ -274,6 +293,7 @@ export const useSitesStore = defineStore('sites', () => {
     paginationMeta.value = null;
     pageCache.clear();
     statusCounts.value = { total: 0, active: 0, issues: 0 };
+    statusCountsFetchedAt.value = null;
     realtimeSyncTimeouts.forEach((timeout) => clearTimeout(timeout));
     realtimeSyncTimeouts.clear();
     lastRealtimeSyncAtBySite.value = {};
@@ -287,6 +307,7 @@ export const useSitesStore = defineStore('sites', () => {
     lastFetched,
     paginationMeta,
     statusCounts,
+    fetchSiteStatusCounts,
     fetchSites,
     fetchSiteById,
     applyRealtimeStatusUpdate,
