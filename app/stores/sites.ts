@@ -28,7 +28,7 @@ export const useSitesStore = defineStore('sites', () => {
   const lastProjectId = ref<number | null | undefined>(undefined); // undefined = never fetched
   const pageCache = new Map<string, PageCacheEntry>();
   const paginationMeta = ref<PaginationMeta | null>(null);
-  const statusCounts = ref({ total: 0, active: 0, issues: 0 });
+  const statusCounts = ref({ total: 0, online: 0, slow: 0, offline: 0 });
 
   const CACHE_TTL = 30000; // 30 seconds cache
   const REALTIME_SYNC_COOLDOWN = 5000;
@@ -40,6 +40,7 @@ export const useSitesStore = defineStore('sites', () => {
     switch (apiStatus) {
       case 'up': return 'Online'
       case 'down': return 'Offline'
+      case 'slow': return 'Warning'
       case 'pending': return 'Pending'
       default: return 'Offline'
     }
@@ -125,8 +126,9 @@ export const useSitesStore = defineStore('sites', () => {
         if (sc) {
           statusCounts.value = {
             total: data.meta.total ?? 0,
-            active: (sc.up ?? 0) + (sc.pending ?? 0),
-            issues: sc.down ?? 0,
+            online: (sc.up ?? 0) + (sc.pending ?? 0),
+            slow: sc.slow ?? 0,
+            offline: sc.down ?? 0,
           };
         }
       }
@@ -275,7 +277,7 @@ export const useSitesStore = defineStore('sites', () => {
     lastProjectId.value = undefined;
     paginationMeta.value = null;
     pageCache.clear();
-    statusCounts.value = { total: 0, active: 0, issues: 0 };
+    statusCounts.value = { total: 0, online: 0, slow: 0, offline: 0 };
     realtimeSyncTimeouts.forEach((timeout) => clearTimeout(timeout));
     realtimeSyncTimeouts.clear();
     lastRealtimeSyncAtBySite.value = {};

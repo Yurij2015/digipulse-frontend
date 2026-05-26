@@ -15,12 +15,13 @@
       </header>
 
       <!-- Stats Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
         <div v-for="(stat, index) in summaryStats" :key="stat.label" class="p-6 rounded-[24px] bg-white dark:bg-white/5 border border-neutral-200/50 dark:border-white/5 hover:border-primary-500/30 transition-all cursor-default flex items-center gap-5 group">
           <div :class="[
             'w-14 h-14 rounded-2xl flex items-center justify-center transition-colors',
             index === 0 ? 'bg-primary-50 dark:bg-primary-950/30 text-primary-600 dark:text-primary-400' :
             index === 1 ? 'bg-green-50 dark:bg-green-950/20 text-green-600 dark:text-green-400' :
+            index === 2 ? (stat.value > 0 ? 'bg-yellow-50 dark:bg-yellow-950/20 text-yellow-600 dark:text-yellow-400' : 'bg-neutral-50 dark:bg-neutral-900 text-neutral-400') :
             (stat.value > 0 ? 'bg-red-50 dark:bg-red-950/20 text-red-600 dark:text-red-400' : 'bg-neutral-50 dark:bg-neutral-900 text-neutral-400')
           ]">
             <UIcon :name="stat.icon" class="w-7 h-7" />
@@ -341,8 +342,9 @@ const statusOptions = [
 
 const summaryStats = computed(() => [
   { label: t('dashboard.total_nodes'), value: sitesStore.statusCounts.total, icon: 'i-heroicons-server-stack' },
-  { label: t('dashboard.active_nodes'), value: sitesStore.statusCounts.active, icon: 'i-heroicons-check-circle' },
-  { label: t('dashboard.issues_detected'), value: sitesStore.statusCounts.issues, icon: 'i-heroicons-exclamation-triangle' },
+  { label: t('dashboard.online_nodes'), value: sitesStore.statusCounts.online, icon: 'i-heroicons-check-circle' },
+  { label: t('dashboard.slow_nodes'), value: sitesStore.statusCounts.slow, icon: 'i-heroicons-clock' },
+  { label: t('dashboard.offline_nodes'), value: sitesStore.statusCounts.offline, icon: 'i-heroicons-exclamation-triangle' },
 ]);
 
 const filteredWebsites = computed(() => {
