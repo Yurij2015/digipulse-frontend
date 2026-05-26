@@ -232,7 +232,10 @@
     "pending_check": "Перевірка очікується...",
     "empty_title": "Вузлів не знайдено",
     "empty_desc": "Додайте перший ресурс інфраструктури для моніторингу.",
-    "ssl_days": "SSL: {days} дн."
+    "ssl_days": "SSL: {days} дн.",
+    "pagination": {
+      "showing": "Показано {from}–{to} з {total}"
+    }
   },
   "history": {
     "title": "Історія",

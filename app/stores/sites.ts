@@ -2,6 +2,15 @@ import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { useRuntimeConfig, useAuth } from '#imports';
 
+export interface PaginationMeta {
+  currentPage: number;
+  lastPage: number;
+  perPage: number;
+  total: number;
+  from: number | null;
+  to: number | null;
+}
+
 export const useSitesStore = defineStore('sites', () => {
   const config = useRuntimeConfig();
   const { token } = useAuth();
@@ -11,6 +20,9 @@ export const useSitesStore = defineStore('sites', () => {
   const error = ref<string | null>(null);
   const lastFetched = ref<number | null>(null);
   const lastProjectId = ref<number | null | undefined>(undefined); // undefined = never fetched
+  const paginationMeta = ref<PaginationMeta | null>(null);
+  const statusCounts = ref({ total: 0, active: 0, issues: 0 });
+  const statusCountsLastFetched = ref<number | null>(null);
 
   const CACHE_TTL = 30000; // 30 seconds cache
   const REALTIME_SYNC_COOLDOWN = 5000;
@@ -48,7 +60,7 @@ export const useSitesStore = defineStore('sites', () => {
     };
   };
 
-  const fetchSites = async (force = false, projectId?: number | null) => {
+  const fetchSites = async (force = false, projectId?: number | null, page = 1, perPage = 50) => {
     if (!token.value) return;
 
     // If the project filter context changed, clear stale data immediately
@@ -66,14 +78,14 @@ export const useSitesStore = defineStore('sites', () => {
 
     loading.value = true;
     error.value = null;
-    
+
     try {
       const params = new URLSearchParams();
-      if (projectId) {
-        params.set('project_id', String(projectId));
-      }
-      const queryString = params.toString();
-      const url = `${config.public.apiBase}/api/v1/sites${queryString ? `?${queryString}` : ''}`;
+      if (projectId) params.set('project_id', String(projectId));
+      params.set('page', String(page));
+      params.set('per_page', String(perPage));
+
+      const url = `${config.public.apiBase}/api/v1/sites?${params.toString()}`;
 
       const data = await $fetch<any>(url, {
         headers: {
@@ -82,10 +94,20 @@ export const useSitesStore = defineStore('sites', () => {
           'Authorization': `Bearer ${token.value}`
         }
       });
-      
+
       const dataArray = Array.isArray(data) ? data : (data?.data || []);
-      
       sites.value = dataArray.map((site: any) => normalizeSite(site));
+
+      if (data?.meta) {
+        paginationMeta.value = {
+          currentPage: data.meta.current_page,
+          lastPage: data.meta.last_page,
+          perPage: data.meta.per_page,
+          total: data.meta.total,
+          from: data.meta.from,
+          to: data.meta.to,
+        };
+      }
 
       lastFetched.value = Date.now();
       lastProjectId.value = projectId ?? null;
@@ -206,12 +228,41 @@ export const useSitesStore = defineStore('sites', () => {
     return computed(() => sites.value.find(s => String(s.id) === String(id)));
   };
 
+  const fetchSiteStatusCounts = async (force = false) => {
+    if (!token.value) return;
+    if (!force && statusCountsLastFetched.value && (Date.now() - statusCountsLastFetched.value < CACHE_TTL)) return;
+
+    try {
+      const params = new URLSearchParams();
+      params.set('page', '1');
+      params.set('per_page', '50');
+      const data = await $fetch<any>(`${config.public.apiBase}/api/v1/sites?${params.toString()}`, {
+        headers: {
+          'Accept': 'application/json',
+          'X-Frontend-Key': config.public.frontendKey as string,
+          'Authorization': `Bearer ${token.value}`
+        }
+      });
+      const dataArray = Array.isArray(data) ? data : (data?.data || []);
+      const normalized = dataArray.map((s: any) => normalizeSite(s));
+      statusCounts.value = {
+        total: data?.meta?.total ?? normalized.length,
+        active: normalized.filter((s: any) => s.status === 'Online' || s.status === 'Pending').length,
+        issues: normalized.filter((s: any) => s.status === 'Offline' || s.status === 'Warning').length,
+      };
+      statusCountsLastFetched.value = Date.now();
+    } catch {}
+  };
+
   const clearSites = () => {
     sites.value = [];
     loading.value = false;
     error.value = null;
     lastFetched.value = null;
     lastProjectId.value = undefined;
+    paginationMeta.value = null;
+    statusCounts.value = { total: 0, active: 0, issues: 0 };
+    statusCountsLastFetched.value = null;
     realtimeSyncTimeouts.forEach((timeout) => clearTimeout(timeout));
     realtimeSyncTimeouts.clear();
     lastRealtimeSyncAtBySite.value = {};
@@ -223,7 +274,10 @@ export const useSitesStore = defineStore('sites', () => {
     loading,
     error,
     lastFetched,
+    paginationMeta,
+    statusCounts,
     fetchSites,
+    fetchSiteStatusCounts,
     fetchSiteById,
     applyRealtimeStatusUpdate,
     syncSitesFromRealtimeSignal,

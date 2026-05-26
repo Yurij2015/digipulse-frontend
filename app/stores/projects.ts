@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { useRuntimeConfig, useAuth } from '#imports';
+import type { PaginationMeta } from './sites';
 
 export interface Project {
   id: number;
@@ -19,29 +20,46 @@ export const useProjectsStore = defineStore('projects', () => {
   const loading = ref(false);
   const error = ref<string | null>(null);
   const lastFetched = ref<number | null>(null);
+  const paginationMeta = ref<PaginationMeta | null>(null);
 
   const CACHE_TTL = 60000; // 1 minute cache
 
-  const fetchProjects = async (force = false) => {
+  const fetchProjects = async (force = false, page = 1, perPage = 50) => {
     if (!token.value) return;
-    
+
     if (!force && lastFetched.value && (Date.now() - lastFetched.value < CACHE_TTL) && projects.value.length > 0) {
       return;
     }
 
     loading.value = true;
     error.value = null;
-    
+
     try {
-      const data = await $fetch<any>(`${config.public.apiBase}/api/v1/projects`, {
+      const params = new URLSearchParams();
+      params.set('page', String(page));
+      params.set('per_page', String(perPage));
+
+      const data = await $fetch<any>(`${config.public.apiBase}/api/v1/projects?${params.toString()}`, {
         headers: {
           'Accept': 'application/json',
           'X-Frontend-Key': config.public.frontendKey as string,
           'Authorization': `Bearer ${token.value}`
         }
       });
-      
+
       projects.value = data?.data || [];
+
+      if (data?.meta) {
+        paginationMeta.value = {
+          currentPage: data.meta.current_page,
+          lastPage: data.meta.last_page,
+          perPage: data.meta.per_page,
+          total: data.meta.total,
+          from: data.meta.from,
+          to: data.meta.to,
+        };
+      }
+
       lastFetched.value = Date.now();
     } catch (err: any) {
       console.error('Store: Failed to load projects:', err);
@@ -122,6 +140,7 @@ export const useProjectsStore = defineStore('projects', () => {
     loading.value = false;
     error.value = null;
     lastFetched.value = null;
+    paginationMeta.value = null;
   };
 
   return {
@@ -129,6 +148,7 @@ export const useProjectsStore = defineStore('projects', () => {
     loading,
     error,
     lastFetched,
+    paginationMeta,
     fetchProjects,
     createProject,
     updateProject,

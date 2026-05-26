@@ -153,6 +153,23 @@
           </template>
         </UTable>
 
+        <!-- Pagination -->
+        <div
+          v-if="!showSitesLoader && sitesStore.paginationMeta && sitesStore.paginationMeta.lastPage > 1"
+          class="flex items-center justify-between px-6 py-4 border-t border-neutral-100 dark:border-white/5"
+        >
+          <p class="text-sm text-neutral-500">
+            {{ t('sites.pagination.showing', { from: sitesStore.paginationMeta.from, to: sitesStore.paginationMeta.to, total: sitesStore.paginationMeta.total }) }}
+          </p>
+          <UPagination
+            :page="currentPage"
+            :total="sitesStore.paginationMeta.total"
+            :items-per-page="PER_PAGE"
+            :disabled="isLoading"
+            @update:page="goToPage"
+          />
+        </div>
+
         <!-- Empty State -->
         <div v-else-if="filteredRows.length === 0" class="flex flex-col items-center justify-center py-24 px-6">
           <div class="w-20 h-20 rounded-3xl bg-neutral-50 dark:bg-white/5 flex items-center justify-center text-neutral-300 dark:text-neutral-700 mb-6">
@@ -218,6 +235,8 @@ const realtimeDebugEnabled = import.meta.client && localStorage.getItem('debug:r
 
 // --- State ---
 const search = ref('');
+const currentPage = ref(1);
+const PER_PAGE = 10;
 const sites = computed(() => sitesStore.sites || []);
 const isLoading = computed(() => sitesStore.loading);
 const isDeleteModalOpen = ref(false);
@@ -287,7 +306,8 @@ watch(token, (newToken) => {
 // Fetch sites when token becomes available or project filter changes
 watch([token, projectFilter], async ([newToken, newProjectId]) => {
     if (newToken) {
-        await sitesStore.fetchSites(true, newProjectId as number | null);
+        currentPage.value = 1;
+        await sitesStore.fetchSites(true, newProjectId as number | null, 1, PER_PAGE);
     }
 }, { immediate: true });
 
@@ -341,7 +361,7 @@ onUnmounted(() => {
 
 // Refresh function
 const refreshSites = async () => {
-    await sitesStore.fetchSites(true, projectFilter.value);
+    await sitesStore.fetchSites(true, projectFilter.value, currentPage.value, PER_PAGE);
 };
 
 const handleSiteSuccess = async (siteId?: number) => {
@@ -352,13 +372,18 @@ const handleSiteSuccess = async (siteId?: number) => {
     }
 };
 
+async function goToPage(page: number) {
+  currentPage.value = page;
+  await sitesStore.fetchSites(true, projectFilter.value, page, PER_PAGE);
+}
+
 
 function openAddModal() {
   if (user.value && !user.value.is_verified) {
     toast.add({ title: t('auth.verify_email.verify_email_blocked'), color: 'warning' });
     return;
   }
-  if (!user.value?.is_admin && sites.value.length >= 3) {
+  if (!user.value?.is_admin && (sitesStore.paginationMeta?.total ?? sites.value.length) >= 3) {
     isLimitModalOpen.value = true;
     return;
   }

@@ -232,7 +232,10 @@
     "pending_check": "Pending check...",
     "empty_title": "No nodes found",
     "empty_desc": "Get started by adding your first infrastructure resource.",
-    "ssl_days": "SSL: {days} days"
+    "ssl_days": "SSL: {days} days",
+    "pagination": {
+      "showing": "Showing {from}–{to} of {total}"
+    }
   },
   "history": {
     "title": "History",

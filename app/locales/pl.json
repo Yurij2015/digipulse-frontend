@@ -232,7 +232,10 @@
     "pending_check": "Oczekiwanie na sprawdzenie...",
     "empty_title": "Nie znaleziono węzłów",
     "empty_desc": "Dodaj pierwszy zasób infrastruktury do monitorowania.",
-    "ssl_days": "SSL: {days} dni"
+    "ssl_days": "SSL: {days} dni",
+    "pagination": {
+      "showing": "Wyświetlono {from}–{to} z {total}"
+    }
   },
   "history": {
     "title": "Historia",

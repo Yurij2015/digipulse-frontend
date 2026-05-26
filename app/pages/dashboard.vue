@@ -243,6 +243,23 @@
         </div>
       </div>
 
+      <!-- Pagination -->
+      <div
+        v-if="sitesStore.paginationMeta && sitesStore.paginationMeta.lastPage > 1"
+        class="flex items-center justify-between mt-8"
+      >
+        <p class="text-sm text-neutral-500">
+          {{ t('sites.pagination.showing', { from: sitesStore.paginationMeta.from, to: sitesStore.paginationMeta.to, total: sitesStore.paginationMeta.total }) }}
+        </p>
+        <UPagination
+          :page="currentPage"
+          :total="sitesStore.paginationMeta.total"
+          :items-per-page="PER_PAGE"
+          :disabled="isLoading"
+          @update:page="goToPage"
+        />
+      </div>
+
       <!-- Delete Confirmation Modal -->
       <UModal v-model:open="isDeleteModalOpen" :title="t('sites.confirm_delete')" :description="t('sites.delete_question')">
         <template #body>
@@ -298,6 +315,9 @@ const websites = computed(() => sitesStore.sites);
 const isLoading = computed(() => sitesStore.loading);
 const fetchError = computed(() => sitesStore.error);
 
+const currentPage = ref(1);
+const PER_PAGE = 10;
+
 const searchQuery = ref('');
 const filterStatus = ref('');
 const isDeleteModalOpen = ref(false);
@@ -318,9 +338,9 @@ const statusOptions = [
 ];
 
 const summaryStats = computed(() => [
-  { label: t('dashboard.total_nodes'), value: websites.value.length, icon: 'i-heroicons-server-stack' },
-  { label: t('dashboard.active_nodes'), value: websites.value.filter((s: any) => s.status === 'Online' || s.status === 'Pending').length, icon: 'i-heroicons-check-circle' },
-  { label: t('dashboard.issues_detected'), value: websites.value.filter((s: any) => s.status === 'Offline' || s.status === 'Warning').length, icon: 'i-heroicons-exclamation-triangle' },
+  { label: t('dashboard.total_nodes'), value: sitesStore.statusCounts.total, icon: 'i-heroicons-server-stack' },
+  { label: t('dashboard.active_nodes'), value: sitesStore.statusCounts.active, icon: 'i-heroicons-check-circle' },
+  { label: t('dashboard.issues_detected'), value: sitesStore.statusCounts.issues, icon: 'i-heroicons-exclamation-triangle' },
 ]);
 
 const filteredWebsites = computed(() => {
@@ -350,21 +370,34 @@ const showSitesLoader = computed(() => {
 
 // --- Async Logic ---
 async function loadSites() {
-  await sitesStore.fetchSites(true);
+  await Promise.all([
+    sitesStore.fetchSites(true, undefined, currentPage.value, PER_PAGE),
+    sitesStore.fetchSiteStatusCounts(true),
+  ]);
 }
 
 async function handleSiteSuccess(siteId?: number) {
   if (siteId) {
     await sitesStore.fetchSiteById(siteId);
+    sitesStore.fetchSiteStatusCounts(true);
   } else {
-    await sitesStore.fetchSites(true);
+    await Promise.all([
+      sitesStore.fetchSites(true, undefined, currentPage.value, PER_PAGE),
+      sitesStore.fetchSiteStatusCounts(true),
+    ]);
   }
+}
+
+async function goToPage(page: number) {
+  currentPage.value = page;
+  await sitesStore.fetchSites(true, undefined, page, PER_PAGE);
 }
 
 // Watch token to load data when it becomes available
 watch(token, (newToken) => {
   if (newToken && websites.value.length === 0) {
-    sitesStore.fetchSites();
+    sitesStore.fetchSites(false, undefined, currentPage.value, PER_PAGE);
+    sitesStore.fetchSiteStatusCounts();
   }
 }, { immediate: true });
 
@@ -437,7 +470,7 @@ function openAddModal() {
     toast.add({ title: t('auth.verify_email.verify_email_blocked'), color: 'warning' });
     return;
   }
-  if (!user.value?.is_admin && websites.value.length >= 3) {
+  if (!user.value?.is_admin && sitesStore.statusCounts.total >= 3) {
     isLimitModalOpen.value = true;
     return;
   }
