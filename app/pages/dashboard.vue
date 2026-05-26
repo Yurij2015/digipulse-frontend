@@ -364,9 +364,7 @@ const filteredWebsites = computed(() => {
   });
 });
 
-const showSitesLoader = computed(() => {
-  return isLoading.value && websites.value.length === 0;
-});
+const showSitesLoader = computed(() => isLoading.value);
 
 // --- Async Logic ---
 async function loadSites() {

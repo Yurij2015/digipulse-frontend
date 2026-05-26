@@ -292,9 +292,7 @@ const filteredRows = computed(() => {
   return result;
 });
 
-const showSitesLoader = computed(() => {
-  return (isLoading.value && sites.value.length === 0) || sitesStore.lastFetched === null;
-});
+const showSitesLoader = computed(() => isLoading.value || sitesStore.lastFetched === null);
 
 // Fetch projects when token becomes available
 watch(token, (newToken) => {
