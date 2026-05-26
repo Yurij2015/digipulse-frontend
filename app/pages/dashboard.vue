@@ -316,7 +316,7 @@ const isLoading = computed(() => sitesStore.loading);
 const fetchError = computed(() => sitesStore.error);
 
 const currentPage = ref(1);
-const PER_PAGE = 10;
+const PER_PAGE = 50;
 
 const searchQuery = ref('');
 const filterStatus = ref('');
@@ -370,21 +370,14 @@ const showSitesLoader = computed(() => {
 
 // --- Async Logic ---
 async function loadSites() {
-  await Promise.all([
-    sitesStore.fetchSites(true, undefined, currentPage.value, PER_PAGE),
-    sitesStore.fetchSiteStatusCounts(true),
-  ]);
+  await sitesStore.fetchSites(true, undefined, currentPage.value, PER_PAGE);
 }
 
 async function handleSiteSuccess(siteId?: number) {
   if (siteId) {
     await sitesStore.fetchSiteById(siteId);
-    sitesStore.fetchSiteStatusCounts(true);
   } else {
-    await Promise.all([
-      sitesStore.fetchSites(true, undefined, currentPage.value, PER_PAGE),
-      sitesStore.fetchSiteStatusCounts(true),
-    ]);
+    await sitesStore.fetchSites(true, undefined, currentPage.value, PER_PAGE);
   }
 }
 
@@ -397,7 +390,6 @@ async function goToPage(page: number) {
 watch(token, (newToken) => {
   if (newToken && websites.value.length === 0) {
     sitesStore.fetchSites(false, undefined, currentPage.value, PER_PAGE);
-    sitesStore.fetchSiteStatusCounts();
   }
 }, { immediate: true });
 
