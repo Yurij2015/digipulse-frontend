@@ -251,14 +251,15 @@
         <p class="text-sm text-neutral-500">
           {{ t('sites.pagination.showing', { from: sitesStore.paginationMeta.from, to: sitesStore.paginationMeta.to, total: sitesStore.paginationMeta.total }) }}
         </p>
-        <UPagination
-          :page="currentPage"
-          :total="sitesStore.paginationMeta.total"
-          :items-per-page="PER_PAGE"
-          :disabled="isLoading"
-          class="cursor-pointer"
-          @update:page="goToPage"
-        />
+        <div class="[&_button]:cursor-pointer">
+          <UPagination
+            :page="currentPage"
+            :total="sitesStore.paginationMeta.total"
+            :items-per-page="PER_PAGE"
+            :disabled="isLoading"
+            @update:page="goToPage"
+          />
+        </div>
       </div>
 
       <!-- Delete Confirmation Modal -->
