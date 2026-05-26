@@ -256,6 +256,7 @@
           :total="sitesStore.paginationMeta.total"
           :items-per-page="PER_PAGE"
           :disabled="isLoading"
+          class="cursor-pointer"
           @update:page="goToPage"
         />
       </div>

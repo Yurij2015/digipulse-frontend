@@ -15,13 +15,18 @@ export const useSitesStore = defineStore('sites', () => {
   const config = useRuntimeConfig();
   const { token } = useAuth();
 
+  interface PageCacheEntry {
+    sites: any[];
+    meta: PaginationMeta;
+    fetchedAt: number;
+  }
+
   const sites = ref<any[]>([]);
   const loading = ref(false);
   const error = ref<string | null>(null);
   const lastFetched = ref<number | null>(null);
   const lastProjectId = ref<number | null | undefined>(undefined); // undefined = never fetched
-  const lastFetchedPerPage = ref<number | null>(null);
-  const lastFetchedPage = ref<number | null>(null);
+  const pageCache = new Map<string, PageCacheEntry>();
   const paginationMeta = ref<PaginationMeta | null>(null);
   const statusCounts = ref({ total: 0, active: 0, issues: 0 });
 
@@ -64,19 +69,20 @@ export const useSitesStore = defineStore('sites', () => {
   const fetchSites = async (force = false, projectId?: number | null, page = 1, perPage = 50) => {
     if (!token.value) return;
 
-    // If the project filter context changed, clear stale data immediately
-    // so the wrong sites are never displayed while the new request is in-flight.
+    // If the project filter context changed, clear stale data and full cache
     const filterChanged = lastProjectId.value !== undefined && lastProjectId.value !== (projectId ?? null);
     if (filterChanged) {
       sites.value = [];
       lastFetched.value = null;
+      pageCache.clear();
     }
 
-    const perPageChanged = lastFetchedPerPage.value !== null && lastFetchedPerPage.value !== perPage;
-    const pageChanged = lastFetchedPage.value !== null && lastFetchedPage.value !== page;
+    const cacheKey = `${projectId ?? 'all'}:${page}:${perPage}`;
+    const cached = pageCache.get(cacheKey);
 
-    // Use cache if not forced and within TTL (only when filter/page/perPage haven't changed)
-    if (!force && !filterChanged && !perPageChanged && !pageChanged && lastFetched.value && (Date.now() - lastFetched.value < CACHE_TTL) && sites.value.length > 0) {
+    if (!force && cached && (Date.now() - cached.fetchedAt < CACHE_TTL)) {
+      sites.value = cached.sites;
+      paginationMeta.value = cached.meta;
       return;
     }
 
@@ -113,6 +119,8 @@ export const useSitesStore = defineStore('sites', () => {
           to: data.meta.to,
         };
 
+        pageCache.set(cacheKey, { sites: normalized, meta: paginationMeta.value, fetchedAt: Date.now() });
+
         if (page === 1) {
           statusCounts.value = {
             total: data.meta.total,
@@ -124,8 +132,6 @@ export const useSitesStore = defineStore('sites', () => {
 
       lastFetched.value = Date.now();
       lastProjectId.value = projectId ?? null;
-      lastFetchedPerPage.value = perPage;
-      lastFetchedPage.value = page;
     } catch (err: any) {
       console.error('Store: Failed to load sites:', err);
       error.value = err.message || 'Failed to load sites';
@@ -266,8 +272,7 @@ export const useSitesStore = defineStore('sites', () => {
     lastFetched.value = null;
     lastProjectId.value = undefined;
     paginationMeta.value = null;
-    lastFetchedPerPage.value = null;
-    lastFetchedPage.value = null;
+    pageCache.clear();
     statusCounts.value = { total: 0, active: 0, issues: 0 };
     realtimeSyncTimeouts.forEach((timeout) => clearTimeout(timeout));
     realtimeSyncTimeouts.clear();

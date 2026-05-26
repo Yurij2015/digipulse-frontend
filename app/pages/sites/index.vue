@@ -166,6 +166,7 @@
             :total="sitesStore.paginationMeta.total"
             :items-per-page="PER_PAGE"
             :disabled="isLoading"
+            class="cursor-pointer"
             @update:page="goToPage"
           />
         </div>
@@ -216,7 +217,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
+import { ref, computed, watch, onUnmounted } from 'vue';
 import { useI18n, useLocalePath } from '#i18n';
 import { useAuth, useRuntimeConfig, useToast, useRoute } from '#imports';
 import { useSitesStore } from '~/stores/sites';
