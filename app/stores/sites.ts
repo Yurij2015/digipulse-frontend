@@ -20,6 +20,8 @@ export const useSitesStore = defineStore('sites', () => {
   const error = ref<string | null>(null);
   const lastFetched = ref<number | null>(null);
   const lastProjectId = ref<number | null | undefined>(undefined); // undefined = never fetched
+  const lastFetchedPerPage = ref<number | null>(null);
+  const lastFetchedPage = ref<number | null>(null);
   const paginationMeta = ref<PaginationMeta | null>(null);
   const statusCounts = ref({ total: 0, active: 0, issues: 0 });
 
@@ -70,8 +72,11 @@ export const useSitesStore = defineStore('sites', () => {
       lastFetched.value = null;
     }
 
-    // Use cache if not forced and within TTL (only when no project filter changed)
-    if (!force && !filterChanged && lastFetched.value && (Date.now() - lastFetched.value < CACHE_TTL) && sites.value.length > 0) {
+    const perPageChanged = lastFetchedPerPage.value !== null && lastFetchedPerPage.value !== perPage;
+    const pageChanged = lastFetchedPage.value !== null && lastFetchedPage.value !== page;
+
+    // Use cache if not forced and within TTL (only when filter/page/perPage haven't changed)
+    if (!force && !filterChanged && !perPageChanged && !pageChanged && lastFetched.value && (Date.now() - lastFetched.value < CACHE_TTL) && sites.value.length > 0) {
       return;
     }
 
@@ -119,6 +124,8 @@ export const useSitesStore = defineStore('sites', () => {
 
       lastFetched.value = Date.now();
       lastProjectId.value = projectId ?? null;
+      lastFetchedPerPage.value = perPage;
+      lastFetchedPage.value = page;
     } catch (err: any) {
       console.error('Store: Failed to load sites:', err);
       error.value = err.message || 'Failed to load sites';
@@ -254,6 +261,8 @@ export const useSitesStore = defineStore('sites', () => {
     lastFetched.value = null;
     lastProjectId.value = undefined;
     paginationMeta.value = null;
+    lastFetchedPerPage.value = null;
+    lastFetchedPage.value = null;
     statusCounts.value = { total: 0, active: 0, issues: 0 };
     realtimeSyncTimeouts.forEach((timeout) => clearTimeout(timeout));
     realtimeSyncTimeouts.clear();
