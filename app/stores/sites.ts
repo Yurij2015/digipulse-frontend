@@ -163,6 +163,8 @@ export const useSitesStore = defineStore('sites', () => {
     const existingSiteIndex = sites.value.findIndex((site: any) => Number(site.id) === Number(siteId));
 
     if (existingSiteIndex === -1) {
+      // In paginated mode the site belongs to a different page — don't inject it here
+      if (paginationMeta.value) return;
       sites.value.unshift(normalized);
     } else {
       sites.value[existingSiteIndex] = normalized;
@@ -247,6 +249,9 @@ export const useSitesStore = defineStore('sites', () => {
   };
 
   const syncSitesFromRealtimeSignal = (siteId: number) => {
+    // In paginated mode, only sync sites that are actually visible on the current page
+    const isOnCurrentPage = sites.value.some((s: any) => Number(s.id) === Number(siteId));
+    if (paginationMeta.value && !isOnCurrentPage) return;
     scheduleRealtimeSiteSync(siteId);
   };
 
