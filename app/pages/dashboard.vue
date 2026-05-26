@@ -316,7 +316,7 @@ const isLoading = computed(() => sitesStore.loading);
 const fetchError = computed(() => sitesStore.error);
 
 const currentPage = ref(1);
-const PER_PAGE = 50;
+const PER_PAGE = 48;
 
 const searchQuery = ref('');
 const filterStatus = ref('');

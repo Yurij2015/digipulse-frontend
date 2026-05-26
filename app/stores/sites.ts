@@ -127,6 +127,15 @@ export const useSitesStore = defineStore('sites', () => {
     }
   };
 
+  const recomputeStatusCounts = () => {
+    if (!paginationMeta.value || paginationMeta.value.currentPage !== 1) return;
+    statusCounts.value = {
+      total: paginationMeta.value.total,
+      active: sites.value.filter((s: any) => s.status === 'Online' || s.status === 'Pending').length,
+      issues: sites.value.filter((s: any) => s.status === 'Offline' || s.status === 'Warning').length,
+    };
+  };
+
   const fetchSiteById = async (siteId: number) => {
     if (!token.value) return;
 
@@ -152,6 +161,7 @@ export const useSitesStore = defineStore('sites', () => {
       sites.value[existingSiteIndex] = normalized;
     }
 
+    recomputeStatusCounts();
     lastFetched.value = Date.now();
   };
 
@@ -224,6 +234,7 @@ export const useSitesStore = defineStore('sites', () => {
     }
 
     sites.value[siteIndex] = updatedSite;
+    recomputeStatusCounts();
     lastFetched.value = Date.now();
     scheduleRealtimeSiteSync(payload.site_id);
   };
