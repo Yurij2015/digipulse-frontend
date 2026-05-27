@@ -149,7 +149,7 @@
 
           <div class="glass-card p-8 rounded-3xl border-neutral-200/50 dark:border-white/5 relative overflow-hidden group">
             <div class="space-y-6">
-              <div class="flex items-center justify-between p-4 rounded-2xl bg-neutral-50 dark:bg-white/2 border border-transparent border-neutral-100 dark:border-white/5 group/item transition-colors hover:border-primary-500/20 will-change-transform">
+              <div class="flex items-center justify-between p-4 rounded-2xl bg-neutral-50 dark:bg-white/2 border border-transparent dark:border-white/5 group/item transition-colors hover:border-primary-500/20 will-change-transform">
                 <div class="flex items-center gap-4">
                   <div class="flex items-center justify-center p-3 rounded-xl bg-primary-500/10 text-primary-500 group-hover/item:scale-110 transition-transform will-change-transform">
                     <UIcon name="i-heroicons-envelope" class="text-xl" />
@@ -255,6 +255,25 @@
 
                 <UButton
                   v-else
+                  size="xl"
+                  variant="ghost"
+                  class="group relative overflow-hidden px-8 py-5 rounded-3xl border border-neutral-200 dark:border-white/10 hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-colors duration-500"
+                  :loading="isTelegramTesting"
+                  @click="sendTelegramTest"
+                >
+                  <div class="flex items-center gap-4">
+                    <div class="flex items-center justify-center p-2.5 rounded-2xl bg-emerald-500/10 text-emerald-500 group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-500 shadow-lg shadow-emerald-500/5">
+                      <UIcon name="i-heroicons-bell" class="text-xl" />
+                    </div>
+                    <span class="text-base font-black text-neutral-900 dark:text-white">
+                      {{ t('profile.telegram_test') }}
+                    </span>
+                  </div>
+                  <div class="absolute -bottom-12 -right-12 w-24 h-24 bg-emerald-500/10 blur-3xl group-hover:bg-emerald-500/20 transition-colors duration-700"></div>
+                </UButton>
+
+                <UButton
+                  v-if="(user as any)?.telegram_chat_id"
                   size="xl"
                   variant="ghost"
                   class="group relative overflow-hidden px-8 py-5 rounded-3xl border border-neutral-200 dark:border-white/10 hover:border-rose-500/30 hover:bg-rose-500/5 transition-colors duration-500"
@@ -788,6 +807,7 @@ const confirmRevoke = async () => {
 
 const isTelegramConnecting = ref(false);
 const isTelegramDisconnecting = ref(false);
+const isTelegramTesting = ref(false);
 const isDisconnectModalOpen = ref(false);
 const isUpdatingSettings = ref(false);
 const isDeleteModalOpen = ref(false);
@@ -1014,6 +1034,26 @@ const connectTelegram = async () => {
     });
   } finally {
     isTelegramConnecting.value = false;
+  }
+};
+
+const sendTelegramTest = async () => {
+  if (isTelegramTesting.value) return;
+  isTelegramTesting.value = true;
+  try {
+    await $fetch(`${config.public.apiBase}/api/v1/telegram/test`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'X-Frontend-Key': config.public.frontendKey as string,
+        'Authorization': `Bearer ${token.value}`
+      }
+    });
+    toast.add({ title: t('profile.telegram_test_sent'), color: 'success', icon: 'i-heroicons-check-circle' });
+  } catch {
+    toast.add({ title: t('profile.telegram_test_error'), color: 'error', icon: 'i-heroicons-exclamation-circle' });
+  } finally {
+    isTelegramTesting.value = false;
   }
 };
 
