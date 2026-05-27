@@ -385,7 +385,7 @@ async function handleSiteSuccess(siteId?: number) {
 
 async function goToPage(page: number) {
   currentPage.value = page;
-  await sitesStore.fetchSites(true, undefined, page, PER_PAGE);
+  await sitesStore.fetchSites(false, undefined, page, PER_PAGE);
 }
 
 // Watch token to load data when it becomes available
