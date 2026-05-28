@@ -69,6 +69,8 @@ jobs:
         run: pnpm run test
 
       - name: Build project
+        env:
+          NUXT_PUBLIC_SITE_URL: ${{ vars.NUXT_PUBLIC_SITE_URL }}
         run: pnpm run build
 
       - name: Create deployment artifact

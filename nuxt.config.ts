@@ -54,7 +54,6 @@ export default defineNuxtConfig({
     strategy: "prefix_except_default",
     langDir: "locales",
     restructureDir: "app",
-    baseUrl: (nuxtApp: unknown) => (nuxtApp as any)?.$config?.public?.siteUrl || '',
   },
   colorMode: {
     preference: "dark",
@@ -126,8 +125,10 @@ export default defineNuxtConfig({
     public: {
       apiBase: "http://localhost",
       frontendKey: "",
-      // @ts-ignore
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL,
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL ?? "",
+      i18n: {
+        baseUrl: process.env.NUXT_PUBLIC_SITE_URL ?? "",
+      },
       turnstile: {
         siteKey: "",
       },
