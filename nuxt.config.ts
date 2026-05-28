@@ -54,7 +54,7 @@ export default defineNuxtConfig({
     strategy: "prefix_except_default",
     langDir: "locales",
     restructureDir: "app",
-    baseUrl: process.env.NUXT_PUBLIC_SITE_URL || '',
+    baseUrl: (nuxtApp: unknown) => (nuxtApp as any)?.$config?.public?.siteUrl || '',
   },
   colorMode: {
     preference: "dark",
