@@ -6,9 +6,9 @@ export default defineNuxtPlugin(() => {
   const token = useCookie('auth-token')
   const realtimeDebugEnabled = import.meta.client && localStorage.getItem('debug:realtime') === '1'
 
-  let echo: Echo<'pusher'> | null = null
+  let echo: Echo<'reverb'> | null = null
 
-  if (config.public.pusherAppKey && import.meta.client) {
+  if (config.public.reverbAppKey && import.meta.client) {
     (window as any).Pusher = Pusher
 
     if (realtimeDebugEnabled) {
@@ -16,15 +16,19 @@ export default defineNuxtPlugin(() => {
       console.info('[realtime] Initializing Echo', {
         apiBase: config.public.apiBase,
         hasToken: Boolean(token.value),
-        keyPresent: Boolean(config.public.pusherAppKey),
+        keyPresent: Boolean(config.public.reverbAppKey),
+        host: config.public.reverbHost,
       })
     }
 
-    echo = new Echo<'pusher'>({
-      broadcaster: 'pusher',
-      key: config.public.pusherAppKey,
-      cluster: config.public.pusherAppCluster,
-      forceTLS: true,
+    echo = new Echo<'reverb'>({
+      broadcaster: 'reverb',
+      key: config.public.reverbAppKey,
+      wsHost: config.public.reverbHost,
+      wsPort: config.public.reverbScheme === 'https' ? undefined : Number(config.public.reverbPort),
+      wssPort: config.public.reverbScheme === 'https' ? Number(config.public.reverbPort) : undefined,
+      forceTLS: config.public.reverbScheme === 'https',
+      enabledTransports: ['ws', 'wss'],
       authEndpoint: `${config.public.apiBase}/api/v1/broadcasting/auth`,
       auth: {
         headers: {
@@ -38,20 +42,20 @@ export default defineNuxtPlugin(() => {
     if (realtimeDebugEnabled && (echo as any)?.connector?.pusher?.connection) {
       const connection = (echo as any).connector.pusher.connection
       connection.bind('connected', () => {
-        console.info('[realtime] Pusher connected', { socketId: (echo as any).socketId?.() })
+        console.info('[realtime] Reverb connected', { socketId: (echo as any).socketId?.() })
       })
       connection.bind('disconnected', () => {
-        console.warn('[realtime] Pusher disconnected')
+        console.warn('[realtime] Reverb disconnected')
       })
       connection.bind('error', (error: any) => {
-        console.error('[realtime] Pusher error', error)
+        console.error('[realtime] Reverb error', error)
       })
       connection.bind('state_change', (states: any) => {
-        console.info('[realtime] Pusher state change', states)
+        console.info('[realtime] Reverb state change', states)
       })
     }
   } else if (realtimeDebugEnabled) {
-    console.warn('[realtime] Echo not initialized: missing NUXT_PUBLIC_PUSHER_APP_KEY')
+    console.warn('[realtime] Echo not initialized: missing NUXT_PUBLIC_REVERB_APP_KEY')
   }
 
   return {

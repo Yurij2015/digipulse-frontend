@@ -1,5 +1,8 @@
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
+  site: {
+    url: process.env.NUXT_PUBLIC_SITE_URL,
+  },
   future: {
     compatibilityVersion: 4,
   },
@@ -80,7 +83,6 @@ export default defineNuxtConfig({
     },
   },
   sitemap: {
-    siteUrl: process.env.NUXT_PUBLIC_SITE_URL,
     sources: ['/api/__sitemap__/urls'],
     exclude: [
       '/dashboard',
@@ -130,8 +132,10 @@ export default defineNuxtConfig({
       turnstile: {
         siteKey: "",
       },
-      pusherAppKey: "",
-      pusherAppCluster: "eu",
+      reverbAppKey: "",
+      reverbHost: "",
+      reverbPort: "443",
+      reverbScheme: "https",
       showBetaBanner: true,
     },
     turnstile: {
