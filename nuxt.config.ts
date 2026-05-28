@@ -54,6 +54,8 @@ export default defineNuxtConfig({
     strategy: "prefix_except_default",
     langDir: "locales",
     restructureDir: "app",
+    // @ts-ignore – baseUrl exists in runtime (module.mjs:ctx.options.baseUrl) but missing from type definitions
+    baseUrl: process.env.NUXT_PUBLIC_SITE_URL ?? "",
   },
   colorMode: {
     preference: "dark",
@@ -126,9 +128,6 @@ export default defineNuxtConfig({
       apiBase: "http://localhost",
       frontendKey: "",
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL ?? "",
-      i18n: {
-        baseUrl: process.env.NUXT_PUBLIC_SITE_URL ?? "",
-      },
       turnstile: {
         siteKey: "",
       },
