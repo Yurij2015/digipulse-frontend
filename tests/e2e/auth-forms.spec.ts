@@ -16,11 +16,11 @@ test.describe('Auth forms', () => {
 
     const email = page.locator('input[name="email"]')
     const password = page.locator('input[name="password"]')
-    const confirmPassword = page.locator('input[name="confirmPassword"]')
 
     await expect(email).toHaveAttribute('type', 'email')
     await expect(password).toHaveAttribute('type', 'password')
-    await expect(confirmPassword).toHaveAttribute('type', 'password')
+    await expect(page.locator('input[name="confirmPassword"]')).toHaveCount(0)
+    await expect(page.locator('input[name="name"]')).toHaveCount(0)
   })
 
   test('login form has no error banner in normal mode', async ({ page }) => {
