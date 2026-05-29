@@ -37,49 +37,6 @@
       <UCard class="glass-card border-neutral-200/50 dark:border-white/10 ring-0 overflow-visible rounded-2xl shadow-2xl relative shadow-primary-500/5">
         <div class="absolute -top-px left-10 right-10 h-px bg-linear-to-r from-transparent via-primary-500/50 to-transparent"></div>
         <UForm :state="state" :schema="schema" @submit="onSubmit" class="flex flex-col gap-5">
-          <UFormField :label="t('auth.username')" name="name" class="premium-label">
-            <UInput 
-              v-model="state.name" 
-              icon="i-heroicons-user" 
-              :placeholder="t('auth.username_placeholder')"
-              size="xl"
-              class="w-full"
-              :ui="{ 
-                root: 'premium-input w-full',
-                base: 'py-3 ps-10! px-4 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
-              }"
-            />
-          </UFormField>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <UFormField :label="t('auth.first_name')" name="first_name" class="premium-label">
-              <UInput 
-                v-model="state.first_name" 
-                icon="i-heroicons-identification" 
-                :placeholder="t('auth.first_name_placeholder')"
-                size="xl"
-                class="w-full"
-                :ui="{ 
-                  root: 'premium-input w-full',
-                  base: 'py-3 ps-10! px-4 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
-                }"
-              />
-            </UFormField>
-            <UFormField :label="t('auth.last_name')" name="last_name" class="premium-label">
-              <UInput 
-                v-model="state.last_name" 
-                icon="i-heroicons-identification" 
-                :placeholder="t('auth.last_name_placeholder')"
-                size="xl"
-                class="w-full"
-                :ui="{ 
-                  root: 'premium-input w-full',
-                  base: 'py-3 ps-10! px-4 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
-                }"
-              />
-            </UFormField>
-          </div>
-
           <UFormField :label="t('auth.email')" name="email" class="premium-label">
             <UInput 
               v-model="state.email" 
@@ -123,23 +80,23 @@
             </UInput>
           </UFormField>
 
-          <UFormField :label="t('auth.confirm_password')" name="confirmPassword" class="premium-label">
-            <UInput 
-              v-model="state.confirmPassword" 
-              :type="showPassword ? 'text' : REGISTER_FIELD_TYPES.confirmPassword" 
-              icon="i-heroicons-lock-closed-solid" 
-              :placeholder="t('auth.password_placeholder')"
-              size="xl"
-              class="w-full"
-              :ui="{ 
-                root: 'premium-input w-full',
-                base: 'py-3 ps-10! px-4 text-neutral-900 dark:text-white bg-transparent border-0 ring-0 hover:bg-transparent focus:ring-0 focus:bg-transparent'
-              }"
-            />
+          <UFormField name="agreeToTerms">
+            <div class="flex items-start gap-3">
+              <UCheckbox v-model="state.agreeToTerms" />
+              <p class="text-sm text-neutral-500 leading-relaxed">
+                {{ t('auth.agree_to_terms') }}
+                <UButton variant="link" color="primary" class="p-0 text-sm font-semibold" :to="localePath('/terms')">{{ t('index.terms_of_service') }}</UButton>
+              </p>
+            </div>
           </UFormField>
 
+          <p class="text-xs text-neutral-400 leading-relaxed -mt-2">
+            {{ t('auth.privacy_notice') }}
+            <UButton variant="link" color="neutral" class="p-0 text-xs text-neutral-400 underline underline-offset-2" :to="localePath('/privacy')">{{ t('index.privacy_policy') }}</UButton>
+          </p>
+
           <div class="flex justify-center mt-1">
-            <NuxtTurnstile 
+            <NuxtTurnstile
               v-model="turnstileToken" 
               :key="turnstileTheme"
               :options="{ appearance: 'execute', theme: turnstileTheme }" 
@@ -232,11 +189,8 @@ const errorMessage = computed(() => {
 
 const state = ref({
   email: '',
-  name: '',
-  first_name: '',
-  last_name: '',
   password: '',
-  confirmPassword: '',
+  agreeToTerms: false,
 });
 
 const schema = buildRegisterSchema(t);
@@ -257,12 +211,10 @@ async function onSubmit() {
         'X-Frontend-Key': config.public.frontendKey as string
       },
       body: {
-        name: state.value.name,
+        name: state.value.email.split('@')[0],
         email: state.value.email,
-        first_name: state.value.first_name,
-        last_name: state.value.last_name,
         password: state.value.password,
-        password_confirmation: state.value.confirmPassword,
+        password_confirmation: state.value.password,
         cf_turnstile_response: turnstileToken.value
       }
     });
