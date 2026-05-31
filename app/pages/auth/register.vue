@@ -36,7 +36,7 @@
 
       <UCard class="glass-card border-neutral-200/50 dark:border-white/10 ring-0 overflow-visible rounded-2xl shadow-2xl relative shadow-primary-500/5">
         <div class="absolute -top-px left-10 right-10 h-px bg-linear-to-r from-transparent via-primary-500/50 to-transparent"></div>
-        <UForm :state="state" :schema="schema" @submit="onSubmit" class="flex flex-col gap-5">
+        <UForm :state="state" :schema="schema" @submit="onSubmit" novalidate class="flex flex-col gap-5">
           <UFormField :label="t('auth.email')" name="email" class="premium-label">
             <UInput 
               v-model="state.email" 
@@ -68,6 +68,7 @@
               <template #trailing>
                 <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-auto">
                   <UButton
+                    data-testid="password-toggle"
                     variant="ghost"
                     color="neutral"
                     :icon="showPassword ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"

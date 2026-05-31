@@ -68,6 +68,7 @@
               <template #trailing>
                 <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-auto">
                   <UButton
+                    data-testid="password-toggle"
                     variant="ghost"
                     color="neutral"
                     :icon="showPassword ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"

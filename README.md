@@ -1,49 +1,38 @@
 # DigiPulse Frontend (Nuxt 4)
 
-A modern, high-performance monitoring dashboard built with Nuxt 4 and Vanilla CSS, featuring a premium Bento Grid UI.
+Part of **DigiPulse** — a production SaaS for website and SSL monitoring. This repository contains the user-facing dashboard: real-time status updates, uptime history charts, site and team management.
 
 ## Technology Stack
 
-- **Nuxt 4** (SSR)
-- **Styling**: Vanilla CSS (Modern CSS features)
-- **State Management**: Pinia / Nuxt Built-ins
-- **UI Components**: Custom Bento Grid implementation
-- **Security**: Cloudflare Turnstile integration
-
-## Key Features
-
-- **Live Dashboard**: Real-time site status updates.
-- **Bento Grid Layout**: Responsive and visually stunning data presentation.
-- **Glassmorphism**: Modern aesthetics with backdrop filters and smooth transitions.
-- **SEO Optimized**: Meta tags and structured data included.
+- **Nuxt 4** (SSR, Nitro runtime)
+- **Vue 3** / Composition API
+- **Pinia** for state management
+- **Vanilla CSS** (no utility-class frameworks)
+- **Cloudflare Turnstile** for bot protection on auth forms
 
 ## Deployment (CI/CD)
 
 Deployments are automated via **GitHub Actions**.
 
 ### Workflow:
-1.  **Build**: Project is built using `pnpm build`, generating a self-contained `.output`.
-2.  **Environment**: Public variables are injected during the build process from GitHub Variables.
-3.  **Deploy**: The `.output` bundle is uploaded to the server via SCP and symlinked to `/home/yurii/digi-pulse-frontend/current`.
-4.  **Runtime**: A Node.js container on the server executes the Nitro build.
+1. **Build**: `pnpm build` generates a self-contained `.output` bundle.
+2. **Environment**: Public variables are injected at build time from GitHub Variables.
+3. **Deploy**: The `.output` bundle is uploaded to the server via SCP and activated with a symlink swap.
+4. **Runtime**: A Node.js container runs the Nitro server.
 
 ### Required GitHub Variables/Secrets:
 
 | Variable | Description |
 |---|---|
-| `NUXT_PUBLIC_API_BASE` | URL of the Backend API (e.g., `https://api.pulse.digispace.pro/api`). |
+| `NUXT_PUBLIC_API_BASE` | URL of the Backend API (e.g., `https://api.example.com/api`). |
 | `NUXT_TURNSTILE_SITE_KEY` | Cloudflare Turnstile Site Key. |
-| `SSH_KEY` (Secret) | Private SSH key for the Hetzner server. |
+| `SSH_KEY` (Secret) | Private SSH key for the server. |
 
 ## Local Development
 
-1.  Clone the repository.
-2.  Install dependencies: `pnpm install`.
-3.  Start dev server: `pnpm dev`.
-4.  Open `http://localhost:3000`.
+1. Clone the repository.
+2. Install dependencies: `pnpm install`.
+3. Start dev server: `pnpm dev`.
+4. Open `http://localhost:3000`.
 
-## Design Principles
-
-- **Rich Aesthetics**: Avoid browser defaults. Use harmonious color palettes and modern typography.
-- **Micro-animations**: Subtle interactions for improved UX.
-- **Performance First**: Minimal external dependencies, leveraging native browser capabilities.
+Set `NUXT_PUBLIC_API_BASE` in `.env` to point to a local or staging backend instance.

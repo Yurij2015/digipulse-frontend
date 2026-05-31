@@ -25,5 +25,9 @@ logs
 /backend.code-workspace
 .pnpm-store/
 
+# Cypress
+cypress/screenshots
+cypress/videos
+
 deployment-config.json
 .aider*
