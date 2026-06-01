@@ -9,6 +9,8 @@ const { t } = useI18n();
 const localePath = useLocalePath();
 const config = useRuntimeConfig();
 const { logout, token, user } = useAuth();
+const sitesStore = useSitesStore();
+const { planName, siteLimit, sitesUsed, usagePercent, canAddSite } = usePlan();
 
 const isSidebarOpen = ref(false);
 
@@ -84,6 +86,24 @@ async function handleLogout() {
       </nav>
 
       <div class="mt-auto pt-8 border-t border-neutral-100 dark:border-white/5 space-y-4">
+        <!-- Plan Usage Block -->
+        <div class="px-4 py-3 rounded-2xl bg-primary-500/5 border border-primary-500/10">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-black uppercase tracking-widest text-primary-600 dark:text-primary-400">
+              {{ t('sidebar.plan_label') }}: <span class="text-neutral-900 dark:text-white">{{ planName }}</span>
+            </span>
+            <span class="text-[10px] font-black text-neutral-400 tabular-nums">
+              {{ sitesUsed }} / {{ siteLimit }}
+            </span>
+          </div>
+          <div class="h-1.5 w-full bg-neutral-100 dark:bg-white/5 rounded-full overflow-hidden">
+            <div 
+              class="h-full bg-primary-500 transition-all duration-1000" 
+              :style="{ width: `${usagePercent}%` }"
+            ></div>
+          </div>
+        </div>
+
         <!-- User Profile Block -->
         <NuxtLink :to="localePath('/settings')" class="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 dark:hover:bg-white/5 transition-all group cursor-pointer">
           <div class="w-10 h-10 rounded-lg bg-primary-500/10 flex items-center justify-center text-primary-500 font-black text-sm border border-primary-500/20 group-hover:scale-110 transition-transform">

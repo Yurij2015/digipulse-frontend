@@ -25,7 +25,7 @@ export const useSitesStore = defineStore('sites', () => {
   const loading = ref(false);
   const error = ref<string | null>(null);
   const lastFetched = ref<number | null>(null);
-  const lastProjectId = ref<number | null | undefined>(undefined); // undefined = never fetched
+  const lastFilters = ref<{ projectId: number | null | undefined, status: string | null | undefined }>({ projectId: undefined, status: undefined });
   const pageCache = new Map<string, PageCacheEntry>();
   const paginationMeta = ref<PaginationMeta | null>(null);
   const statusCounts = ref({ total: 0, online: 0, slow: 0, offline: 0 });
@@ -67,18 +67,17 @@ export const useSitesStore = defineStore('sites', () => {
     };
   };
 
-  const fetchSites = async (force = false, projectId?: number | null, page = 1, perPage = 50) => {
+  const fetchSites = async (force = false, projectId?: number | null, page = 1, perPage = 50, status?: string) => {
     if (!token.value) return;
 
-    // If the project filter context changed, clear stale data and full cache
-    const filterChanged = lastProjectId.value !== undefined && lastProjectId.value !== (projectId ?? null);
+    const filterChanged = lastFilters.value.projectId !== (projectId ?? null) || lastFilters.value.status !== (status ?? null);
     if (filterChanged) {
       sites.value = [];
       lastFetched.value = null;
       pageCache.clear();
     }
 
-    const cacheKey = `${projectId ?? 'all'}:${page}:${perPage}`;
+    const cacheKey = `${projectId ?? 'all'}:${status ?? 'all'}:${page}:${perPage}`;
     const cached = pageCache.get(cacheKey);
 
     if (!force && cached && (Date.now() - cached.fetchedAt < CACHE_TTL)) {
@@ -93,6 +92,7 @@ export const useSitesStore = defineStore('sites', () => {
     try {
       const params = new URLSearchParams();
       if (projectId) params.set('project_id', String(projectId));
+      if (status) params.set('status', status);
       params.set('page', String(page));
       params.set('per_page', String(perPage));
 
@@ -134,7 +134,7 @@ export const useSitesStore = defineStore('sites', () => {
       }
 
       lastFetched.value = Date.now();
-      lastProjectId.value = projectId ?? null;
+      lastFilters.value = { projectId: projectId ?? null, status: status ?? null };
     } catch (err: any) {
       console.error('Store: Failed to load sites:', err);
       error.value = err.message || 'Failed to load sites';
@@ -274,7 +274,7 @@ export const useSitesStore = defineStore('sites', () => {
     loading.value = false;
     error.value = null;
     lastFetched.value = null;
-    lastProjectId.value = undefined;
+    lastFilters.value = { projectId: undefined, status: undefined };
     paginationMeta.value = null;
     pageCache.clear();
     statusCounts.value = { total: 0, online: 0, slow: 0, offline: 0 };

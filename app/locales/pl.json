@@ -77,6 +77,8 @@
     "online_only": "Tylko online",
     "offline_only": "Tylko offline",
     "warning_only": "Tylko ostrzeżenia",
+    "empty_state_title": "Brak stron do monitorowania",
+    "empty_state_desc": "Dodaj swoją pierwszą stronę internetową, aby zacząć śledzić jej dostępność, wydajność i otrzymywać natychmiastowe powiadomienia, gdy coś pójdzie nie tak.",
     "response_time": "Czas odpowiedzi",
     "uptime_30d": "Uptime 30d",
     "checked": "Sprawdzono",
@@ -185,6 +187,14 @@
     "agent_reply": "Odpowiedź wsparcia",
     "user_reply": "Nowa wiadomość użytkownika"
   },
+  "sidebar": {
+    "plan_label": "Aktualny plan"
+  },
+  "plans": {
+    "start": "Start",
+    "growth": "Growth",
+    "agency": "Agency"
+  },
   "index": {
     "premium_monitoring": "SYSTEM MONITOROWANIA",
     "title": "DigiPulse",
@@ -273,6 +283,21 @@
     "heatmap_tooltip": "{date}: {uptime}% dostępności ({checks} sprawdzeń)",
     "days_ago": "30 dni temu",
     "today": "Dzisiaj",
+    "stats": {
+      "avg_uptime": "Śr. dostępność",
+      "avg_latency": "Śr. opóźnienie",
+      "p95_latency": "Opóźnienie P95",
+      "apdex_score": "Wynik Apdex",
+      "max_latency": "Maks. opóźnienie",
+      "total_incidents": "Wszystkie incydenty"
+    },
+    "chart": {
+      "response_time": "Czas odpowiedzi",
+      "uptime": "Dostępność",
+      "incidents": "Incydenty"
+    },
+    "disabled": "Wyłączone",
+    "no_data": "Brak danych",
     "stats": {
       "avg_uptime": "Śr. dostępność",
       "avg_latency": "Śr. opóźnienie",

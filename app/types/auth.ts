@@ -1,3 +1,5 @@
+import type { PlanSlug } from '~/types/plan';
+
 export interface User {
   id: number;
   name: string;
@@ -11,6 +13,8 @@ export interface User {
   telegram_chat_id: string | null;
   google_id: string | null;
   is_admin?: boolean;
+  plan?: PlanSlug | string | null;
+  site_limit?: number | null;
 }
 
 export interface AuthResponse {

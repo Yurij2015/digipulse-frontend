@@ -77,6 +77,8 @@
     "online_only": "Online Only",
     "offline_only": "Offline Only",
     "warning_only": "Warning Only",
+    "empty_state_title": "No sites to monitor yet",
+    "empty_state_desc": "Add your first website to start tracking its uptime, performance, and receive instant alerts when something goes wrong.",
     "response_time": "Response Time",
     "uptime_30d": "Uptime 30d",
     "checked": "Checked",
@@ -185,6 +187,14 @@
     "agent_reply": "Support Reply",
     "user_reply": "New User Message"
   },
+  "sidebar": {
+    "plan_label": "Current Plan"
+  },
+  "plans": {
+    "start": "Start",
+    "growth": "Growth",
+    "agency": "Agency"
+  },
   "index": {
     "premium_monitoring": "MONITORING SYSTEM",
     "title": "DigiPulse",
@@ -273,6 +283,21 @@
     "heatmap_tooltip": "{date}: {uptime}% uptime ({checks} checks)",
     "days_ago": "30 days ago",
     "today": "Today",
+    "stats": {
+      "avg_uptime": "Avg Uptime",
+      "avg_latency": "Avg Latency",
+      "p95_latency": "P95 Latency",
+      "apdex_score": "Apdex Score",
+      "max_latency": "Max Latency",
+      "total_incidents": "Total Incidents"
+    },
+    "chart": {
+      "response_time": "Response Time",
+      "uptime": "Uptime",
+      "incidents": "Incidents"
+    },
+    "disabled": "Disabled",
+    "no_data": "No Data",
     "stats": {
       "avg_uptime": "Avg. Uptime",
       "avg_latency": "Avg. Latency",

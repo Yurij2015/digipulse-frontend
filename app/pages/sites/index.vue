@@ -233,6 +233,7 @@ const toast = useToast();
 const { $echo } = useNuxtApp() as any;
 const sitesStore = useSitesStore();
 const projectsStore = useProjectsStore();
+const { canAddSite } = usePlan();
 const realtimeDebugEnabled = import.meta.client && localStorage.getItem('debug:realtime') === '1';
 
 // --- State ---
@@ -383,7 +384,7 @@ function openAddModal() {
     toast.add({ title: t('auth.verify_email.verify_email_blocked'), color: 'warning' });
     return;
   }
-  if (!user.value?.is_admin && (sitesStore.paginationMeta?.total ?? sites.value.length) >= 3) {
+  if (!canAddSite.value) {
     isLimitModalOpen.value = true;
     return;
   }

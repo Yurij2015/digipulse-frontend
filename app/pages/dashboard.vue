@@ -49,12 +49,13 @@
         <div class="relative w-full md:w-64 h-full">
           <select 
             v-model="filterStatus" 
+            @change="handleStatusChange"
             class="w-full h-full pl-5 pr-10 rounded-xl border border-neutral-200 dark:border-white/10 bg-white dark:bg-white/5 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none appearance-none cursor-pointer text-sm font-medium"
           >
             <option value="">{{ t('dashboard.all_statuses') }}</option>
-            <option value="Online">{{ t('dashboard.online_only') }}</option>
-            <option value="Offline">{{ t('dashboard.offline_only') }}</option>
-            <option value="Warning">{{ t('dashboard.warning_only') }}</option>
+            <option value="up">{{ t('dashboard.online_only') }}</option>
+            <option value="down">{{ t('dashboard.offline_only') }}</option>
+            <option value="slow">{{ t('dashboard.warning_only') }}</option>
           </select>
           <UIcon name="i-heroicons-funnel" class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-400" />
         </div>
@@ -62,7 +63,29 @@
 
       <!-- Websites Cards -->
       <BaseLoader :show="showSitesLoader || isDeleting" />
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      
+      <div v-if="!isLoading && websites.length === 0" class="flex flex-col items-center justify-center py-24 px-6 rounded-3xl bg-neutral-50 dark:bg-white/2 border border-dashed border-neutral-200 dark:border-white/10 text-center">
+        <div class="w-20 h-20 rounded-full bg-primary-500/10 flex items-center justify-center mb-6">
+          <UIcon name="i-heroicons-globe-alt" class="w-10 h-10 text-primary-500" />
+        </div>
+        <h3 class="text-2xl font-black text-neutral-900 dark:text-white mb-3">
+          {{ t('dashboard.empty_state_title') }}
+        </h3>
+        <p class="text-neutral-500 font-medium max-w-sm mb-8 leading-relaxed">
+          {{ t('dashboard.empty_state_desc') }}
+        </p>
+        <UButton
+          size="xl"
+          icon="i-heroicons-plus-circle"
+          color="primary"
+          class="font-black px-10 rounded-2xl shadow-lg shadow-primary-500/20 hover:scale-105 transition-transform"
+          @click="openAddModal"
+        >
+          {{ t('dashboard.monitor_node') }}
+        </UButton>
+      </div>
+
+      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div 
           v-for="website in filteredWebsites" 
           :key="website.id" 
@@ -310,6 +333,7 @@ const config = useRuntimeConfig();
 const { token, user } = useAuth();
 const { $echo } = useNuxtApp() as any;
 const sitesStore = useSitesStore();
+const { canAddSite } = usePlan();
 const realtimeDebugEnabled = import.meta.client && localStorage.getItem('debug:realtime') === '1';
 const nowTick = ref(Date.now());
 let relativeTimeTimer: ReturnType<typeof setInterval> | null = null;
@@ -335,9 +359,9 @@ const selectedSite = ref<any>(null);
 // --- Computed ---
 const statusOptions = [
   { label: 'All Statuses', value: '' },
-  { label: 'Online Only', value: 'Online' },
-  { label: 'Offline Only', value: 'Offline' },
-  { label: 'Warning Only', value: 'Warning' },
+  { label: 'Online Only', value: 'up' },
+  { label: 'Offline Only', value: 'down' },
+  { label: 'Warning Only', value: 'slow' },
 ];
 
 const summaryStats = computed(() => [
@@ -354,17 +378,8 @@ const filteredWebsites = computed(() => {
     const name = (site.name || '').toLowerCase();
     const url = (site.url || '').toLowerCase();
     const query = (searchQuery.value || '').toLowerCase();
-    
-    const matchesSearch = name.includes(query) || url.includes(query);
-    
-    // Status filter: extract value from either string or object
-    const rawFilterValue = typeof filterStatus.value === 'object' ? (filterStatus.value as any)?.value : filterStatus.value;
-    const selectedStatus = (rawFilterValue || '').toLowerCase();
-    const siteStatus = ((site as any).status || 'offline').toLowerCase();
-    
-    const matchesStatus = selectedStatus === '' || siteStatus === selectedStatus;
-    
-    return matchesSearch && matchesStatus;
+
+    return name.includes(query) || url.includes(query);
   });
 });
 
@@ -372,26 +387,31 @@ const showSitesLoader = computed(() => isLoading.value);
 
 // --- Async Logic ---
 async function loadSites() {
-  await sitesStore.fetchSites(true, undefined, currentPage.value, PER_PAGE);
+  await sitesStore.fetchSites(true, undefined, currentPage.value, PER_PAGE, filterStatus.value || undefined);
+}
+
+async function handleStatusChange() {
+  currentPage.value = 1;
+  await loadSites();
 }
 
 async function handleSiteSuccess(siteId?: number) {
   if (siteId) {
     await sitesStore.fetchSiteById(siteId);
   } else {
-    await sitesStore.fetchSites(true, undefined, currentPage.value, PER_PAGE);
+    await loadSites();
   }
 }
 
 async function goToPage(page: number) {
   currentPage.value = page;
-  await sitesStore.fetchSites(false, undefined, page, PER_PAGE);
+  await sitesStore.fetchSites(false, undefined, page, PER_PAGE, filterStatus.value || undefined);
 }
 
 // Watch token to load data when it becomes available
 watch(token, (newToken) => {
   if (newToken && websites.value.length === 0) {
-    sitesStore.fetchSites(false, undefined, currentPage.value, PER_PAGE);
+    sitesStore.fetchSites(false, undefined, currentPage.value, PER_PAGE, filterStatus.value || undefined);
   }
 }, { immediate: true });
 
@@ -464,7 +484,7 @@ function openAddModal() {
     toast.add({ title: t('auth.verify_email.verify_email_blocked'), color: 'warning' });
     return;
   }
-  if (!user.value?.is_admin && sitesStore.statusCounts.total >= 3) {
+  if (!canAddSite.value) {
     isLimitModalOpen.value = true;
     return;
   }
@@ -593,4 +613,3 @@ definePageMeta({
   middleware: 'auth'
 });
 </script>
-

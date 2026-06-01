@@ -77,6 +77,8 @@
     "online_only": "Тільки онлайн",
     "offline_only": "Тільки офлайн",
     "warning_only": "Тільки попередження",
+    "empty_state_title": "Ще немає сайтів для моніторингу",
+    "empty_state_desc": "Додайте свій перший веб-сайт, щоб почати відстежувати його доступність, продуктивність та отримувати миттєві сповіщення, якщо щось піде не так.",
     "response_time": "Час відповіді",
     "uptime_30d": "Доступність 30д",
     "checked": "Перевірено",
@@ -185,6 +187,14 @@
     "agent_reply": "Відповідь підтримки",
     "user_reply": "Нове повідомлення користувача"
   },
+  "sidebar": {
+    "plan_label": "Поточний тариф"
+  },
+  "plans": {
+    "start": "Start",
+    "growth": "Growth",
+    "agency": "Agency"
+  },
   "index": {
     "premium_monitoring": "СИСТЕМА МОНІТОРИНГУ",
     "title": "DigiPulse",
@@ -273,6 +283,21 @@
     "heatmap_tooltip": "{date}: {uptime}% аптайму ({checks} перевірок)",
     "days_ago": "30 днів тому",
     "today": "Сьогодні",
+    "stats": {
+      "avg_uptime": "Сер. аптайм",
+      "avg_latency": "Сер. затримка",
+      "p95_latency": "P95 затримка",
+      "apdex_score": "Індекс Apdex",
+      "max_latency": "Макс. затримка",
+      "total_incidents": "Всього інцидентів"
+    },
+    "chart": {
+      "response_time": "Час відповіді",
+      "uptime": "Аптайм",
+      "incidents": "Інциденти"
+    },
+    "disabled": "Вимкнено",
+    "no_data": "Немає даних",
     "stats": {
       "avg_uptime": "Сер. аптайм",
       "avg_latency": "Сер. затримка",
