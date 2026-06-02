@@ -159,12 +159,13 @@ import { useI18n, useLocalePath } from '#i18n';
 import { useRouter, useAuth, useToast, useRuntimeConfig, useColorMode, useRoute } from '#imports';
 import type { AuthResponse } from '~/types/auth';
 import { buildLoginSchema, LOGIN_FIELD_TYPES } from '~/utils/auth-forms';
+import { resolveAuthApiError, resolveAuthQueryError } from '~/utils/auth-api-errors';
 
 definePageMeta({
   middleware: 'guest'
 });
 
-const { t } = useI18n();
+const { t, te } = useI18n();
 const localePath = useLocalePath();
 const router = useRouter();
 const route = useRoute();
@@ -178,11 +179,7 @@ const loading = ref(false);
 const token = ref('');
 const turnstileTheme = computed(() => colorMode.value === 'dark' ? 'dark' : 'light');
 
-const errorMessage = computed(() => {
-  const error = route.query.error as string;
-  if (!error) return null;
-  return t(`auth.errors.${error}`) || t('auth.errors.auth_failed');
-});
+const errorMessage = computed(() => resolveAuthQueryError(route.query.error as string, t, te));
 
 const state = ref({
   email: '',
@@ -228,7 +225,7 @@ async function onSubmit() {
     console.error('Submit Error:', error);
     toast.add({
       title: t('auth.connection_error_title'),
-      description: error.data?.message || t('auth.error_connection'),
+      description: resolveAuthApiError(error, t),
       color: 'error'
     });
     token.value = '';

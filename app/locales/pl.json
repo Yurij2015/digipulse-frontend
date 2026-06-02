@@ -44,6 +44,22 @@
       "no_token": "Nie znaleziono tokenu. Spróbuj zalogować się ponownie.",
       "auth_failed": "Błąd uwierzytelniania. Skontaktuj się z pomocą techniczną."
     },
+    "api_errors": {
+      "invalid_credentials": "Nieprawidłowy e-mail lub hasło.",
+      "email_taken": "Ten e-mail jest już zarejestrowany.",
+      "password_min_server": "Hasło musi mieć co najmniej 10 znaków.",
+      "password_letters": "Hasło musi zawierać co najmniej jedną literę.",
+      "password_numbers": "Hasło musi zawierać co najmniej jedną cyfrę.",
+      "password_unique_chars": "Hasło musi zawierać co najmniej 6 unikalnych znaków.",
+      "password_confirmation": "Hasła nie pasują do siebie.",
+      "username_taken": "Ta nazwa użytkownika jest już zajęta.",
+      "username_format": "Nazwa użytkownika może zawierać tylko litery łacińskie, cyfry, kropki, myślniki i podkreślenia.",
+      "turnstile_missing": "Weryfikacja bezpieczeństwa nie powiodła się. Odśwież stronę i spróbuj ponownie.",
+      "turnstile_failed": "Weryfikacja bezpieczeństwa nie powiodła się. Spróbuj ponownie.",
+      "turnstile_unavailable": "Weryfikacja bezpieczeństwa jest tymczasowo niedostępna. Spróbuj później.",
+      "too_many_attempts": "Zbyt wiele prób. Poczekaj chwilę i spróbuj ponownie.",
+      "generic": "Coś poszło nie tak. Spróbuj ponownie."
+    },
     "error_title": "Błąd autoryzacji",
     "connection_error_title": "Błąd połączenia",
     "error_invalid_response": "Serwer zwrócił nieprawidłową strukturę danych",

@@ -44,6 +44,22 @@
       "no_token": "Token not found. Please try logging in again.",
       "auth_failed": "Authentication failed. Please contact support."
     },
+    "api_errors": {
+      "invalid_credentials": "Invalid email or password.",
+      "email_taken": "This email is already registered.",
+      "password_min_server": "Password must be at least 10 characters.",
+      "password_letters": "Password must contain at least one letter.",
+      "password_numbers": "Password must contain at least one number.",
+      "password_unique_chars": "Password must contain at least 6 unique characters.",
+      "password_confirmation": "Passwords do not match.",
+      "username_taken": "This username is already taken.",
+      "username_format": "Username can only contain Latin letters, numbers, dots, dashes, and underscores.",
+      "turnstile_missing": "Security check failed. Please refresh the page and try again.",
+      "turnstile_failed": "Security check failed. Please try again.",
+      "turnstile_unavailable": "Security check is temporarily unavailable. Please try again later.",
+      "too_many_attempts": "Too many attempts. Please wait a moment and try again.",
+      "generic": "Something went wrong. Please try again."
+    },
     "error_title": "Auth Error",
     "connection_error_title": "Connection Error",
     "error_invalid_response": "Server returned invalid data structure",
