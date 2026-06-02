@@ -1,4 +1,4 @@
-import { boolean, object, ref as yupRef, string } from 'yup'
+import { boolean, object, string } from 'yup'
 
 type TranslateFn = (key: string) => string
 

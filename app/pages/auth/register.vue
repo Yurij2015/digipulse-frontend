@@ -209,7 +209,7 @@ async function onSubmit() {
         'X-Frontend-Key': config.public.frontendKey as string
       },
       body: {
-        name: state.value.email.split('@')[0],
+        name: (state.value.email.split('@')[0] ?? '').replace(/[^a-zA-Z0-9._-]/g, ''),
         email: state.value.email,
         password: state.value.password,
         password_confirmation: state.value.password,

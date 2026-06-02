@@ -109,13 +109,15 @@
                 </a>
                 <span v-else class="text-neutral-400 text-[11px] italic font-normal">{{ t('dashboard.no_url') }}</span>
                 
-                <span class="text-neutral-300 dark:text-neutral-700">·</span>
-                <button 
-                  class="text-neutral-400 hover:text-primary-500 transition-all cursor-pointer p-0.5"
-                  @click.stop="copyToClipboard(website.url)"
-                >
-                  <UIcon name="i-heroicons-clipboard-document" class="w-3 h-3" />
-                </button>
+                <template v-if="website.url">
+                  <span class="text-neutral-300 dark:text-neutral-700">·</span>
+                  <button
+                    class="text-neutral-400 hover:text-primary-500 transition-all cursor-pointer p-0.5"
+                    @click.stop="copyToClipboard(website.url)"
+                  >
+                    <UIcon name="i-heroicons-clipboard-document" class="w-3 h-3" />
+                  </button>
+                </template>
               </div>
             </div>
             <div :class="[
@@ -357,13 +359,6 @@ const editingSiteId = ref<number | null>(null);
 const selectedSite = ref<any>(null);
 
 // --- Computed ---
-const statusOptions = [
-  { label: 'All Statuses', value: '' },
-  { label: 'Online Only', value: 'up' },
-  { label: 'Offline Only', value: 'down' },
-  { label: 'Warning Only', value: 'slow' },
-];
-
 const summaryStats = computed(() => [
   { label: t('dashboard.total_nodes'), value: sitesStore.statusCounts.total, icon: 'i-heroicons-server-stack' },
   { label: t('dashboard.online_nodes'), value: sitesStore.statusCounts.online, icon: 'i-heroicons-check-circle' },
@@ -518,10 +513,11 @@ async function handleDelete() {
       }
     });
     
-    await sitesStore.fetchSites(true);
+    await sitesStore.fetchSites(true, undefined, currentPage.value, PER_PAGE, filterStatus.value || undefined);
     isDeleteModalOpen.value = false;
   } catch (error) {
     console.error('Failed to delete site:', error);
+    toast.add({ title: t('sites.delete_error'), color: 'error' });
   } finally {
     isDeleting.value = false;
     siteToDelete.value = null;
@@ -549,7 +545,7 @@ function getResponseTimeColorHex(time: number) {
   if (time === 0) return '#a3a3a3'; // neutral-400
   if (time > 500) return '#ef4444'; // red-500
   if (time > 200) return '#eab308'; // yellow-500
-  return '#10b981'; // emerald-500
+  return '#16a34a'; // green-600 — matches getResponseTimeColor
 }
 
 function getBadgeIcon(slug: string) {

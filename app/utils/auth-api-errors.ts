@@ -84,8 +84,11 @@ export function resolveAuthApiError(
   return t('auth.api_errors.generic');
 }
 
+const VALID_ERROR_CODE = /^[a-z0-9_]{1,64}$/;
+
 export function resolveAuthQueryError(error: string | null | undefined, t: TranslateFn, te: (key: string) => boolean): string | null {
   if (!error) return null;
+  if (!VALID_ERROR_CODE.test(error)) return null;
 
   const key = `auth.errors.${error}`;
   return te(key) ? t(key) : t('auth.errors.auth_failed');

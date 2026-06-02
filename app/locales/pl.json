@@ -257,6 +257,7 @@
     "confirm_delete_name": "Strona",
     "delete_question": "Czy na pewno chcesz usunąć tę stronę? Tej operacji nie można cofnąć.",
     "deleted_success": "Strona została pomyślnie usunięta.",
+    "delete_error": "Nie udało się usunąć strony. Spróbuj ponownie.",
     "card_no_monitoring": "Monitoring nieaktywny. Skonfiguruj opcje, aby śledzić.",
     "table_no_monitoring": "Brak aktywnych sprawdzeń",
     "pending_check": "Oczekiwanie na sprawdzenie...",

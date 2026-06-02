@@ -176,6 +176,7 @@ export const useSitesStore = defineStore('sites', () => {
       // In paginated mode the site belongs to a different page — don't inject it here
       if (paginationMeta.value) return;
       sites.value.unshift(normalized);
+      statusCounts.value = { ...statusCounts.value, total: statusCounts.value.total + 1 };
     } else {
       sites.value[existingSiteIndex] = normalized;
     }
