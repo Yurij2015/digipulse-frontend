@@ -332,7 +332,7 @@ const { t, locale } = useI18n();
 const toast = useToast();
 const localePath = useLocalePath();
 const config = useRuntimeConfig();
-const { token, user } = useAuth();
+const { token, user, fetchUser } = useAuth();
 const { $echo } = useNuxtApp() as any;
 const sitesStore = useSitesStore();
 const { canAddSite } = usePlan();
@@ -466,10 +466,10 @@ onUnmounted(() => {
 });
 
 onMounted(() => {
-  // Keep "checked X ago" labels fresh even when no realtime event arrives.
   relativeTimeTimer = setInterval(() => {
     nowTick.value = Date.now();
   }, 60_000);
+  fetchUser();
 });
 // Refresh after action
 function handleRefresh() {
