@@ -123,14 +123,12 @@ export const useSitesStore = defineStore('sites', () => {
         pageCache.set(cacheKey, { sites: normalized, meta: paginationMeta.value, fetchedAt: Date.now() });
 
         const sc = data.meta.status_counts;
-        if (sc) {
-          statusCounts.value = {
-            total: data.meta.total ?? 0,
-            online: (sc.up ?? 0) + (sc.pending ?? 0),
-            slow: sc.slow ?? 0,
-            offline: sc.down ?? 0,
-          };
-        }
+        statusCounts.value = {
+          total: data.meta.total ?? 0,
+          online: sc ? (sc.up ?? 0) + (sc.pending ?? 0) : statusCounts.value.online,
+          slow: sc ? (sc.slow ?? 0) : statusCounts.value.slow,
+          offline: sc ? (sc.down ?? 0) : statusCounts.value.offline,
+        };
       }
 
       lastFetched.value = Date.now();

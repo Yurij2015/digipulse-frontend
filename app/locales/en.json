@@ -523,10 +523,10 @@
     "contact_desc": "If you have any questions about these Terms, please contact us at: admin{'@'}digispace.pro"
   },
   "quota": {
-    "limit_reached": "Limit Reached",
-    "limit_description": "You can only add up to 3 sites.",
-    "free_tier_title": "Free Tier Limit Reached",
-    "free_tier_description": "You are currently using the free tier which allows monitoring up to 3 websites. To add more, please contact our support team to upgrade your plan.",
+    "limit_reached": "Site Limit Reached",
+    "limit_description": "You have reached the limit of {limit} sites on your current plan.",
+    "free_tier_title": "{plan} plan limit reached",
+    "free_tier_description": "Your current plan allows monitoring up to {limit} sites. To add more, please contact our support team to upgrade your plan.",
     "maybe_later": "Maybe Later",
     "contact_support": "Contact Support"
   },

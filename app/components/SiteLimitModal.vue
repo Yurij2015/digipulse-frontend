@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { useI18n, useLocalePath } from '#i18n';
 import { useRouter } from '#imports';
+import { usePlan } from '~/composables/usePlan';
 
 const props = defineProps<{
   open: boolean;
@@ -12,6 +13,7 @@ const emit = defineEmits(['update:open']);
 const { t } = useI18n();
 const localePath = useLocalePath();
 const router = useRouter();
+const { siteLimit, planName } = usePlan();
 
 const isOpen = computed({
   get: () => props.open,
@@ -25,15 +27,15 @@ function goToSupport() {
 </script>
 
 <template>
-  <UModal v-model:open="isOpen" :title="t('quota.limit_reached')" :description="t('quota.limit_description')">
+  <UModal v-model:open="isOpen" :title="t('quota.limit_reached')" :description="t('quota.limit_description', { limit: siteLimit })">
     <template #body>
       <div class="p-4">
         <div class="flex items-center gap-4 mb-4 text-amber-500">
           <UIcon name="i-heroicons-exclamation-triangle" class="w-10 h-10" />
-          <p class="font-bold text-lg">{{ t('quota.free_tier_title') }}</p>
+          <p class="font-bold text-lg">{{ t('quota.free_tier_title', { plan: planName }) }}</p>
         </div>
         <p class="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
-          {{ t('quota.free_tier_description') }}
+          {{ t('quota.free_tier_description', { limit: siteLimit }) }}
         </p>
       </div>
     </template>
