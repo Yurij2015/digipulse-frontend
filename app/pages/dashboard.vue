@@ -391,9 +391,11 @@ async function handleStatusChange() {
 }
 
 async function handleSiteSuccess(siteId?: number) {
-  if (siteId) {
+  if (siteId && editingSiteId.value) {
+    // Editing an existing site — in-place update is sufficient
     await sitesStore.fetchSiteById(siteId);
   } else {
+    // New site created — reload page so it appears in the list
     await loadSites();
   }
 }
