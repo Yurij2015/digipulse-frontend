@@ -209,7 +209,8 @@
   "plans": {
     "start": "Start",
     "growth": "Growth",
-    "agency": "Agency"
+    "agency": "Agency",
+    "unlim": "∞"
   },
   "index": {
     "premium_monitoring": "MONITORING SYSTEM",

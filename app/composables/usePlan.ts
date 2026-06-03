@@ -17,11 +17,19 @@ export const usePlan = () => {
 
   const siteLimit = computed(() => resolveSiteLimit(planSlug.value, user.value?.site_limit));
 
-  const planName = computed(() => t(`plans.${planSlug.value}`));
+  const planName = computed(() => {
+    if (user.value?.is_admin) return '∞';
+    return t(`plans.${planSlug.value}`);
+  });
 
   const sitesUsed = computed(() => sitesStore.statusCounts.total);
 
+  const siteLimitDisplay = computed<string>(() =>
+    user.value?.is_admin ? '∞' : String(siteLimit.value)
+  );
+
   const usagePercent = computed(() => {
+    if (user.value?.is_admin) return 0;
     if (siteLimit.value <= 0) return 0;
     return Math.min((sitesUsed.value / siteLimit.value) * 100, 100);
   });
@@ -37,6 +45,7 @@ export const usePlan = () => {
     planSlug,
     planName,
     siteLimit,
+    siteLimitDisplay,
     sitesUsed,
     usagePercent,
     hasReachedSiteLimit,

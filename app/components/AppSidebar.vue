@@ -10,7 +10,7 @@ const localePath = useLocalePath();
 const config = useRuntimeConfig();
 const { logout, token, user } = useAuth();
 const sitesStore = useSitesStore();
-const { planName, siteLimit, sitesUsed, usagePercent, canAddSite } = usePlan();
+const { planName, siteLimit, siteLimitDisplay, sitesUsed, usagePercent, canAddSite } = usePlan();
 
 const isSidebarOpen = ref(false);
 
@@ -93,7 +93,7 @@ async function handleLogout() {
               {{ t('sidebar.plan_label') }}: <span class="text-neutral-900 dark:text-white">{{ planName }}</span>
             </span>
             <span class="text-[10px] font-black text-neutral-400 tabular-nums">
-              {{ sitesUsed }} / {{ siteLimit }}
+              {{ sitesUsed }} / {{ siteLimitDisplay }}
             </span>
           </div>
           <div class="h-1.5 w-full bg-neutral-100 dark:bg-white/5 rounded-full overflow-hidden">
