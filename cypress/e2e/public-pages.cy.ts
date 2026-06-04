@@ -1,6 +1,6 @@
 const dismissCookies = {
   onBeforeLoad(win: Window) {
-    win.localStorage.setItem('cookie_consent_v2', JSON.stringify({ analytics: false, marketing: false }))
+    win.localStorage.setItem('cookie_consent_v2', JSON.stringify({ analytics: false, choice: 'essential_only', version: 6, ts: new Date().toISOString() }))
   }
 }
 

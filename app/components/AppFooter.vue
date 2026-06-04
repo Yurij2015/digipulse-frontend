@@ -1,12 +1,13 @@
 <script setup lang="ts">
 const localePath = useLocalePath()
-const isCookieConsentVisible = useState('cookie-consent-visible')
 const consentStatus = useState('cookie-consent-status')
 
 const landingsOpen = ref(false)
 
+const reopenCookieBanner = useState('cookie-consent-reopen', () => false)
+
 const openCookieSettings = () => {
-  isCookieConsentVisible.value = true
+  reopenCookieBanner.value = true
 }
 
 const handleGlobalClick = (e: MouseEvent) => {
@@ -25,8 +26,15 @@ onUnmounted(() => {
 })
 
 const statusClasses = computed(() => {
-  if (consentStatus.value === 'all') return 'text-green-500 hover:text-green-600 dark:text-green-400 dark:hover:text-green-300'
-  if (consentStatus.value === 'partial') return 'text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300'
+  if (consentStatus.value === 'granted') {
+    return 'text-green-500 hover:text-green-600 dark:text-green-400 dark:hover:text-green-300'
+  }
+  if (consentStatus.value === 'denied') {
+    return 'text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300'
+  }
+  if (consentStatus.value === 'essential') {
+    return 'text-neutral-500 hover:text-neutral-600 dark:text-neutral-400 dark:hover:text-neutral-300'
+  }
   return 'text-neutral-500 hover:text-primary-500 dark:text-neutral-400 dark:hover:text-primary-400'
 })
 </script>
@@ -107,13 +115,14 @@ const statusClasses = computed(() => {
         <p class="text-xs text-neutral-600 dark:text-neutral-300 font-medium text-center md:text-right">
           {{ $t('index.footer_rights') }}
         </p>
-        <button 
-          class="flex items-center gap-1.5 transition-colors duration-300"
+        <button
+          type="button"
+          class="flex items-center gap-1.5 text-xs font-medium transition-colors duration-300"
           :class="statusClasses"
           @click="openCookieSettings"
-          :title="$t('common.cookie.settings')"
         >
-          <UIcon name="i-heroicons-finger-print" class="h-4 w-4" />
+          <UIcon name="i-heroicons-finger-print" class="h-4 w-4 shrink-0" />
+          <span>{{ $t('common.cookie.settings_link') }}</span>
         </button>
       </div>
     </div>

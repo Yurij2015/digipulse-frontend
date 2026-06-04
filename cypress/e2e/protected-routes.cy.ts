@@ -87,7 +87,7 @@ describe('Login error query params', () => {
     cy.clearAllLocalStorage()
     cy.visit('/auth/login?error=auth_failed', {
       onBeforeLoad(win) {
-        win.localStorage.setItem('cookie_consent_v2', JSON.stringify({ analytics: false, marketing: false }))
+        win.localStorage.setItem('cookie_consent_v2', JSON.stringify({ analytics: false, choice: 'essential_only', version: 6, ts: new Date().toISOString() }))
       }
     })
     cy.contains(/authentication failed/i).should('be.visible')
@@ -98,7 +98,7 @@ describe('Login error query params', () => {
     cy.clearAllLocalStorage()
     cy.visit('/auth/login', {
       onBeforeLoad(win) {
-        win.localStorage.setItem('cookie_consent_v2', JSON.stringify({ analytics: false, marketing: false }))
+        win.localStorage.setItem('cookie_consent_v2', JSON.stringify({ analytics: false, choice: 'essential_only', version: 6, ts: new Date().toISOString() }))
       }
     })
     cy.get('input[name="email"]').should('exist')

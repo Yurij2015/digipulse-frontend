@@ -10,8 +10,6 @@ describe('Registration form', () => {
     })
   }
 
-  // Click the visible Reka UI CheckboxRoot button instead of the hidden native
-  // <input>, which is covered by the UCard body div.
   function checkCheckbox(name: string) {
     cy.get(`input[name="${name}"]`).closest('[data-slot="base"]').click({ force: true })
   }
@@ -19,13 +17,11 @@ describe('Registration form', () => {
   beforeEach(() => {
     cy.visit('/auth/register', {
       onBeforeLoad(win) {
-        win.localStorage.setItem('cookie_consent_v2', JSON.stringify({ analytics: false, marketing: false }))
+        win.localStorage.setItem('cookie_consent_v2', JSON.stringify({ analytics: false, choice: 'essential_only', version: 6, ts: new Date().toISOString() }))
       }
     })
     waitForHydration()
   })
-
-  // ─── Layout ───────────────────────────────────────────────────────────────
 
   it('renders only email and password fields', () => {
     cy.get('input[name="email"]').should('exist')
@@ -49,8 +45,6 @@ describe('Registration form', () => {
     cy.get('a[href*="/auth/login"]').should('exist')
   })
 
-  // ─── Terms of Service ─────────────────────────────────────────────────────
-
   it('has ToS checkbox unchecked by default', () => {
     cy.get('input[name="agreeToTerms"]').should('exist').and('not.be.checked')
   })
@@ -63,8 +57,6 @@ describe('Registration form', () => {
     cy.get('a[href*="/privacy"]').should('exist')
     cy.get('input[name="agreeToPrivacy"]').should('not.exist')
   })
-
-  // ─── Field-level validation (blur-triggered) ──────────────────────────────
 
   it('shows email required error on empty blur', () => {
     cy.get('input[name="email"]').focus().blur()
@@ -102,8 +94,6 @@ describe('Registration form', () => {
       cy.wrap($el).should('not.contain.text', /privacy policy/i)
     })
   })
-
-  // ─── Happy path ───────────────────────────────────────────────────────────
 
   it('submit button is not disabled by default', () => {
     cy.get('button[type="submit"]').should('not.be.disabled')

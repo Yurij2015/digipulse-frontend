@@ -255,7 +255,7 @@ async function onSubmit() {
 
         <UFormField :label="t('add_website.endpoint_url')" name="url">
           <UInput v-model="state.url" :placeholder="t('add_website.endpoint_url_placeholder')" icon="i-heroicons-globe-alt" class="w-full" />
-          <div v-if="formErrors.url" class="text-xs text-error mt-1" v-html="formErrors.url[0]?.replace('admin@digispace.pro', `<a href='mailto:admin@digispace.pro?subject=DigiPulse Support' class='underline font-bold'>admin@digispace.pro</a>`)"></div>
+          <div v-if="formErrors.url" class="text-xs text-error mt-1" v-html="formErrors.url[0]?.replace('support@digipulse.cloud', `<a href='mailto:support@digipulse.cloud?subject=DigiPulse Support' class='underline font-bold'>support@digipulse.cloud</a>`)"></div>
         </UFormField>
 
         <UFormField name="project_id">

@@ -25,9 +25,17 @@
 
       <article class="w-full space-y-12">
         <section>
-          <p class="text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed mb-8">
+          <p class="text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed mb-4">
             {{ $t('privacy.intro') }}
           </p>
+          <p class="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
+            {{ $t('privacy.age_notice') }}
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('privacy.controller') }}</h2>
+          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('privacy.controller_desc') }}</p>
         </section>
 
         <section>
@@ -49,6 +57,10 @@
             <li class="flex items-start gap-3">
               <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
               <span>{{ $t('privacy.technical_info') }}</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
+              <span>{{ $t('privacy.telegram_data') }}</span>
             </li>
           </ul>
         </section>
@@ -72,6 +84,53 @@
             <li class="flex items-start gap-3">
               <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
               <span>{{ $t('privacy.comply_laws') }}</span>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('privacy.cookies') }}</h2>
+          <p class="text-neutral-600 dark:text-neutral-300 mb-6 leading-relaxed">{{ $t('privacy.cookies_desc') }}</p>
+          <ul class="space-y-3 text-neutral-600 dark:text-neutral-300">
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
+              <span>{{ $t('privacy.cookies_necessary') }}</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
+              <span>{{ $t('privacy.cookies_analytics') }}</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
+              <span>{{ $t('privacy.cookies_legal_basis') }}</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
+              <span>{{ $t('privacy.cookies_no_ads') }}</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
+              <span>{{ $t('privacy.cookies_retention') }}</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
+              <span>{{ $t('privacy.cookies_transfers') }}</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
+              <span>{{ $t('privacy.cookies_consent') }}</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
+              <span>{{ $t('privacy.cookies_change') }}</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
+              <span>{{ $t('privacy.cookies_google') }}</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
+              <span>{{ $t('privacy.cookies_complaint') }}</span>
             </li>
           </ul>
         </section>
@@ -102,6 +161,11 @@
         </section>
 
         <section>
+          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('privacy.breach') }}</h2>
+          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('privacy.breach_desc') }}</p>
+        </section>
+
+        <section>
           <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('privacy.your_rights') }}</h2>
           <p class="text-neutral-600 dark:text-neutral-300 mb-6 leading-relaxed">{{ $t('privacy.your_rights_desc') }}</p>
           <ul class="space-y-3 text-neutral-600 dark:text-neutral-300">
@@ -123,14 +187,34 @@
             </li>
             <li class="flex items-start gap-3">
               <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
+              <span>{{ $t('privacy.restrict_processing') }}</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
+              <span>{{ $t('privacy.object_processing') }}</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
+              <span>{{ $t('privacy.no_automated') }}</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
               <span>{{ $t('privacy.opt_out') }}</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
+              <span>{{ $t('privacy.withdraw_cookies') }}</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
+              <span>{{ $t('privacy.complaint') }}</span>
             </li>
           </ul>
         </section>
 
         <section>
           <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('privacy.contact') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 mb-4 leading-relaxed" v-html="$t('privacy.contact_desc').replace('admin@digispace.pro', `<a href='mailto:admin@digispace.pro?subject=DigiPulse Support' class='text-primary-500 hover:underline font-bold'>admin@digispace.pro</a>`)"></p>
+          <p class="text-neutral-600 dark:text-neutral-300 mb-4 leading-relaxed" v-html="$t('privacy.contact_desc').replace('privacy@digipulse.cloud', `<a href='mailto:privacy@digipulse.cloud?subject=DigiPulse Privacy' class='text-primary-500 hover:underline font-bold'>privacy@digipulse.cloud</a>`)"></p>
         </section>
       </article>
 

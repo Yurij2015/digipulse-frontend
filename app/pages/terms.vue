@@ -25,14 +25,22 @@
 
       <article class="w-full space-y-12">
         <section>
-          <p class="text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed mb-8">
+          <p class="text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed mb-4">
             {{ $t('terms.intro') }}
+          </p>
+          <p class="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
+            {{ $t('terms.age_notice') }}
           </p>
         </section>
 
         <section>
           <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('terms.acceptance') }}</h2>
           <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('terms.acceptance_desc') }}</p>
+        </section>
+
+        <section>
+          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('terms.service') }}</h2>
+          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('terms.service_desc') }}</p>
         </section>
 
         <section>
@@ -51,6 +59,18 @@
               <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
               <span>{{ $t('terms.rule_3') }}</span>
             </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
+              <span>{{ $t('terms.rule_4') }}</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
+              <span>{{ $t('terms.rule_5') }}</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
+              <span>{{ $t('terms.rule_6') }}</span>
+            </li>
           </ul>
         </section>
 
@@ -60,8 +80,34 @@
         </section>
 
         <section>
+          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('terms.payment') }}</h2>
+          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('terms.payment_desc') }}</p>
+        </section>
+
+        <section>
+          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('terms.ip') }}</h2>
+          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('terms.ip_desc') }}</p>
+        </section>
+
+        <section>
           <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('terms.termination') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('terms.termination_desc') }}</p>
+          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('terms.termination_user') }}</p>
+          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed mt-4">{{ $t('terms.termination_us') }}</p>
+        </section>
+
+        <section>
+          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('terms.liability') }}</h2>
+          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('terms.liability_desc') }}</p>
+        </section>
+
+        <section>
+          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('terms.force_majeure') }}</h2>
+          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('terms.force_majeure_desc') }}</p>
+        </section>
+
+        <section>
+          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('terms.governing_law') }}</h2>
+          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('terms.governing_law_desc') }}</p>
         </section>
 
         <section>
@@ -70,8 +116,13 @@
         </section>
 
         <section>
+          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('terms.general') }}</h2>
+          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('terms.general_desc') }}</p>
+        </section>
+
+        <section>
           <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('terms.contact') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 mb-4 leading-relaxed" v-html="$t('terms.contact_desc').replace('admin@digispace.pro', `<a href='mailto:admin@digispace.pro?subject=DigiPulse Support' class='text-primary-500 hover:underline font-bold'>admin@digispace.pro</a>`)"></p>
+          <p class="text-neutral-600 dark:text-neutral-300 mb-4 leading-relaxed" v-html="$t('terms.contact_desc').replace('admin@digipulse.cloud', `<a href='mailto:admin@digipulse.cloud?subject=DigiPulse ToS' class='text-primary-500 hover:underline font-bold'>admin@digipulse.cloud</a>`)"></p>
         </section>
       </article>
 

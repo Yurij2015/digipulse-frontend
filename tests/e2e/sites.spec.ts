@@ -4,7 +4,7 @@ test.describe('Site Management', () => {
   test.beforeEach(async ({ page, context }) => {
     await page.setViewportSize({ width: 1280, height: 1000 })
     await page.addInitScript(() => {
-      window.localStorage.setItem('cookie_consent_v2', JSON.stringify({ essential: true, analytics: true, marketing: true }))
+      window.localStorage.setItem('cookie_consent_v2', JSON.stringify({ analytics: true, choice: 'accept_all', version: 6, ts: new Date().toISOString() }))
     })
 
     await context.addCookies([

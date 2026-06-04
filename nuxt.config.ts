@@ -127,6 +127,9 @@ export default defineNuxtConfig({
       apiBase: "http://localhost",
       frontendKey: "",
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL ?? "",
+      supportEmail: process.env.NUXT_PUBLIC_SUPPORT_EMAIL ?? "support@digipulse.cloud",
+      privacyEmail: process.env.NUXT_PUBLIC_PRIVACY_EMAIL ?? "privacy@digipulse.cloud",
+      adminEmail: process.env.NUXT_PUBLIC_ADMIN_EMAIL ?? "admin@digipulse.cloud",
       turnstile: {
         siteKey: "",
       },
