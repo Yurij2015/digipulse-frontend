@@ -173,6 +173,13 @@
                     <UIcon name="i-heroicons-paper-airplane" class="text-xl" />
                   </div>
                   <div>
+                    <div v-if="(user as any)?.telegram_chat_id" class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/5 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/15 text-[9px] font-black uppercase tracking-widest whitespace-nowrap w-fit mb-1">
+                      <div class="relative flex h-1.5 w-1.5 shrink-0">
+                        <div class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-40 will-change-transform"></div>
+                        <div class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></div>
+                      </div>
+                      {{ t('profile.telegram_connected') }}
+                    </div>
                     <h3 class="font-bold text-neutral-900 dark:text-white">{{ t('profile.notify_telegram') }}</h3>
                     <p class="text-xs text-neutral-500">{{ t('profile.notify_telegram_desc') }}</p>
                   </div>
