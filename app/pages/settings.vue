@@ -173,13 +173,6 @@
                     <UIcon name="i-heroicons-paper-airplane" class="text-xl" />
                   </div>
                   <div>
-                    <div v-if="(user as any)?.telegram_chat_id" class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/5 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/15 text-[9px] font-black uppercase tracking-widest whitespace-nowrap w-fit mb-1">
-                      <div class="relative flex h-1.5 w-1.5 shrink-0">
-                        <div class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-40 will-change-transform"></div>
-                        <div class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></div>
-                      </div>
-                      {{ t('profile.telegram_connected') }}
-                    </div>
                     <h3 class="font-bold text-neutral-900 dark:text-white">{{ t('profile.notify_telegram') }}</h3>
                     <p class="text-xs text-neutral-500">{{ t('profile.notify_telegram_desc') }}</p>
                   </div>
@@ -224,6 +217,13 @@
                   <UIcon name="i-heroicons-paper-airplane" class="text-2xl -rotate-45 translate-x-0.5" />
                 </div>
                 <div class="max-w-md">
+                  <div v-if="(user as any)?.telegram_chat_id" class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/5 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/15 text-[9px] font-black uppercase tracking-widest whitespace-nowrap w-fit mb-1.5">
+                    <div class="relative flex h-1.5 w-1.5 shrink-0">
+                      <div class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-40 will-change-transform"></div>
+                      <div class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></div>
+                    </div>
+                    {{ t('profile.telegram_connected') }}
+                  </div>
                   <h3 class="text-lg font-black text-neutral-900 dark:text-white mb-1">
                     {{ t('profile.telegram_title') }}
                   </h3>
@@ -234,13 +234,6 @@
               </div>
 
               <div class="flex flex-col gap-2">
-                <div v-if="(user as any)?.telegram_chat_id" class="flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-emerald-500/5 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/15 backdrop-blur-md text-[10px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/5 self-start">
-                  <div class="relative flex h-2 w-2">
-                    <div class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-40 will-change-transform"></div>
-                    <div class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
-                  </div>
-                  {{ t('profile.telegram_connected') }}
-                </div>
                 <UButton
                   v-if="!(user as any)?.telegram_chat_id"
                   size="md"
