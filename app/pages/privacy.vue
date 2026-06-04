@@ -16,207 +16,19 @@
       </div>
 
       <h1 class="text-4xl md:text-6xl font-black tracking-tight mb-8 leading-[1.1] text-neutral-900 dark:text-white">
-        {{ $t('privacy.title') }}
+        {{ apiTitle || $t('privacy.title') }}
       </h1>
 
       <p class="text-sm text-neutral-500 dark:text-neutral-400 mb-12 font-medium">
-        {{ $t('privacy.last_updated') }}
+        {{ apiUpdatedAt || $t('privacy.last_updated') }}
       </p>
 
-      <article class="w-full space-y-12">
-        <section>
-          <p class="text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed mb-4">
-            {{ $t('privacy.intro') }}
-          </p>
-          <p class="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
-            {{ $t('privacy.age_notice') }}
-          </p>
-        </section>
-
-        <section>
-          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('privacy.controller') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('privacy.controller_desc') }}</p>
-        </section>
-
-        <section>
-          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('privacy.what_we_collect') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 mb-6 leading-relaxed">{{ $t('privacy.what_we_collect_desc') }}</p>
-          <ul class="space-y-3 text-neutral-600 dark:text-neutral-300">
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.personal_info') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.site_data') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.monitoring_data') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.technical_info') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.telegram_data') }}</span>
-            </li>
-          </ul>
-        </section>
-
-        <section>
-          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('privacy.how_we_use') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 mb-6 leading-relaxed">{{ $t('privacy.how_we_use_desc') }}</p>
-          <ul class="space-y-3 text-neutral-600 dark:text-neutral-300">
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.provide_service') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.send_notifications') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.improve_service') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.comply_laws') }}</span>
-            </li>
-          </ul>
-        </section>
-
-        <section>
-          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('privacy.cookies') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 mb-6 leading-relaxed">{{ $t('privacy.cookies_desc') }}</p>
-          <ul class="space-y-3 text-neutral-600 dark:text-neutral-300">
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.cookies_necessary') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.cookies_analytics') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.cookies_legal_basis') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.cookies_no_ads') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.cookies_retention') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.cookies_transfers') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.cookies_consent') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.cookies_change') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.cookies_google') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.cookies_complaint') }}</span>
-            </li>
-          </ul>
-        </section>
-
-        <section>
-          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('privacy.sharing') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 mb-6 leading-relaxed">{{ $t('privacy.sharing_desc') }}</p>
-          <ul class="space-y-3 text-neutral-600 dark:text-neutral-300">
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.service_providers') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.legal_requirements') }}</span>
-            </li>
-          </ul>
-        </section>
-
-        <section>
-          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('privacy.retention') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('privacy.retention_desc') }}</p>
-        </section>
-
-        <section>
-          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('privacy.security') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('privacy.security_desc') }}</p>
-        </section>
-
-        <section>
-          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('privacy.breach') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('privacy.breach_desc') }}</p>
-        </section>
-
-        <section>
-          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('privacy.your_rights') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 mb-6 leading-relaxed">{{ $t('privacy.your_rights_desc') }}</p>
-          <ul class="space-y-3 text-neutral-600 dark:text-neutral-300">
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.access_data') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.correct_data') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.delete_data') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.data_portability') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.restrict_processing') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.object_processing') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.no_automated') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.opt_out') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.withdraw_cookies') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('privacy.complaint') }}</span>
-            </li>
-          </ul>
-        </section>
-
-        <section>
-          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('privacy.contact') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 mb-4 leading-relaxed" v-html="$t('privacy.contact_desc').replace('privacy@digipulse.cloud', `<a href='mailto:privacy@digipulse.cloud?subject=DigiPulse Privacy' class='text-primary-500 hover:underline font-bold'>privacy@digipulse.cloud</a>`)"></p>
-        </section>
-      </article>
+      <!-- Content from API -->
+      <div
+        v-if="apiContent"
+        class="legal-prose"
+        v-html="apiContent"
+      />
 
       <!-- Back to Home -->
       <div class="mt-16 w-full">
@@ -237,11 +49,40 @@
 
 <script setup lang="ts">
 import AppFooter from '~/components/AppFooter.vue'
+import { resolveLocaleString } from '~/utils/locale-field'
 
+const { locale } = useI18n()
 const route = useRoute()
 const localePath = useLocalePath()
 const url = useRequestURL()
 const config = useRuntimeConfig()
+const apiBase = useApiBase()
+
+const { data: legalData } = await useAsyncData(
+  'legal-privacy',
+  () => $fetch<any>(`${apiBase}/api/v1/legal/privacy-policy`, {
+    headers: { 'X-Frontend-Key': config.public.frontendKey as string },
+  }).catch(() => null),
+)
+
+const legalDoc = computed(() => {
+  const raw = legalData.value
+  if (!raw) return null
+  return raw.data ?? raw
+})
+
+const apiTitle = computed(() => resolveLocaleString(legalDoc.value?.title, locale.value))
+const apiContent = computed(() => resolveLocaleString(legalDoc.value?.content, locale.value))
+const apiUpdatedAt = computed((): string | null => {
+  const at = legalDoc.value?.updated_at
+  if (!at) return null
+  try {
+    const tag = locale.value === 'uk' ? 'uk-UA' : locale.value === 'pl' ? 'pl-PL' : 'en-US'
+    return new Intl.DateTimeFormat(tag, { dateStyle: 'long' }).format(new Date(at))
+  } catch {
+    return null
+  }
+})
 
 // SEO Meta
 useSeoMeta({

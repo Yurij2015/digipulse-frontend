@@ -369,6 +369,7 @@ const offerPoints = computed(() => [
   t('b2b.offer_point_4'),
   t('b2b.offer_point_5'),
   t('b2b.offer_point_6'),
+  t('b2b.offer_point_7'),
 ]);
 
 const agencyPoints = computed(() => [
@@ -414,5 +415,6 @@ const faq = computed(() => [
   { q: t('b2b.faq_q3'), a: t('b2b.faq_a3') },
   { q: t('b2b.faq_q4'), a: t('b2b.faq_a4') },
   { q: t('b2b.faq_q5'), a: t('b2b.faq_a5') },
+  { q: t('b2b.faq_q6'), a: t('b2b.faq_a6') },
 ]);
 </script>

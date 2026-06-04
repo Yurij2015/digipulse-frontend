@@ -16,115 +16,19 @@
       </div>
 
       <h1 class="text-4xl md:text-6xl font-black tracking-tight mb-8 leading-[1.1] text-neutral-900 dark:text-white">
-        {{ $t('terms.title') }}
+        {{ apiTitle || $t('terms.title') }}
       </h1>
 
       <p class="text-sm text-neutral-500 dark:text-neutral-400 mb-12 font-medium">
-        {{ $t('terms.last_updated') }}
+        {{ apiUpdatedAt || $t('terms.last_updated') }}
       </p>
 
-      <article class="w-full space-y-12">
-        <section>
-          <p class="text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed mb-4">
-            {{ $t('terms.intro') }}
-          </p>
-          <p class="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
-            {{ $t('terms.age_notice') }}
-          </p>
-        </section>
-
-        <section>
-          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('terms.acceptance') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('terms.acceptance_desc') }}</p>
-        </section>
-
-        <section>
-          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('terms.service') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('terms.service_desc') }}</p>
-        </section>
-
-        <section>
-          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('terms.service_rules') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 mb-6 leading-relaxed">{{ $t('terms.service_rules_desc') }}</p>
-          <ul class="space-y-3 text-neutral-600 dark:text-neutral-300">
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('terms.rule_1') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('terms.rule_2') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('terms.rule_3') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('terms.rule_4') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('terms.rule_5') }}</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-primary-500 mt-2 shrink-0"></div>
-              <span>{{ $t('terms.rule_6') }}</span>
-            </li>
-          </ul>
-        </section>
-
-        <section>
-          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('terms.account') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('terms.account_desc') }}</p>
-        </section>
-
-        <section>
-          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('terms.payment') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('terms.payment_desc') }}</p>
-        </section>
-
-        <section>
-          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('terms.ip') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('terms.ip_desc') }}</p>
-        </section>
-
-        <section>
-          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('terms.termination') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('terms.termination_user') }}</p>
-          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed mt-4">{{ $t('terms.termination_us') }}</p>
-        </section>
-
-        <section>
-          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('terms.liability') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('terms.liability_desc') }}</p>
-        </section>
-
-        <section>
-          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('terms.force_majeure') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('terms.force_majeure_desc') }}</p>
-        </section>
-
-        <section>
-          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('terms.governing_law') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('terms.governing_law_desc') }}</p>
-        </section>
-
-        <section>
-          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('terms.changes') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('terms.changes_desc') }}</p>
-        </section>
-
-        <section>
-          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('terms.general') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">{{ $t('terms.general_desc') }}</p>
-        </section>
-
-        <section>
-          <h2 class="text-2xl md:text-3xl font-black mb-6 text-neutral-900 dark:text-white tracking-tight">{{ $t('terms.contact') }}</h2>
-          <p class="text-neutral-600 dark:text-neutral-300 mb-4 leading-relaxed" v-html="$t('terms.contact_desc').replace('admin@digipulse.cloud', `<a href='mailto:admin@digipulse.cloud?subject=DigiPulse ToS' class='text-primary-500 hover:underline font-bold'>admin@digipulse.cloud</a>`)"></p>
-        </section>
-      </article>
+      <!-- Content from API -->
+      <div
+        v-if="apiContent"
+        class="legal-prose"
+        v-html="apiContent"
+      />
 
       <!-- Back to Home -->
       <div class="mt-16 w-full">
@@ -145,11 +49,40 @@
 
 <script setup lang="ts">
 import AppFooter from '~/components/AppFooter.vue'
+import { resolveLocaleString } from '~/utils/locale-field'
 
+const { locale } = useI18n()
 const route = useRoute()
 const localePath = useLocalePath()
 const url = useRequestURL()
 const config = useRuntimeConfig()
+const apiBase = useApiBase()
+
+const { data: legalData } = await useAsyncData(
+  'legal-terms',
+  () => $fetch<any>(`${apiBase}/api/v1/legal/terms-of-service`, {
+    headers: { 'X-Frontend-Key': config.public.frontendKey as string },
+  }).catch(() => null),
+)
+
+const legalDoc = computed(() => {
+  const raw = legalData.value
+  if (!raw) return null
+  return raw.data ?? raw
+})
+
+const apiTitle = computed(() => resolveLocaleString(legalDoc.value?.title, locale.value))
+const apiContent = computed(() => resolveLocaleString(legalDoc.value?.content, locale.value))
+const apiUpdatedAt = computed((): string | null => {
+  const at = legalDoc.value?.updated_at
+  if (!at) return null
+  try {
+    const tag = locale.value === 'uk' ? 'uk-UA' : locale.value === 'pl' ? 'pl-PL' : 'en-US'
+    return new Intl.DateTimeFormat(tag, { dateStyle: 'long' }).format(new Date(at))
+  } catch {
+    return null
+  }
+})
 
 // SEO Meta
 useSeoMeta({

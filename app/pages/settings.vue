@@ -712,7 +712,7 @@ const mcpAgents = [
 const mcpConfigExample = JSON.stringify({
   digipulse: {
     type: 'streamableHttp',
-    url: 'https://api.digispace.pro/mcp',
+    url: 'https://api.digipulse.cloud/mcp',
     headers: { Authorization: 'Bearer YOUR_TOKEN' }
   }
 }, null, 2);
