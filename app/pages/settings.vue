@@ -848,7 +848,9 @@ onMounted(async () => {
 watch(user, (val) => {
   if (val) {
     notifyEmail.value = (val as any).notify_email ?? true;
-    notifyTelegram.value = (val as any).notify_telegram ?? true;
+    notifyTelegram.value = (val as any).telegram_chat_id
+      ? ((val as any).notify_telegram ?? true)
+      : false;
   }
 }, { immediate: true });
 
@@ -939,7 +941,9 @@ const updateNotificationSettings = async () => {
     // Revert state on error
     if (user.value) {
       notifyEmail.value = (user.value as any).notify_email ?? true;
-      notifyTelegram.value = (user.value as any).notify_telegram ?? true;
+      notifyTelegram.value = (user.value as any).telegram_chat_id
+        ? ((user.value as any).notify_telegram ?? true)
+        : false;
     }
   } finally {
     isUpdatingSettings.value = false;
