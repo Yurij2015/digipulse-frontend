@@ -226,8 +226,8 @@
                 </div>
               </div>
 
-              <div class="flex items-center gap-4">
-                <div v-if="(user as any)?.telegram_chat_id" class="flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-emerald-500/5 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/15 backdrop-blur-md text-[10px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/5">
+              <div class="flex flex-col gap-2">
+                <div v-if="(user as any)?.telegram_chat_id" class="flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-emerald-500/5 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/15 backdrop-blur-md text-[10px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/5 self-start">
                   <div class="relative flex h-2 w-2">
                     <div class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-40 will-change-transform"></div>
                     <div class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
@@ -236,59 +236,56 @@
                 </div>
                 <UButton
                   v-if="!(user as any)?.telegram_chat_id"
-                  size="xl"
+                  size="md"
                   variant="ghost"
-                  class="group relative overflow-hidden px-8 py-5 rounded-3xl border border-neutral-200 dark:border-white/10 hover:border-sky-500/30 hover:bg-sky-500/5 transition-colors duration-500"
+                  class="group relative overflow-hidden px-5 py-2.5 rounded-2xl border border-neutral-200 dark:border-white/10 hover:border-sky-500/30 hover:bg-sky-500/5 transition-colors duration-500"
                   :loading="isTelegramConnecting"
                   @click="connectTelegram"
                 >
-                  <div class="flex items-center gap-4">
-                    <div class="flex items-center justify-center p-2.5 rounded-2xl bg-sky-500/10 text-sky-500 group-hover:bg-sky-500 group-hover:text-white transition-colors duration-500 shadow-lg shadow-sky-500/5">
-                      <UIcon name="i-heroicons-paper-airplane" class="text-xl" />
+                  <div class="flex items-center gap-3">
+                    <div class="flex items-center justify-center p-2 rounded-xl bg-sky-500/10 text-sky-500 group-hover:bg-sky-500 group-hover:text-white transition-colors duration-500">
+                      <UIcon name="i-heroicons-paper-airplane" class="text-base" />
                     </div>
-                    <span class="text-base font-black text-neutral-900 dark:text-white">
+                    <span class="text-sm font-black text-neutral-900 dark:text-white">
                       {{ t('profile.telegram_connect') }}
                     </span>
                   </div>
-                  <div class="absolute -bottom-12 -right-12 w-24 h-24 bg-sky-500/10 blur-3xl group-hover:bg-sky-500/20 transition-colors duration-700"></div>
-                </UButton>
-
-                <UButton
-                  v-else
-                  size="xl"
-                  variant="ghost"
-                  class="group relative overflow-hidden px-8 py-5 rounded-3xl border border-neutral-200 dark:border-white/10 hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-colors duration-500"
-                  :loading="isTelegramTesting"
-                  @click="sendTelegramTest"
-                >
-                  <div class="flex items-center gap-4">
-                    <div class="flex items-center justify-center p-2.5 rounded-2xl bg-emerald-500/10 text-emerald-500 group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-500 shadow-lg shadow-emerald-500/5">
-                      <UIcon name="i-heroicons-bell" class="text-xl" />
-                    </div>
-                    <span class="text-base font-black text-neutral-900 dark:text-white">
-                      {{ t('profile.telegram_test') }}
-                    </span>
-                  </div>
-                  <div class="absolute -bottom-12 -right-12 w-24 h-24 bg-emerald-500/10 blur-3xl group-hover:bg-emerald-500/20 transition-colors duration-700"></div>
                 </UButton>
 
                 <UButton
                   v-if="(user as any)?.telegram_chat_id"
-                  size="xl"
+                  size="md"
                   variant="ghost"
-                  class="group relative overflow-hidden px-8 py-5 rounded-3xl border border-neutral-200 dark:border-white/10 hover:border-rose-500/30 hover:bg-rose-500/5 transition-colors duration-500"
+                  class="group relative overflow-hidden px-5 py-2.5 rounded-2xl border border-neutral-200 dark:border-white/10 hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-colors duration-500"
+                  :loading="isTelegramTesting"
+                  @click="sendTelegramTest"
+                >
+                  <div class="flex items-center gap-3">
+                    <div class="flex items-center justify-center p-2 rounded-xl bg-emerald-500/10 text-emerald-500 group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-500">
+                      <UIcon name="i-heroicons-bell" class="text-base" />
+                    </div>
+                    <span class="text-sm font-black text-neutral-900 dark:text-white">
+                      {{ t('profile.telegram_test') }}
+                    </span>
+                  </div>
+                </UButton>
+
+                <UButton
+                  v-if="(user as any)?.telegram_chat_id"
+                  size="md"
+                  variant="ghost"
+                  class="group relative overflow-hidden px-5 py-2.5 rounded-2xl border border-neutral-200 dark:border-white/10 hover:border-rose-500/30 hover:bg-rose-500/5 transition-colors duration-500"
                   :loading="isTelegramDisconnecting"
                   @click="disconnectTelegram"
                 >
-                  <div class="flex items-center gap-4">
-                    <div class="flex items-center justify-center p-2.5 rounded-2xl bg-rose-500/10 text-rose-500 group-hover:bg-rose-500 group-hover:text-white transition-colors duration-500 shadow-lg shadow-rose-500/5">
-                      <UIcon name="i-heroicons-trash" class="text-xl" />
+                  <div class="flex items-center gap-3">
+                    <div class="flex items-center justify-center p-2 rounded-xl bg-rose-500/10 text-rose-500 group-hover:bg-rose-500 group-hover:text-white transition-colors duration-500">
+                      <UIcon name="i-heroicons-trash" class="text-base" />
                     </div>
-                    <span class="text-base font-black text-neutral-900 dark:text-white">
+                    <span class="text-sm font-black text-neutral-900 dark:text-white">
                       {{ t('profile.telegram_disconnect') }}
                     </span>
                   </div>
-                  <div class="absolute -bottom-12 -right-12 w-24 h-24 bg-rose-500/10 blur-3xl group-hover:bg-rose-500/20 transition-colors duration-700"></div>
                 </UButton>
               </div>
             </div>
